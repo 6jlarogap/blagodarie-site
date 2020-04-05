@@ -40,7 +40,7 @@ function fill_chart_() {
     var api_url = get_api_url_();
 
     $.ajax({
-        url: api_url  + '/api/getstats/users/with/symptoms',
+        url: api_url  + '/api/getstats/users',
         dataType: 'json',
         success: function(data) {
             var msg_users = 'пользователей';
@@ -69,6 +69,7 @@ function fill_chart_() {
         success: function(data) {
             if (data.url) {
                 $('#id_apk_link').html(
+                    'Чтобы отправить информацию о своём самочувствии - ' +
                     '<a href="' +
                     data.url +
                     '">' +
