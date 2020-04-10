@@ -64,23 +64,6 @@ function fill_chart_() {
     });
 
     $.ajax({
-        url: api_url  + '/api/getlatestversion',
-        dataType: 'json',
-        success: function(data) {
-            if (data.url) {
-                $('#id_apk_link').html(
-                    'Чтобы отправить информацию о своём самочувствии - ' +
-                    '<a href="' +
-                    data.url +
-                    '">' +
-                    'скачайте и установите приложение Android' +
-                    '</a>'
-                );
-            }
-        }
-    });
-
-    $.ajax({
         url: api_url  + '/api/getstats/symptoms',
         dataType: 'json',
         success: function(data) {
@@ -95,9 +78,26 @@ function fill_chart_() {
             } else {
                 $('#' + ID_CHART).html('Пока не поступили данные от пользователей о симптомах');
             }
-        },
-        error: function(data) {
-            $('#' + ID_CHART).html('Произошла ошибка при получении данных. Повторите, пожалуйста.');
+        }
+    });
+
+    $.ajax({
+        url: api_url  + '/api/getstats/symptoms/hist',
+        dataType: 'json',
+        success: function(data) {
+            if (data.hist) {
+                $('#id_hist').html(
+                    "<img src='data:image/png;base64," + data.hist + "'>"
+                );
+            } else {
+                $('#id_hist').html("<big>За последние 2 суток о симптомах не сообщали</big>");
+                return;
+            }
+            if (data.legend) {
+                $('#id_hist_legend').html(
+                    "<img src='data:image/png;base64," + data.legend + "'>"
+                );
+            }
         }
     });
 }
