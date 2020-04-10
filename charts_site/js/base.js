@@ -95,7 +95,7 @@ function fill_chart_() {
             }
             if (data.legend) {
                 $('#id_hist_legend').html(
-                    "<img src='data:image/png;base64," + data.legend + "'>"
+                    "<img style='border:1px solid black;' src='data:image/png;base64," + data.legend + "'>"
                 );
             }
         }
