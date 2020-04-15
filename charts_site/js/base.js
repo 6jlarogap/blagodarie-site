@@ -76,7 +76,7 @@ function fill_chart_() {
                 range = Math.floor(range / 10) * 10 + 10;
                 plotly_draw_(ID_CHART, data.counts, data.titles, range);
             } else {
-                $('#' + ID_CHART).html('Пока не поступили данные от пользователей о симптомах');
+                $('#' + ID_CHART).html('За последние 48 часов данные о самочувствии не поступали.');
             }
         }
     });
@@ -90,7 +90,7 @@ function fill_chart_() {
                     "<img src='data:image/png;base64," + data.hist + "'>"
                 );
             } else {
-                $('#id_hist').html("<big>За последние 2 суток о симптомах не сообщали</big>");
+                $('#id_hist').html("<big>За последние 48 часов данные о самочувствии не поступали.</big>");
                 return;
             }
             if (data.legend) {
