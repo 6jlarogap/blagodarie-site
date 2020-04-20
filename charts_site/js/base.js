@@ -1,12 +1,20 @@
 ID_CHART = "id_chart";
 
-function plotly_draw_(id_chart, counts, titles, range) {
+function plotly_draw_(id_chart, counts_all, counts_last, titles, range) {
     var data = [
         {
             type: 'scatterpolar',
-            r: counts,
+            r: counts_all,
             theta: titles,
-            fill: 'toself'
+            fill: 'toself',
+            name: 'Всего'
+        },
+        {
+            type: 'scatterpolar',
+            r: counts_last,
+            theta: titles,
+            fill: 'toself',
+            name: 'За 48 часов'
         }
     ];
 
@@ -17,10 +25,17 @@ function plotly_draw_(id_chart, counts, titles, range) {
             range: [0, range]
             }
         },
-        showlegend: false
+        dragmode: false,
+        fixedrange: true,
+        showlegend: true,
+        width: 1000,
+        height: 700,
+        font: {
+            size: 15
+        }
     };
 
-    Plotly.plot(id_chart, data, layout, {displayModeBar: false});
+    Plotly.plot(id_chart, data, layout, {displayModeBar: false });
 }
 
 function get_api_url_() {
@@ -80,16 +95,20 @@ function fill_chart_() {
         url: api_url  + '/api/getstats/symptoms',
         dataType: 'json',
         success: function(data) {
-            if (data.counts[0]) {
+            console.log(data);
+            if (data.counts_all[0]) {
                 // Есть пользователи с симптомами, значит будут симптомы
                 var range = 0;
-                for (var i = 1; i < data.counts.length; i++) {
-                    range = Math.max(range, data.counts[i]);
+                for (var i = 1; i < data.counts_all.length; i++) {
+                    range = Math.max(range, data.counts_all[i]);
                 }
-                range = Math.floor(range / 10) * 10 + 10;
-                plotly_draw_(ID_CHART, data.counts, data.titles, range);
+                var range_new  = Math.floor(range / 10) * 10;
+                if (range_new < range) {
+                    range_new += 10;
+                }
+                plotly_draw_(ID_CHART, data.counts_all, data.counts_last, data.titles, range_new);
             } else {
-                $('#' + ID_CHART).html('За последние 48 часов данные о самочувствии не поступали.');
+                $('#' + ID_CHART).html('Данные о самочувствии не поступали.');
             }
         }
     });
