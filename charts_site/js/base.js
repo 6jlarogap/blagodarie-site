@@ -85,11 +85,10 @@ function fill_chart_() {
                         '<b><big>' +
                         data.symptoms +
                         '</big></b>' +
-                        ' сообщениях ' :
+                        ' ощущениях ' :
                         ''
                     )+
 
-                    'о самочувствии ' +
                     '<b><big>' +
                     data.users +
                     '</big></b> ' +
