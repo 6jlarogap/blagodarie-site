@@ -151,7 +151,7 @@ function fill_chart_() {
                 }),
                 latlng = L.latLng(data.lat_avg, data.lng_avg);
 
-            var map = L.map('map', { center: latlng, zoom: 4, layers: [tiles] });
+            var map = L.map('map', { center: latlng, zoom: 5, layers: [tiles] });
 
             var progress = document.getElementById('progress');
             var progressBar = document.getElementById('progress-bar');
@@ -159,8 +159,6 @@ function fill_chart_() {
             var markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
 
             var markerList = [];
-
-            //console.log('start creating markers: ' + window.performance.now());
 
             for (var i = 0; i < addressPoints.length; i++) {
                 var a = addressPoints[i];
@@ -170,12 +168,9 @@ function fill_chart_() {
                 markerList.push(marker);
             }
 
-            //console.log('start clustering: ' + window.performance.now());
-
             markers.addLayers(markerList);
             map.addLayer(markers);
-
-            //console.log('end clustering: ' + window.performance.now());
+            map.fitBounds(markers.getBounds());
         }
     });
 }
