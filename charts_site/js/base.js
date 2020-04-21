@@ -56,6 +56,17 @@ var addressPoints = [];
 function fill_chart_() {
     var api_url = get_api_url_();
 
+    $('#id_apk_version').html('-');
+    $.ajax({
+        url: api_url  + '/api/getlatestversion',
+        dataType: 'json',
+        success: function(data) {
+            $('#id_apk_version').html(
+                '<big>(' + data.version_name + ')</big>;'
+            );
+        }
+    });
+
     $.ajax({
         url: api_url  + '/api/getstats/users',
         dataType: 'json',
@@ -95,7 +106,6 @@ function fill_chart_() {
         url: api_url  + '/api/getstats/symptoms',
         dataType: 'json',
         success: function(data) {
-            console.log(data);
             if (data.counts_all[0]) {
                 // Есть пользователи с симптомами, значит будут симптомы
                 var range = 0;
