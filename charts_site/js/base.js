@@ -81,7 +81,7 @@ function fill_chart_() {
                     'Ниже представлены данные ' +
 
                     (data.symptoms ?
-                        'об ' +
+                        'о ' +
                         '<b><big>' +
                         data.symptoms +
                         '</big></b>' +
