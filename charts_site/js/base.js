@@ -62,7 +62,7 @@ function fill_chart_() {
         dataType: 'json',
         success: function(data) {
             $('#id_apk_version').html(
-                '<big>(' + data.version_name + ')</big>;'
+                '<big>(' + data.version_name + ')</big>'
             );
         }
     });
@@ -81,7 +81,7 @@ function fill_chart_() {
                     'Ниже представлены данные ' +
 
                     (data.symptoms ?
-                        'о ' +
+                        'об ' +
                         '<b><big>' +
                         data.symptoms +
                         '</big></b>' +
