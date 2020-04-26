@@ -132,9 +132,8 @@ function fill_chart_() {
                 );
             } else {
                 $('#id_hist').html("<big>За последние 48 часов данные о самочувствии не поступали.</big>");
-                return;
             }
-            if (data.legend) {
+            if (data.hist && data.legend) {
                 $('#id_hist_legend').html(
                     "<img style='border:1px solid black;' src='data:image/png;base64," + data.legend + "'>"
                 );
@@ -170,6 +169,18 @@ function fill_chart_() {
             markers.addLayers(markerList);
             map.addLayer(markers);
             map.fitBounds(markers.getBounds());
+        }
+    });
+
+    $.ajax({
+        url: api_url  + '/api/getstats/symptoms/moon',
+        dataType: 'json',
+        success: function(data) {
+            if (data.moon_days_fig) {
+                $('#id_moon_days_fig').html(
+                    "<img src='data:image/png;base64," + data.moon_days_fig + "'>"
+                );
+            }
         }
     });
 }
