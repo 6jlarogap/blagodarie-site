@@ -51,8 +51,6 @@ function get_api_url_() {
     return result;
 }
 
-var addressPoints = [];
-
 function fill_chart_() {
     var api_url = get_api_url_();
 
@@ -139,50 +137,40 @@ function fill_chart_() {
                 );
             }
 
-            for (var i = 0; i < data.points.length; i++) {
-                addressPoints.push(data.points[i]);
-            }
-
-            var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 20,
-                    // attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
-                }),
-                latlng = L.latLng(data.lat_avg, data.lng_avg);
-
-            var map = L.map('map', { center: latlng, zoom: 5, layers: [tiles] });
-
-            var progress = document.getElementById('progress');
-            var progressBar = document.getElementById('progress-bar');
-
-            var markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
-
-            var markerList = [];
-
-            for (var i = 0; i < addressPoints.length; i++) {
-                var a = addressPoints[i];
-                var title = a[2];
-                var marker = L.marker(L.latLng(a[0], a[1]), { title: title });
-                marker.bindPopup(title);
-                markerList.push(marker);
-            }
-
-            markers.addLayers(markerList);
-            map.addLayer(markers);
-            map.fitBounds(markers.getBounds());
-        }
-    });
-
-    $.ajax({
-        url: api_url  + '/api/getstats/symptoms/moon',
-        dataType: 'json',
-        success: function(data) {
             if (data.moon_days_fig) {
                 $('#id_moon_days_fig').html(
                     "<img src='data:image/png;base64," + data.moon_days_fig + "'>"
                 );
             }
+            show_map(data);
         }
     });
+}
+
+function show_map(data) {
+    var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 20,
+            // attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
+        }),
+        latlng = L.latLng(data.lat_avg, data.lng_avg);
+
+    var map = L.map('map', { center: latlng, zoom: 5, layers: [tiles] });
+    var progress = document.getElementById('progress');
+    var progressBar = document.getElementById('progress-bar');
+
+    var markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
+    var markerList = [];
+
+    for (var i = 0; i < data.points.length; i++) {
+        var a = data.points[i];
+        var title = a[2];
+        var marker = L.marker(L.latLng(a[0], a[1]), { title: title });
+        marker.bindPopup(title);
+        markerList.push(marker);
+    }
+    markers.addLayers(markerList);
+    map.addLayer(markers);
+    map.fitBounds(markers.getBounds());
 }
 
 function updateProgressBar(processed, total, elapsed, layersArray) {
