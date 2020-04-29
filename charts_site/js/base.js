@@ -28,10 +28,10 @@ function plotly_draw_(id_chart, counts_all, counts_last, titles, range) {
         dragmode: false,
         fixedrange: true,
         showlegend: true,
-        width: 1000,
+        width: 1050,
         height: 700,
         font: {
-            size: 15
+            size: 14
         }
     };
 
