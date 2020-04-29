@@ -7,14 +7,14 @@ function plotly_draw_(id_chart, counts_all, counts_last, titles, range) {
             r: counts_all,
             theta: titles,
             fill: 'toself',
-            name: 'Всего'
+            name: 'За 48 часов'
         },
         {
             type: 'scatterpolar',
             r: counts_last,
             theta: titles,
             fill: 'toself',
-            name: 'За 48 часов'
+            name: 'За 24 часа'
         }
     ];
 
