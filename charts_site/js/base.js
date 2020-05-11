@@ -1,4 +1,5 @@
 ID_CHART = "id_chart";
+COOKIE_NAME = 'selected_symptoms';
 
 function plotly_draw_(id_chart, counts_all, counts_last, titles, range) {
     var data = [
@@ -39,21 +40,33 @@ function plotly_draw_(id_chart, counts_all, counts_last, titles, range) {
 }
 
 function get_api_url_() {
-    var result;
     if (window.location.protocol == 'file:') {
         // Для отладки
-        result = 'http://127.0.0.1:8000';
-    } else {
-        var location_host = window.location.host;
-        location_host = location_host.replace(/^www\./, '');
-        result = 'https://api.' + location_host;
+        return 'http://127.0.0.1:8000';
     }
-    return result;
+    var location_host = window.location.host;
+    location_host = location_host.replace(/^www\./, '');
+
+    if (location_host == 'develop.blagodarie.org') {
+        // Для отладки
+        return 'http://api.' + location_host + ':8000';
+    }
+    return 'https://api.' + location_host;
 }
 
 function fill_chart_() {
     var api_url = get_api_url_();
+    var selected_ids_str = getCookie_(COOKIE_NAME);
+    var get_selected_ids_str = '';
+    var selected_ids_list = [];
+    if (selected_ids_str) {
+        get_selected_ids_str = '?selected_ids_str=' + selected_ids_str;
+        var s = selected_ids_str.replace('(', '');
+        s = s.replace(')', '');
+        selected_ids_list = s.split(',');
+    }
 
+    /*
     $('#id_apk_version').html('-');
     $.ajax({
         url: api_url  + '/api/getlatestversion',
@@ -62,6 +75,23 @@ function fill_chart_() {
             $('#id_apk_version').html(
                 '<big>(' + data.version_name + ')</big>'
             );
+        }
+    });
+    */
+
+    $.ajax({
+        url: api_url  + '/api/getstats/symptoms/names',
+        dataType: 'json',
+        success: function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#id_symptom_select').append(
+                    '<option value="' + data[i].id + '"' +
+                    (! selected_ids_str || (selected_ids_str && selected_ids_list.indexOf(data[i].id) >= 0) ? ' selected' : '') +
+                    '>' +
+                    data[i].name +
+                    '</option>'
+                );
+            }
         }
     });
 
@@ -100,7 +130,7 @@ function fill_chart_() {
     });
 
     $.ajax({
-        url: api_url  + '/api/getstats/symptoms',
+        url: api_url  + '/api/getstats/symptoms' + get_selected_ids_str,
         dataType: 'json',
         success: function(data) {
             if (data.counts_all[0]) {
@@ -115,13 +145,17 @@ function fill_chart_() {
                 }
                 plotly_draw_(ID_CHART, data.counts_all, data.counts_last, data.titles, range_new);
             } else {
-                $('#' + ID_CHART).html('Данные о самочувствии не поступали.');
+                $('#' + ID_CHART).html(
+                    'Данные о самочувствии' +
+                    (get_selected_ids_str ? ' по выбранным симптомам' : '') +
+                    ' не поступали.'
+                );
             }
         }
     });
 
     $.ajax({
-        url: api_url  + '/api/getstats/symptoms/hist',
+        url: api_url  + '/api/getstats/symptoms/hist' + get_selected_ids_str,
         dataType: 'json',
         success: function(data) {
             if (data.hist) {
@@ -186,9 +220,24 @@ function updateProgressBar(processed, total, elapsed, layersArray) {
     }
 }
 
+function getCookie_(name) {
+    return (document.cookie.match('(?:^|;) *'+name+'=([^;]*)')||"")[1];
+}
+
 $(function() {
     $('.class_reload').click(function() {
         location.reload(true);
+    });
+    
+    $("#id_symptom_select").change(function() {
+        var date = new Date(Date.now() + 7 * 86400e3);
+        date = date.toUTCString();
+        var selected_ids_str = '(' + $(this).val().join(',') + ')';
+        var s =
+            COOKIE_NAME + '=' + selected_ids_str + ';' +
+            'expires=' + date
+        ;
+        document.cookie = s;
     });
 
     fill_chart_();
