@@ -98,41 +98,6 @@
 
     <body>
         <h1 style="text-align:center;"><big>Благодарие</big></h1>
-        <table width=100% border=0 cellspacing=0 cellpadding=0>
-            <colgroup>
-                <col style="width:20%">
-                <col style="width:20%">
-                <col style="width:20%">
-                <col style="width:5%">
-                <col style="width:35%">
-            </colgroup>
-            <tr>
-                <td ALIGN=CENTER VALIGN=CENTER COLSPAN=3>
-                <span style='font-size:32px;'>
-                Выберите симптом(ы)
-                </span>
-                </td>
-            </tr>
-            <tr height=120px>
-                <td id="id_td_select" ALIGN=CENTER VALIGN=CENTER >
-                    <div class='scroll_select_symptoms'>
-                        <select name="symptom_select" id="id_symptom_select" size="3" multiple>
-                    </select>
-                    </div>
-                </td>
-                <td ALIGN=CENTER VALIGN=CENTER>
-                    <button id="id_symptom_select_set_all" style="margin:auto;display:block;height:50%;width:90%;font-size:28px;" onclick='return select_clear_symptoms("select_all")'>Выбрать<br />все</button>
-                </td>
-                <td ALIGN=CENTER VALIGN=CENTER>
-                    <button id="id_symptom_select_clear_all" style="margin:auto;display:block;height:50%;width:90%font-size:40px;font-size:28px;" onclick='return select_clear_symptoms("clear_all")'>Очистить<br />все</button>
-                </td>
-                <td>
-                </td>
-                <td ALIGN=CENTER VALIGN=CENTER >
-                    <button class="class_reload" style="margin:auto;display:block;height:110px;width:95%;font-size:40px;color:green;border: 4px solid green;">Обновить</button>
-                </td>
-            </tr>
-        </table>
         <div style="text-align:center;margin: auto; width: 90%;">
             <big>
                 Дорогие бабушки и дедушки, мамы и папы - 
@@ -167,6 +132,45 @@
             <br />
             <span id="id_count_users_head"></span>                
         </div>
+
+        <table width=100% border=0 cellspacing=0 cellpadding=0>
+            <colgroup>
+                <col style="width:20%">
+                <col style="width:20%">
+                <col style="width:20%">
+                <col style="width:5%">
+                <col style="width:35%">
+            </colgroup>
+            <!--
+            <tr>
+                <td ALIGN=CENTER VALIGN=CENTER COLSPAN=3>
+                <span style='font-size:32px;'>
+                Выберите симптом(ы)
+                </span>
+                </td>
+            </tr>
+            -->
+            <tr height=120px>
+                <td id="id_td_select" ALIGN=CENTER VALIGN=CENTER >
+                    <div class='scroll_select_symptoms'>
+                        <select name="symptom_select" id="id_symptom_select" size="3" multiple>
+                    </select>
+                    </div>
+                </td>
+                <td ALIGN=CENTER VALIGN=CENTER>
+                    <button id="id_symptom_select_set_all" style="margin:auto;display:block;height:50%;width:90%;font-size:28px;" onclick='return select_clear_symptoms("select_all")'>Выбрать<br />все</button>
+                </td>
+                <td ALIGN=CENTER VALIGN=CENTER>
+                    <button id="id_symptom_select_clear_all" style="margin:auto;display:block;height:50%;width:90%font-size:40px;font-size:28px;" onclick='return select_clear_symptoms("clear_all")'>Очистить<br />все</button>
+                </td>
+                <td>
+                </td>
+                <td ALIGN=CENTER VALIGN=CENTER >
+                    <button class="class_reload" style="margin:auto;display:block;height:110px;width:95%;font-size:40px;color:green;border: 4px solid green;">Обновить</button>
+                </td>
+            </tr>
+        </table>
+                
         <div style="margin:auto; width: 90%;text-align:center;">
             <h2><big>Количества ощущений (за 48 часов, за 24 часа)</big></h2>
         </div>
@@ -200,7 +204,7 @@
 
 
         <div style="margin:auto; width: 90%;text-align:center;">
-            <h2><big>Карта смещённых ощущений за 48 часов (координаты смещены)</big></h2>
+            <h2><big>Карта ощущений за 48 часов со смещёнными координатами</big></h2>
         </div>
         <br />
 
