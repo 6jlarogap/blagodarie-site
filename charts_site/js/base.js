@@ -176,7 +176,7 @@ function fill_chart_() {
                     "<img src='data:image/png;base64," + data.moon_days_fig + "'>"
                 );
             }
-            show_map(data);
+            // show_map(data);
         }
     });
 }
