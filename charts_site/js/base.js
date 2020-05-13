@@ -163,7 +163,7 @@ function fill_chart_() {
                     "<img src='data:image/png;base64," + data.hist + "'>"
                 );
             } else {
-                $('#id_hist').html("<big>За последние 48 часов данные о самочувствии не поступали.</big>");
+                $('#id_hist').html("<big>За последние 48 часов данные по выбранным ощущениям не поступали.</big>");
             }
             if (data.hist && data.legend) {
                 $('#id_hist_legend').html(
