@@ -121,7 +121,7 @@ function fill_chart_() {
                     data.users +
                     '</big></b> ' +
                     msg_users +
-                    ' приложения "Благодарие"'
+                    ' приложения "Благодарие за последние 48 часов"'
                 );
             } else {
                 $('#id_count_users_head').html('');
