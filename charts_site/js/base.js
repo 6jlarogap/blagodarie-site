@@ -176,6 +176,13 @@ function fill_chart_() {
                     "<img src='data:image/png;base64," + data.moon_days_fig + "'>"
                 );
             }
+
+            if (data.moon_hour_fig) {
+                $('#id_moon_hour_fig').html(
+                    "<img src='data:image/png;base64," + data.moon_hour_fig + "'>"
+                );
+            }
+
             // show_map(data);
         }
     });
