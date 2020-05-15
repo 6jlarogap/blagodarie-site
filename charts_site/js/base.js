@@ -113,7 +113,7 @@ function fill_chart_() {
                         '<b><big>' +
                         data.symptoms +
                         '</big></b>' +
-                        ' ощущениях ' :
+                        ' сообщениях ' :
                         ''
                     )+
 
@@ -146,8 +146,8 @@ function fill_chart_() {
                 plotly_draw_(ID_CHART, data.counts_all, data.counts_last, data.titles, range_new);
             } else {
                 $('#' + ID_CHART).html(
-                    'Данные о самочувствии' +
-                    (get_selected_ids_str ? ' по выбранным симптомам' : '') +
+                    'Данные' +
+                    (get_selected_ids_str ? ' по выбранным типам сообщений' : '') +
                     ' не поступали.'
                 );
             }
@@ -163,7 +163,7 @@ function fill_chart_() {
                     "<img src='data:image/png;base64," + data.hist + "'>"
                 );
             } else {
-                $('#id_hist').html("<big>За последние 48 часов данные по выбранным ощущениям не поступали.</big>");
+                $('#id_hist').html("<big>За последние 48 часов данные по выбранным типам сообщений не поступали.</big>");
             }
             if (data.hist && data.legend) {
                 $('#id_hist_legend').html(
