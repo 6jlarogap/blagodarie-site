@@ -95,7 +95,6 @@ function fill_chart_() {
         }
     });
 
-
     $.ajax({
         url: api_url  + '/api/getstats/users',
         dataType: 'json',
@@ -104,45 +103,10 @@ function fill_chart_() {
                     '<p>' +
                     'Пользователей: ' +
                     data.users +
-                    'Сообщений: ' +
+                    ' Сообщений: ' +
                     data.symptoms
                     
                 );
-        }
-    });
-    
-    
-    $.ajax({
-        url: api_url  + '/api/getstats/users',
-        dataType: 'json',
-        success: function(data) {
-            var msg_users = 'пользователей';
-            if (data.users > 0) {
-                if (data.users == 1) {
-                    msg_users = 'пользователя';
-                }
-                $('#id_count_users_head').html(
-                    '<p>' +
-                    'Ниже представлены данные ' +
-
-                    (data.symptoms ?
-                        'о ' +
-                        '<b><big>' +
-                        data.symptoms +
-                        '</big></b>' +
-                        ' сообщениях ' :
-                        ''
-                    )+
-
-                    '<b><big>' +
-                    data.users +
-                    '</big></b> ' +
-                    msg_users +
-                    ' приложения "Благодарие за последние 48 часов"'
-                );
-            } else {
-                $('#id_count_users_head').html('');
-            }
         }
     });
 
