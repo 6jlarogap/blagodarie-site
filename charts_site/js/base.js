@@ -104,7 +104,7 @@ function fill_chart_() {
                     'Пользователей: ' +
                     data.users +
                     ' Сообщений: ' +
-                    data.symptoms                   
+                    data.symptoms
                 );
         }
     });
@@ -217,14 +217,8 @@ $(function() {
     });
     
     $("#id_symptom_select").change(function() {
-        var date = new Date(Date.now() + 7 * 86400e3);
-        date = date.toUTCString();
         var selected_ids_str = '(' + $(this).val().join(',') + ')';
-        var s =
-            COOKIE_NAME + '=' + selected_ids_str + ';' +
-            'expires=' + date
-        ;
-        document.cookie = s;
+        document.cookie = COOKIE_NAME + '=' + selected_ids_str;
     });
 
     fill_chart_();
