@@ -100,12 +100,10 @@ function fill_chart_() {
         dataType: 'json',
         success: function(data) {
                 $('#id_total_users_head').html(
-                    '<p>' +
                     'Пользователей: ' +
                     data.users +
                     ' Сообщений: ' +
-                    data.symptoms
-                    
+                    data.symptoms                   
                 );
         }
     });
