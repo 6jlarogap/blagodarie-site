@@ -95,6 +95,23 @@ function fill_chart_() {
         }
     });
 
+
+    $.ajax({
+        url: api_url  + '/api/getstats/users',
+        dataType: 'json',
+        success: function(data) {
+                $('#id_total_users_head').html(
+                    '<p>' +
+                    'Пользователей: ' +
+                    data.users +
+                    'Сообщений: ' +
+                    data.symptoms
+                    
+                );
+        }
+    });
+    
+    
     $.ajax({
         url: api_url  + '/api/getstats/users',
         dataType: 'json',
