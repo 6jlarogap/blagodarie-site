@@ -60,10 +60,23 @@ function fill_chart_() {
     var get_selected_ids_str = '';
     var selected_ids_list = [];
     if (selected_ids_str) {
-        get_selected_ids_str = '?selected_ids_str=' + selected_ids_str;
+        get_selected_ids_str = 'selected_ids_str=' + selected_ids_str;
         var s = selected_ids_str.replace('(', '');
         s = s.replace(')', '');
         selected_ids_list = s.split(',');
+    }
+    var got_parm = document.URL.match(/incognitopublickey=([0-9a-f\-]+)/i);
+    var get_public_key = '';
+    if (got_parm) {
+        get_public_key = 'public_key=' + got_parm[1];
+    }
+    var get_parms = '';
+    if (get_public_key && get_selected_ids_str) {
+        get_parms = '?' + get_public_key + '&' + get_selected_ids_str;
+    } else if (get_public_key) {
+        get_parms = '?' + get_public_key;
+    } else if (get_selected_ids_str) {
+        get_parms = '?' + get_selected_ids_str;
     }
 
     /*
@@ -110,13 +123,13 @@ function fill_chart_() {
     });
 
     $.ajax({
-        url: api_url  + '/api/getstats/symptoms' + get_selected_ids_str,
+        url: api_url  + '/api/getstats/symptoms' + get_parms,
         dataType: 'json',
         success: function(data) {
             if (data.counts_all[0]) {
                 // Есть пользователи с симптомами, значит будут симптомы
                 var range = 0;
-                for (var i = 1; i < data.counts_all.length; i++) {
+                for (var i = 0; i < data.counts_all.length; i++) {
                     range = Math.max(range, data.counts_all[i]);
                 }
                 var range_new  = Math.floor(range / 10) * 10;
@@ -135,7 +148,7 @@ function fill_chart_() {
     });
 
     $.ajax({
-        url: api_url  + '/api/getstats/symptoms/hist' + get_selected_ids_str,
+        url: api_url  + '/api/getstats/symptoms/hist' + get_parms,
         dataType: 'json',
         success: function(data) {
             if (data.hist) {
