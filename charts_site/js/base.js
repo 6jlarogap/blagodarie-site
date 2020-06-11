@@ -49,7 +49,7 @@ function plotly_draw_(id_chart, counts_all, counts_48h, counts_24h, titles) {
 function get_api_url_() {
     if (window.location.protocol == 'file:') {
         // Для отладки
-        return 'http://127.0.0.1:8001';
+        return 'http://127.0.0.1:8000';
     }
     var location_host = window.location.host;
     location_host = location_host.replace(/^www\./, '');
