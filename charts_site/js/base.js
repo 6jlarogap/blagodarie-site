@@ -1,8 +1,15 @@
 ID_CHART = "id_chart";
 COOKIE_NAME = 'selected_symptoms';
 
-function plotly_draw_(id_chart, counts_48h, counts_24h, titles, range) {
+function plotly_draw_(id_chart, counts_all, counts_48h, counts_24h, titles) {
     var data = [
+        {
+            type: 'scatterpolar',
+            r: counts_all,
+            theta: titles,
+            fill: 'toself',
+            name: 'Всего'
+        },
         {
             type: 'scatterpolar',
             r: counts_48h,
@@ -22,8 +29,8 @@ function plotly_draw_(id_chart, counts_48h, counts_24h, titles, range) {
     var layout = {
         polar: {
             radialaxis: {
-            visible: true,
-            range: [0, range]
+            type: 'log',
+            visible: true
             }
         },
         dragmode: false,
@@ -126,17 +133,8 @@ function fill_chart_() {
         url: api_url  + '/api/getstats/symptoms' + get_parms,
         dataType: 'json',
         success: function(data) {
-            if (data.counts_48h[0]) {
-                // Есть пользователи с симптомами, значит будут симптомы
-                var range = 0;
-                for (var i = 0; i < data.counts_48h.length; i++) {
-                    range = Math.max(range, data.counts_48h[i]);
-                }
-                var range_new  = Math.floor(range / 10) * 10;
-                if (range_new < range) {
-                    range_new += 10;
-                }
-                plotly_draw_(ID_CHART, data.counts_48h, data.counts_24h, data.titles, range_new);
+            if (data.counts_all[0]) {
+                plotly_draw_(ID_CHART, data.counts_all, data.counts_48h, data.counts_24h, data.titles);
             } else {
                 $('#' + ID_CHART).html(
                     'Данные' +
