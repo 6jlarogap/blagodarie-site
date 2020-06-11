@@ -1,18 +1,18 @@
 ID_CHART = "id_chart";
 COOKIE_NAME = 'selected_symptoms';
 
-function plotly_draw_(id_chart, counts_all, counts_last, titles, range) {
+function plotly_draw_(id_chart, counts_48h, counts_24h, titles, range) {
     var data = [
         {
             type: 'scatterpolar',
-            r: counts_all,
+            r: counts_48h,
             theta: titles,
             fill: 'toself',
             name: 'За 48 часов'
         },
         {
             type: 'scatterpolar',
-            r: counts_last,
+            r: counts_24h,
             theta: titles,
             fill: 'toself',
             name: 'За 24 часа'
@@ -42,7 +42,7 @@ function plotly_draw_(id_chart, counts_all, counts_last, titles, range) {
 function get_api_url_() {
     if (window.location.protocol == 'file:') {
         // Для отладки
-        return 'http://127.0.0.1:8000';
+        return 'http://127.0.0.1:8001';
     }
     var location_host = window.location.host;
     location_host = location_host.replace(/^www\./, '');
@@ -126,17 +126,17 @@ function fill_chart_() {
         url: api_url  + '/api/getstats/symptoms' + get_parms,
         dataType: 'json',
         success: function(data) {
-            if (data.counts_all[0]) {
+            if (data.counts_48h[0]) {
                 // Есть пользователи с симптомами, значит будут симптомы
                 var range = 0;
-                for (var i = 0; i < data.counts_all.length; i++) {
-                    range = Math.max(range, data.counts_all[i]);
+                for (var i = 0; i < data.counts_48h.length; i++) {
+                    range = Math.max(range, data.counts_48h[i]);
                 }
                 var range_new  = Math.floor(range / 10) * 10;
                 if (range_new < range) {
                     range_new += 10;
                 }
-                plotly_draw_(ID_CHART, data.counts_all, data.counts_last, data.titles, range_new);
+                plotly_draw_(ID_CHART, data.counts_48h, data.counts_24h, data.titles, range_new);
             } else {
                 $('#' + ID_CHART).html(
                     'Данные' +
