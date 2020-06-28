@@ -1,7 +1,8 @@
 function show_ya_metrika() {
     // Когда разрешать обращение к yandex metrika
     var result = false;
-    if (window.location.protocol != 'file:') {
+    var pathname = window.location.pathname;
+    if ((!pathname || pathname == '/') && window.location.protocol != 'file:') {
         var location_host = window.location.host;
         var allowed_sites = [
             'blagodarie.org',
