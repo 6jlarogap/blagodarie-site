@@ -112,8 +112,12 @@ install-readme.txt
         SSLCertificateKeyFile /home/www-data/ssl-certificates/sslforfree/project.org/private.key
         SSLCertificateChainFile /home/www-data/ssl-certificates/sslforfree/project.org/ca_bundle.crt
 
+        Alias /.well-known   /home/www-data//home/www-data/project/project/static/.well-known/
+        Alias /.well-known/  /home/www-data//home/www-data/project/project/static/.well-known/
+
         Alias /agreement   /home/www-data//home/www-data/project/project/static/agreement/
         Alias /agreement/  /home/www-data//home/www-data/project/project/static/agreement/
+
         Alias /соглашение /home/www-data//home/www-data/project/project/static/agreement/
         Alias /соглашение/ /home/www-data//home/www-data/project/project/static/agreement/
 

@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "blagodarie.rating",
+    "sha256_cert_fingerprints":
+    ["80:D6:79:18:E9:CE:E8:15:68:28:CE:3A:8F:84:9B:44:15:06:AE:E3:EE:8D:46:79:4B:45:8D:A9:C2:F9:14:78"]
+  }
+}]
