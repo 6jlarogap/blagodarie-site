@@ -2,6 +2,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+import plotly.graph_objects as go
 
 import datetime
 from functools import cmp_to_key
@@ -265,7 +266,7 @@ def update_chart_users_symptoms(search, value):
     if any_counts_all:
         rc, data = request_json('api/getstats/symptoms/hist/data/' + get_str)
         if rc == 200 and any(data['times']):
-            figure_data = []
+            fig = go.Figure()
             d_times = [
                 {
                     'order': i,
@@ -288,35 +289,35 @@ def update_chart_users_symptoms(search, value):
                 tick_labels.append(datetime.datetime.fromtimestamp(t).strftime('%d.%m %H:00'))
 
             for d in d_times:
-                figure_data.append({
-                    'type': 'histogram',
-                    'x': d['times'],
-                    'name': d['name'] + ' (' + str(d['count']) + ')',
-                    'marker': dict(color=colors[d['order']]),
-                    'xbins': {
+                fig.add_trace(go.Histogram(
+                    type='histogram',
+                    x=d['times'],
+                    name=d['name'] + ' (' + str(d['count']) + ')',
+                    marker=dict(color=colors[d['order']]),
+                    xbins={
                         'start': data['time_1st'],
                         'end': data['time_last'],
                         'size': 3600,
                     },
-                    'hoverinfo': "none",
-                })
+                    hoverinfo="none",
+                ))
 
-            figure_layout = {
-                'barmode': 'stack',
-                'xaxis': {
+            fig.update_layout(
+                barmode='stack',
+                xaxis={
                     'range': (data['time_1st'], data['time_last']),
                     'tickmode': 'array',
                     'tickvals': tick_times,
                     'ticktext': tick_labels,
                     'tickangle': -45,
                 },
-                'yaxis': {
+                yaxis={
                     'type': 'linear'
                 },
-            }
+            )
             result.extend([
                 dcc.Graph(
-                    figure=dict(data=figure_data, layout=figure_layout),
+                    figure=fig,
                     config = {'displayModeBar': False }
                 )
             ])
