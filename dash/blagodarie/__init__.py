@@ -153,7 +153,7 @@ def serve_layout():
                     href='https://privetmir.ru/services/p2p/',
                 ),
                 html.Span(
-                    ' 220002020681631',
+                    ' 2200020206816318',
                 ),
                 html.Br(),
                 html.A(
