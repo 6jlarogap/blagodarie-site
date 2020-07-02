@@ -149,6 +149,11 @@ def serve_layout():
                 ),
                 html.Br(),
                 html.A(
+                    'Соглашение пользователя',
+                    href='https://blagodarie.org/agreement',
+                ),
+                html.Br(),
+                html.A(
                     'Для благодарности и поддержки:',
                     href='https://privetmir.ru/services/p2p/',
                 ),
