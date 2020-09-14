@@ -1,5 +1,5 @@
 
-			var svg = d3.select("svg");
+			var svg = d3.select("#main");
 			var width = +svg.node().getBoundingClientRect().width;
 			var height = +svg.node().getBoundingClientRect().height;
 			var link;
@@ -7,6 +7,23 @@
 			var nodes = [];
 			var links = [];
 			var simulation;
+			
+			var xxx = svg.append("g");
+			xxx.attr("id", "xxx");
+			d3.select("#xxx")
+				.append("a")
+				.attr("href", "https://play.google.com/store/apps/details?id=blagodarie.rating")
+				.append("image")
+				.attr("xlink:href", "apple.png")
+				.attr("x", ((width / 2) - 64))
+				.attr("y", (height - 128));
+			d3.select("#xxx")
+				.append("a")
+				.attr("href", "https://play.google.com/store/apps/details?id=blagodarie.rating")
+				.append("image")
+				.attr("xlink:href", "android.png")
+				.attr("x", ((width / 2) + 64))
+				.attr("y", (height - 128));
 
 			// load the data
 			var url = new URL(window.location.href);
@@ -396,7 +413,7 @@
 				  
 				node
 					.append("a")
-					.attr("href", d => ("https://blagodarie.org/profile?id=" + d.id))
+					.attr("href", d => ("https://blagodarie.org/prof?id=" + d.id))
 					.append("image")
 					.attr("xlink:href", d => d.image)
 					.attr("class", d => (d.id == userId ? "userPortrait" : "friendPortrait"));
