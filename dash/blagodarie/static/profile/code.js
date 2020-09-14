@@ -15,14 +15,14 @@
 				.attr("href", "https://play.google.com/store/apps/details?id=blagodarie.rating")
 				.append("image")
 				.attr("xlink:href", "apple.png")
-				.attr("x", ((width / 2) - 64))
+				.attr("x", ((width / 2) - 128))
 				.attr("y", (height - 128));
 			d3.select("#xxx")
 				.append("a")
 				.attr("href", "https://play.google.com/store/apps/details?id=blagodarie.rating")
 				.append("image")
 				.attr("xlink:href", "android.png")
-				.attr("x", ((width / 2) + 64))
+				.attr("x", (width / 2))
 				.attr("y", (height - 128));
 
 			// load the data
