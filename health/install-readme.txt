@@ -112,20 +112,6 @@ install-readme.txt
         SSLCertificateKeyFile /home/www-data/ssl-certificates/sslforfree/project.org/private.key
         SSLCertificateChainFile /home/www-data/ssl-certificates/sslforfree/project.org/ca_bundle.crt
 
-        Alias /.well-known   /home/www-data//home/www-data/project/project/static/.well-known/
-        Alias /.well-known/  /home/www-data//home/www-data/project/project/static/.well-known/
-
-        Alias /agreement   /home/www-data//home/www-data/project/project/static/agreement/
-        Alias /agreement/  /home/www-data//home/www-data/project/project/static/agreement/
-
-        Alias /соглашение /home/www-data//home/www-data/project/project/static/agreement/
-        Alias /соглашение/ /home/www-data//home/www-data/project/project/static/agreement/
-
-        Alias /static/          /home/www-data/project/project/static/
-        <Directory /home/www-data/project/project/static/>
-            Require all granted
-        </Directory>
-
         # После maximum-request wsgi- application reloads, во избежание потребления
         # слишком много памяти. Reloads только когда wsgi- application не активно
         # и этого момента ждет graceful-timeout секунд. Если wsgi- application зависло

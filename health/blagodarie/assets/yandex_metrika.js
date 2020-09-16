@@ -4,10 +4,8 @@ function show_ya_metrika() {
     if (window.location.protocol != 'file:') {
         var location_host = window.location.host;
         var allowed_sites = [
-            'blagodarie.org',
-            'xn--80aabjfhut3aw.xn--p1ai',
-            'www.blagodarie.org',
-            'www.xn--80aabjfhut3aw.xn--p1ai'
+            'health.blagodarie.org',
+            'health.xn--80aabjfhut3aw.xn--p1ai'
         ];
         for (var i = 0; i < allowed_sites.length; i++) {
             if (allowed_sites[i] == location_host) {
