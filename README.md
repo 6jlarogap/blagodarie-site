@@ -1,2 +1,3 @@
 # blagodarie-site
-Текущая версия сайта, см. каталог dash/
+blagodarie:     blagodarie.org, благодарие.рф
+health:         health.blagodarie.org, health.благодарие.рф
