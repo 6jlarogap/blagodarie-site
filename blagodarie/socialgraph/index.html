@@ -1,0 +1,36 @@
+<html>
+<head><style>
+/* HTML styles */
+html{ width: 100%; }
+body{ 
+  width: 100%; 
+  height: 100%; 
+  margin: 0; padding: 0; 
+  display: flex;  
+  }
+/* SVG styles */
+svg {
+  flex-basis: 100%;
+  min-width: 200px;
+}
+
+.round {
+  border-radius: 50%;
+}
+
+</style>
+</head>
+<body>
+<svg>
+<defs>
+<marker xmlns="http://www.w3.org/2000/svg" id="arrow-trust" viewBox="0 -5 10 10" refX="28" refY="-0.5" markerWidth="6" markerHeight="6" orient="auto"><path fill="#00ff00" d="M0,-5L10,0L0,5"/></marker>
+<marker xmlns="http://www.w3.org/2000/svg" id="arrow-mistrust" viewBox="0 -5 10 10" refX="28" refY="-0.5" markerWidth="6" markerHeight="6" orient="auto"><path fill="#ff0000" d="M0,-5L10,0L0,5"/></marker>
+<clipPath id="myCircle">
+               <circle cx="0" cy="0" r="16" fill="#FF0000" />
+            </clipPath>
+</defs>
+		</svg>
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="code.js"></script>
+</body>
+</html>
