@@ -332,11 +332,13 @@ function initializeDisplay() {
 	
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER ? 64 : 32))
+		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER ? "userNameShadow" : "friendNameShadow"))
 		.text(d => (d.text));
 	  
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER ? 64 : 32))
+		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER ? "userName" : "friendName"))
 		.text(d => (d.text));
 }
