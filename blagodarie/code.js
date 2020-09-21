@@ -1,4 +1,4 @@
-const NODE_TYPES = Object.freeze({"USER":"user", "FRIEND":"friend", "OTHER":"other"});
+const NODE_TYPES = Object.freeze({"USER":"user", "FRIEND":"friend", "WISH_ROOT": "wish_root", "WISH":"wish", "KEY_ROOT":"key_root", "KEY":"key"});
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const KEYS_ROOT_ID = "KEYS_ROOT";
 
@@ -18,13 +18,12 @@ var url = new URL(window.location.href);
 var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
-console.log(fromApp);
 
 redrawMarketLinks();
 
 var apiUrl = "https://api.blagodarie.org/api/getstats/user_connections_graph";
 
-if(userIdFrom != null && userIdTo != null){
+if (userIdFrom != null && userIdTo != null){
 	apiUrl = "https://api.blagodarie.org/api/profile_graph?uuid=" + userIdFrom + "&uuid_to=" + userIdTo;
 } else if(userIdFrom != null){
 	apiUrl = "https://api.blagodarie.org/api/profile_graph?uuid=" + userIdFrom;
@@ -49,7 +48,7 @@ d3.json(apiUrl)
 			id: WISHES_ROOT_ID,
 			text: "Желания",
 			image: "https://blagodarie.org/images/sleep.png",
-			nodeType: NODE_TYPES.OTHER
+			nodeType: NODE_TYPES.WISH_ROOT
 		});
 		
 		//добавить желания в вершины
@@ -58,7 +57,7 @@ d3.json(apiUrl)
 				id: `wish_${d.uuid}`,
 				text: d.text,
 			image: "https://blagodarie.org/images/chat-sleep.png",
-			nodeType: NODE_TYPES.OTHER
+			nodeType: NODE_TYPES.WISH
 			});
 		});
 	}
@@ -69,7 +68,7 @@ d3.json(apiUrl)
 			id: KEYS_ROOT_ID,
 			text: "Ключи",
 			image: "https://blagodarie.org/images/folder-key.png",
-			nodeType: NODE_TYPES.OTHER
+			nodeType: NODE_TYPES.KEY_ROOT
 		});
 		
 		//добавить ключи в вершины
@@ -93,7 +92,7 @@ d3.json(apiUrl)
 				id: `key_${d.id}`,
 				text: `${d.value}`,
 				image: image,
-				nodeType: NODE_TYPES.OTHER
+				nodeType: NODE_TYPES.KEY
 			});
 		});
 	}
@@ -213,10 +212,10 @@ d3.json(apiUrl)
 	simulation = d3.forceSimulation(nodes);
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links));
 	simulation.force("charge", d3.forceManyBody().strength(0.5));
-	simulation.force("center", d3.forceCenter(width / 2, height / 2))
+	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
 	simulation.force("collide", d3.forceCollide().strength(0.5).radius(70).iterations(1));
-	//simulation.force("x", d3.forceX(width / 2).strength(0.02));
-	//simulation.force("y", d3.forceY(height / 2).strength(0.02));
+	simulation.force("x", d3.forceX(width / 2).strength(0.2));
+	simulation.force("y", d3.forceY(height / 2).strength(0.2));
 	
 
 	initializeDisplay();
@@ -231,29 +230,28 @@ function initializeSimulation() {
 
 drag = simulation => {
   
-  function dragstarted(event, d) {
-	if (!event.active) simulation.alphaTarget(0.3).restart();
-	d.fx = d.x;
-	d.fy = d.y;
-  }
-  
-  function dragged(event, d) {
-	d.fx = event.x;
-	d.fy = event.y;
-  }
-  
-  function dragended(event, d) {
-	if (!event.active) simulation.alphaTarget(0);
-	//d.fx = null;
-	//d.fy = null;
-  }
-  
-  return d3.drag()
+	function dragstarted(event, d) {
+		if (!event.active) simulation.alphaTarget(0.3).restart();
+		d.fx = d.x;
+		d.fy = d.y;
+	}
+
+	function dragged(event, d) {
+		d.fx = event.x;
+		d.fy = event.y;
+	}
+
+	function dragended(event, d) {
+		if (!event.active) simulation.alphaTarget(0);
+		//d.fx = null;
+		//d.fy = null;
+	}
+
+	return d3.drag()
 	  .on("start", dragstarted)
 	  .on("drag", dragged)
 	  .on("end", dragended);
 }
-
 
 function initializeDisplay() {
 
@@ -276,12 +274,11 @@ function initializeDisplay() {
 		.attr("y2", calcY2)
 		.selectAll("stop")
 		.data(d => {
-		return [[1,d.reverse_is_trust], [2,d.is_trust]];
+			return [[1,d.reverse_is_trust], [2,d.is_trust]];
 		})
 		.join("stop")
 		.attr("offset", d => (d[0] == 1 ? "0%" : "100%"))
 		.attr("style", d => {
-			console.log(d);
 			if (d[1]){
 				return "stop-color:rgb(0,255,0);stop-opacity:1";
 			} else {
@@ -296,9 +293,7 @@ function initializeDisplay() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
 		.attr("stroke", d => {
-			if (d.target.nodeType == NODE_TYPES.OTHER){
-				return "#00ffff";
-			} else{
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND){
 				if (d.is_trust == d.reverse_is_trust){
 					if(d.is_trust){
 						return "#00ff00";
@@ -308,17 +303,19 @@ function initializeDisplay() {
 				} else {
 					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
 				}
+			} else {
+				return "#00ffff";
 			}
 		})
 		.attr("marker-end", d => {
-			if (d.target.nodeType == NODE_TYPES.OTHER){
-				return "url(#arrow-to-other)";
-			} else {
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND){
 				if (d.is_trust){
 					return "url(#arrow-trust)";
 				} else {
 					return "url(#arrow-mistrust)";
 				}
+			} else {
+				return "url(#arrow-to-other)";
 			}
 		});
 
@@ -326,14 +323,13 @@ function initializeDisplay() {
 		.selectAll("g")
 		.data(nodes)
 		.join("g")
+		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
 		.call(drag(simulation));
-	  
-	node.append("a")
-		.attr("href", d => ("https://blagodarie.org/profile?id=" + d.id))
-		.append("image")
+	
+	node.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER ? "userPortrait" : "friendPortrait"));
-
+	
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER ? 64 : 32))
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER ? "userNameShadow" : "friendNameShadow"))
@@ -346,8 +342,15 @@ function initializeDisplay() {
 }
 
 function ticked() {
-
-	node.attr("transform", d => `translate(${d.x},${d.y})`);
+	node.attr("transform", d => {
+		var x = (d.x < 0 ? 0 : (d.x > width ? width : d.x));
+		var y = (d.y < 0 ? 0 : (d.y > height ? height: d.y));
+		if (d.nodeType == NODE_TYPES.USER){
+			simulation.force("x").x(x);
+			simulation.force("y").y(y);
+		}
+		return `translate(${x},${y})`;
+	});
 	
 	link.selectAll("g")
 		.attr("x1", calcX1)
@@ -369,61 +372,77 @@ function ticked() {
 }
 
 function calcX1(d){
-	var lWidth = Math.abs(d.target.x - d.source.x);
-	var lHeight = Math.abs(d.target.y - d.source.y);
+	const sourceX = (d.source.x < 0 ? 0 : (d.source.x > width ? width : d.source.x));
+	const targetX = (d.target.x < 0 ? 0 : (d.target.x > width ? width : d.target.x));
+	const sourceY = (d.source.y < 0 ? 0 : (d.source.y > height ? height : d.source.y));
+	const targetY = (d.target.y < 0 ? 0 : (d.target.y > height ? height : d.target.y));
+	var lWidth = Math.abs(targetX - sourceX);
+	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var cosA = lWidth / lLength;
 	var relX = (d.source.nodeType == NODE_TYPES.USER ? 64 : 16) * cosA;
 	var x;
-	if (d.target.x > d.source.x){
-		x = d.source.x + relX;
+	if (targetX > sourceX){
+		x = sourceX + relX;
 	} else {
-		x = d.source.x - relX;
+		x = sourceX - relX;
 	}
 	return x;
 }
 
 function calcY1(d){
-	var lWidth = Math.abs(d.target.x - d.source.x);
-	var lHeight = Math.abs(d.target.y - d.source.y);
+	const sourceX = (d.source.x < 0 ? 0 : (d.source.x > width ? width : d.source.x));
+	const targetX = (d.target.x < 0 ? 0 : (d.target.x > width ? width : d.target.x));
+	const sourceY = (d.source.y < 0 ? 0 : (d.source.y > height ? height : d.source.y));
+	const targetY = (d.target.y < 0 ? 0 : (d.target.y > height ? height : d.target.y));
+	var lWidth = Math.abs(targetX - sourceX);
+	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var sinA = lHeight / lLength;
 	var relY = (d.source.nodeType == NODE_TYPES.USER ? 64 : 16) * sinA;
 	var y;
-	if (d.target.y > d.source.y){
-		y = d.source.y + relY;
+	if (targetY > sourceY){
+		y = sourceY + relY;
 	} else {
-		y = d.source.y - relY;
+		y = sourceY - relY;
 	}
 	return y;
 }
 
 function calcX2(d){
-	var lWidth = Math.abs(d.target.x - d.source.x);
-	var lHeight = Math.abs(d.target.y - d.source.y);
+	const sourceX = (d.source.x < 0 ? 0 : (d.source.x > width ? width : d.source.x));
+	const targetX = (d.target.x < 0 ? 0 : (d.target.x > width ? width : d.target.x));
+	const sourceY = (d.source.y < 0 ? 0 : (d.source.y > height ? height : d.source.y));
+	const targetY = (d.target.y < 0 ? 0 : (d.target.y > height ? height : d.target.y));
+	var lWidth = Math.abs(targetX - sourceX);
+	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var cosA = lWidth / lLength;
 	var relX = (d.target.nodeType == NODE_TYPES.USER ? 64 : 16) * cosA;
 	var x;
-	if (d.target.x > d.source.x){
-		x = d.target.x - relX;
+	if (targetX > sourceX){
+		x = targetX - relX;
 	} else {
-		x = d.target.x + relX;
+		x = targetX + relX;
 	}
 	return x;
 }
 
 function calcY2(d){
-	var lWidth = Math.abs(d.target.x - d.source.x);
-	var lHeight = Math.abs(d.target.y - d.source.y);
+	const sourceX = (d.source.x < 0 ? 0 : (d.source.x > width ? width : d.source.x));
+	const targetX = (d.target.x < 0 ? 0 : (d.target.x > width ? width : d.target.x));
+	const sourceY = (d.source.y < 0 ? 0 : (d.source.y > height ? height : d.source.y));
+	const targetY = (d.target.y < 0 ? 0 : (d.target.y > height ? height : d.target.y));
+	var lWidth = Math.abs(targetX - sourceX);
+	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var sinA = lHeight / lLength;
 	var relY = (d.target.nodeType == NODE_TYPES.USER ? 64 : 16) * sinA;
 	var y;
-	if (d.target.y > d.source.y){
-		y = d.target.y - relY;
+	if (targetY > sourceY){
+		y = targetY - relY;
 	} else {
-		y = d.target.y + relY;
+		y = targetY + relY;
 	}
 	return y;
 }
@@ -461,6 +480,19 @@ function redrawMarketLinks(){
 
 function initDefs(){
 	const defs = svg.append("defs");
+	
+	defs.append("marker")
+		.attr("xmlns", "http://www.w3.org/2000/svg")
+		.attr("id", "arrow-to-other")
+		.attr("viewBox", "0 -5 10 20")
+		.attr("refX", "10")
+		.attr("refY", "0")
+		.attr("markerWidth", "20")
+		.attr("markerHeight", "20")
+		.attr("orient", "auto")
+		.append("path")
+		.attr("fill", "#00ffff")
+		.attr("d", "M0,-5 L10,0 L0,5");
 	
 	defs.append("marker")
 		.attr("xmlns", "http://www.w3.org/2000/svg")
@@ -516,4 +548,22 @@ function initDefs(){
 		.attr("cy", "0")
 		.attr("r", "64")
 		.attr("fill", "#ff0000");
+}
+
+function onNodeClick(nodeType, uuid, txt){
+	if(nodeType == NODE_TYPES.KEY){
+		copyToClipboard(txt)
+	} else if (nodeType == NODE_TYPES.FRIEND) {
+		window.location.href = "https://blagodarie.org/profile?id=" + uuid;
+	}
+}
+
+function copyToClipboard(txt){
+	navigator.clipboard.writeText(txt)
+	.then(() => {
+		alert('Скопировано в буффер обмена');
+	})
+	.catch(err => {
+		console.log('Something went wrong', err);
+	});
 }
