@@ -463,7 +463,7 @@ function redrawMarketLinks(){
 			marketLinks = svg.append("g");
 			marketLinks.attr("id", "marketLinks");
 			marketLinks.append("a")
-				.attr("href", "https://play.google.com/store/apps/details?id=blagodarie.rating")
+				.attr("href", "https://blagodarie.org/ios.html")
 				.append("image")
 				.attr("xlink:href", "https://blagodarie.org/images/apple.png");
 			marketLinks.append("a")
