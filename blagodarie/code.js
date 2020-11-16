@@ -99,18 +99,20 @@ d3.json(apiUrl)
 	
 	//добавить связи пользователей в связи
 	data.connections.forEach(function(d){
-		var reverse_is_trust = d.is_trust;
-		data.connections.forEach(function(dd){
-			if (d.source == dd.target && d.target == dd.source){
-				reverse_is_trust = dd.is_trust;
-			}
-		});
-		links.push({
-			source: d.source,
-			target: d.target,
-			is_trust: d.is_trust,
-			reverse_is_trust: reverse_is_trust
-		});
+		if (d.is_trust != null){
+			var reverse_is_trust = d.is_trust;
+			data.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
+					reverse_is_trust = dd.is_trust;
+				}
+			});
+			links.push({
+				source: d.source,
+				target: d.target,
+				is_trust: d.is_trust,
+				reverse_is_trust: reverse_is_trust
+			});
+		}
 	});
 	
 	if (data.wishes != null){
