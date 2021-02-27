@@ -5,7 +5,7 @@ function show_ya_metrika() {
         var location_host = window.location.host;
         var allowed_sites = [
             'health.blagodarie.org',
-            'health.xn--80aabjfhut3aw.xn--p1ai'
+            'health.xn--80aabjfzq0au.xn--p1ai'
         ];
         for (var i = 0; i < allowed_sites.length; i++) {
             if (allowed_sites[i] == location_host) {

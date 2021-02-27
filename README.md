@@ -1,3 +1,3 @@
 # blagodarie-site
-blagodarie:     blagodarie.org, благодарие.рф
-health:         health.blagodarie.org, health.благодарие.рф
+blagodarie:     blagodarie.org, благодари.рф
+health:         health.blagodarie.org, health.благодари.рф

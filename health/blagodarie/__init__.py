@@ -19,7 +19,7 @@ def serve_layout():
         dcc.Location(id='url', refresh=False),
 
         html.H1(
-            html.A('Благодарие', href='https://xn--80aabjfhut3aw.xn--p1ai'),
+            html.A('Благодарие', href='https://health.blagodarie.org'),
             style={'textAlign': 'center'},
         ),
     ]
