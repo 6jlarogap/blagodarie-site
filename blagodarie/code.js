@@ -469,7 +469,8 @@ function redrawMarketLinks(){
 				.append("image")
 				.attr("xlink:href", "https://blagodarie.org/images/apple.png");
 			marketLinks.append("a")
-				.attr("href", "https://play.google.com/store/apps/details?id=blagodarie.rating")
+//				.attr("href", "https://play.google.com/store/apps/details?id=blagodarie.rating")
+				.attr("href", "https://github.com/6jlarogap/blagodari/blob/ff18915bfffd53a3779290f386a36d34bd66cf04/app/release/rating-0.0.36-release.apk?raw=true")
 				.append("image")
 				.attr("xlink:href", "https://blagodarie.org/images/android.png")
 				.attr("x", 128);
