@@ -139,7 +139,7 @@ d3.json(apiUrl)
 		nodes.push({
 			id: AUTH_ID,
 			text: "",
-			image: "./images/enter.png",
+			image: `${settings.url}images/enter.png`,
 			nodeType: NODE_TYPES.AUTH
 		});
 	} else if (isAuth) {
@@ -184,14 +184,14 @@ d3.json(apiUrl)
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			image: "./images/check.png",
+			image: `${settings.url}images/check.png`,
 			nodeType: NODE_TYPES.TRUST
 		});
 
 		nodes.push({
 			id: MISTRUST_ID,
 			text: "Недоверие",
-			image: "./images/delete.png",
+			image: `${settings.url}images/delete.png`,
 			nodeType: NODE_TYPES.MISTRUST
 		});
 	}
@@ -200,7 +200,7 @@ d3.json(apiUrl)
 	nodes.push({
 		id: SHARE_ID,
 		text: "Поделиться",
-		image: "./images/shareee.png",
+		image: `${settings.url}images/shareee.png`,
 		nodeType: NODE_TYPES.SHARE
 	});
 
