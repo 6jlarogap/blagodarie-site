@@ -79,7 +79,7 @@ function getCookie(name) {
 }
 
 async function setProfile() {
-	const response = await fetch(`https://api.dev.blagodarie.org/api/getprofileinfo?uuid=${getCookie("user_uuid")}`, {
+	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`, {
 		method: "GET",
 		headers: {
 			"Authorization": getCookie("auth_token")
@@ -93,7 +93,7 @@ async function setProfile() {
 
 //telegram auth
 async function onTelegramAuth(user) {
-	const response = await fetch("https://api.dev.blagodarie.org/api/auth/telegram", {
+	const response = await fetch(`${settings.api}api/auth/telegram`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"
@@ -123,12 +123,12 @@ var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
 
-var apiUrl = "https://api.dev.blagodarie.org/api/getstats/user_connections_graph";
+var apiUrl = `${settings.api}api/getstats/user_connections_graph`;
 
 if (userIdFrom != null && userIdTo != null){
-	apiUrl = "https://api.dev.blagodarie.org/api/profile_graph?uuid=" + userIdFrom + "&uuid_to=" + userIdTo;
+	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
 } else if(userIdFrom != null){
-	apiUrl = "https://api.dev.blagodarie.org/api/profile_graph?uuid=" + userIdFrom;
+	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom;
 }
 
 d3.json(apiUrl)
@@ -164,7 +164,7 @@ d3.json(apiUrl)
 		nodes.push({
 			id: WISHES_ROOT_ID,
 			text: "Желания",
-			image: "https://blagodarie.org/images/sleep.png",
+			image: `${settings.url}images/sleep.png`,
 			nodeType: NODE_TYPES.WISH_ROOT
 		});
 		
@@ -173,7 +173,7 @@ d3.json(apiUrl)
 			nodes.push({
 				id: `wish_${d.uuid}`,
 				text: d.text,
-			image: "https://blagodarie.org/images/chat-sleep.png",
+			image: `${settings.url}images/chat-sleep.png`,
 			nodeType: NODE_TYPES.WISH
 			});
 		});
@@ -209,7 +209,7 @@ d3.json(apiUrl)
 		nodes.push({
 			id: KEYS_ROOT_ID,
 			text: "Ключи",
-			image: "https://blagodarie.org/images/folder-key.png",
+			image: `${settings.url}images/folder-key.png`,
 			nodeType: NODE_TYPES.KEY_ROOT
 		});
 		
@@ -218,16 +218,16 @@ d3.json(apiUrl)
 			var image;
 			switch (d.type_id) {
 			case 1:
-				image = "https://blagodarie.org/images/phone.png";
+				image = `${settings.url}images/phone.png`;
 				break;
 			case 2:
-				image = "https://blagodarie.org/images/at.png";
+				image = `${settings.url}images/at.png`;
 				break;
 			case 4:
-				image = "https://blagodarie.org/images/credit-card.png";
+				image = `${settings.url}images/credit-card.png`;
 				break;
 			case 5:
-				image = "https://blagodarie.org/images/link.png";
+				image = `${settings.url}images/link.png`;
 				break;
 			}
 			nodes.push({
@@ -361,7 +361,7 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;
 			break;
 		case SHARE_ID:
-			d.fx = width / 2 + 500;
+			d.fx = width / 2 + 400;
 			d.fy = height / 2 - 400;
 			break;
 		case TRUST_ID:
@@ -713,10 +713,10 @@ function onNodeClick(nodeType, uuid, txt){
 		copyToClipboard(txt)
 	} else if (nodeType == NODE_TYPES.FRIEND) {
 
-		window.location.href = "https://blagodarie.org/profile?id=" + uuid;
+		window.location.href = `${settings.url}profile?id=` + uuid;
 	} else if (nodeType == NODE_TYPES.PROFILE) {
 		
-		window.location.href = "https://blagodarie.org/profile?id=" + uuid;
+		window.location.href = `${settings.url}profile?id=` + uuid;
 	} else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex";
 	}
@@ -736,7 +736,7 @@ async function updateTrust(operationId) {
 		operationId = 4;
 	}
 
-	const response = await fetch(`https://api.dev.blagodarie.org/api/addoperation`, {
+	const response = await fetch(`${settings.api}api/addoperation`, {
 		method: "POST",
 		headers: {
 			"Authorization": "Token " + getCookie("auth_token"),
