@@ -1,12 +1,12 @@
-const staticCacheName = 'bd-app-v6'
-const dynamicCacheName = 'bd-dynamic-v1'
+const staticCacheName = 'bd-app-v1'
+const dynamicCacheName = 'bd-dynamic-v2'
 
 const assetsUrls = [
     './index.html',
     './code.js',
     './qrcode.min.js',
     './settings.js',
-    '/offline.html',
+    './offline.html',
     './images/check.png',
     './images/credit-card.png',
     './images/delete.png',
