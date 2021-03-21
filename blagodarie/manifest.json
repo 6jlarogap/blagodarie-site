@@ -1,0 +1,16 @@
+{
+    "name": "blagodarie",
+    "short_name": "bd",
+    "theme_color": "#000000",
+    "background_color": "#000000",
+    "display": "standalone",
+    "orientation": "portrait",
+    "start_url": ".",
+    "icons": [
+        {
+          "src": "./images/ic_launcher.png",
+          "sizes": "144x144",
+          "type": "image/png"
+        }
+    ]
+}

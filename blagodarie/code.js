@@ -1,3 +1,9 @@
+window.addEventListener('load', async () => {
+	if ('serviceWorker' in navigator) {
+		await navigator.serviceWorker.register('./sw.js')
+	}
+})
+
 const NODE_TYPES = Object.freeze({"USER":"user", "FRIEND":"friend", "WISH_ROOT": "wish_root", "WISH":"wish", "KEY_ROOT":"key_root", "KEY":"key", "AUTH": "auth_root", "SHARE": "share_root", "TRUST": "trust_btn", "MISTRUST" : "mistrust_btn", "PROFILE": "profile_root"});
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const KEYS_ROOT_ID = "KEYS_ROOT";
@@ -21,7 +27,7 @@ var nodes = [];
 var links = [];
 var simulation;
 
-
+console.log(getCookie("auth_token"))
 var isAuth = getCookie("auth_token") ? true : false;
 
 // qrcode generator elements
@@ -117,6 +123,8 @@ initDefs();
 
 // load the data
 
+//var url = new URL('https://dev.blagodarie.org/profile/?id=c781ef10-3e5c-429a-9737-b32894352233')
+
 var url = new URL(window.location.href);
 
 var userIdFrom = url.searchParams.get("id");
@@ -135,7 +143,7 @@ d3.json(apiUrl)
 	.then(async function(data) {
 
 	//добавить элемент авторизации
-	if (userIdFrom == null && isAuth == false) {
+	if (!isAuth) {
 		nodes.push({
 			id: AUTH_ID,
 			text: "",
@@ -181,17 +189,18 @@ d3.json(apiUrl)
 
 	if (isAuth && userIdFrom && !(userIdFrom == PROFILE.id)) {
 		//добавить вершину доверие/недоверие
+		//TODO ADRESS
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			image: `${settings.url}images/check.png`,
+			image: !data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom) ? `${settings.url}images/trust_inactive.png` : data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/trust_active.png` : `.${settings.url}images/trust_inactive.png`,
 			nodeType: NODE_TYPES.TRUST
 		});
 
 		nodes.push({
 			id: MISTRUST_ID,
 			text: "Недоверие",
-			image: `${settings.url}images/delete.png`,
+			image: !data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom) ? `${settings.url}images/mistrust_inactive` : data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/mistrust_inactive.png` : `${settings.url}images/mistrust_active.png`,
 			nodeType: NODE_TYPES.MISTRUST
 		});
 	}
@@ -278,14 +287,26 @@ d3.json(apiUrl)
 	if (isAuth && userIdFrom && !(userIdFrom == PROFILE.id)) {
 		// добавить связь пользователя с вершиной Доверие
 		links.push({
-			source: userIdFrom,
-			target: TRUST_ID
+			source: TRUST_ID,
+			target: userIdFrom
 		});
 
 		// Ддобавить связь пользователя с вершиной Недоверие
 		links.push({
-			source: userIdFrom,
-			target: MISTRUST_ID
+			source: MISTRUST_ID,
+			target: userIdFrom
+		});
+
+		// добавить связь авторизированного пользователя с вершиной Доверие
+		links.push({
+			source: TRUST_ID,
+			target: getCookie('user_uuid')
+		});
+
+		// Ддобавить связь авторизированного пользователя с вершиной Недоверие
+		links.push({
+			source: MISTRUST_ID,
+			target: getCookie('user_uuid')
 		});
 	}
 
@@ -349,8 +370,14 @@ d3.json(apiUrl)
 	nodes.forEach(function(d) {
 		switch(d.id){
 		case userIdFrom:
-			d.fx = width / 2;
-			d.fy = height / 2;
+			if (isAuth) {
+				d.fx = width / 2 + 150;
+				d.fy = height / 2;
+			} else {
+				d.fx = width / 2 + 150;
+				d.fy = height / 2;
+			}
+			
 			break;
 		case WISHES_ROOT_ID:
 			d.fx = width / 2 + 300;
@@ -361,16 +388,16 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;
 			break;
 		case SHARE_ID:
-			d.fx = width / 2 + 400;
-			d.fy = height / 2 - 400;
+			d.fx = width / 2 + 200;
+			d.fy = height / 2 - 300;
 			break;
 		case TRUST_ID:
-			d.fx = width / 2 + 300;
-			d.fy = height / 2 - 100;
+			d.fx = width / 2;
+			d.fy = height / 2 + 100;
 			break;
 		case MISTRUST_ID:
-			d.fx = width / 2 + 300;
-			d.fy = height / 2;
+			d.fx = width / 2;
+			d.fy = height / 2 - 100;
 			break;
 		case AUTH_ID:
 			d.fx = width / 2;
@@ -378,8 +405,8 @@ d3.json(apiUrl)
 			break;
 		case PROFILE.id:
 			if (userIdFrom) {
-				d.fx = width / 2 - 300;
-				d.fy = height / 2 - 200;
+				d.fx = width / 2 - 150;
+				d.fy = height / 2;
 			} else {
 				d.fx = width / 2;
 				d.fy = height / 2;
@@ -474,9 +501,9 @@ function initializeDisplay() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
 		.attr("stroke", d => {
-			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE){
-				if (d.is_trust == d.reverse_is_trust){
-					if(d.is_trust){
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
+				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
+					if(d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
 						return "#00ff00";
 					} else {
 						return "#ff0000";
@@ -489,8 +516,8 @@ function initializeDisplay() {
 			}
 		})
 		.attr("marker-end", d => {
-			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE){
-				if (d.is_trust){
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
+				if (d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
 					return "url(#arrow-trust)";
 				} else {
 					return "url(#arrow-mistrust)";
