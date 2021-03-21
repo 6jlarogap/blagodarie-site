@@ -193,14 +193,14 @@ d3.json(apiUrl)
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			image: !data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom) ? `${settings.url}images/trust_inactive.png` : data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/trust_active.png` : `.${settings.url}images/trust_inactive.png`,
+			image: data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/trust_active.png` : `.${settings.url}images/trust_inactive.png`,
 			nodeType: NODE_TYPES.TRUST
 		});
 
 		nodes.push({
 			id: MISTRUST_ID,
 			text: "Недоверие",
-			image: !data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom) ? `${settings.url}images/mistrust_inactive` : data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/mistrust_inactive.png` : `${settings.url}images/mistrust_active.png`,
+			image: data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/mistrust_inactive.png` : `${settings.url}images/mistrust_active.png`,
 			nodeType: NODE_TYPES.MISTRUST
 		});
 	}
