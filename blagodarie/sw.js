@@ -44,7 +44,7 @@ self.addEventListener('activate', async event => {
 self.addEventListener('fetch', event => {
     const { request } = event
 
-    if (request.url !== `https://api.dev.blagodarie.org/api/auth/telegram`)
+    if (request.url.includes(`https://api.dev.blagodarie.org/api/`))
     {
         event.respondWith(networkFirst(request))
     }
