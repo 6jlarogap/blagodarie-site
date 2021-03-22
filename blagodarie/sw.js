@@ -1,5 +1,5 @@
-const staticCacheName = 'bd-app-v1'
-const dynamicCacheName = 'bd-dynamic-v2'
+const staticCacheName = 'bd-app-v2'
+const dynamicCacheName = 'bd-dynamic-v3'
 
 const assetsUrls = [
     './index.html',
@@ -45,7 +45,7 @@ self.addEventListener('fetch', event => {
     const { request } = event
     // const url = new URL(request.url)
 
-    
+
     event.respondWith(networkFirst(request))
     // if (url.origin === location.origin) {
     //      event.respondWith(cacheFirst(request))

@@ -27,7 +27,6 @@ var nodes = [];
 var links = [];
 var simulation;
 
-console.log(getCookie("auth_token"))
 var isAuth = getCookie("auth_token") ? true : false;
 
 // qrcode generator elements
@@ -193,7 +192,7 @@ d3.json(apiUrl)
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			image: data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/trust_active.png` : `.${settings.url}images/trust_inactive.png`,
+			image: data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/trust_active.png` : `${settings.url}images/trust_inactive.png`,
 			nodeType: NODE_TYPES.TRUST
 		});
 
