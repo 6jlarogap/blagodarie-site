@@ -1,5 +1,5 @@
-const staticCacheName = 'bd-app-v2'
-const dynamicCacheName = 'bd-dynamic-v3'
+const staticCacheName = 'bd-app-v3'
+const dynamicCacheName = 'bd-dynamic-v4'
 
 const assetsUrls = [
     './index.html',
@@ -43,21 +43,13 @@ self.addEventListener('activate', async event => {
 
 self.addEventListener('fetch', event => {
     const { request } = event
-    // const url = new URL(request.url)
 
-
-    event.respondWith(networkFirst(request))
-    // if (url.origin === location.origin) {
-    //      event.respondWith(cacheFirst(request))
-    // } else {
-    //     event.respondWith(networkFirst(request))
-    // }
+    if (request.url !== `https://api.dev.blagodarie.org/api/auth/telegram`)
+    {
+        event.respondWith(networkFirst(request))
+    }
+    
 })
-
-// async function cacheFirst(request) {
-//     const cached = await caches.match(request)
-//     return cached ?? await fetch(request)
-// }
 
 async function networkFirst(request) {
     const cache = await caches.open(dynamicCacheName)
