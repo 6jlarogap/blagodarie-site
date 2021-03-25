@@ -39,6 +39,8 @@ var addElementDialog = document.getElementById("addElementDialog");
 //agreement stuff
 var agreementDialog = document.getElementById("agreementDialog");
 var agreementBtn = document.getElementById("agreementAccept");
+var agreementLink = document.getElementById("agreementLink");
+agreementLink.setAttribute("href", window.location.pathname.includes("profile") ? `.${settings.agreement}` : settings.agreement);
 
 //root stuff
 var rootList = document.getElementById("rootList");
