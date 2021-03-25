@@ -1,5 +1,5 @@
-const staticCacheName = 'bd-app-v3'
-const dynamicCacheName = 'bd-dynamic-v4'
+const staticCacheName = 'bd-app-v2'
+const dynamicCacheName = 'bd-dynamic-v2'
 
 const assetsUrls = [
     './index.html',
@@ -44,7 +44,9 @@ self.addEventListener('activate', async event => {
 self.addEventListener('fetch', event => {
     const { request } = event
 
-    if (!request.url.includes(`https://api.dev.blagodarie.org/api/`))
+    
+
+    if (!request.url.includes(`api`) && !request.url.includes(`https://mc.yandex.ru`))
     {
         event.respondWith(networkFirst(request))
     }

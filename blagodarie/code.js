@@ -1,9 +1,3 @@
-window.addEventListener('load', async () => {
-	if ('serviceWorker' in navigator) {
-		await navigator.serviceWorker.register('./sw.js')
-	}
-})
-
 const NODE_TYPES = Object.freeze({"USER":"user", "FRIEND":"friend", "WISH_ROOT": "wish_root", "WISH":"wish", "KEY_ROOT":"key_root", "KEY":"key", "AUTH": "auth_root", "SHARE": "share_root", "TRUST": "trust_btn", "MISTRUST" : "mistrust_btn", "PROFILE": "profile_root"});
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const KEYS_ROOT_ID = "KEYS_ROOT";
@@ -39,14 +33,30 @@ var qrDialog = document.getElementById("qrDialog");
 var mailDialog = document.getElementById("mailDialog");
 var smsDialog = document.getElementById("smsDialog");
 var authDialog = document.getElementById("authDialog");
+var rootDialog = document.getElementById("rootDialog");
+var addElementDialog = document.getElementById("addElementDialog");
+
+//agreement stuff
+var agreementDialog = document.getElementById("agreementDialog");
+var agreementBtn = document.getElementById("agreementAccept");
+
+//root stuff
+var rootList = document.getElementById("rootList");
+var rootAddElementMenu = document.getElementById("rootAddElementMenu");
+var addElement = document.getElementById("addElement");
+var elementAddInput = document.getElementById("elementAddInput");
+
+var keyTypesBtns = document.getElementById("keyTypesBtns");
 
 // add event to buttons
+// close buttons
 [...document.getElementsByClassName("close")].forEach(button => {
 	button.addEventListener("click", () => {
 		button.parentElement.style.display = "none";
 	});
 });
 
+// share buttons
 [...document.getElementsByClassName("share")].forEach( share => {
 	if (share.id == "qrcode-button") {
 		share.addEventListener("click", () => {
@@ -62,6 +72,7 @@ var authDialog = document.getElementById("authDialog");
 	}
 });
 
+// share form buttons
 [...document.getElementsByClassName("submit-form")].forEach( button => {
 	button.addEventListener("click", (event) => {
 		event.preventDefault();
@@ -74,6 +85,81 @@ var authDialog = document.getElementById("authDialog");
 		button.parentElement.parentElement.style.display = "none";
 	})
 })
+
+// agreement button
+agreementBtn.addEventListener("click", () => {
+	if (document.getElementById("agreementCheck").checked) {
+		localStorage.setItem("agreement", "true");
+		authDialog.style.display = "flex";
+	}
+	agreementBtn.parentElement.style.display = "none";
+})
+
+// add wish menu button
+rootAddElementMenu.addEventListener("click", () => {
+	elementAddInput.value = "";
+	elementAddInput.id = "elementAddInput";
+	addElementDialog.style.display = "flex";
+})
+
+// add wish
+addElement.addEventListener("click", async () => {
+	var fetchSettings
+	if (elementAddInput.getAttribute("keytype")) {
+		fetchSettings = {
+			apiurl: "",
+			body: {
+				value: elementAddInput.value,
+				type_id: elementAddInput.getAttribute("keytype")
+			}
+		}
+		if (elementAddInput.getAttribute("operation")) {
+			fetchSettings.apiurl = "updatekey"
+			fetchSettings.body['id'] = elementAddInput.id
+		} else {
+			fetchSettings.apiurl = "addkey"
+		}
+	}
+	else {
+		fetchSettings = {
+			apiurl: "addorupdatewish",
+			body: {
+				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
+				"text": elementAddInput.value,
+				"last_edit": new Date().getTime()
+			}
+		}
+	}
+
+
+	if (elementAddInput.value != "") {
+		const response = await fetch(`${settings.api}api/${fetchSettings.apiurl}`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Token ${getCookie("auth_token")}`
+			},
+			body:  JSON.stringify(fetchSettings.body)
+		})
+		window.location.reload();
+	} else {
+		elementAddInput.placeholder = "Введите что-то!"
+	}
+});
+
+// edit wish buttons
+[...document.getElementsByClassName("keytype")].forEach(button => {
+	button.addEventListener("click", () => {
+		elementAddInput.setAttribute("keytype", button.getAttribute("id"))
+	})
+})
+
+function uuidv4() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+	  var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+	  return v.toString(16);
+	});
+  }
 
 function getCookie(name) {
 
@@ -122,9 +208,39 @@ initDefs();
 
 // load the data
 
-//var url = new URL('https://dev.blagodarie.org/profile/?id=c781ef10-3e5c-429a-9737-b32894352233')
+
+
+//var url = new URL('https://dev.blagodarie.org/profile/?id=84a0b831-0fa4-4148-a84c-8e2d21897fbb')
 
 var url = new URL(window.location.href);
+
+window.addEventListener('load', async () => {
+	if ('serviceWorker' in navigator) {
+		if (url == settings.url) {
+			await navigator.serviceWorker.register('./sw.js')
+		}
+	}
+})
+
+if (settings.url1.includes(window.location.origin)) {
+	settings['url'] = settings.url1
+	settings['api'] = settings.api1
+	settings['bot'] = settings.bot1
+}
+else {
+	settings['url'] = settings.url2
+	settings['api'] = settings.api2
+	settings['bot'] = settings.bot2
+}
+var telegramAuth = document.createElement('script')
+telegramAuth.src = "https://telegram.org/js/telegram-widget.js?14"
+telegramAuth.setAttribute('data-telegram-login', settings.bot)
+telegramAuth.setAttribute('data-size', "large")
+telegramAuth.setAttribute('data-onauth', "onTelegramAuth(user)")
+telegramAuth.setAttribute('data-request-access', "write")
+
+authDialog.appendChild(telegramAuth)
+
 
 var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
@@ -290,7 +406,7 @@ d3.json(apiUrl)
 			target: userIdFrom
 		});
 
-		// Ддобавить связь пользователя с вершиной Недоверие
+		// Добавить связь пользователя с вершиной Недоверие
 		links.push({
 			source: MISTRUST_ID,
 			target: userIdFrom
@@ -325,46 +441,6 @@ d3.json(apiUrl)
 		});
 	}
 	
-	///////////////TEST
-	/*nodes.push({
-			id: "ШМЫГА",
-			text: "ШМЫГА",
-			image: "http://bik-axiom.wdfiles.com/local--files/gollum/13.jpg",
-			nodeType: NODE_TYPES.FRIEND
-		});
-	links.push({
-			source: userIdFrom,
-			target: "ШМЫГА",
-			is_trust: true,
-			reverse_is_trust: false
-		});
-	links.push({
-			source: "ШМЫГА",
-			target: userIdFrom,
-			is_trust: false,
-			reverse_is_trust: true
-		});
-		
-	nodes.push({
-			id: "ШМЫГА2",
-			text: "ШМЫГА2",
-			image: "http://bik-axiom.wdfiles.com/local--files/gollum/13.jpg",
-			nodeType: NODE_TYPES.FRIEND
-		});
-	links.push({
-			source: userIdFrom,
-			target: "ШМЫГА2",
-			is_trust: false,
-			reverse_is_trust: true
-		});
-	links.push({
-			source: "ШМЫГА2",
-			target: userIdFrom,
-			is_trust: true,
-			reverse_is_trust: false
-		});*/
-	///////////////////
-		
 	//зафиксировать вершины пользователя, желаний и ключей
 	nodes.forEach(function(d) {
 		switch(d.id){
@@ -734,7 +810,7 @@ function initDefs(){
 		.attr("fill", "#ff0000");
 }
 
-function onNodeClick(nodeType, uuid, txt){
+async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt)
 	} else if (nodeType == NODE_TYPES.FRIEND) {
@@ -744,17 +820,84 @@ function onNodeClick(nodeType, uuid, txt){
 		
 		window.location.href = `${settings.url}profile?id=` + uuid;
 	} else if (nodeType == NODE_TYPES.AUTH) {
-		authDialog.style.display = "flex";
+		if (localStorage.getItem("agreement") != "true") {
+			agreementDialog.style.display = "flex"
+		} else {
+			authDialog.style.display = "flex"
+		}
 	}
 	else if (nodeType == NODE_TYPES.SHARE) {
 		shareDialog.style.display = "flex";
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
-		updateTrust(3);
+		await updateTrust(3);
 	}
 	else if (nodeType == NODE_TYPES.MISTRUST) {
-		updateTrust(2);
+		await updateTrust(2);
 	}
+	else if (nodeType == NODE_TYPES.WISH_ROOT && getCookie("user_uuid") == userIdFrom) {
+		await wishFunctions('wishes');
+	}
+	else if (nodeType == NODE_TYPES.KEY_ROOT && getCookie("user_uuid") == userIdFrom) {
+		await wishFunctions('keys');
+	}
+}
+
+async function wishFunctions(category) {
+	var categoryObj = category == 'wishes' ? {apiurl: 'getuserwishes', delete: 'deletewish?uuid=', id: 'uuid', value: 'text', empty: 'желаний'} : category == 'keys' ? {apiurl: 'getuserkeys', delete: 'deletekey?id=', id: 'id', value: 'value', type: 'type_id', empty: 'ключей'} : null
+
+
+
+	var root = await getElements(categoryObj.apiurl)
+	root = root[category]
+		if (root.length == 0) {
+			rootList.innerHTML = `<li> У вас пока что нет ${categoryObj.empty} </li>`
+		} else {
+			rootList.innerHTML = ""
+			root.forEach(wish => {
+				rootList.innerHTML += `<li id="${wish[categoryObj.id]}" value="${wish[categoryObj.value]}" typekey="${categoryObj.type ? wish[categoryObj.type] : 0}">${wish[categoryObj.value]}<button class="editElement btn btn-success">Ред.</button> <button class="deleteWish btn btn-danger">Уд.</button> </li>`
+			})
+		}
+
+		[...document.getElementsByClassName("editElement")].forEach(button => {
+			button.addEventListener("click", () => {
+				elementAddInput.id = button.parentElement.id;
+				elementAddInput.setAttribute("keytype", button.parentElement.getAttribute("typekey"));
+				elementAddInput.setAttribute("operation", "edit");
+				elementAddInput.value = button.parentElement.getAttribute("value");
+
+
+				addElementDialog.style.display = "flex";
+			})
+		});
+
+		[...document.getElementsByClassName("deleteWish")].forEach(button => {
+			button.addEventListener("click", async () => {
+				await deleteElement(button.parentElement.id, categoryObj.delete);
+				window.location.reload();
+			})
+			//доделать добавление ключа
+		})
+
+		categoryObj.type ? keyTypesBtns.style.display = "flex" : keyTypesBtns.style.display = "none";
+		categoryObj.type ? elementAddInput.setAttribute("placeholder", "Ключ...") : elementAddInput.setAttribute("placeholder", "Жедание...")
+		rootDialog.style.display = "flex";
+}
+
+async function deleteElement(uuid, apiurl) {
+	const response = await fetch(`${settings.api}api/${apiurl}${uuid}`, {
+		method: "GET",
+		headers: {
+			"Authorization": "Token " + getCookie("auth_token")
+		}
+	}).then(data => data.json())
+}
+
+async function getElements(apiurl) {
+	const response = await fetch(`${settings.api}api/${apiurl}?uuid=${getCookie("user_uuid")}`, {
+		method: "GET"
+	}).then(data => data.json())
+	return response
 }
 
 async function updateTrust(operationId) {
