@@ -105,7 +105,7 @@ rootAddElementMenu.addEventListener("click", () => {
 // add wish
 addElement.addEventListener("click", async () => {
 	var fetchSettings
-	if (elementAddInput.getAttribute("keytype") && && elementAddInput.getAttribute("keytype") != 0) {
+	if (elementAddInput.getAttribute("keytype") && elementAddInput.getAttribute("keytype") != 0) {
 		fetchSettings = {
 			apiurl: "",
 			body: {
