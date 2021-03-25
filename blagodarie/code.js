@@ -105,7 +105,7 @@ rootAddElementMenu.addEventListener("click", () => {
 // add wish
 addElement.addEventListener("click", async () => {
 	var fetchSettings
-	if (elementAddInput.getAttribute("keytype")) {
+	if (elementAddInput.getAttribute("keytype") && && elementAddInput.getAttribute("keytype") != 0) {
 		fetchSettings = {
 			apiurl: "",
 			body: {
@@ -918,7 +918,6 @@ async function updateTrust(operationId) {
 
 	window.location.href = window.location.href
 }
-
 
 function copyToClipboard(txt){
 	navigator.clipboard.writeText(txt)
