@@ -46,7 +46,7 @@ self.addEventListener('fetch', event => {
 
     
 
-    if (!request.url.includes(`api`) && !request.url.includes(`https://mc.yandex.ru`))
+    if (!request.url.includes(`api`) && !request.url.includes(`https://mc.yandex.ru`) && !request.url.includes(`https://xn--80aabjfzq0au.xn--p1ai/`))
     {
         event.respondWith(networkFirst(request))
     }
