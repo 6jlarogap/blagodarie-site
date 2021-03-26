@@ -1,6 +1,16 @@
-const NODE_TYPES = Object.freeze({"USER":"user", "FRIEND":"friend", "WISH_ROOT": "wish_root", "WISH":"wish", "KEY_ROOT":"key_root", "KEY":"key"});
+const NODE_TYPES = Object.freeze({"USER":"user", "FRIEND":"friend", "WISH_ROOT": "wish_root", "WISH":"wish", "KEY_ROOT":"key_root", "KEY":"key", "AUTH": "auth_root", "SHARE": "share_root", "TRUST": "trust_btn", "MISTRUST" : "mistrust_btn", "PROFILE": "profile_root"});
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const KEYS_ROOT_ID = "KEYS_ROOT";
+const AUTH_ID = "AUTH_ROOT";
+const SHARE_ID = "SHARE_ROOT";
+const TRUST_ID = "TRUST_ROOT";
+const MISTRUST_ID = "MISTRUST_ROOT";
+const PROFILE = {
+	id: "",
+	text: "",
+	image: "",
+	nodeType: NODE_TYPES.PROFILE
+}
 
 var svg = d3.select("#main");
 var width = +svg.node().getBoundingClientRect().width;
@@ -11,43 +21,275 @@ var nodes = [];
 var links = [];
 var simulation;
 
+var isAuth = getCookie("auth_token") ? true : false;
+
+// qrcode generator elements
+var qr = document.getElementById('qrcode');
+var qrcode = new QRCode(qr);
+
+// all dialog elements
+var shareDialog = document.getElementById("shareDialog");
+var qrDialog = document.getElementById("qrDialog");
+var mailDialog = document.getElementById("mailDialog");
+var smsDialog = document.getElementById("smsDialog");
+var authDialog = document.getElementById("authDialog");
+var rootDialog = document.getElementById("rootDialog");
+var addElementDialog = document.getElementById("addElementDialog");
+
+//agreement stuff
+var agreementDialog = document.getElementById("agreementDialog");
+var agreementBtn = document.getElementById("agreementAccept");
+var agreementLink = document.getElementById("agreementLink");
+agreementLink.setAttribute("href", window.location.pathname.includes("profile") ? `.${settings.agreement}` : settings.agreement);
+
+//root stuff
+var rootList = document.getElementById("rootList");
+var rootAddElementMenu = document.getElementById("rootAddElementMenu");
+var addElement = document.getElementById("addElement");
+var elementAddInput = document.getElementById("elementAddInput");
+
+var keyTypesBtns = document.getElementById("keyTypesBtns");
+
+// add event to buttons
+// close buttons
+[...document.getElementsByClassName("close")].forEach(button => {
+	button.addEventListener("click", () => {
+		button.parentElement.style.display = "none";
+	});
+});
+
+// share buttons
+[...document.getElementsByClassName("share")].forEach( share => {
+	if (share.id == "qrcode-button") {
+		share.addEventListener("click", () => {
+			qrDialog.style.display = "flex";
+			qrcode.makeCode(window.location.href);
+		})
+	}
+	else if (share.id == "mail-button") {
+		share.addEventListener("click", () => mailDialog.style.display = "flex");
+	}
+	else if (share.id == "sms-button") {
+		share.addEventListener("click", () => smsDialog.style.display = "flex");
+	}
+});
+
+// share form buttons
+[...document.getElementsByClassName("submit-form")].forEach( button => {
+	button.addEventListener("click", (event) => {
+		event.preventDefault();
+		if (button.id == "confrim-mail") {
+			button.parentElement.action = `mailto:${document.getElementById("mailInput").value}?data=${window.location.href}`;
+		} else if (button.id == "confrim-sms") {
+			button.parentElement.action = `sms:${document.getElementById("smsInput").value}?body=${window.location.href}`;
+		}
+		button.parentElement.submit();
+		button.parentElement.parentElement.style.display = "none";
+	})
+})
+
+// agreement button
+agreementBtn.addEventListener("click", () => {
+	if (document.getElementById("agreementCheck").checked) {
+		localStorage.setItem("agreement", "true");
+		authDialog.style.display = "flex";
+	}
+	agreementBtn.parentElement.style.display = "none";
+})
+
+// add wish menu button
+rootAddElementMenu.addEventListener("click", () => {
+	elementAddInput.value = "";
+	elementAddInput.id = "elementAddInput";
+	addElementDialog.style.display = "flex";
+})
+
+// add wish
+addElement.addEventListener("click", async () => {
+	var fetchSettings
+	if (elementAddInput.getAttribute("keytype") && elementAddInput.getAttribute("keytype") != 0) {
+		fetchSettings = {
+			apiurl: "",
+			body: {
+				value: elementAddInput.value,
+				type_id: elementAddInput.getAttribute("keytype")
+			}
+		}
+		if (elementAddInput.getAttribute("operation")) {
+			fetchSettings.apiurl = "updatekey"
+			fetchSettings.body['id'] = elementAddInput.id
+		} else {
+			fetchSettings.apiurl = "addkey"
+		}
+	}
+	else {
+		fetchSettings = {
+			apiurl: "addorupdatewish",
+			body: {
+				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
+				"text": elementAddInput.value,
+				"last_edit": new Date().getTime()
+			}
+		}
+	}
+
+
+	if (elementAddInput.value != "") {
+		const response = await fetch(`${settings.api}api/${fetchSettings.apiurl}`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Token ${getCookie("auth_token")}`
+			},
+			body:  JSON.stringify(fetchSettings.body)
+		})
+		window.location.reload();
+	} else {
+		elementAddInput.placeholder = "Введите что-то!"
+	}
+});
+
+// edit wish buttons
+[...document.getElementsByClassName("keytype")].forEach(button => {
+	button.addEventListener("click", () => {
+		elementAddInput.setAttribute("keytype", button.getAttribute("id"))
+	})
+})
+
+function uuidv4() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+	  var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+	  return v.toString(16);
+	});
+  }
+
+function getCookie(name) {
+
+    var matches = document.cookie.match(new RegExp(
+      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ))
+    return matches ? decodeURIComponent(matches[1]) : false
+}
+
+async function setProfile() {
+	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`, {
+		method: "GET",
+		headers: {
+			"Authorization": getCookie("auth_token")
+		}
+	}).then(data => data.json());
+
+	PROFILE.text = response.first_name + " " + response.last_name;
+	PROFILE.image = response.photo;
+	PROFILE.id = getCookie("user_uuid");
+}
+
+//telegram auth
+async function onTelegramAuth(user) {
+	const response = await fetch(`${settings.api}api/auth/telegram`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(user)
+	}).then(data => data.json());
+	
+
+	var expires = new Date();
+	expires.setMonth(expires.getMonth() + 1);
+	var UTSexpires = expires.toUTCString();
+
+	document.cookie = `user_uuid=${response.user_uuid}; path=/; expires=${UTSexpires}`;
+	document.cookie = `auth_token=${response.auth_token}; path=/; expires=${UTSexpires}`;
+
+	window.location.href = window.location.href;
+}
+
+
 initDefs();
 
 // load the data
+
+
+
+//var url = new URL('https://dev.blagodarie.org/profile/?id=84a0b831-0fa4-4148-a84c-8e2d21897fbb')
+
 var url = new URL(window.location.href);
+
+window.addEventListener('load', async () => {
+	if ('serviceWorker' in navigator) {
+		if (url == settings.url) {
+			await navigator.serviceWorker.register('./sw.js')
+		}
+	}
+})
+
+if (settings.url1.includes(window.location.origin)) {
+	settings['url'] = settings.url1
+	settings['api'] = settings.api1
+	settings['bot'] = settings.bot1
+}
+else {
+	settings['url'] = settings.url2
+	settings['api'] = settings.api2
+	settings['bot'] = settings.bot2
+}
+var telegramAuth = document.createElement('script')
+telegramAuth.src = "https://telegram.org/js/telegram-widget.js?14"
+telegramAuth.setAttribute('data-telegram-login', settings.bot)
+telegramAuth.setAttribute('data-size', "large")
+telegramAuth.setAttribute('data-onauth', "onTelegramAuth(user)")
+telegramAuth.setAttribute('data-request-access', "write")
+
+authDialog.appendChild(telegramAuth)
+
+
 var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
 
-redrawMarketLinks();
-
-var apiUrl = "https://api.blagodarie.org/api/getstats/user_connections_graph";
+var apiUrl = `${settings.api}api/getstats/user_connections_graph`;
 
 if (userIdFrom != null && userIdTo != null){
-	apiUrl = "https://api.blagodarie.org/api/profile_graph?uuid=" + userIdFrom + "&uuid_to=" + userIdTo;
+	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
 } else if(userIdFrom != null){
-	apiUrl = "https://api.blagodarie.org/api/profile_graph?uuid=" + userIdFrom;
+	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom;
 }
 
 d3.json(apiUrl)
-	.then(function(data) {
+	.then(async function(data) {
+
+	//добавить элемент авторизации
+	if (!isAuth) {
+		nodes.push({
+			id: AUTH_ID,
+			text: "",
+			image: `${settings.url}images/enter.png`,
+			nodeType: NODE_TYPES.AUTH
+		});
+	} else if (isAuth) {
+		await setProfile();
+		nodes.push(PROFILE);
+	}
 
 	//добавить пользователей в вершины
 	data.users.forEach(function(d){
-		nodes.push ({
-			id: d.uuid,
-			text: (d.first_name + " " + d.last_name),
-			image: d.photo,
-			nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : NODE_TYPES.FRIEND)
-		});
+		if (!nodes.some(user => user.id == d.uuid)) {
+			nodes.push ({
+				id: d.uuid,
+				text: (d.first_name + " " + d.last_name),
+				image: d.photo,
+				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : NODE_TYPES.FRIEND)
+			});
+		}
 	});
-	
+
 	if (data.wishes != null){
 		//добавить вершину желаний
 		nodes.push({
 			id: WISHES_ROOT_ID,
 			text: "Желания",
-			image: "https://blagodarie.org/images/sleep.png",
+			image: `${settings.url}images/sleep.png`,
 			nodeType: NODE_TYPES.WISH_ROOT
 		});
 		
@@ -56,18 +298,44 @@ d3.json(apiUrl)
 			nodes.push({
 				id: `wish_${d.uuid}`,
 				text: d.text,
-			image: "https://blagodarie.org/images/chat-sleep.png",
+			image: `${settings.url}images/chat-sleep.png`,
 			nodeType: NODE_TYPES.WISH
 			});
 		});
 	}
+
+	if (isAuth && userIdFrom && !(userIdFrom == PROFILE.id)) {
+		//добавить вершину доверие/недоверие
+		//TODO ADRESS
+		nodes.push({
+			id: TRUST_ID,
+			text: "Доверие",
+			image: data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/trust_active.png` : `${settings.url}images/trust_inactive.png`,
+			nodeType: NODE_TYPES.TRUST
+		});
+
+		nodes.push({
+			id: MISTRUST_ID,
+			text: "Недоверие",
+			image: data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/mistrust_inactive.png` : `${settings.url}images/mistrust_active.png`,
+			nodeType: NODE_TYPES.MISTRUST
+		});
+	}
 	
+	//добавить вершину share
+	nodes.push({
+		id: SHARE_ID,
+		text: "Поделиться",
+		image: `${settings.url}images/shareee.png`,
+		nodeType: NODE_TYPES.SHARE
+	});
+
 	if(data.keys != null){
 		//добавить вершину ключей
 		nodes.push({
 			id: KEYS_ROOT_ID,
 			text: "Ключи",
-			image: "https://blagodarie.org/images/folder-key.png",
+			image: `${settings.url}images/folder-key.png`,
 			nodeType: NODE_TYPES.KEY_ROOT
 		});
 		
@@ -76,16 +344,16 @@ d3.json(apiUrl)
 			var image;
 			switch (d.type_id) {
 			case 1:
-				image = "https://blagodarie.org/images/phone.png";
+				image = `${settings.url}images/phone.png`;
 				break;
 			case 2:
-				image = "https://blagodarie.org/images/at.png";
+				image = `${settings.url}images/at.png`;
 				break;
 			case 4:
-				image = "https://blagodarie.org/images/credit-card.png";
+				image = `${settings.url}images/credit-card.png`;
 				break;
 			case 5:
-				image = "https://blagodarie.org/images/link.png";
+				image = `${settings.url}images/link.png`;
 				break;
 			}
 			nodes.push({
@@ -133,6 +401,32 @@ d3.json(apiUrl)
 		}
 	}
 	
+	if (isAuth && userIdFrom && !(userIdFrom == PROFILE.id)) {
+		// добавить связь пользователя с вершиной Доверие
+		links.push({
+			source: TRUST_ID,
+			target: userIdFrom
+		});
+
+		// Добавить связь пользователя с вершиной Недоверие
+		links.push({
+			source: MISTRUST_ID,
+			target: userIdFrom
+		});
+
+		// добавить связь авторизированного пользователя с вершиной Доверие
+		links.push({
+			source: TRUST_ID,
+			target: getCookie('user_uuid')
+		});
+
+		// Ддобавить связь авторизированного пользователя с вершиной Недоверие
+		links.push({
+			source: MISTRUST_ID,
+			target: getCookie('user_uuid')
+		});
+	}
+
 	if (data.keys != null){
 		//добавить связь пользователя с вершиной ключей
 		links.push({
@@ -149,73 +443,62 @@ d3.json(apiUrl)
 		});
 	}
 	
-	///////////////TEST
-	/*nodes.push({
-			id: "ШМЫГА",
-			text: "ШМЫГА",
-			image: "http://bik-axiom.wdfiles.com/local--files/gollum/13.jpg",
-			nodeType: NODE_TYPES.FRIEND
-		});
-	links.push({
-			source: userIdFrom,
-			target: "ШМЫГА",
-			is_trust: true,
-			reverse_is_trust: false
-		});
-	links.push({
-			source: "ШМЫГА",
-			target: userIdFrom,
-			is_trust: false,
-			reverse_is_trust: true
-		});
-		
-	nodes.push({
-			id: "ШМЫГА2",
-			text: "ШМЫГА2",
-			image: "http://bik-axiom.wdfiles.com/local--files/gollum/13.jpg",
-			nodeType: NODE_TYPES.FRIEND
-		});
-	links.push({
-			source: userIdFrom,
-			target: "ШМЫГА2",
-			is_trust: false,
-			reverse_is_trust: true
-		});
-	links.push({
-			source: "ШМЫГА2",
-			target: userIdFrom,
-			is_trust: true,
-			reverse_is_trust: false
-		});*/
-	///////////////////
-		
 	//зафиксировать вершины пользователя, желаний и ключей
 	nodes.forEach(function(d) {
 		switch(d.id){
 		case userIdFrom:
-			d.fx = width / 2;
-			d.fy = height / 2;
+			if (isAuth) {
+				d.fx = width / 2 + 150;
+				d.fy = height / 2;
+			} else {
+				d.fx = width / 2 + 150;
+				d.fy = height / 2;
+			}
+			
 			break;
 		case WISHES_ROOT_ID:
-			d.fx = width / 2 + 200;
+			d.fx = width / 2 + 300;
 			d.fy = height / 2 - 200;
 			break;
 		case KEYS_ROOT_ID:
+			d.fx = width / 2 + 300;
+			d.fy = height / 2 - 300;
+			break;
+		case SHARE_ID:
 			d.fx = width / 2 + 200;
 			d.fy = height / 2 - 300;
 			break;
+		case TRUST_ID:
+			d.fx = width / 2;
+			d.fy = height / 2 + 100;
+			break;
+		case MISTRUST_ID:
+			d.fx = width / 2;
+			d.fy = height / 2 - 100;
+			break;
+		case AUTH_ID:
+			d.fx = width / 2;
+			d.fy = height / 2;
+			break;
+		case PROFILE.id:
+			if (userIdFrom) {
+				d.fx = width / 2 - 150;
+				d.fy = height / 2;
+			} else {
+				d.fx = width / 2;
+				d.fy = height / 2;
+			}
+			
+			break;
 		}
+		
 	});
-	
-	console.log(data);
-	console.log(nodes);
-	console.log(links);
 	
 	simulation = d3.forceSimulation(nodes);
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links));
 	simulation.force("charge", d3.forceManyBody().strength(0.5));
 	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("collide", d3.forceCollide().strength(0.5).radius(70).iterations(1));
+	simulation.force("collide", d3.forceCollide().strength(0.2).radius(80).iterations(1));
 	simulation.force("x", d3.forceX(width / 2).strength(0.2));
 	simulation.force("y", d3.forceY(height / 2).strength(0.2));
 	
@@ -295,9 +578,9 @@ function initializeDisplay() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
 		.attr("stroke", d => {
-			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND){
-				if (d.is_trust == d.reverse_is_trust){
-					if(d.is_trust){
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
+				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
+					if(d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
 						return "#00ff00";
 					} else {
 						return "#ff0000";
@@ -310,8 +593,8 @@ function initializeDisplay() {
 			}
 		})
 		.attr("marker-end", d => {
-			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND){
-				if (d.is_trust){
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
+				if (d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
 					return "url(#arrow-trust)";
 				} else {
 					return "url(#arrow-mistrust)";
@@ -330,18 +613,18 @@ function initializeDisplay() {
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
-		.attr("class", d => (d.nodeType == NODE_TYPES.USER ? "userPortrait" : "friendPortrait"));
+		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userPortrait" : "friendPortrait"));
 	
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER ? 64 : 32))
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : 32))
 		.attr("font-size", "20")
-		.attr("class", d => (d.nodeType == NODE_TYPES.USER ? "userNameShadow" : "friendNameShadow"))
+		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
 		.text(d => (d.text));
 	  
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER ? 64 : 32))
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64 : 32))
 		.attr("font-size", "20")
-		.attr("class", d => (d.nodeType == NODE_TYPES.USER ? "userName" : "friendName"))
+		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.text));
 }
 
@@ -454,34 +737,8 @@ function calcY2(d){
 d3.select(window).on("resize", function(){
 	width = +svg.node().getBoundingClientRect().width;
 	height = +svg.node().getBoundingClientRect().height;
-	redrawMarketLinks();
 	simulation.alpha(1).restart();
 });
-
-function redrawMarketLinks(){
-	if (fromApp == null){
-		var marketLinks = d3.select("#marketLinks");
-		if (marketLinks.node() == null){
-			marketLinks = svg.append("g");
-			marketLinks.attr("id", "marketLinks");
-			marketLinks.append("a")
-				.attr("href", "https://blagodarie.org/ios.html")
-				.append("image")
-				.attr("xlink:href", "https://blagodarie.org/images/apple.png");
-			marketLinks.append("a")
-//				.attr("href", "https://play.google.com/store/apps/details?id=blagodarie.rating")
-				.attr("href", "https://github.com/6jlarogap/blagodari/blob/ff18915bfffd53a3779290f386a36d34bd66cf04/app/release/rating-0.0.36-release.apk?raw=true")
-				.append("image")
-				.attr("xlink:href", "https://blagodarie.org/images/android.png")
-				.attr("x", 128);
-		}
-		var marketLinksWidth = 256;//marketLinks.node().getBoundingClientRect().width;
-		var marketLinksHeight = 128;//marketLinks.node().getBoundingClientRect().height;
-		var x = (width / 2) - (marketLinksWidth / 2);
-		var y = height - marketLinksHeight;
-		marketLinks.attr("transform", `translate(${x}, ${y})`);
-	}
-}
 
 function initDefs(){
 	const defs = svg.append("defs");
@@ -555,12 +812,113 @@ function initDefs(){
 		.attr("fill", "#ff0000");
 }
 
-function onNodeClick(nodeType, uuid, txt){
+async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt)
 	} else if (nodeType == NODE_TYPES.FRIEND) {
-		window.location.href = "https://blagodarie.org/profile?id=" + uuid;
+
+		window.location.href = `${settings.url}profile?id=` + uuid;
+	} else if (nodeType == NODE_TYPES.PROFILE) {
+		
+		window.location.href = `${settings.url}profile?id=` + uuid;
+	} else if (nodeType == NODE_TYPES.AUTH) {
+		if (localStorage.getItem("agreement") != "true") {
+			agreementDialog.style.display = "flex"
+		} else {
+			authDialog.style.display = "flex"
+		}
 	}
+	else if (nodeType == NODE_TYPES.SHARE) {
+		shareDialog.style.display = "flex";
+	}
+	else if (nodeType == NODE_TYPES.TRUST) {
+		await updateTrust(3);
+	}
+	else if (nodeType == NODE_TYPES.MISTRUST) {
+		await updateTrust(2);
+	}
+	else if (nodeType == NODE_TYPES.WISH_ROOT && getCookie("user_uuid") == userIdFrom) {
+		await wishFunctions('wishes');
+	}
+	else if (nodeType == NODE_TYPES.KEY_ROOT && getCookie("user_uuid") == userIdFrom) {
+		await wishFunctions('keys');
+	}
+}
+
+async function wishFunctions(category) {
+	var categoryObj = category == 'wishes' ? {apiurl: 'getuserwishes', delete: 'deletewish?uuid=', id: 'uuid', value: 'text', empty: 'желаний'} : category == 'keys' ? {apiurl: 'getuserkeys', delete: 'deletekey?id=', id: 'id', value: 'value', type: 'type_id', empty: 'ключей'} : null
+
+
+
+	var root = await getElements(categoryObj.apiurl)
+	root = root[category]
+		if (root.length == 0) {
+			rootList.innerHTML = `<li> У вас пока что нет ${categoryObj.empty} </li>`
+		} else {
+			rootList.innerHTML = ""
+			root.forEach(wish => {
+				rootList.innerHTML += `<li id="${wish[categoryObj.id]}" value="${wish[categoryObj.value]}" typekey="${categoryObj.type ? wish[categoryObj.type] : 0}">${wish[categoryObj.value]}<button class="editElement btn btn-success">Ред.</button> <button class="deleteWish btn btn-danger">Уд.</button> </li>`
+			})
+		}
+
+		[...document.getElementsByClassName("editElement")].forEach(button => {
+			button.addEventListener("click", () => {
+				elementAddInput.id = button.parentElement.id;
+				elementAddInput.setAttribute("keytype", button.parentElement.getAttribute("typekey"));
+				elementAddInput.setAttribute("operation", "edit");
+				elementAddInput.value = button.parentElement.getAttribute("value");
+
+
+				addElementDialog.style.display = "flex";
+			})
+		});
+
+		[...document.getElementsByClassName("deleteWish")].forEach(button => {
+			button.addEventListener("click", async () => {
+				await deleteElement(button.parentElement.id, categoryObj.delete);
+				window.location.reload();
+			})
+			//доделать добавление ключа
+		})
+
+		categoryObj.type ? keyTypesBtns.style.display = "flex" : keyTypesBtns.style.display = "none";
+		categoryObj.type ? elementAddInput.setAttribute("placeholder", "Ключ...") : elementAddInput.setAttribute("placeholder", "Жедание...")
+		rootDialog.style.display = "flex";
+}
+
+async function deleteElement(uuid, apiurl) {
+	const response = await fetch(`${settings.api}api/${apiurl}${uuid}`, {
+		method: "GET",
+		headers: {
+			"Authorization": "Token " + getCookie("auth_token")
+		}
+	}).then(data => data.json())
+}
+
+async function getElements(apiurl) {
+	const response = await fetch(`${settings.api}api/${apiurl}?uuid=${getCookie("user_uuid")}`, {
+		method: "GET"
+	}).then(data => data.json())
+	return response
+}
+
+async function updateTrust(operationId) {
+	if (links.some(link => link.source.id == getCookie("user_uuid") && link.target.id == userIdFrom)) {
+		operationId = 4;
+	}
+
+	const response = await fetch(`${settings.api}api/addoperation`, {
+		method: "POST",
+		headers: {
+			"Authorization": "Token " + getCookie("auth_token"),
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to":userIdFrom, "operation_type_id": operationId})
+	}).then(data => data.json())
+
+
+
+	window.location.href = window.location.href
 }
 
 function copyToClipboard(txt){

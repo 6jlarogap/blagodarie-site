@@ -1,78 +1,259 @@
 <html>
-	<head>
-	<link rel="shortcut icon" href="../images/ic_launcher.png" type="image/x-icon">
-	<meta name="http-equiv" content="Content-type: text/html; charset=UTF-8">
-		<style>
-			/* HTML styles */
-			html{
-				width: 100%;
-				height: 100%;
-			}
-			body{ 
-				width: 100%; 
-				height: 100%; 
-				margin: 0;
-				padding: 0; 
-				display: flex;  
-				background-color: #ffffff;
-			  }
-			/* SVG styles */
-			svg {
-			  flex-basis: 100%;
-			  min-width: 200px;
-			}
 
-			.round {
-			  border-radius: 50%;
-			}
-			
-			image.userPortrait {
-				width: 128px;
-				height: 128px;
-				x: -64px;
-				y: -64px;
-				clip-path: url(#userCircle);
-			}
-			
-			image.friendPortrait {
-				width: 32px;
-				height: 32px;
-				x: -16px;
-				y: -16px;
-				clip-path: url(#friendCircle);
-			}
-			
-			text.userName {
-				text-anchor: middle;
-			}
-			
-			text.friendName {
-				text-anchor: middle;
-			}
-			
-			text.userNameShadow {
-				text-anchor: middle;
-				fill: none;
-				stroke: white;
-				stroke-width: 3px;
-			}
-			
-			text.friendNameShadow {
-				text-anchor: middle;
-				fill: none;
-				stroke: white;
-				stroke-width: 3px;
-			}
+<head>
+	<link rel="shortcut icon" href="/images/ic_launcher.png" type="image/x-icon">
+	<meta name="http-equiv" content="Content-type: text/html;">
+	<meta charset="utf-8">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<link rel="manifest" href="../manifest.json">
+	<style>
+		/* HTML styles */
+		html {
+			width: 100%;
+			height: 100%;
+		}
 
-		</style>
-	</head>
-	<body>
-		<svg id="main">
-		</svg>
-	
-		<script src="https://d3js.org/d3.v6.min.js"></script>
-		
-		<script src="../code.js" charset="utf-8"></script>
+		body {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			background-color: #ffffff;
+		}
 
-	</body>
+		/* SVG styles */
+		svg {
+			flex-basis: 100%;
+			min-width: 200px;
+		}
+
+		.round {
+			border-radius: 50%;
+		}
+
+		image.userPortrait {
+			width: 128px;
+			height: 128px;
+			x: -64px;
+			y: -64px;
+			clip-path: url(#userCircle);
+		}
+
+		image.friendPortrait {
+			width: 32px;
+			height: 32px;
+			x: -16px;
+			y: -16px;
+			clip-path: url(#friendCircle);
+		}
+
+		text.userName {
+			text-anchor: middle;
+			/* border: solid white 2px; */
+		}
+
+		text.friendName {
+			text-anchor: middle;
+			/* border: solid white 2px; */
+		}
+
+		text.userNameShadow {
+			text-anchor: middle;
+			fill: none;
+			stroke: white;
+			stroke-width: 1px;
+		}
+
+		text.friendNameShadow {
+			text-anchor: middle;
+			fill: none;
+			stroke: white;
+			stroke-width: 1px;
+		}
+
+		dialog {
+			position: absolute;
+			top: 40%;
+			left: 0;
+			display: none;
+			flex-direction: column;
+			align-items: center;
+			box-sizing: content-box;
+			border: solid black 1px;
+			/* border-radius: 5%; */
+			/* max-width: 400px; */
+			/* min-width: 200px; */
+		}
+
+		dialog form {
+			display: flex;
+			justify-content: space-between;
+			box-sizing: content-box;
+		}
+
+		dialog form input {
+			margin-right: 5px;
+		}
+
+		dialog #agreementDialog .btn {
+			margin-left: auto;
+		}
+
+		.share {
+			width: 48px;
+			height: 48px;
+			cursor: pointer;
+		}
+
+		.custom-share {
+			margin-top: 5px;
+		}
+
+		button.close {
+			margin-bottom: 5px;
+			margin-left: auto;
+			border-radius: 25%;
+		}
+
+		/* .btn-success {
+			margin-top: 3px;
+		} */
+
+		.btn-group {
+			margin-top: 3px;
+		}
+
+		#rootList {
+			min-width: 300px;
+		}
+
+		#rootList li {
+			display: flex;
+			align-items: center;
+			margin-top: 3px;
+		}
+
+		#rootList li .editElement{
+			margin-left: auto;
+			margin-right: 2px;
+		}
+
+		#keyTypesBtns {
+			margin-bottom: 3px;
+		}
+
+		.keytype img {
+			width: 25px;
+			height: 25px;
+		}
+
+	</style>
+	<!-- Yandex.Metrika counter -->
+	<script type="text/javascript">
+		(function (m, e, t, r, i, k, a) {
+			m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+			m[i].l = 1 * new Date(); k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+		})
+			(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+		ym(67514326, "init", {
+			trackLinks: true,
+			accurateTrackBounce: true,
+			trackHash: true
+		});
+	</script>
+	<noscript>
+		<div><img src="https://mc.yandex.ru/watch/67514326" style="position:absolute; left:-9999px;" alt="" /></div>
+	</noscript>
+	<!-- /Yandex.Metrika counter -->
+</head>
+
+<body>
+	<svg id="main">
+	</svg>
+
+	<dialog id="authDialog">
+		<button class="close btn btn-danger">X</button>
+	</dialog>
+
+	<dialog id="agreementDialog">
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" value="" id="agreementCheck">
+			<label class="form-check-label" for="flexCheckDefault">
+				Я принимаю <a href="#" target="_blank" rel="noopener noreferrer" id="agreementLink">Условия Пользования</a>
+			</label>
+		</div>
+		<button class="btn btn-success" id="agreementAccept">Принять</button>
+	</dialog>
+
+
+
+	<dialog id="rootDialog">
+		<button class="close btn btn-danger">X</button>
+		<ul id="rootList">
+
+		</ul>
+		<button class="btn btn-success" id="rootAddElementMenu">Добавить</button>
+	</dialog>
+
+	<dialog id="addElementDialog">
+		<button class="close btn btn-danger">X</button>
+		<input class="form-control" id="elementAddInput" type="text">
+		<div class="btn-group" role="group" aria-label="First group" id="keyTypesBtns" style="display: flex;">
+			<button type="button" class="keytype btn btn-secondary" id="1"><img src="../images/phone.png" alt="1"></button>
+			<button type="button" class="keytype btn btn-secondary" id="2"><img src="../images/at.png" alt="2"></button>
+			<button type="button" class="keytype btn btn-secondary" id="4"><img src="../images/credit-card.png" alt="4"></button>
+			<button type="button" class="keytype btn btn-secondary" id="5"><img src="../images/link.png" alt="5"></button>
+		  </div>
+		<button class="btn btn-success" id="addElement">ОК</button>
+	</dialog>
+
+
+
+	<dialog id="shareDialog">
+		<button class="close btn btn-danger">X</button>
+		<div class="ya-share2" data-curtain data-size="l" data-shape="round" data-services="telegram,viber,whatsapp">
+		</div>
+		<div class="custom-share">
+			<img src="../images/email.png" alt="Loading..." class="share" id="mail-button">
+			<img src="../images/sms.png" alt="Loading..." class="share" id="sms-button">
+			<img src="../images/qr-code.png" alt="Loading..." class="share" id="qrcode-button">
+		</div>
+	</dialog>
+
+	<dialog id="qrDialog">
+		<button class="close btn btn-danger">X</button>
+		<div id="qrcode"></div>
+	</dialog>
+
+	<dialog id="mailDialog">
+		<button class="close btn btn-danger">X</button>
+		<form id="mailForm" action="" method="post">
+			<input type="email" class="form-control" id="mailInput" placeholder="name@example.com">
+			<button id="confrim-mail" class="submit-form btn btn-primary">Отправить</button>
+		</form>
+	</dialog>
+
+	<dialog id="smsDialog">
+		<button class="close btn btn-danger">X</button>
+		<form id="smsForm" action="" method="post">
+			<input type="tel" class="form-control" id="smsInput" placeholder="+79998887766">
+			<button id="confrim-sms" class="submit-form btn btn-primary">Отправить</button>
+		</form>
+	</dialog>
+
+	<script src="https://yastatic.net/share2/share.js"></script>
+
+	<script src="https://d3js.org/d3.v6.min.js"></script>
+
+	<script src="../qrcode.min.js"></script>
+
+	<script src="../settings.js"></script>
+
+	<script src="../code.js" charset="utf-8"></script>
+
+</body>
+
 </html>
