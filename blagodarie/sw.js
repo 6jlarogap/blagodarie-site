@@ -1,5 +1,5 @@
-const staticCacheName = 'bd-app-v2'
-const dynamicCacheName = 'bd-dynamic-v2'
+const staticCacheName = 'bd-app-v4'
+const dynamicCacheName = 'bd-dynamic-v4'
 
 const assetsUrls = [
     './index.html',
@@ -39,12 +39,11 @@ self.addEventListener('activate', async event => {
             .filter(name => name !== staticCacheName && name !== dynamicCacheName)
             .map(name => caches.delete(name))
     )
+    
 })
 
 self.addEventListener('fetch', event => {
     const { request } = event
-
-    
 
     if (!request.url.includes(`api`) && !request.url.includes(`https://mc.yandex.ru`) && !request.url.includes(`https://xn--80aabjfzq0au.xn--p1ai/`))
     {

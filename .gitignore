@@ -4,5 +4,3 @@ __pycache__/
 *.pyc
 
 ENV
-
-/blagodarie/settings.js
