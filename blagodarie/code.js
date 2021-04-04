@@ -61,7 +61,7 @@ var filterDialog = document.getElementById("filterDialog");
 //auth buttons
 var vkAuth = document.getElementById("vkAuth");
 var yandexAuth = document.getElementById("yandexAuth");
-//var tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
+var tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 
 //agreement stuff
 var agreementLink = document.getElementById("agreementLink");
@@ -177,12 +177,12 @@ agreementCheck.addEventListener("click", () => {
 	if (agreementCheck.checked) {
 		vkAuth.disabled = false;
 		yandexAuth.disabled = false;
-		//tgIframe.pointerEvents = '';
+		tgIframe.pointerEvents = '';
 	}
 	else {
 		vkAuth.disabled = true;
 		yandexAuth.disabled = true;
-		//tgIframe.pointerEvents = 'none';
+		tgIframe.pointerEvents = 'none';
 	}
 })
 
