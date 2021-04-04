@@ -126,8 +126,7 @@ if (getCookie("auth_data")) {
 	setAuthCookie(user_uuid, auth_token);
 	deleteCookie('auth_data');
 
-	//window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
-	window.location.reload();
+	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
 
 //auth status
@@ -351,7 +350,7 @@ async function onTelegramAuth(user) {
 
 	setAuthCookie(response.user_uuid, response.auth_token);
 
-	window.location.reload();
+	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
 
 //vk auth
