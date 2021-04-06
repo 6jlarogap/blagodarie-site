@@ -125,7 +125,7 @@ if (getCookie("auth_data")) {
 	})
 	
 	setAuthCookie(user_uuid, auth_token);
-	deleteCookie('auth_data');
+	deleteCookie('.', 'auth_data');
 
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
@@ -279,15 +279,15 @@ document.getElementById("deleteProfile").addEventListener("click", async () => {
 		}
 	})
 
-	deleteCookie('user_uuid', 'auth_token');
+	deleteCookie('', 'user_uuid', 'auth_token');
 
-	window.location.reload();
+	window.location.href = settings.url;
 })
 
 // exit button
 document.getElementById("logOut").addEventListener("click", () => {
-	deleteCookie('user_uuid', 'auth_token');
-	window.location.reload();
+	deleteCookie('', 'user_uuid', 'auth_token');
+	window.location.href = settings.url;
 })
 
 function uuidv4() {
@@ -317,9 +317,10 @@ function setAuthCookie(uuid, token) {
 }
 
 // delete cookie
-function deleteCookie(...Cookies) {
+function deleteCookie(subdomain,...Cookies) {
+	var domain = new URL(settings.url).origin.substr(8)
 	Cookies.forEach(cookie => {
-		document.cookie = `${cookie}=''; path=/ ;expires=${new Date(0).toUTCString()}`
+		document.cookie = `${cookie}=''; path=/ ; domain=${subdomain + domain} ;expires=${new Date(0).toUTCString()}`
 	})
 	// document.cookie = `user_uuid=''; path=/ ;expires=${new Date(0).toUTCString()}`
 	// document.cookie = `auth_token=''; path=/ ;expires=${new Date(0).toUTCString()}`
@@ -1031,11 +1032,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		
 		window.location.href = `${settings.url}profile?id=` + uuid;
 	} else if (nodeType == NODE_TYPES.AUTH) {
-		if (localStorage.getItem("agreement") != "true") {
-			agreementDialog.style.display = "flex"
-		} else {
-			authDialog.style.display = "flex"
-		}
+		authDialog.style.display = "flex"
 	}
 	else if(nodeType == NODE_TYPES.FILTER) {
 		if (localStorage.getItem("filter")) {
