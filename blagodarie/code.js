@@ -61,7 +61,6 @@ var filterDialog = document.getElementById("filterDialog");
 //auth buttons
 var vkAuth = document.getElementById("vkAuth");
 var yandexAuth = document.getElementById("yandexAuth");
-var tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 
 //agreement stuff
 var agreementLink = document.getElementById("agreementLink");
@@ -106,8 +105,10 @@ telegramAuth.setAttribute('data-size', "large")
 telegramAuth.setAttribute('data-onauth', "onTelegramAuth(user)")
 telegramAuth.setAttribute('data-request-access', "write")
 
+authDialog.insertBefore(telegramAuth, authDialog.lastElementChild);
+var tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
+tgIframe.style.marginTop = '3px';
 
-authDialog.insertBefore(telegramAuth, authDialog.lastElementChild)
 
 if (getCookie("auth_data")) {
 	var auth_data = getCookie("auth_data");
@@ -177,12 +178,12 @@ agreementCheck.addEventListener("click", () => {
 	if (agreementCheck.checked) {
 		vkAuth.disabled = false;
 		yandexAuth.disabled = false;
-		tgIframe.pointerEvents = '';
+		tgIframe.style.pointerEvents = '';
 	}
 	else {
 		vkAuth.disabled = true;
 		yandexAuth.disabled = true;
-		tgIframe.pointerEvents = 'none';
+		tgIframe.style.pointerEvents = 'none';
 	}
 })
 
@@ -473,7 +474,7 @@ d3.json(apiUrl)
 		nodes.push({
 			id: OPTIONS_ID,
 			text: "Опции",
-			image: `.${settings.url}images/menu.png`,
+			image: `${settings.url}images/menu.png`,
 			nodeType: NODE_TYPES.OPTIONS
 		})
 	}
@@ -490,7 +491,7 @@ d3.json(apiUrl)
 	nodes.push({
 		id: FILTER_ID,
 		text: "Фильтр",
-		image: `.${settings.url}images/filter.png`,
+		image: `${settings.url}images/filter.png`,
 		nodeType: NODE_TYPES.FILTER
 	});
 
