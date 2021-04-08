@@ -1,5 +1,5 @@
-const staticCacheName = 'bd-app-v4'
-const dynamicCacheName = 'bd-dynamic-v4'
+const staticCacheName = 'bd-app-v5'
+const dynamicCacheName = 'bd-dynamic-v5'
 
 const assetsUrls = [
     './index.html',
@@ -24,7 +24,11 @@ const assetsUrls = [
     './images/trust_active.png',
     './images/mistrust_active.png',
     './images/trust_inactive.png',
-    './images/mistrust_inactive.png'
+    './images/mistrust_inactive.png',
+    './images/abilities_root.png',
+    './images/ability.png',
+    './images/menu.png',
+    './images/filter.png'
 ]
 
 self.addEventListener('install', async event => {
