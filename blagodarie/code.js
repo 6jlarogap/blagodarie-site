@@ -61,6 +61,7 @@ var filterDialog = document.getElementById("filterDialog");
 //auth buttons
 var vkAuth = document.getElementById("vkAuth");
 var yandexAuth = document.getElementById("yandexAuth");
+var okAuth = document.getElementById("okAuth");
 
 //agreement stuff
 var agreementLink = document.getElementById("agreementLink");
@@ -88,16 +89,15 @@ window.addEventListener('load', async () => {
 })
 
 //settings
-if (settings.url1.includes(window.location.origin)) {
-	settings['url'] = settings.url1
-	settings['api'] = settings.api1
-	settings['bot'] = settings.bot1
-}
-else {
-	settings['url'] = settings.url2
-	settings['api'] = settings.api2
-	settings['bot'] = settings.bot2
-}
+var settings;
+settingSets.forEach((setting, i) => {
+	if (setting.url.includes(window.location.href) || i == (settingSets.length - 1)) {
+		settings = setting
+	}
+})
+
+console.log(settings);
+
 var telegramAuth = document.createElement('script')
 telegramAuth.src = "https://telegram.org/js/telegram-widget.js?14"
 telegramAuth.setAttribute('data-telegram-login', settings.bot)
@@ -178,11 +178,13 @@ agreementCheck.addEventListener("click", () => {
 	if (agreementCheck.checked) {
 		vkAuth.disabled = false;
 		yandexAuth.disabled = false;
+		okAuth.disabled = false;
 		tgIframe.style.pointerEvents = '';
 	}
 	else {
 		vkAuth.disabled = true;
 		yandexAuth.disabled = true;
+		okAuth.disabled = true;
 		tgIframe.style.pointerEvents = 'none';
 	}
 })
@@ -357,14 +359,18 @@ async function onTelegramAuth(user) {
 
 //vk auth
 vkAuth.addEventListener("click", () => {
-	window.location.href = 'https://oauth.vk.com/authorize?client_id=7811224&response_type=code&redirect_uri=https://api.dev.blagodarie.org/api/oauth/callback/vk/'
+	window.location.href = `https://oauth.vk.com/authorize?client_id=${settings.vk.client_id}&response_type=code&redirect_uri=${settings.vk.redirect_uri}`
 })
 
 //yandex auth
 yandexAuth.addEventListener("click", () => {
-	window.location.href = 'https://oauth.yandex.ru/authorize?response_type=code&client_id=cf3f096c100041eaa2d2642bc94a9f5b'
+	window.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${settings.yandex.client_id}`
 })
 
+//ok auth
+okAuth.addEventListener("click", () => {
+	window.location.href = `http://ok.ru/oauth/authorize?client_id=${settings.ok.client_id}&response_type=code&redirect_uri=${settings.ok.redirect_uri}`
+})
 
 initDefs();
 
