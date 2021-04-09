@@ -89,10 +89,12 @@ window.addEventListener('load', async () => {
 })
 
 //settings
+var isFinded= false;
 var settings;
 settingSets.forEach((setting, i) => {
-	if (setting.url.includes(window.location.href) || i == (settingSets.length - 1)) {
-		settings = setting
+	if (!isFinded && (setting.url.includes(window.location.href) || i == (settingSets.length - 1))) {
+		settings = setting;
+		isFinded = true;
 	}
 })
 
@@ -106,12 +108,7 @@ telegramAuth.setAttribute('data-onauth', "onTelegramAuth(user)")
 telegramAuth.setAttribute('data-request-access', "write")
 
 authDialog.insertBefore(telegramAuth, authDialog.lastElementChild);
-var tgIframe;
-setTimeout(() => {
-	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
-	tgIframe.style.marginTop = '3px';
-}, 1000)
-
+var tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 
 if (getCookie("auth_data")) {
 	var auth_data = getCookie("auth_data");
