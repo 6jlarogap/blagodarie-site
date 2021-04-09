@@ -106,8 +106,11 @@ telegramAuth.setAttribute('data-onauth', "onTelegramAuth(user)")
 telegramAuth.setAttribute('data-request-access', "write")
 
 authDialog.insertBefore(telegramAuth, authDialog.lastElementChild);
-var tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
-tgIframe.style.marginTop = '3px';
+var tgIframe;
+setTimeout(() => {
+	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
+	tgIframe.style.marginTop = '3px';
+}, 1000)
 
 
 if (getCookie("auth_data")) {
