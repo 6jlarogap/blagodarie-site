@@ -1,11 +1,12 @@
 {
     "name": "blagodarie",
-    "short_name": "bd",
+    "short_name": "blagodarie",
     "theme_color": "#000000",
     "background_color": "#000000",
     "display": "standalone",
     "orientation": "portrait",
     "start_url": ".",
+    "prefer_related_applications": false,
     "icons": [
         {
           "src": "./images/ic_launcher.png",

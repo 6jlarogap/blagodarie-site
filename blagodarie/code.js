@@ -13,7 +13,8 @@ const NODE_TYPES = Object.freeze({
 	"MISTRUST" : "mistrust_btn",
 	"PROFILE": "profile_root",
 	"OPTIONS": "options",
-	"FILTER": "filter"
+	"FILTER": "filter",
+	"FILTERED": "filtered"
 });
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const KEYS_ROOT_ID = "KEYS_ROOT";
@@ -78,6 +79,14 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 //filter stuff
 var filterInput = document.getElementById("filterInput");
 
+//settings
+var settings;
+settingSets.forEach((setting, i) => {
+	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
+		settings = setting;
+	}
+})
+
 
 // register sw
 window.addEventListener('load', async () => {
@@ -88,16 +97,44 @@ window.addEventListener('load', async () => {
 	}
 })
 
-//settings
-var isFinded= false;
-var settings;
-settingSets.forEach((setting, i) => {
-	if (!isFinded && (setting.url.includes(window.location.href) || i == (settingSets.length - 1))) {
-		settings = setting;
-		isFinded = true;
-	}
-})
+//--------------------------------------------------------------------
+let deferredPrompt; // Allows to show the install prompt
+const installButton = document.getElementById("install_button");
 
+window.addEventListener("beforeinstallprompt", e => {
+  console.log("beforeinstallprompt fired");
+  // Prevent Chrome 76 and earlier from automatically showing a prompt
+  e.preventDefault();
+  // Stash the event so it can be triggered later.
+  deferredPrompt = e;
+  // Show the install button
+  installButton.hidden = false;
+  installButton.addEventListener("click", installApp);
+});
+
+function installApp() {
+  // Show the prompt
+  deferredPrompt.prompt();
+  installButton.disabled = true;
+
+  // Wait for the user to respond to the prompt
+  deferredPrompt.userChoice.then(choiceResult => {
+    if (choiceResult.outcome === "accepted") {
+      console.log("PWA setup accepted");
+      installButton.hidden = true;
+    } else {
+      console.log("PWA setup rejected");
+    }
+    installButton.disabled = false;
+    deferredPrompt = null;
+  });
+}
+
+window.addEventListener("appinstalled", evt => {
+  console.log("appinstalled fired", evt);
+});
+
+//--------------------------------------------------------------------
 console.log(settings);
 
 var telegramAuth = document.createElement('script')
@@ -108,7 +145,13 @@ telegramAuth.setAttribute('data-onauth', "onTelegramAuth(user)")
 telegramAuth.setAttribute('data-request-access', "write")
 
 authDialog.insertBefore(telegramAuth, authDialog.lastElementChild);
-var tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
+
+var tgIframe;
+setTimeout(() => {
+	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
+	tgIframe.style.marginTop = '3px';
+}, 1000)
+
 
 if (getCookie("auth_data")) {
 	var auth_data = getCookie("auth_data");
@@ -414,7 +457,7 @@ d3.json(apiUrl)
 				id: d.uuid,
 				text: (d.first_name + " " + d.last_name),
 				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
-				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : NODE_TYPES.FRIEND)
+				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
 		}
 	});
@@ -775,7 +818,7 @@ function initializeDisplay() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
 		.attr("stroke", d => {
-			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
 					if(d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
 						return "#00ff00";
@@ -790,7 +833,7 @@ function initializeDisplay() {
 			}
 		})
 		.attr("marker-end", d => {
-			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
 					return "url(#arrow-trust)";
 				} else {
@@ -814,7 +857,7 @@ function initializeDisplay() {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
 				return "userPortrait";
 			}
-			else if (d.nodeType == NODE_TYPES.FRIEND && localStorage.getItem("filter") != null && d.text.toLowerCase().includes(localStorage.getItem("filter").toLowerCase())) {
+			else if (d.nodeType == NODE_TYPES.FILTERED) {
 				return "filtered";
 			}
 			else {
@@ -823,13 +866,13 @@ function initializeDisplay() {
 		});
 	
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : 32))
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : 48))
 		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
 		.text(d => (d.text));
 	  
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64 : 32))
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : 48))
 		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.text));
@@ -874,7 +917,7 @@ function calcX1(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var cosA = lWidth / lLength;
-	var relX = (d.source.nodeType == NODE_TYPES.USER ? 64 : 16) * cosA;
+	var relX = (d.source.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
 	var x;
 	if (targetX > sourceX){
 		x = sourceX + relX;
@@ -893,7 +936,7 @@ function calcY1(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var sinA = lHeight / lLength;
-	var relY = (d.source.nodeType == NODE_TYPES.USER ? 64 : 16) * sinA;
+	var relY = (d.source.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
 	var y;
 	if (targetY > sourceY){
 		y = sourceY + relY;
@@ -912,7 +955,7 @@ function calcX2(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var cosA = lWidth / lLength;
-	var relX = (d.target.nodeType == NODE_TYPES.USER ? 64 : 16) * cosA;
+	var relX = (d.target.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
 	var x;
 	if (targetX > sourceX){
 		x = targetX - relX;
@@ -931,7 +974,7 @@ function calcY2(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var sinA = lHeight / lLength;
-	var relY = (d.target.nodeType == NODE_TYPES.USER ? 64 : 16) * sinA;
+	var relY = (d.target.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
 	var y;
 	if (targetY > sourceY){
 		y = targetY - relY;
@@ -1007,7 +1050,7 @@ function initDefs(){
 		.append("circle")
 		.attr("cx", "0")
 		.attr("cy", "0")
-		.attr("r", "16")
+		.attr("r", "32")
 		.attr("fill", "#ff0000");
 		
 	defs.append("clipPath")
@@ -1023,7 +1066,7 @@ function initDefs(){
 		.append("circle")
 		.attr("cx", "0")
 		.attr("cy", "0")
-		.attr("r", "32")
+		.attr("r", "16")
 		.attr("fill", "#ff0000");
 }
 
