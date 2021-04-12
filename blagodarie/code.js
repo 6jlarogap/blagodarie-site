@@ -80,12 +80,12 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 var filterInput = document.getElementById("filterInput");
 
 //settings
-var settings;
-settingSets.forEach((setting, i) => {
-	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
-		settings = setting;
-	}
-})
+var settings = settingSets[0];
+// settingSets.forEach((setting, i) => {
+// 	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
+// 		settings = setting;
+// 	}
+// })
 
 
 // register sw
@@ -365,10 +365,8 @@ function setAuthCookie(uuid, token) {
 function deleteCookie(subdomain,...Cookies) {
 	var domain = new URL(settings.url).origin.substr(8)
 	Cookies.forEach(cookie => {
-		document.cookie = `${cookie}=''; path=/ ; domain=${subdomain + domain} ;expires=${new Date(0).toUTCString()}`
+		document.cookie = `${cookie}=''; path=/ ; ${subdomain === '' ? '' : `domain=${subdomain + domain};` }expires=${new Date(0).toUTCString()}`
 	})
-	// document.cookie = `user_uuid=''; path=/ ;expires=${new Date(0).toUTCString()}`
-	// document.cookie = `auth_token=''; path=/ ;expires=${new Date(0).toUTCString()}`
 }
 
 async function setProfile() {
