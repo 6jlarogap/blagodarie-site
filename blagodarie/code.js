@@ -179,6 +179,7 @@ var isAuth = getCookie("auth_token") ? true : false;
 
 
 // add event to buttons
+//-----------------------------------------------------------------------------------------------
 // close buttons
 [...document.getElementsByClassName("close")].forEach(button => {
 	button.addEventListener("click", () => {
@@ -335,6 +336,35 @@ document.getElementById("logOut").addEventListener("click", () => {
 	window.location.href = settings.url;
 })
 
+//vk auth
+vkAuth.addEventListener("click", () => {
+	window.location.href = `https://oauth.vk.com/authorize?client_id=${settings.vk.client_id}&response_type=code&redirect_uri=${settings.vk.redirect_uri}`
+})
+
+//yandex auth
+yandexAuth.addEventListener("click", () => {
+	window.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${settings.yandex.client_id}`
+})
+
+//ok auth
+okAuth.addEventListener("click", () => {
+	window.location.href = `http://ok.ru/oauth/authorize?client_id=${settings.ok.client_id}&response_type=code&redirect_uri=${settings.ok.redirect_uri}`
+})
+
+document.getElementById("keys").addEventListener("click", async () => {
+	await rootFunctions('keys')
+})
+
+document.getElementById("abilities").addEventListener("click", async () => {
+	await rootFunctions('abilities')
+})
+
+document.getElementById("wishes").addEventListener("click", async () => {
+	await rootFunctions('wishes')
+})
+//-----------------------------------------------------------------------------------------------
+
+
 function uuidv4() {
 	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 	  var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -373,7 +403,7 @@ async function setProfile() {
 	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`, {
 		method: "GET",
 		headers: {
-			"Authorization": getCookie("auth_token")
+			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
 
@@ -398,20 +428,7 @@ async function onTelegramAuth(user) {
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
 
-//vk auth
-vkAuth.addEventListener("click", () => {
-	window.location.href = `https://oauth.vk.com/authorize?client_id=${settings.vk.client_id}&response_type=code&redirect_uri=${settings.vk.redirect_uri}`
-})
 
-//yandex auth
-yandexAuth.addEventListener("click", () => {
-	window.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${settings.yandex.client_id}`
-})
-
-//ok auth
-okAuth.addEventListener("click", () => {
-	window.location.href = `http://ok.ru/oauth/authorize?client_id=${settings.ok.client_id}&response_type=code&redirect_uri=${settings.ok.redirect_uri}`
-})
 
 initDefs();
 
@@ -719,7 +736,7 @@ d3.json(apiUrl)
 			d.fy = height / 2;
 			break;
 		case PROFILE.id:
-			if (userIdFrom) {
+			if (userIdFrom != PROFILE.id) {
 				d.fx = width / 2 - 150;
 				d.fy = height / 2;
 			} else {

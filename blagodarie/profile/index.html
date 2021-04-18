@@ -86,15 +86,26 @@
 			font-size: 10px;
 		}
 
+		#optionsDialog {
+			z-index: 1;
+		}
+
+		#optionsDialog > .btn-primary {
+			margin-bottom: 3px;
+			width: 100%;
+			padding: 6 0 !important;
+		}
+
 		dialog {
 			position: absolute;
-			top: 40%;
+			top: 30%;
 			left: 0;
 			display: none;
 			flex-direction: column;
 			align-items: center;
 			box-sizing: content-box;
 			border: solid black 1px;
+			z-index: 2;
 			/* border-radius: 5%; */
 			/* max-width: 400px; */
 			/* min-width: 200px; */
@@ -262,6 +273,12 @@
 			dialog .oauthButton i {
 				font-size: 50px;
 			}
+
+			.keytype img {
+				width: 50px;
+				height: 50px;
+			}
+			
 		}
 
 	</style>
@@ -334,6 +351,9 @@
 
 	<dialog id="optionsDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
+		<button class="btn btn-primary" id="keys">Ключи</button>
+		<button class="btn btn-primary" id="abilities">Возможности</button>
+		<button class="btn btn-primary" id="wishes">Желания</button>
 		<button class="btn btn-primary" id="optionsAgreement" onclick="window.open('../agreement/index.html', '_blank')">
 			<p>Условия Пользования</p>
 			<i class="far fa-file-alt"></i>
