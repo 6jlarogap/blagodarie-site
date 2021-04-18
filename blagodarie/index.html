@@ -4,6 +4,9 @@
 	<link rel="shortcut icon" href="/images/ic_launcher.png" type="image/x-icon">
 	<meta name="http-equiv" content="Content-type: text/html;">
 	<meta charset="utf-8">
+	<meta name="google-signin-client_id" content="1040490348184-banrg8accupfj3ptg8vrvd6p412jrkgp.apps.googleusercontent.com">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 	<link rel="manifest" href="./manifest.json">
@@ -26,7 +29,7 @@
 		/* SVG styles */
 		svg {
 			flex-basis: 100%;
-			min-width: 200px;
+			/* min-width: 200px; */
 		}
 
 		.round {
@@ -42,13 +45,20 @@
 		}
 
 		image.friendPortrait {
+			width: 64px;
+			height: 64px;
+			x: -32px;
+			y: -32px;
+			clip-path: url(#friendCircle);
+		}
+
+		image.filtered {
 			width: 32px;
 			height: 32px;
 			x: -16px;
 			y: -16px;
-			clip-path: url(#friendCircle);
+			clip-path: url(#filteredCircle);
 		}
-
 		text.userName {
 			text-anchor: middle;
 			/* border: solid white 2px; */
@@ -73,15 +83,30 @@
 			stroke-width: 1px;
 		}
 
+		text.filtered {
+			font-size: 10px;
+		}
+
+		#optionsDialog {
+			z-index: 1;
+		}
+
+		#optionsDialog > .btn-primary {
+			margin-bottom: 3px;
+			width: 100%;
+			padding: 6 0 !important;
+		}
+
 		dialog {
 			position: absolute;
-			top: 40%;
+			top: 30%;
 			left: 0;
 			display: none;
 			flex-direction: column;
 			align-items: center;
 			box-sizing: content-box;
 			border: solid black 1px;
+			z-index: 2;
 			/* border-radius: 5%; */
 			/* max-width: 400px; */
 			/* min-width: 200px; */
@@ -111,15 +136,24 @@
 			margin-top: 5px;
 		}
 
+		#filter {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		#filter img {
+			height: 20px;
+		}
+
+		#filter button {
+			margin-left: 3px;
+		}
+
 		button.close {
 			margin-bottom: 5px;
 			margin-left: auto;
 			border-radius: 25%;
 		}
-
-		/* .btn-success {
-			margin-top: 3px;
-		} */
 
 		.btn-group {
 			margin-top: 3px;
@@ -149,6 +183,105 @@
 			height: 25px;
 		}
 
+		#addElement {
+			margin-top: 3px;
+		}
+
+		.oauthButton {
+			margin-top: 3px;
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+		}
+
+		.oauthButton i {
+			font-size: 20px;
+		}
+
+		.oauthButton p {
+			margin: auto 0;
+		}
+
+		#logout {
+			box-sizing: content-box;
+			margin-top: 3px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		#logout p, #optionsAgreement p {
+			margin: 0;
+			margin-right: 3px;
+		}
+
+		#logout button, #optionsAgreement {
+			margin: 0;
+			display: flex;
+			align-items: center;
+			box-sizing: content-box;
+			justify-content: center;
+		}
+
+		#optionsAgreement {
+			margin-bottom: 3px;
+		}
+
+		#logout #logOut {
+			margin-right: 3px;
+		}
+
+		#install_button {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100px;
+			width: 100%;
+			font-size: 36px;
+		}
+
+		@media (max-width: 990px ) {
+			dialog {
+				/* width: 80%;
+				top: 30%; */
+				font-size: 40px;
+			}
+
+			.ya-share2__container_shape_round.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon:not(.ya-share2__icon_messenger-contact):not(.ya-share2__icon_more):not(.ya-share2__icon_copy) {
+    		background-size: 100px 100px !important;
+			}
+
+			.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon {
+				height: 100px !important;
+				width: 100px !important;
+			}
+
+			.share {
+				height: 100px;
+				width: 100px;
+			}
+
+			.inp {
+				font-size: 40px;
+			}
+
+			.btn {
+				font-size: 40px;
+			}
+
+			dialog .oauthButton i {
+				font-size: 50px;
+			}
+
+			.keytype img {
+				width: 50px;
+				height: 50px;
+			}
+			
+		}
+
 	</style>
 	<!-- Yandex.Metrika counter -->
 	<script type="text/javascript">
@@ -173,25 +306,32 @@
 <body>
 	<svg id="main">
 	</svg>
+	<button id="install_button" class="btn btn-danger" hidden>Установить Blagodarie</button>
 
 	<dialog id="authDialog">
-		<button class="close btn btn-danger">X</button>
-	</dialog>
-
-	<dialog id="agreementDialog">
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
+		<button id="vkAuth" type="button" class="oauthButton btn btn-dark">
+			<i class="fab fa-vk"></i>
+			<p>Войти с помощью VK</p>
+		</button>
+		<button id="okAuth" type="button" class="oauthButton btn btn-primary">
+			<i class="fab fa-odnoklassniki"></i>
+			<p>Войти с помощью OK</p>
+		</button>
+		<button id="yandexAuth" type="button" class="oauthButton btn btn-warning">
+			<i class="fab fa-yandex"></i>
+			<p>Войти с помощью Yandex</p>
+		</button>
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" value="" id="agreementCheck">
+			<input class="form-check-input inp" type="checkbox" value="" checked id="agreementCheck">
 			<label class="form-check-label" for="flexCheckDefault">
-				Я принимаю <a href="#" target="_blank" rel="noopener noreferrer" id="agreementLink">Условия Пользования</a>
+				Я принимаю <a href="./agreement/index.html" target="_blank" rel="noopener noreferrer" id="agreementLink">Условия Пользования</a>
 			</label>
 		</div>
-		<button class="btn btn-success" id="agreementAccept">Принять</button>
 	</dialog>
 
-
-
 	<dialog id="rootDialog">
-		<button class="close btn btn-danger">X</button>
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<ul id="rootList">
 
 		</ul>
@@ -199,8 +339,8 @@
 	</dialog>
 
 	<dialog id="addElementDialog">
-		<button class="close btn btn-danger">X</button>
-		<input class="form-control" id="elementAddInput" type="text">
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
+		<input class="form-control inp" id="elementAddInput" type="text">
 		<div class="btn-group" role="group" aria-label="First group" id="keyTypesBtns" style="display: flex;">
 			<button type="button" class="keytype btn btn-secondary" id="1"><img src="./images/phone.png" alt="1"></button>
 			<button type="button" class="keytype btn btn-secondary" id="2"><img src="./images/at.png" alt="2"></button>
@@ -210,10 +350,32 @@
 		<button class="btn btn-success" id="addElement">ОК</button>
 	</dialog>
 
+	<dialog id="optionsDialog">
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
+		<button class="btn btn-primary" id="keys">Ключи</button>
+		<button class="btn btn-primary" id="abilities">Возможности</button>
+		<button class="btn btn-primary" id="wishes">Желания</button>
+		<button class="btn btn-primary" id="optionsAgreement" onclick="window.open('./agreement/index.html', '_blank')">
+			<p>Условия Пользования</p>
+			<i class="far fa-file-alt"></i>
+		</button>
+		<div id="logout">
+			<button class="btn btn-danger" id="logOut"><p>Выйти</p><i class="fas fa-sign-out-alt"></i></button>
+			<button class="btn btn-dark" id="deleteProfile"><p>Удалить профиль</p><i class="fas fa-user-times"></i></button>
+		</div>
+	</dialog>
 
+	<dialog id="filterDialog">
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
+		<div id="filter">
+			<input class="form-control inp" type="text" placeholder="Фильтр по именам" id="filterInput">
+			<button class="btn btn-success" id="filterSearch"><i class="fas fa-filter"></i></button>
+			<button class="btn btn-danger" id="filterNullify"><i class="far fa-trash-alt"></i></button>
+		</div>
+	</dialog>
 
 	<dialog id="shareDialog">
-		<button class="close btn btn-danger">X</button>
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<div class="ya-share2" data-curtain data-size="l" data-shape="round" data-services="telegram,viber,whatsapp">
 		</div>
 		<div class="custom-share">
@@ -224,25 +386,27 @@
 	</dialog>
 
 	<dialog id="qrDialog">
-		<button class="close btn btn-danger">X</button>
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<div id="qrcode"></div>
 	</dialog>
 
 	<dialog id="mailDialog">
-		<button class="close btn btn-danger">X</button>
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<form id="mailForm" action="" method="post">
-			<input type="email" class="form-control" id="mailInput" placeholder="name@example.com">
+			<input type="email" class="form-control inp" id="mailInput" placeholder="name@example.com">
 			<button id="confrim-mail" class="submit-form btn btn-primary">Отправить</button>
 		</form>
 	</dialog>
 
 	<dialog id="smsDialog">
-		<button class="close btn btn-danger">X</button>
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<form id="smsForm" action="" method="post">
-			<input type="tel" class="form-control" id="smsInput" placeholder="+79998887766">
+			<input type="tel" class="form-control inp" id="smsInput" placeholder="+79998887766">
 			<button id="confrim-sms" class="submit-form btn btn-primary">Отправить</button>
 		</form>
 	</dialog>
+
+	<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 
 	<script src="https://yastatic.net/share2/share.js"></script>
 
