@@ -80,12 +80,13 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 var filterInput = document.getElementById("filterInput");
 
 //settings
-var settings = settingSets[0];
-// settingSets.forEach((setting, i) => {
-// 	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
-// 		settings = setting;
-// 	}
-// })
+//var settings = settingSets[0];
+var setting;
+settingSets.forEach((setting, i) => {
+	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
+		settings = setting;
+	}
+})
 
 
 // register sw
@@ -435,6 +436,7 @@ initDefs();
 
 // load the data
 
+// var url = new URL('http://dev.blagodarie.org/profile?id=cd6de09a-7f56-4f64-9876-4def4845b20a')
 var url = new URL(window.location.href);
 
 
@@ -645,32 +647,6 @@ d3.json(apiUrl)
 		})
 	}
 
-	if (isAuth && userIdFrom && !(userIdFrom == PROFILE.id)) {
-		// добавить связь пользователя с вершиной Доверие
-		links.push({
-			source: TRUST_ID,
-			target: userIdFrom
-		});
-
-		// Добавить связь пользователя с вершиной Недоверие
-		links.push({
-			source: MISTRUST_ID,
-			target: userIdFrom
-		});
-
-		// добавить связь авторизированного пользователя с вершиной Доверие
-		links.push({
-			source: TRUST_ID,
-			target: getCookie('user_uuid')
-		});
-
-		// Ддобавить связь авторизированного пользователя с вершиной Недоверие
-		links.push({
-			source: MISTRUST_ID,
-			target: getCookie('user_uuid')
-		});
-	}
-
 	if (data.keys != null){
 		//добавить связь пользователя с вершиной ключей
 		links.push({
@@ -691,13 +667,8 @@ d3.json(apiUrl)
 	nodes.forEach(function(d) {
 		switch(d.id){
 		case userIdFrom:
-			if (isAuth) {
-				d.fx = width / 2 + 150;
-				d.fy = height / 2;
-			} else {
-				d.fx = width / 2 + 150;
-				d.fy = height / 2;
-			}
+			d.fx = width / 2;
+			d.fy = height / 2;
 			break;
 		case WISHES_ROOT_ID:
 			d.fx = width / 2 + 400;
@@ -724,12 +695,12 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;	
 			break;
 		case TRUST_ID:
-			d.fx = width / 2;
+			d.fx = width / 2 + 50;
 			d.fy = height / 2 + 100;
 			break;
 		case MISTRUST_ID:
-			d.fx = width / 2;
-			d.fy = height / 2 - 100;
+			d.fx = width / 2 - 50;
+			d.fy = height / 2 + 100;
 			break;
 		case AUTH_ID:
 			d.fx = width / 2;
@@ -737,7 +708,7 @@ d3.json(apiUrl)
 			break;
 		case PROFILE.id:
 			if (userIdFrom != PROFILE.id) {
-				d.fx = width / 2 - 150;
+				d.fx = width / 2 - 200;
 				d.fy = height / 2;
 			} else {
 				d.fx = width / 2;
