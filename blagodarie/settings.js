@@ -1,6 +1,6 @@
 const settingSets = [
     {
-        url: 'http://127.0.0.1:5500/',
+        url: 'https://dev.blagodarie.org/',
         api: 'https://api.dev.blagodarie.org/',
         bot: 'BlagodarieAuthBot',
         yandex: {
