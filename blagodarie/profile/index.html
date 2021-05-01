@@ -21,13 +21,16 @@
 			height: 100%;
 			margin: 0;
 			padding: 0;
+			display: -webkit-box;
+			display: -ms-flexbox;
 			display: flex;
 			background-color: #ffffff;
 		}
 
 		/* SVG styles */
 		svg {
-			flex-basis: 100%;
+			-ms-flex-preferred-size: 100%;
+			    flex-basis: 100%;
 			/* min-width: 200px; */
 		}
 
@@ -40,7 +43,8 @@
 			height: 128px;
 			x: -64px;
 			y: -64px;
-			clip-path: url(#userCircle);
+			-webkit-clip-path: url(#userCircle);
+			        clip-path: url(#userCircle);
 		}
 
 		image.friendPortrait {
@@ -48,7 +52,8 @@
 			height: 64px;
 			x: -32px;
 			y: -32px;
-			clip-path: url(#friendCircle);
+			-webkit-clip-path: url(#friendCircle);
+			        clip-path: url(#friendCircle);
 		}
 
 		image.filtered {
@@ -56,7 +61,8 @@
 			height: 32px;
 			x: -16px;
 			y: -16px;
-			clip-path: url(#filteredCircle);
+			-webkit-clip-path: url(#filteredCircle);
+			        clip-path: url(#filteredCircle);
 		}
 		text.userName {
 			text-anchor: middle;
@@ -101,9 +107,15 @@
 			top: 30%;
 			left: 0;
 			display: none;
-			flex-direction: column;
-			align-items: center;
-			box-sizing: content-box;
+			-webkit-box-orient: vertical;
+			-webkit-box-direction: normal;
+			    -ms-flex-direction: column;
+			        flex-direction: column;
+			-webkit-box-align: center;
+			    -ms-flex-align: center;
+			        align-items: center;
+			-webkit-box-sizing: content-box;
+			        box-sizing: content-box;
 			border: solid black 1px;
 			z-index: 2;
 			/* border-radius: 5%; */
@@ -112,9 +124,14 @@
 		}
 
 		dialog form {
+			display: -webkit-box;
+			display: -ms-flexbox;
 			display: flex;
-			justify-content: space-between;
-			box-sizing: content-box;
+			-webkit-box-pack: justify;
+			    -ms-flex-pack: justify;
+			        justify-content: space-between;
+			-webkit-box-sizing: content-box;
+			        box-sizing: content-box;
 		}
 
 		dialog form input {
@@ -136,8 +153,12 @@
 		}
 
 		#filter {
+			display: -webkit-box;
+			display: -ms-flexbox;
 			display: flex;
-			justify-content: space-between;
+			-webkit-box-pack: justify;
+			    -ms-flex-pack: justify;
+			        justify-content: space-between;
 		}
 
 		#filter img {
@@ -163,8 +184,12 @@
 		}
 
 		#rootList li {
+			display: -webkit-box;
+			display: -ms-flexbox;
 			display: flex;
-			align-items: center;
+			-webkit-box-align: center;
+			    -ms-flex-align: center;
+			        align-items: center;
 			margin-top: 3px;
 		}
 
@@ -189,9 +214,15 @@
 		.oauthButton {
 			margin-top: 3px;
 			width: 100%;
+			display: -webkit-box;
+			display: -ms-flexbox;
 			display: flex;
-			justify-content: space-between;
-			align-items: center;
+			-webkit-box-pack: justify;
+			    -ms-flex-pack: justify;
+			        justify-content: space-between;
+			-webkit-box-align: center;
+			    -ms-flex-align: center;
+			        align-items: center;
 			padding: 10px;
 		}
 
@@ -204,11 +235,18 @@
 		}
 
 		#logout {
-			box-sizing: content-box;
+			-webkit-box-sizing: content-box;
+			        box-sizing: content-box;
 			margin-top: 3px;
+			display: -webkit-box;
+			display: -ms-flexbox;
 			display: flex;
-			justify-content: space-between;
-			align-items: center;
+			-webkit-box-pack: justify;
+			    -ms-flex-pack: justify;
+			        justify-content: space-between;
+			-webkit-box-align: center;
+			    -ms-flex-align: center;
+			        align-items: center;
 		}
 
 		#logout p, #optionsAgreement p {
@@ -218,10 +256,17 @@
 
 		#logout button, #optionsAgreement {
 			margin: 0;
+			display: -webkit-box;
+			display: -ms-flexbox;
 			display: flex;
-			align-items: center;
-			box-sizing: content-box;
-			justify-content: center;
+			-webkit-box-align: center;
+			    -ms-flex-align: center;
+			        align-items: center;
+			-webkit-box-sizing: content-box;
+			        box-sizing: content-box;
+			-webkit-box-pack: center;
+			    -ms-flex-pack: center;
+			        justify-content: center;
 		}
 
 		#optionsAgreement {
@@ -305,7 +350,7 @@
 <body>
 	<svg id="main">
 	</svg>
-	<button id="install_button" class="btn btn-danger" hidden>Установить Blagodarie</button>
+	<button id="install_button" class="btn btn-danger" hidden>Установить БлагоДари</button>
 
 	<dialog id="authDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
