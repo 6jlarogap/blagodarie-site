@@ -136,7 +136,6 @@ window.addEventListener("appinstalled", evt => {
 });
 
 //--------------------------------------------------------------------
-console.log(settings);
 
 var telegramAuth = document.createElement('script')
 telegramAuth.src = "https://telegram.org/js/telegram-widget.js?14"
@@ -153,7 +152,6 @@ setTimeout(() => {
 	tgIframe.style.marginTop = '3px';
 }, 1000)
 
-
 if (getCookie("auth_data")) {
 	var auth_data = getCookie("auth_data");
 	var user_uuid;
@@ -161,7 +159,7 @@ if (getCookie("auth_data")) {
 
 	auth_data = auth_data.replace(/\\/g, '');
 	auth_data = auth_data.substr(1, auth_data.length - 2);
-	auth_data = auth_data.split("\"")
+	auth_data = auth_data.split("\"");
 
 	auth_data.forEach((item, i) => {
 		item == "user_uuid" ? user_uuid = auth_data[i + 2] : null
@@ -171,8 +169,12 @@ if (getCookie("auth_data")) {
 	setAuthCookie(user_uuid, auth_token);
 	deleteCookie('.', 'auth_data');
 
+	setReferal();
+
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
+
+
 
 //auth status
 var isAuth = getCookie("auth_token") ? true : false;
@@ -363,6 +365,10 @@ document.getElementById("abilities").addEventListener("click", async () => {
 document.getElementById("wishes").addEventListener("click", async () => {
 	await rootFunctions('wishes')
 })
+
+document.getElementById("invite").addEventListener("click", () => {
+	copyToClipboard(`${settings.url}?ref_uuid=${PROFILE.id}`)
+})
 //-----------------------------------------------------------------------------------------------
 
 
@@ -426,6 +432,8 @@ async function onTelegramAuth(user) {
 
 	setAuthCookie(response.user_uuid, response.auth_token);
 
+	setReferal();
+
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
 
@@ -436,9 +444,16 @@ initDefs();
 
 // load the data
 
-// var url = new URL('http://dev.blagodarie.org/profile?id=cd6de09a-7f56-4f64-9876-4def4845b20a')
 var url = new URL(window.location.href);
 
+var referal = url.searchParams.get("ref_uuid");
+if (referal && !isAuth) {
+	var expires = new Date();
+	expires.setMonth(expires.getMinutes() + 10);
+	var UTSexpires = expires.toUTCString();
+
+	document.cookie = `ref_uuid=${referal}; path=/; expires=${UTSexpires}`;
+}
 
 var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
@@ -452,17 +467,14 @@ if (userIdFrom != null && userIdTo != null){
 	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom;
 }
 
+var isConnection;
+var isTrust;
+
 d3.json(apiUrl)
 	.then(async function(data) {
-	//добавить элемент авторизации
-	if (!isAuth) {
-		nodes.push({
-			id: AUTH_ID,
-			text: "",
-			image: `${settings.url}images/enter.png`,
-			nodeType: NODE_TYPES.AUTH
-		});
-	} else if (isAuth) {
+
+
+	if (isAuth) {
 		await setProfile();
 		nodes.push(PROFILE);
 	}
@@ -520,18 +532,26 @@ d3.json(apiUrl)
 	}
 
 	if (isAuth && userIdFrom && !(userIdFrom == PROFILE.id)) {
+		isConnection = data.connections.some(link => link.source == PROFILE.id);
+
+		var activeTrust = `${settings.url}images/trust_active.png`;
+		var activeMistrust = `${settings.url}images/mistrust_active.png`;
+		var inactiveButton = `${settings.url}images/inactiveButton.png`;
+
+		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
+
 		//добавить вершину доверие/недоверие
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			image: data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/trust_active.png` : `${settings.url}images/trust_inactive.png`,
+			image: !isConnection ? inactiveButton : isTrust ? activeTrust : inactiveButton,
 			nodeType: NODE_TYPES.TRUST
 		});
 
 		nodes.push({
 			id: MISTRUST_ID,
 			text: "Недоверие",
-			image: data.connections.some(data => data.source == getCookie('user_uuid') && data.target == userIdFrom && data.is_trust) ? `${settings.url}images/mistrust_inactive.png` : `${settings.url}images/mistrust_active.png`,
+			image: !isConnection ? inactiveButton : isTrust ? inactiveButton : activeMistrust,
 			nodeType: NODE_TYPES.MISTRUST
 		});
 	}
@@ -597,6 +617,16 @@ d3.json(apiUrl)
 		});
 	}
 	
+	//добавить элемент авторизации
+	if (!isAuth) {
+		nodes.push({
+			id: AUTH_ID,
+			text: "",
+			image: `${settings.url}images/enter.png`,
+			nodeType: NODE_TYPES.AUTH
+		});
+	}
+
 	//добавить связи пользователей в связи
 	data.connections.forEach(function(d){
 		if (d.is_trust != null){
@@ -703,8 +733,14 @@ d3.json(apiUrl)
 			d.fy = height / 2 + 100;
 			break;
 		case AUTH_ID:
-			d.fx = width / 2;
-			d.fy = height / 2;
+			if (!userIdFrom) {
+				d.fx = width / 2;
+				d.fy = height / 2;
+			}
+			else {
+				d.fx = width / 2 - 200;
+				d.fy = height / 2;
+			}
 			break;
 		case PROFILE.id:
 			if (userIdFrom != PROFILE.id) {
@@ -1082,10 +1118,36 @@ async function onNodeClick(nodeType, uuid, txt){
 		optionsDialog.style.display = "flex";
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
-		await updateTrust(3);
+		if (isConnection) {
+			if (isTrust) {
+				await updateTrust(4);
+			}
+			else {
+				await updateTrust(4);
+				await updateTrust(3);
+			}
+		}
+		else {
+			await updateTrust(3);
+		}
+
+		window.location.reload();
 	}
 	else if (nodeType == NODE_TYPES.MISTRUST) {
-		await updateTrust(2);
+		if (isConnection) {
+			if (!isTrust) {
+				await updateTrust(4);
+			}
+			else {
+				await updateTrust(4);
+				await updateTrust(2);
+			}
+		}
+		else {
+			await updateTrust(2);
+		}
+
+		window.location.reload();
 	}
 	else if (nodeType == NODE_TYPES.ABILITY_ROOT && getCookie("user_uuid") == userIdFrom) {
 		await rootFunctions('abilities')
@@ -1186,10 +1248,10 @@ async function getElements(apiurl) {
 	return response
 }
 
-async function updateTrust(operationId) {
-	if (links.some(link => link.source.id == getCookie("user_uuid") && link.target.id == userIdFrom)) {
-		operationId = 4;
-	}
+async function updateTrust(operationId, referal = null) {
+	// if (links.some(link => link.source.id == getCookie("user_uuid") && link.target.id == userIdFrom)) {
+	// 	operationId = 4;
+	// }
 
 	const response = await fetch(`${settings.api}api/addoperation`, {
 		method: "POST",
@@ -1197,10 +1259,37 @@ async function updateTrust(operationId) {
 			"Authorization": "Token " + getCookie("auth_token"),
 			"Content-Type": "application/json"
 		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to":userIdFrom, "operation_type_id": operationId})
+		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "operation_type_id": operationId})
 	}).then(data => data.json())
+}
 
-	window.location.reload();
+async function getProfileInfo(uuid) {
+	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${uuid}`, {
+		method: 'GET',
+	})
+
+	return response
+}
+
+function setReferal() {
+	if (getCookie("ref_uuid")) {
+		var referal = getCookie("ref_uuid");
+	
+		var profileInfo = new Promise(async (resolve, reject) => {
+			const res = await getProfileInfo(referal);
+			if (res.ok) {
+				resolve(true);
+			}
+			else {
+				reject(false);
+			}
+		}).then(async res => {
+			if (res) {
+				await updateTrust(3, referal);
+			}
+			deleteCookie('', 'ref_uuid');
+		})	
+	}
 }
 
 function copyToClipboard(txt){
