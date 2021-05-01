@@ -169,25 +169,7 @@ if (getCookie("auth_data")) {
 	setAuthCookie(user_uuid, auth_token);
 	deleteCookie('.', 'auth_data');
 
-	if (getCookie("ref_uuid")) {
-		var referal = getCookie("ref_uuid");
-	
-		var profileInfo = new Promise(async (resolve, reject) => {
-			const res = await getProfileInfo(referal);
-			if (res.ok) {
-				resolve(true);
-			}
-			else {
-				reject(false);
-			}
-		}).then(async res => {
-			if (res) {
-				await updateTrust(3, referal);
-			}
-			deleteCookie('', 'ref_uuid');
-		})
-		
-	}
+	setReferal();
 
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
@@ -449,6 +431,8 @@ async function onTelegramAuth(user) {
 	
 
 	setAuthCookie(response.user_uuid, response.auth_token);
+
+	setReferal();
 
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
@@ -1285,6 +1269,27 @@ async function getProfileInfo(uuid) {
 	})
 
 	return response
+}
+
+function setReferal() {
+	if (getCookie("ref_uuid")) {
+		var referal = getCookie("ref_uuid");
+	
+		var profileInfo = new Promise(async (resolve, reject) => {
+			const res = await getProfileInfo(referal);
+			if (res.ok) {
+				resolve(true);
+			}
+			else {
+				reject(false);
+			}
+		}).then(async res => {
+			if (res) {
+				await updateTrust(3, referal);
+			}
+			deleteCookie('', 'ref_uuid');
+		})	
+	}
 }
 
 function copyToClipboard(txt){
