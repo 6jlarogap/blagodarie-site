@@ -1,5 +1,5 @@
-const staticCacheName = 'bd-app-v2'
-const dynamicCacheName = 'bd-dynamic-v2'
+const staticCacheName = 'bd-app-v3'
+const dynamicCacheName = 'bd-dynamic-v3'
 
 const assetsUrls = [
     './index.html',
