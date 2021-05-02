@@ -536,7 +536,8 @@ d3.json(apiUrl)
 
 		var activeTrust = `${settings.url}images/trust_active.png`;
 		var activeMistrust = `${settings.url}images/mistrust_active.png`;
-		var inactiveButton = `${settings.url}images/inactiveButton.png`;
+		var inactiveTrust = `${seettings.url}images/trust_inactive.png`;
+		var inactiveMistrust = `${settings.url}images/mistrust_inactive.png`;
 
 		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
 
@@ -544,14 +545,14 @@ d3.json(apiUrl)
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			image: !isConnection ? inactiveButton : isTrust ? activeTrust : inactiveButton,
+			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			nodeType: NODE_TYPES.TRUST
 		});
 
 		nodes.push({
 			id: MISTRUST_ID,
 			text: "Недоверие",
-			image: !isConnection ? inactiveButton : isTrust ? inactiveButton : activeMistrust,
+			image: !isConnection ? inactiveMistrust : isTrust ? inactiveMistrust : activeMistrust,
 			nodeType: NODE_TYPES.MISTRUST
 		});
 	}
@@ -647,10 +648,10 @@ d3.json(apiUrl)
 	
 	if (data.wishes != null){
 		//добавить связь пользователя с вершиной желаний
-		links.push({
-			source: userIdFrom,
-			target: WISHES_ROOT_ID
-		});
+		// links.push({
+		// 	source: userIdFrom,
+		// 	target: WISHES_ROOT_ID
+		// });
 		
 		//добавить связь вершины желаний с желаниями
 		if (data.wishes != null){
@@ -664,10 +665,10 @@ d3.json(apiUrl)
 	}
 	
 	if (data.wishes != null) {
-		links.push({
-			source: userIdFrom,
-			target: ABILITIES_ROOT_ID
-		})
+		// links.push({
+		// 	source: userIdFrom,
+		// 	target: ABILITIES_ROOT_ID
+		// })
 
 		data.abilities.forEach(function(d) {
 			links.push({
@@ -679,10 +680,10 @@ d3.json(apiUrl)
 
 	if (data.keys != null){
 		//добавить связь пользователя с вершиной ключей
-		links.push({
-			source: userIdFrom,
-			target: KEYS_ROOT_ID
-		});
+		// links.push({
+		// 	source: userIdFrom,
+		// 	target: KEYS_ROOT_ID
+		// });
 		
 		//добавить связь вершины ключей с ключами
 		data.keys.forEach(function(d) {
@@ -843,7 +844,7 @@ function initializeDisplay() {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
 					if(d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
-						return "#00ff00";
+						return "#345334";
 					} else {
 						return "#ff0000";
 					}
@@ -851,7 +852,7 @@ function initializeDisplay() {
 					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
 				}
 			} else {
-				return "#00ffff";
+				return "#00ff00";
 			}
 		})
 		.attr("marker-end", d => {
@@ -1025,7 +1026,7 @@ function initDefs(){
 		.attr("markerHeight", "20")
 		.attr("orient", "auto")
 		.append("path")
-		.attr("fill", "#00ffff")
+		.attr("fill", "#00ff00")
 		.attr("d", "M0,-5 L10,0 L0,5");
 	
 	defs.append("marker")
@@ -1038,7 +1039,7 @@ function initDefs(){
 		.attr("markerHeight", "20")
 		.attr("orient", "auto")
 		.append("path")
-		.attr("fill", "#00ff00")
+		.attr("fill", "#345334")
 		.attr("d", "M0,-5 L10,0 L0,5");
 		
 	defs.append("marker")
@@ -1064,7 +1065,7 @@ function initDefs(){
 		.attr("markerHeight", "20")
 		.attr("orient", "auto")
 		.append("path")
-		.attr("fill", "#00ffff")
+		.attr("fill", "#00ff00")
 		.attr("d", "M0,-5 L10,0 L0,5");
 		
 	defs.append("clipPath")
