@@ -333,17 +333,7 @@
 				height: 50px;
 			}
 
-			#qrDialog {
-				width: 60%;
-				height: 30%;
-			}
-
-			#qrDialog > #qrcode{
-				width: 100%;
-				height: 100%;
-			}
-
-			#qrcode > img {
+			#qrDialog > #qrcode, #qrcode > img, #qrcode > canvas{
 				width: 100%;
 			}
 
@@ -422,6 +412,7 @@
 		<button class="btn btn-primary" id="keys">Ключи</button>
 		<button class="btn btn-primary" id="abilities">Возможности</button>
 		<button class="btn btn-primary" id="wishes">Желания</button>
+		<button class="btn btn-primary" id="invite">Пригласить</button>
 		<button class="btn btn-primary" id="optionsAgreement" onclick="window.open('../agreement/index.html', '_blank')">
 			<p>Условия Пользования</p>
 			<i class="far fa-file-alt"></i>

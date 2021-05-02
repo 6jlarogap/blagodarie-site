@@ -531,7 +531,7 @@ d3.json(apiUrl)
 		});
 	}
 
-	if (isAuth && userIdFrom && !(userIdFrom == PROFILE.id)) {
+	if (userIdFrom && !(userIdFrom == PROFILE.id)) {
 		isConnection = data.connections.some(link => link.source == PROFILE.id);
 
 		var activeTrust = `${settings.url}images/trust_active.png`;
@@ -1118,36 +1118,45 @@ async function onNodeClick(nodeType, uuid, txt){
 		optionsDialog.style.display = "flex";
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
-		if (isConnection) {
-			if (isTrust) {
-				await updateTrust(4);
+		if (isAuth) {
+			if (isConnection) {
+				if (isTrust) {
+					await updateTrust(4);
+				}
+				else {
+					await updateTrust(4);
+					await updateTrust(3);
+				}
 			}
 			else {
-				await updateTrust(4);
 				await updateTrust(3);
 			}
+			window.location.reload();
 		}
 		else {
-			await updateTrust(3);
+			authDialog.style.display = "flex"
 		}
-
-		window.location.reload();
 	}
 	else if (nodeType == NODE_TYPES.MISTRUST) {
-		if (isConnection) {
-			if (!isTrust) {
-				await updateTrust(4);
+		if (isAuth) {
+			if (isConnection) {
+				if (!isTrust) {
+					await updateTrust(4);
+				}
+				else {
+					await updateTrust(4);
+					await updateTrust(2);
+				}
 			}
 			else {
-				await updateTrust(4);
 				await updateTrust(2);
 			}
+
+			window.location.reload();
 		}
 		else {
-			await updateTrust(2);
+			authDialog.style.display = "flex"
 		}
-
-		window.location.reload();
 	}
 	else if (nodeType == NODE_TYPES.ABILITY_ROOT && getCookie("user_uuid") == userIdFrom) {
 		await rootFunctions('abilities')
