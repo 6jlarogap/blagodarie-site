@@ -13,6 +13,7 @@ const NODE_TYPES = Object.freeze({
 	"MISTRUST" : "mistrust_btn",
 	"PROFILE": "profile_root",
 	"OPTIONS": "options",
+	"HOME": "home",
 	"FILTER": "filter",
 	"FILTERED": "filtered"
 });
@@ -25,6 +26,7 @@ const OPTIONS_ID = "OPTIONS_ROOT";
 const TRUST_ID = "TRUST_ROOT";
 const MISTRUST_ID = "MISTRUST_ROOT";
 const FILTER_ID = "FILTER_ROOT";
+const HOME_ID = "HOME_ROOT";
 const PROFILE = {
 	id: "",
 	text: "",
@@ -80,7 +82,7 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 var filterInput = document.getElementById("filterInput");
 
 //settings
-//var settings = settingSets[0];
+// var settings = settingSets[1];
 var setting;
 settingSets.forEach((setting, i) => {
 	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
@@ -446,6 +448,8 @@ initDefs();
 
 var url = new URL(window.location.href);
 
+// var url = new URL('https://dev.blagodarie.org/profile/?id=c03ce3fd-6fda-4112-b1c5-bd9847afee2e');
+
 var referal = url.searchParams.get("ref_uuid");
 if (referal && !isAuth) {
 	var expires = new Date();
@@ -574,6 +578,14 @@ d3.json(apiUrl)
 		image: `${settings.url}images/shareee.png`,
 		nodeType: NODE_TYPES.SHARE
 	});
+
+	//Добавить вершину home
+	nodes.push({
+		id: HOME_ID,
+		text: "Домой",
+		image: `${settings.url}images/home.png`,
+		nodeType: NODE_TYPES.HOME
+	})
 
 	//добавить вершину filter
 	nodes.push({
@@ -722,8 +734,12 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;
 			break;
 		case OPTIONS_ID:
-			d.fx = width / 2 + 100;
+			d.fx = width / 2;
 			d.fy = height / 2 - 300;	
+			break;
+		case HOME_ID:
+			d.fx = width / 2 + 100;
+			d.fy = height / 2 - 300;
 			break;
 		case TRUST_ID:
 			d.fx = width / 2 + 50;
@@ -744,7 +760,7 @@ d3.json(apiUrl)
 			}
 			break;
 		case PROFILE.id:
-			if (userIdFrom != PROFILE.id) {
+			if (userIdFrom && userIdFrom != PROFILE.id) {
 				d.fx = width / 2 - 200;
 				d.fy = height / 2;
 			} else {
@@ -1096,7 +1112,6 @@ function initDefs(){
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
-		window.open('https://www.tinkoff.ru/cardtocard/', '_blank');
 	} else if (nodeType == NODE_TYPES.FRIEND) {
 
 		window.location.href = `${settings.url}profile?id=` + uuid;
@@ -1117,6 +1132,9 @@ async function onNodeClick(nodeType, uuid, txt){
 	}
 	else if (nodeType == NODE_TYPES.OPTIONS) {
 		optionsDialog.style.display = "flex";
+	}
+	else if(nodeType == NODE_TYPES.HOME) {
+		window.location.href = settings.url
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
