@@ -843,7 +843,7 @@ function initializeDisplay() {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
 					if(d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
-						return "#345334";
+						return "#1c8401";
 					} else {
 						return "#ff0000";
 					}
@@ -851,7 +851,7 @@ function initializeDisplay() {
 					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
 				}
 			} else {
-				return "#00ff00";
+				return "#345334";
 			}
 		})
 		.attr("marker-end", d => {
@@ -1025,7 +1025,7 @@ function initDefs(){
 		.attr("markerHeight", "20")
 		.attr("orient", "auto")
 		.append("path")
-		.attr("fill", "#00ff00")
+		.attr("fill", "#345334")
 		.attr("d", "M0,-5 L10,0 L0,5");
 	
 	defs.append("marker")
@@ -1038,7 +1038,7 @@ function initDefs(){
 		.attr("markerHeight", "20")
 		.attr("orient", "auto")
 		.append("path")
-		.attr("fill", "#345334")
+		.attr("fill", "#1c8401")
 		.attr("d", "M0,-5 L10,0 L0,5");
 		
 	defs.append("marker")
@@ -1064,7 +1064,7 @@ function initDefs(){
 		.attr("markerHeight", "20")
 		.attr("orient", "auto")
 		.append("path")
-		.attr("fill", "#00ff00")
+		.attr("fill", "#345334")
 		.attr("d", "M0,-5 L10,0 L0,5");
 		
 	defs.append("clipPath")
