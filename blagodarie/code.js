@@ -536,7 +536,8 @@ d3.json(apiUrl)
 
 		var activeTrust = `${settings.url}images/trust_active.png`;
 		var activeMistrust = `${settings.url}images/mistrust_active.png`;
-		var inactiveButton = `${settings.url}images/inactive_button.png`;
+		var inactiveTrust = `${settings.url}images/trust_inactive.png`;
+		var inactiveMistrust = `${settings.url}images/mistrust_inactive.png`;
 
 		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
 
@@ -544,14 +545,14 @@ d3.json(apiUrl)
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			image: !isConnection ? inactiveButton : isTrust ? activeTrust : inactiveButton,
+			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			nodeType: NODE_TYPES.TRUST
 		});
 
 		nodes.push({
 			id: MISTRUST_ID,
 			text: "Недоверие",
-			image: !isConnection ? inactiveButton : isTrust ? inactiveButton : activeMistrust,
+			image: !isConnection ? inactiveMistrust : isTrust ? inactiveMistrust : activeMistrust,
 			nodeType: NODE_TYPES.MISTRUST
 		});
 	}
