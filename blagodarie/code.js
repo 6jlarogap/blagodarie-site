@@ -538,7 +538,6 @@ d3.json(apiUrl)
 	}
 
 	if (userIdFrom && !(userIdFrom == PROFILE.id)) {
-		console.log(data.connections);
 		isConnection = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
 
 		var activeTrust = `${settings.url}images/trust_active.png`;
@@ -1034,8 +1033,6 @@ d3.select(window).on("resize", function(){
 
 function initDefs(){
 	const defs = svg.append("defs");
-	
-	console.log(defs);
 
 	defs.append("marker")
 		.attr("xmlns", "http://www.w3.org/2000/svg")
