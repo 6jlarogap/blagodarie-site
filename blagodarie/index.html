@@ -296,6 +296,16 @@
 			font-size: 36px;
 		}
 
+		#mailForm, #smsForm {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		#mailForm > button, #smsForm > button {
+			margin-left: 3px;
+		}
+
 		@media (max-width: 990px ) {
 			dialog {
 				/* width: 80%;
@@ -463,18 +473,20 @@
 
 	<dialog id="mailDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<form id="mailForm" action="" method="post">
+		<div id="mailForm">
 			<input type="email" class="form-control inp" id="mailInput" placeholder="name@example.com">
 			<button id="confrim-mail" class="submit-form btn btn-primary">Отправить</button>
-		</form>
+			<a id="mailLink" href="mailto:kowalchuck1337@mail.ru" style="display: none;"></a>
+		</div>
 	</dialog>
 
 	<dialog id="smsDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<form id="smsForm" action="" method="post">
+		<div id="smsForm" action="" method="post">
 			<input type="tel" class="form-control inp" id="smsInput" placeholder="+79998887766">
 			<button id="confrim-sms" class="submit-form btn btn-primary">Отправить</button>
-		</form>
+			<a id="smsLink" href=""></a>
+		</div>
 	</dialog>
 
 	<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>

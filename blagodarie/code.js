@@ -82,13 +82,13 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 var filterInput = document.getElementById("filterInput");
 
 //settings
-// var settings = settingSets[1];
-var setting;
-settingSets.forEach((setting, i) => {
-	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
-		settings = setting;
-	}
-})
+var settings = settingSets[1];
+// var setting;
+// settingSets.forEach((setting, i) => {
+// 	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
+// 		settings = setting;
+// 	}
+// })
 
 
 // register sw
@@ -214,11 +214,14 @@ deleteCookie("","set_trust", "set_mistrust");
 	button.addEventListener("click", (event) => {
 		event.preventDefault();
 		if (button.id == "confrim-mail") {
-			button.parentElement.action = `mailto:${document.getElementById("mailInput").value}?data=${window.location.href}`;
+			var link = document.getElementById("mailLink");
+			link.href = `mailto:${document.getElementById("mailInput").value}?body=${window.location.href}`;
+			link.click();
 		} else if (button.id == "confrim-sms") {
-			button.parentElement.action = `sms:${document.getElementById("smsInput").value}?body=${window.location.href}`;
+			var link = document.getElementById("smsLink");
+			link.href = `sms:${document.getElementById("smsInput").value}?body=${window.location.href}`;
+			link.click();
 		}
-		button.parentElement.submit();
 		button.parentElement.parentElement.style.display = "none";
 	})
 })
@@ -448,9 +451,9 @@ initDefs();
 
 // load the data
 
-var url = new URL(window.location.href);
+// var url = new URL(window.location.href);
 
-// var url = new URL('https://dev.blagodarie.org/profile/?id=c03ce3fd-6fda-4112-b1c5-bd9847afee2e');
+var url = new URL('https://dev.blagodarie.org/profile/?id=c03ce3fd-6fda-4112-b1c5-bd9847afee2e');
 
 var referal = url.searchParams.get("ref_uuid");
 if (referal && !isAuth) {
