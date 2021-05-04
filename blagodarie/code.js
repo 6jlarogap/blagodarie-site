@@ -13,6 +13,7 @@ const NODE_TYPES = Object.freeze({
 	"MISTRUST" : "mistrust_btn",
 	"PROFILE": "profile_root",
 	"OPTIONS": "options",
+	"HOME": "home",
 	"FILTER": "filter",
 	"FILTERED": "filtered"
 });
@@ -25,6 +26,7 @@ const OPTIONS_ID = "OPTIONS_ROOT";
 const TRUST_ID = "TRUST_ROOT";
 const MISTRUST_ID = "MISTRUST_ROOT";
 const FILTER_ID = "FILTER_ROOT";
+const HOME_ID = "HOME_ROOT";
 const PROFILE = {
 	id: "",
 	text: "",
@@ -80,7 +82,7 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 var filterInput = document.getElementById("filterInput");
 
 //settings
-//var settings = settingSets[0];
+// var settings = settingSets[1];
 var setting;
 settingSets.forEach((setting, i) => {
 	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
@@ -170,6 +172,7 @@ if (getCookie("auth_data")) {
 	deleteCookie('.', 'auth_data');
 
 	setReferal();
+	setTrustAfterButton();
 
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
@@ -178,7 +181,7 @@ if (getCookie("auth_data")) {
 
 //auth status
 var isAuth = getCookie("auth_token") ? true : false;
-
+deleteCookie("","set_trust", "set_mistrust");
 
 
 // add event to buttons
@@ -211,11 +214,16 @@ var isAuth = getCookie("auth_token") ? true : false;
 	button.addEventListener("click", (event) => {
 		event.preventDefault();
 		if (button.id == "confrim-mail") {
-			button.parentElement.action = `mailto:${document.getElementById("mailInput").value}?data=${window.location.href}`;
+			var link = document.getElementById("mailLink");
+			var message = window.location.href;
+			message = message.replace('?', '%3F');
+			link.href = `mailto:${document.getElementById("mailInput").value}?body=${message}`;
+			link.click();
 		} else if (button.id == "confrim-sms") {
-			button.parentElement.action = `sms:${document.getElementById("smsInput").value}?body=${window.location.href}`;
+			var link = document.getElementById("smsLink");
+			link.href = `sms:${document.getElementById("smsInput").value}?body=${window.location.href}`;
+			link.click();
 		}
-		button.parentElement.submit();
 		button.parentElement.parentElement.style.display = "none";
 	})
 })
@@ -433,6 +441,7 @@ async function onTelegramAuth(user) {
 	setAuthCookie(response.user_uuid, response.auth_token);
 
 	setReferal();
+	setTrustAfterButton();
 
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
@@ -445,6 +454,8 @@ initDefs();
 // load the data
 
 var url = new URL(window.location.href);
+
+// var url = new URL('https://dev.blagodarie.org/profile/?id=c03ce3fd-6fda-4112-b1c5-bd9847afee2e');
 
 var referal = url.searchParams.get("ref_uuid");
 if (referal && !isAuth) {
@@ -532,11 +543,12 @@ d3.json(apiUrl)
 	}
 
 	if (userIdFrom && !(userIdFrom == PROFILE.id)) {
-		isConnection = data.connections.some(link => link.source == PROFILE.id);
+		isConnection = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
 
 		var activeTrust = `${settings.url}images/trust_active.png`;
 		var activeMistrust = `${settings.url}images/mistrust_active.png`;
-		var inactiveButton = `${settings.url}images/inactiveButton.png`;
+		var inactiveTrust = `${settings.url}images/trust_inactive.png`;
+		var inactiveMistrust = `${settings.url}images/mistrust_inactive.png`;
 
 		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
 
@@ -544,14 +556,14 @@ d3.json(apiUrl)
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			image: !isConnection ? inactiveButton : isTrust ? activeTrust : inactiveButton,
+			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			nodeType: NODE_TYPES.TRUST
 		});
 
 		nodes.push({
 			id: MISTRUST_ID,
 			text: "Недоверие",
-			image: !isConnection ? inactiveButton : isTrust ? inactiveButton : activeMistrust,
+			image: !isConnection ? inactiveMistrust : isTrust ? inactiveMistrust : activeMistrust,
 			nodeType: NODE_TYPES.MISTRUST
 		});
 	}
@@ -573,6 +585,14 @@ d3.json(apiUrl)
 		image: `${settings.url}images/shareee.png`,
 		nodeType: NODE_TYPES.SHARE
 	});
+
+	//Добавить вершину home
+	nodes.push({
+		id: HOME_ID,
+		text: "Домой",
+		image: `${settings.url}images/home.png`,
+		nodeType: NODE_TYPES.HOME
+	})
 
 	//добавить вершину filter
 	nodes.push({
@@ -647,10 +667,10 @@ d3.json(apiUrl)
 	
 	if (data.wishes != null){
 		//добавить связь пользователя с вершиной желаний
-		links.push({
-			source: userIdFrom,
-			target: WISHES_ROOT_ID
-		});
+		// links.push({
+		// 	source: userIdFrom,
+		// 	target: WISHES_ROOT_ID
+		// });
 		
 		//добавить связь вершины желаний с желаниями
 		if (data.wishes != null){
@@ -664,10 +684,10 @@ d3.json(apiUrl)
 	}
 	
 	if (data.wishes != null) {
-		links.push({
-			source: userIdFrom,
-			target: ABILITIES_ROOT_ID
-		})
+		// links.push({
+		// 	source: userIdFrom,
+		// 	target: ABILITIES_ROOT_ID
+		// })
 
 		data.abilities.forEach(function(d) {
 			links.push({
@@ -679,10 +699,10 @@ d3.json(apiUrl)
 
 	if (data.keys != null){
 		//добавить связь пользователя с вершиной ключей
-		links.push({
-			source: userIdFrom,
-			target: KEYS_ROOT_ID
-		});
+		// links.push({
+		// 	source: userIdFrom,
+		// 	target: KEYS_ROOT_ID
+		// });
 		
 		//добавить связь вершины ключей с ключами
 		data.keys.forEach(function(d) {
@@ -721,8 +741,12 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;
 			break;
 		case OPTIONS_ID:
-			d.fx = width / 2 + 100;
+			d.fx = width / 2;
 			d.fy = height / 2 - 300;	
+			break;
+		case HOME_ID:
+			d.fx = width / 2 + 100;
+			d.fy = height / 2 - 300;
 			break;
 		case TRUST_ID:
 			d.fx = width / 2 + 50;
@@ -743,7 +767,7 @@ d3.json(apiUrl)
 			}
 			break;
 		case PROFILE.id:
-			if (userIdFrom != PROFILE.id) {
+			if (userIdFrom && userIdFrom != PROFILE.id) {
 				d.fx = width / 2 - 200;
 				d.fy = height / 2;
 			} else {
@@ -843,7 +867,7 @@ function initializeDisplay() {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
 					if(d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
-						return "#00ff00";
+						return "#1c8401";
 					} else {
 						return "#ff0000";
 					}
@@ -851,7 +875,7 @@ function initializeDisplay() {
 					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
 				}
 			} else {
-				return "#00ffff";
+				return "#345334";
 			}
 		})
 		.attr("marker-end", d => {
@@ -904,7 +928,7 @@ function ticked() {
 	node.attr("transform", d => {
 		var x = (d.x < 0 ? 0 : (d.x > width ? width : d.x));
 		var y = (d.y < 0 ? 0 : (d.y > height ? height: d.y));
-		if (d.nodeType == NODE_TYPES.USER){
+		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
 		}
@@ -939,7 +963,7 @@ function calcX1(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var cosA = lWidth / lLength;
-	var relX = (d.source.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
+	var relX = (d.source.nodeType == NODE_TYPES.USER || d.source.nodeType == NODE_TYPES.PROFILE ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
 	var x;
 	if (targetX > sourceX){
 		x = sourceX + relX;
@@ -958,7 +982,7 @@ function calcY1(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var sinA = lHeight / lLength;
-	var relY = (d.source.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
+	var relY = (d.source.nodeType == NODE_TYPES.USER || d.source.nodeType == NODE_TYPES.PROFILE  ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
 	var y;
 	if (targetY > sourceY){
 		y = sourceY + relY;
@@ -977,7 +1001,7 @@ function calcX2(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var cosA = lWidth / lLength;
-	var relX = (d.target.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
+	var relX = (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.PROFILE ? 64 : d.target.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
 	var x;
 	if (targetX > sourceX){
 		x = targetX - relX;
@@ -996,7 +1020,7 @@ function calcY2(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var sinA = lHeight / lLength;
-	var relY = (d.target.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
+	var relY = (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.PROFILE ? 64 : d.target.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
 	var y;
 	if (targetY > sourceY){
 		y = targetY - relY;
@@ -1014,7 +1038,7 @@ d3.select(window).on("resize", function(){
 
 function initDefs(){
 	const defs = svg.append("defs");
-	
+
 	defs.append("marker")
 		.attr("xmlns", "http://www.w3.org/2000/svg")
 		.attr("id", "arrow-to-other")
@@ -1025,7 +1049,7 @@ function initDefs(){
 		.attr("markerHeight", "20")
 		.attr("orient", "auto")
 		.append("path")
-		.attr("fill", "#00ffff")
+		.attr("fill", "#345334")
 		.attr("d", "M0,-5 L10,0 L0,5");
 	
 	defs.append("marker")
@@ -1038,7 +1062,7 @@ function initDefs(){
 		.attr("markerHeight", "20")
 		.attr("orient", "auto")
 		.append("path")
-		.attr("fill", "#00ff00")
+		.attr("fill", "#1c8401")
 		.attr("d", "M0,-5 L10,0 L0,5");
 		
 	defs.append("marker")
@@ -1064,7 +1088,7 @@ function initDefs(){
 		.attr("markerHeight", "20")
 		.attr("orient", "auto")
 		.append("path")
-		.attr("fill", "#00ffff")
+		.attr("fill", "#345334")
 		.attr("d", "M0,-5 L10,0 L0,5");
 		
 	defs.append("clipPath")
@@ -1095,7 +1119,6 @@ function initDefs(){
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
-		window.open('https://www.tinkoff.ru/cardtocard/', '_blank');
 	} else if (nodeType == NODE_TYPES.FRIEND) {
 
 		window.location.href = `${settings.url}profile?id=` + uuid;
@@ -1117,6 +1140,9 @@ async function onNodeClick(nodeType, uuid, txt){
 	else if (nodeType == NODE_TYPES.OPTIONS) {
 		optionsDialog.style.display = "flex";
 	}
+	else if(nodeType == NODE_TYPES.HOME) {
+		window.location.href = settings.url
+	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
 			if (isConnection) {
@@ -1134,7 +1160,9 @@ async function onNodeClick(nodeType, uuid, txt){
 			window.location.reload();
 		}
 		else {
-			authDialog.style.display = "flex"
+			deleteCookie("","set_mistrust");
+			document.cookie = `set_trust=${userIdFrom}; path=/;`;
+			authDialog.style.display = "flex";
 		}
 	}
 	else if (nodeType == NODE_TYPES.MISTRUST) {
@@ -1155,7 +1183,9 @@ async function onNodeClick(nodeType, uuid, txt){
 			window.location.reload();
 		}
 		else {
-			authDialog.style.display = "flex"
+			deleteCookie("","set_trust");
+			document.cookie = `set_mistrust=${userIdFrom}; path=/;`;
+			authDialog.style.display = "flex";
 		}
 	}
 	else if (nodeType == NODE_TYPES.ABILITY_ROOT && getCookie("user_uuid") == userIdFrom) {
@@ -1299,6 +1329,19 @@ function setReferal() {
 			deleteCookie('', 'ref_uuid');
 		})	
 	}
+}
+
+function setTrustAfterButton() {
+	new Promise(async resolve => {
+		if (getCookie("set_trust")) {
+			await updateTrust(3);
+			deleteCookie("","set_trust");
+		}
+		else if(getCookie("set_mistrust")) {
+			await updateTrust(2);
+			deleteCookie("","set_mistrust");
+		}
+	})
 }
 
 function copyToClipboard(txt){
