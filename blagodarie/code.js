@@ -216,7 +216,7 @@ deleteCookie("","set_trust", "set_mistrust");
 		if (button.id == "confrim-mail") {
 			var link = document.getElementById("mailLink");
 			var message = window.location.href;
-			message.replace('?', '%3f');
+			message = message.replace('?', '%3f');
 			link.href = `mailto:${document.getElementById("mailInput").value}?body=${message}`;
 			link.click();
 		} else if (button.id == "confrim-sms") {
