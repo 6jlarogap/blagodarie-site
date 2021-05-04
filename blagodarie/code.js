@@ -921,7 +921,7 @@ function ticked() {
 	node.attr("transform", d => {
 		var x = (d.x < 0 ? 0 : (d.x > width ? width : d.x));
 		var y = (d.y < 0 ? 0 : (d.y > height ? height: d.y));
-		if (d.nodeType == NODE_TYPES.USER){
+		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
 		}
@@ -956,7 +956,7 @@ function calcX1(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var cosA = lWidth / lLength;
-	var relX = (d.source.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
+	var relX = (d.source.nodeType == NODE_TYPES.USER || d.source.nodeType == NODE_TYPES.PROFILE ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
 	var x;
 	if (targetX > sourceX){
 		x = sourceX + relX;
@@ -975,7 +975,7 @@ function calcY1(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var sinA = lHeight / lLength;
-	var relY = (d.source.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
+	var relY = (d.source.nodeType == NODE_TYPES.USER || d.source.nodeType == NODE_TYPES.PROFILE  ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
 	var y;
 	if (targetY > sourceY){
 		y = sourceY + relY;
@@ -994,7 +994,7 @@ function calcX2(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var cosA = lWidth / lLength;
-	var relX = (d.target.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
+	var relX = (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.PROFILE ? 64 : d.target.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
 	var x;
 	if (targetX > sourceX){
 		x = targetX - relX;
@@ -1013,7 +1013,7 @@ function calcY2(d){
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var sinA = lHeight / lLength;
-	var relY = (d.target.nodeType == NODE_TYPES.USER ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
+	var relY = (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.PROFILE ? 64 : d.target.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
 	var y;
 	if (targetY > sourceY){
 		y = targetY - relY;
@@ -1032,6 +1032,8 @@ d3.select(window).on("resize", function(){
 function initDefs(){
 	const defs = svg.append("defs");
 	
+	console.log(defs);
+
 	defs.append("marker")
 		.attr("xmlns", "http://www.w3.org/2000/svg")
 		.attr("id", "arrow-to-other")
@@ -1153,6 +1155,7 @@ async function onNodeClick(nodeType, uuid, txt){
 			window.location.reload();
 		}
 		else {
+
 			authDialog.style.display = "flex"
 		}
 	}
