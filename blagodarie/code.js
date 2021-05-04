@@ -82,13 +82,13 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 var filterInput = document.getElementById("filterInput");
 
 //settings
-var settings = settingSets[1];
-// var setting;
-// settingSets.forEach((setting, i) => {
-// 	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
-// 		settings = setting;
-// 	}
-// })
+// var settings = settingSets[1];
+var setting;
+settingSets.forEach((setting, i) => {
+	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
+		settings = setting;
+	}
+})
 
 
 // register sw
@@ -451,9 +451,9 @@ initDefs();
 
 // load the data
 
-// var url = new URL(window.location.href);
+var url = new URL(window.location.href);
 
-var url = new URL('https://dev.blagodarie.org/profile/?id=c03ce3fd-6fda-4112-b1c5-bd9847afee2e');
+// var url = new URL('https://dev.blagodarie.org/profile/?id=c03ce3fd-6fda-4112-b1c5-bd9847afee2e');
 
 var referal = url.searchParams.get("ref_uuid");
 if (referal && !isAuth) {
