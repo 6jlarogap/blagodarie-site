@@ -172,6 +172,7 @@ if (getCookie("auth_data")) {
 	deleteCookie('.', 'auth_data');
 
 	setReferal();
+	setTrustAfterButton();
 
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
@@ -180,7 +181,7 @@ if (getCookie("auth_data")) {
 
 //auth status
 var isAuth = getCookie("auth_token") ? true : false;
-
+deleteCookie("","set_trust", "set_mistrust");
 
 
 // add event to buttons
@@ -435,6 +436,7 @@ async function onTelegramAuth(user) {
 	setAuthCookie(response.user_uuid, response.auth_token);
 
 	setReferal();
+	setTrustAfterButton();
 
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
@@ -536,7 +538,8 @@ d3.json(apiUrl)
 	}
 
 	if (userIdFrom && !(userIdFrom == PROFILE.id)) {
-		isConnection = data.connections.some(link => link.source == PROFILE.id);
+		console.log(data.connections);
+		isConnection = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
 
 		var activeTrust = `${settings.url}images/trust_active.png`;
 		var activeMistrust = `${settings.url}images/mistrust_active.png`;
@@ -1155,8 +1158,9 @@ async function onNodeClick(nodeType, uuid, txt){
 			window.location.reload();
 		}
 		else {
-
-			authDialog.style.display = "flex"
+			deleteCookie("","set_mistrust");
+			document.cookie = `set_trust=${userIdFrom}; path=/;`;
+			authDialog.style.display = "flex";
 		}
 	}
 	else if (nodeType == NODE_TYPES.MISTRUST) {
@@ -1177,7 +1181,9 @@ async function onNodeClick(nodeType, uuid, txt){
 			window.location.reload();
 		}
 		else {
-			authDialog.style.display = "flex"
+			deleteCookie("","set_trust");
+			document.cookie = `set_mistrust=${userIdFrom}; path=/;`;
+			authDialog.style.display = "flex";
 		}
 	}
 	else if (nodeType == NODE_TYPES.ABILITY_ROOT && getCookie("user_uuid") == userIdFrom) {
@@ -1321,6 +1327,19 @@ function setReferal() {
 			deleteCookie('', 'ref_uuid');
 		})	
 	}
+}
+
+function setTrustAfterButton() {
+	new Promise(async resolve => {
+		if (getCookie("set_trust")) {
+			await updateTrust(3);
+			deleteCookie("","set_trust");
+		}
+		else if(getCookie("set_mistrust")) {
+			await updateTrust(2);
+			deleteCookie("","set_mistrust");
+		}
+	})
 }
 
 function copyToClipboard(txt){
