@@ -1388,9 +1388,8 @@ function setReferal() {
 		else {
 			reject(res)
 		}
-	}).then(() => {
-		deleteCookie('', 'invite_token')
 	})
+	deleteCookie('', 'invite_token')
 }
 
 // function setReferal() {
