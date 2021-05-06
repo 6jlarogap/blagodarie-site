@@ -1374,7 +1374,7 @@ async function useReferalToken() {
 			"Content-Type": "application/json"
 		},
 		body: JSON.stringify({
-			token: getCookie("ref_token")
+			token: getCookie("invite_token")
 		})
 	}).then(body => body.json())
 }
