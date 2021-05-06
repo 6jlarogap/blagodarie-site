@@ -435,7 +435,6 @@
 		<button class="btn btn-primary" id="keys">Ключи</button>
 		<button class="btn btn-primary" id="abilities">Возможности</button>
 		<button class="btn btn-primary" id="wishes">Желания</button>
-		<button class="btn btn-primary" id="invite">Пригласить</button>
 		<button class="btn btn-primary" id="optionsAgreement" onclick="window.open('./agreement/index.html', '_blank')">
 			<p>Условия Пользования</p>
 			<i class="far fa-file-alt"></i>
@@ -444,6 +443,10 @@
 			<button class="btn btn-danger" id="logOut"><p>Выйти</p><i class="fas fa-sign-out-alt"></i></button>
 			<button class="btn btn-dark" id="deleteProfile"><p>Удалить профиль</p><i class="fas fa-user-times"></i></button>
 		</div>
+	</dialog>
+
+	<dialog id="inviteDialog">
+
 	</dialog>
 
 	<dialog id="filterDialog">
@@ -457,7 +460,7 @@
 
 	<dialog id="shareDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<div class="ya-share2" data-curtain data-size="l" data-shape="round" data-services="telegram,viber,whatsapp,vkontakte,odnoklassniki">
+		<div id="shareGroup" class="ya-share2" data-curtain data-url="https://google.com" data-size="l" data-shape="round" data-services="telegram,viber,whatsapp,vkontakte,odnoklassniki">
 		</div>
 		<div class="custom-share">
 			<img src="./images/email.png" alt="Loading..." class="share" id="mail-button">
