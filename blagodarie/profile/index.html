@@ -43,8 +43,9 @@
 			height: 128px;
 			x: -64px;
 			y: -64px;
-			-webkit-clip-path: url(#userCircle);
-			        clip-path: url(#userCircle);
+			/*-webkit-clip-path: url(#userCircle);
+			        clip-path: url(#userCircle);*/
+			clip-path: circle(50%);
 		}
 
 		image.friendPortrait {
@@ -52,8 +53,9 @@
 			height: 64px;
 			x: -32px;
 			y: -32px;
-			-webkit-clip-path: url(#friendCircle);
-			        clip-path: url(#friendCircle);
+			/*-webkit-clip-path: url(#friendCircle);
+			        clip-path: url(#friendCircle);*/
+			clip-path: circle(50%);
 		}
 
 		image.filtered {
@@ -61,8 +63,9 @@
 			height: 32px;
 			x: -16px;
 			y: -16px;
-			-webkit-clip-path: url(#filteredCircle);
-			        clip-path: url(#filteredCircle);
+			/*-webkit-clip-path: url(#filteredCircle);
+			        clip-path: url(#filteredCircle);*/
+			clip-path: circle(50%);
 		}
 		text.userName {
 			text-anchor: middle;
@@ -105,7 +108,10 @@
 		dialog {
 			position: absolute;
 			top: 30%;
-			left: 0;
+			/*left: 0;*/
+			width: 550px;
+			left: 50%;
+			margin-left: -275px;
 			display: none;
 			-webkit-box-orient: vertical;
 			-webkit-box-direction: normal;
@@ -121,6 +127,14 @@
 			/* border-radius: 5%; */
 			/* max-width: 400px; */
 			/* min-width: 200px; */
+			backgroung-color:white;
+			z-index:1000;
+		}
+		@media(max-width: 990px){
+			dialog{
+				width: 770px;
+				margin-left: -400px;
+			}
 		}
 
 		dialog form {
