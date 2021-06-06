@@ -159,7 +159,7 @@ var tgIframe;
 setTimeout(() => {
 	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 	tgIframe.style.marginTop = '15px';
-	setTimeout(function(){
+	setInterval(function(){
 	if(document.querySelector('.tgme_widget_login')){
 		tgIframe.style = "width:75%!important;height:75px!important";
 		tgIframe_button = document.querySelector(".tgme_widget_login");
