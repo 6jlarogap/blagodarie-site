@@ -124,13 +124,14 @@
 			        align-items: center;
 			-webkit-box-sizing: content-box;
 			        box-sizing: content-box;
-			border: solid black 1px;
+			border: solid black 0px;
 			z-index: 2;
-			/* border-radius: 5%; */
+			 border-radius: 12%; 
 			/* max-width: 400px; */
 			/* min-width: 200px; */
 			background-color: white;
 			z-index: 1000;
+			box-shadow: 5px 5px 55px 20px rgb(0 0 0 / 31%);
 		}
 		@media(max-width: 990px){
 			dialog{
@@ -244,21 +245,60 @@
 			display: flex;
 			-webkit-box-pack: justify;
 			    -ms-flex-pack: justify;
-			        justify-content: space-between;
+			        justify-content: center;
 			-webkit-box-align: center;
 			    -ms-flex-align: center;
 			        align-items: center;
-			padding: 10px;
+			padding: 10px 20px;
+    			margin-top: 25px;
+    			border-radius: 11px;
+			
 		}
 
 		.oauthButton i {
 			font-size: 20px;
+			
+		}
+		.fab.fa-vk{
+			margin-right: 39px;
+    			background-color: #549bda;
+    			padding: 10px;
+    			border-radius: 100px;
+    			filter: drop-shadow(2px 4px 6px black);
+		}
+		.fab.fa-odnoklassniki{
+			background-color: #f56622;
+    			padding: 10px 20px;
+    			border-radius: 100px;
+    			filter: drop-shadow(0px 4px 6px black);
+    			margin-right: 41px;
+		}
+		.fab.fa-yandex{
+			background-color: #ded81f;
+    			padding: 10px 20px;
+    			border-radius: 100px;
+    			filter: drop-shadow(2px 4px 6px black);
+    			margin-right: 45px;
 		}
 
 		.oauthButton p {
 			margin: auto 0;
+			font-weight: 500;
 		}
-
+		.tgme_widget_login.large button.tgme_widget_login_button{
+			font-size: 35px!important;
+    			line-height: 20px!important;
+    			padding: 28px 37px 28px!important;
+    			border-radius: 20px!important;
+		}
+		.tgme_widget_login.large .tgme_widget_login_user_photo, .tgme_widget_login.large .tgme_widget_login_user_photo img{
+			width: 81px!important;
+    			height: 80px!important;
+    			border-radius: 50px!important;
+		}
+		.form-check{
+			margin-top:25px!important;
+		}
 		#logout {
 			-webkit-box-sizing: content-box;
 			        box-sizing: content-box;
@@ -405,15 +445,15 @@
 
 	<dialog id="authDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<button id="vkAuth" type="button" class="oauthButton btn btn-dark">
+		<button id="vkAuth" type="button" class="oauthButton btn">
 			<i class="fab fa-vk"></i>
 			<p>Войти с помощью VK</p>
 		</button>
-		<button id="okAuth" type="button" class="oauthButton btn btn-primary">
+		<button id="okAuth" type="button" class="oauthButton btn">
 			<i class="fab fa-odnoklassniki"></i>
 			<p>Войти с помощью OK</p>
 		</button>
-		<button id="yandexAuth" type="button" class="oauthButton btn btn-warning">
+		<button id="yandexAuth" type="button" class="oauthButton btn">
 			<i class="fab fa-yandex"></i>
 			<p>Войти с помощью Yandex</p>
 		</button>
