@@ -158,7 +158,7 @@ authDialog.insertBefore(telegramAuth, authDialog.lastElementChild);
 var tgIframe;
 setTimeout(() => {
 	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
-	tgIframe.style.marginTop = '3px';
+	tgIframe.style.marginTop = '15px';
 }, 1000)
 
 if (getCookie("auth_data")) {
