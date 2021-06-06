@@ -159,6 +159,7 @@ var tgIframe;
 setTimeout(() => {
 	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 	tgIframe.style.marginTop = '15px';
+	setTimeout(function(){
 	if(document.querySelector('#authDialog').style == "display: flex;"){
 		tgIframe.style = "width:75%!important;height:75px!important";
 		tgIframe_button = document.querySelector(".tgme_widget_login");
@@ -166,6 +167,7 @@ setTimeout(() => {
 		tgIframe_image = document.querySelector(".tgme_widget_login");
 		tgIframe_image.style = "width: 70px!important;height: 70px!important;border-radius: 40px!important;";
 	}
+	}, 1000)
 }, 1000)
 
 if (getCookie("auth_data")) {
