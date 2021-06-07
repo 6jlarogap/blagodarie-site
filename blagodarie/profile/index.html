@@ -111,7 +111,7 @@
 			top: 30%;
 			/*left: 0;*/
 			width: 550px;
-			left: 50%;
+			left:50%;
 			margin-left: -275px;
 			display: none;
 			-webkit-box-orient: vertical;
@@ -125,11 +125,16 @@
 			        box-sizing: content-box;
 			border: solid black 1px;
 			z-index: 2;
-			/* border-radius: 5%; */
+			
 			/* max-width: 400px; */
 			/* min-width: 200px; */
-			background-color:white;
-			z-index:1000;
+			background-color: white;
+			z-index: 1000;
+		}
+		#authDialog{
+			box-shadow: 5px 5px 55px 20px rgb(0 0 0 / 31%);
+			 border-radius: 12%; 
+			border: solid black 0px;
 		}
 		@media(max-width: 990px){
 			dialog{
@@ -237,27 +242,53 @@
 
 		.oauthButton {
 			margin-top: 3px;
-			width: 100%;
+			width: 90%;
 			display: -webkit-box;
 			display: -ms-flexbox;
 			display: flex;
 			-webkit-box-pack: justify;
 			    -ms-flex-pack: justify;
-			        justify-content: space-between;
+			        justify-content: start;
 			-webkit-box-align: center;
 			    -ms-flex-align: center;
 			        align-items: center;
-			padding: 10px;
+			padding: 10px 20px;
+    			margin-top: 25px;
+    			border-radius: 11px;
+			
 		}
 
 		.oauthButton i {
 			font-size: 20px;
+			transition: .6s;
+		}
+		.fab.fa-vk{
+			margin-right: 39px;
+    			background-color: #549bda;
+    			padding: 10px;
+    			border-radius: 100px;
+    			filter: drop-shadow(2px 4px 6px black);
+		}
+		.fab.fa-odnoklassniki{
+			background-color: #f56622;
+    			padding: 10px 20px;
+    			border-radius: 100px;
+    			filter: drop-shadow(0px 4px 6px black);
+    			margin-right: 41px;
+		}
+		.fab.fa-yandex{
+			background-color: #ded81f;
+    			padding: 10px 20px;
+    			border-radius: 100px;
+    			filter: drop-shadow(2px 4px 6px black);
+    			margin-right: 45px;
 		}
 
 		.oauthButton p {
 			margin: auto 0;
+			font-weight: 500;
+			transition: .6s;
 		}
-
 		#logout {
 			-webkit-box-sizing: content-box;
 			        box-sizing: content-box;
@@ -292,7 +323,15 @@
 			    -ms-flex-pack: center;
 			        justify-content: center;
 		}
-
+		.oauthButton.btn:hover i{
+			filter: drop-shadow(4px 4px 20px black);
+			transition: .6s;
+		}
+		
+		.oauthButton.btn:hover p{
+			text-shadow: 1px 1px black;
+			transition: .6s;
+		}
 		#optionsAgreement {
 			margin-bottom: 3px;
 		}
@@ -374,6 +413,22 @@
 				width: 100%;
 			}
 
+		}
+		@media(min-width: 991px){
+			.fab.fa-vk{
+				margin-right: 51px;
+			}
+			.oauthButton p{
+				font-size: 25px;
+			}
+			.fab.fa-odnoklassniki{
+				padding: 10px 15px;
+				margin-right: 52px;
+			}
+			.fab.fa-yandex{
+				padding: 10px 15px;
+				margin-right: 56px;
+			}
 		}
 
 	</style>
