@@ -15,7 +15,8 @@ const NODE_TYPES = Object.freeze({
 	"OPTIONS": "options",
 	"HOME": "home",
 	"FILTER": "filter",
-	"FILTERED": "filtered"
+	"FILTERED": "filtered",
+	"INVITE": "invite"
 });
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const KEYS_ROOT_ID = "KEYS_ROOT";
@@ -27,6 +28,7 @@ const TRUST_ID = "TRUST_ROOT";
 const MISTRUST_ID = "MISTRUST_ROOT";
 const FILTER_ID = "FILTER_ROOT";
 const HOME_ID = "HOME_ROOT";
+const INVITE_ID = "INVITE_ROOT";
 const PROFILE = {
 	id: "",
 	text: "",
@@ -52,7 +54,6 @@ var qrcode = new QRCode(qr);
 // all dialog elements
 var cardToCard = document.getElementById("cardToCard");
 var optionsDialog = document.getElementById("optionsDialog");
-var shareDialog = document.getElementById("shareDialog");
 var qrDialog = document.getElementById("qrDialog");
 var mailDialog = document.getElementById("mailDialog");
 var smsDialog = document.getElementById("smsDialog");
@@ -60,6 +61,12 @@ var authDialog = document.getElementById("authDialog");
 var rootDialog = document.getElementById("rootDialog");
 var addElementDialog = document.getElementById("addElementDialog");
 var filterDialog = document.getElementById("filterDialog");
+
+//share and invite
+var shareDialog = document.getElementById("shareDialog");
+var shareGroup = document.getElementById("shareGroup");
+var share = Ya.share2(shareGroup);
+var shareLink;
 
 //auth buttons
 var vkAuth = document.getElementById("vkAuth");
@@ -151,7 +158,9 @@ authDialog.insertBefore(telegramAuth, authDialog.lastElementChild);
 var tgIframe;
 setTimeout(() => {
 	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
-	tgIframe.style.marginTop = '3px';
+	tgIframe.style.marginTop = '80px';
+	tgIframe.style.marginBottom = '45px';
+	
 }, 1000)
 
 if (getCookie("auth_data")) {
@@ -171,8 +180,11 @@ if (getCookie("auth_data")) {
 	setAuthCookie(user_uuid, auth_token);
 	deleteCookie('.', 'auth_data');
 
-	setReferal();
+	// setReferal();
 	setTrustAfterButton();
+	if (getCookie('invite_token')) {
+		setReferal();
+	}
 
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
@@ -198,7 +210,7 @@ deleteCookie("","set_trust", "set_mistrust");
 	if (share.id == "qrcode-button") {
 		share.addEventListener("click", () => {
 			qrDialog.style.display = "flex";
-			qrcode.makeCode(window.location.href);
+			qrcode.makeCode(shareLink);
 		})
 	}
 	else if (share.id == "mail-button") {
@@ -215,13 +227,13 @@ deleteCookie("","set_trust", "set_mistrust");
 		event.preventDefault();
 		if (button.id == "confrim-mail") {
 			var link = document.getElementById("mailLink");
-			var message = window.location.href;
+			var message = shareLink;
 			message = message.replace('?', '%3F');
 			link.href = `mailto:${document.getElementById("mailInput").value}?body=${message}`;
 			link.click();
 		} else if (button.id == "confrim-sms") {
 			var link = document.getElementById("smsLink");
-			link.href = `sms:${document.getElementById("smsInput").value}?body=${window.location.href}`;
+			link.href = `sms:${document.getElementById("smsInput").value}?body=${shareLink}`;
 			link.click();
 		}
 		button.parentElement.parentElement.style.display = "none";
@@ -374,9 +386,9 @@ document.getElementById("wishes").addEventListener("click", async () => {
 	await rootFunctions('wishes')
 })
 
-document.getElementById("invite").addEventListener("click", () => {
-	copyToClipboard(`${settings.url}?ref_uuid=${PROFILE.id}`)
-})
+// document.getElementById("invite").addEventListener("click", () => {
+// 	copyToClipboard(`${settings.url}?ref_uuid=${PROFILE.id}`)
+// })
 //-----------------------------------------------------------------------------------------------
 
 
@@ -442,6 +454,9 @@ async function onTelegramAuth(user) {
 
 	setReferal();
 	setTrustAfterButton();
+	if (getCookie('invite_token')) {
+		setReferal();
+	}
 
 	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
@@ -460,10 +475,19 @@ var url = new URL(window.location.href);
 var referal = url.searchParams.get("ref_uuid");
 if (referal && !isAuth) {
 	var expires = new Date();
-	expires.setMonth(expires.getMinutes() + 10);
-	var UTSexpires = expires.toUTCString();
+	expires.setMinutes(expires.getMinutes() + 10);
+	var UTCSexpires = expires.toUTCString();
 
-	document.cookie = `ref_uuid=${referal}; path=/; expires=${UTSexpires}`;
+	document.cookie = `ref_uuid=${referal}; path=/; expires=${UTCSexpires}`;
+}
+
+var invite = url.searchParams.get("invite_token");
+if (invite && !isAuth) {
+	var expires = new Date();
+	expires.setMonth(expires.getMonth() + 1);
+	var UTCSexpires = expires.toUTCString();
+
+	document.cookie =`invite_token=${invite}; path=/; expires=${UTCSexpires}`;
 }
 
 var userIdFrom = url.searchParams.get("id");
@@ -575,6 +599,14 @@ d3.json(apiUrl)
 			text: "Опции",
 			image: `${settings.url}images/menu.png`,
 			nodeType: NODE_TYPES.OPTIONS
+		})
+
+		//Добавить вершину invite
+		nodes.push({
+			id: INVITE_ID,
+			text: "Пригласить",
+			image: `${settings.url}images/add.png`,
+			nodeType: NODE_TYPES.INVITE
 		})
 	}
 
@@ -722,30 +754,34 @@ d3.json(apiUrl)
 			break;
 		case WISHES_ROOT_ID:
 			d.fx = width / 2 + 400;
-			d.fy = height / 2 + 300;
+			d.fy = height / 2 + 200;
 			break;
 		case KEYS_ROOT_ID:
 			d.fx = width / 2 + 400;
-			d.fy = height / 2 - 300;
+			d.fy = height / 2 - 200;
 			break;
 		case ABILITIES_ROOT_ID:
 			d.fx = width / 2 + 400;
 			d.fy = height / 2;
 			break;
 		case SHARE_ID:
-			d.fx = width / 2 + 200;
-			d.fy = height / 2 - 300;
-			break;
-		case FILTER_ID:
 			d.fx = width / 2 + 300;
 			d.fy = height / 2 - 300;
 			break;
+		case FILTER_ID:
+			d.fx = width / 2 + 400;
+			d.fy = height / 2 - 300;
+			break;
 		case OPTIONS_ID:
-			d.fx = width / 2;
+			d.fx = width / 2 - 400;
 			d.fy = height / 2 - 300;	
 			break;
+		case INVITE_ID:
+				d.fx = width / 2 - 200;
+				d.fy = height / 2 - 300;	
+				break;
 		case HOME_ID:
-			d.fx = width / 2 + 100;
+			d.fx = width / 2 - 300;
 			d.fy = height / 2 - 300;
 			break;
 		case TRUST_ID:
@@ -777,7 +813,6 @@ d3.json(apiUrl)
 			
 			break;
 		}
-		
 	});
 	
 	simulation = d3.forceSimulation(nodes);
@@ -1135,6 +1170,17 @@ async function onNodeClick(nodeType, uuid, txt){
 		filterDialog.style.display = "flex";
 	}
 	else if (nodeType == NODE_TYPES.SHARE) {
+		share.updateContent({
+			url: window.location.href
+		});
+		shareLink = window.location.href + '/?gay=123';
+		shareDialog.style.display = "flex";
+	}
+	else if(nodeType == NODE_TYPES.INVITE) {
+		shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
+		share.updateContent({
+			url: shareLink
+		});
 		shareDialog.style.display = "flex";
 	}
 	else if (nodeType == NODE_TYPES.OPTIONS) {
@@ -1310,26 +1356,64 @@ async function getProfileInfo(uuid) {
 	return response
 }
 
-function setReferal() {
-	if (getCookie("ref_uuid")) {
-		var referal = getCookie("ref_uuid");
-	
-		var profileInfo = new Promise(async (resolve, reject) => {
-			const res = await getProfileInfo(referal);
-			if (res.ok) {
-				resolve(true);
-			}
-			else {
-				reject(false);
-			}
-		}).then(async res => {
-			if (res) {
-				await updateTrust(3, referal);
-			}
-			deleteCookie('', 'ref_uuid');
-		})	
-	}
+async function getReferalToken() {
+	const response = await fetch(`${settings.api}api/invite/gettoken`, {
+		method: 'POST',
+		headers: {
+			"Authorization": "Token " + getCookie("auth_token"),
+			"content-Type": "application/json"
+		}
+	}).then(data => data.json())
+
+	return response.token
 }
+
+async function useReferalToken() {
+	const response = await fetch(`${settings.api}api/invite/usetoken`, {
+		method: 'POST',
+		headers: {
+			"Authorization": "Token " + getCookie("auth_token"),
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+			token: getCookie("invite_token")
+		})
+	}).then(body => body.json())
+}
+
+function setReferal() {
+	new Promise(async (resolve, reject) => {
+		const res = await useReferalToken(getCookie('invite_token'))
+		if (res.ok) {
+			resolve(res)
+		}
+		else {
+			reject(res)
+		}
+	})
+	deleteCookie('', 'invite_token')
+}
+
+// function setReferal() {
+// 	if (getCookie("ref_uuid")) {
+// 		var referal = getCookie("ref_uuid");
+	
+// 		var profileInfo = new Promise(async (resolve, reject) => {
+// 			const res = await getProfileInfo(referal);
+// 			if (res.ok) {
+// 				resolve(true);
+// 			}
+// 			else {
+// 				reject(false);
+// 			}
+// 		}).then(async res => {
+// 			if (res) {
+// 				await updateTrust(3, referal);
+// 			}
+// 			deleteCookie('', 'ref_uuid');
+// 		})	
+// 	}
+// }
 
 function setTrustAfterButton() {
 	new Promise(async resolve => {

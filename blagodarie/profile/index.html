@@ -43,8 +43,9 @@
 			height: 128px;
 			x: -64px;
 			y: -64px;
-			-webkit-clip-path: url(#userCircle);
-			        clip-path: url(#userCircle);
+			/*-webkit-clip-path: url(#userCircle);
+			        clip-path: url(#userCircle);*/
+			clip-path: circle(50%);
 		}
 
 		image.friendPortrait {
@@ -52,8 +53,9 @@
 			height: 64px;
 			x: -32px;
 			y: -32px;
-			-webkit-clip-path: url(#friendCircle);
-			        clip-path: url(#friendCircle);
+			/*-webkit-clip-path: url(#friendCircle);
+			        clip-path: url(#friendCircle);*/
+			clip-path: circle(50%);
 		}
 
 		image.filtered {
@@ -61,8 +63,9 @@
 			height: 32px;
 			x: -16px;
 			y: -16px;
-			-webkit-clip-path: url(#filteredCircle);
-			        clip-path: url(#filteredCircle);
+			/*-webkit-clip-path: url(#filteredCircle);
+			        clip-path: url(#filteredCircle);*/
+			clip-path: circle(50%);
 		}
 		text.userName {
 			text-anchor: middle;
@@ -104,8 +107,12 @@
 
 		dialog {
 			position: absolute;
+			padding: 40px;
 			top: 30%;
-			left: 0;
+			/*left: 0;*/
+			width: 550px;
+			left:50%;
+			margin-left: -275px;
 			display: none;
 			-webkit-box-orient: vertical;
 			-webkit-box-direction: normal;
@@ -118,9 +125,22 @@
 			        box-sizing: content-box;
 			border: solid black 1px;
 			z-index: 2;
-			/* border-radius: 5%; */
+			
 			/* max-width: 400px; */
 			/* min-width: 200px; */
+			background-color: white;
+			z-index: 1000;
+		}
+		#authDialog{
+			box-shadow: 5px 5px 55px 20px rgb(0 0 0 / 31%);
+			 border-radius: 12%; 
+			border: solid black 0px;
+		}
+		@media(max-width: 990px){
+			dialog{
+				width: 770px;
+				margin-left: -420px;
+			}
 		}
 
 		dialog form {
@@ -222,27 +242,53 @@
 
 		.oauthButton {
 			margin-top: 3px;
-			width: 100%;
+			width: 90%;
 			display: -webkit-box;
 			display: -ms-flexbox;
 			display: flex;
 			-webkit-box-pack: justify;
 			    -ms-flex-pack: justify;
-			        justify-content: space-between;
+			        justify-content: start;
 			-webkit-box-align: center;
 			    -ms-flex-align: center;
 			        align-items: center;
-			padding: 10px;
+			padding: 10px 20px;
+    			margin-top: 25px;
+    			border-radius: 11px;
+			
 		}
 
 		.oauthButton i {
 			font-size: 20px;
+			transition: .6s;
+		}
+		.fab.fa-vk{
+			margin-right: 39px;
+    			background-color: #549bda;
+    			padding: 10px;
+    			border-radius: 100px;
+    			filter: drop-shadow(2px 4px 6px black);
+		}
+		.fab.fa-odnoklassniki{
+			background-color: #f56622;
+    			padding: 10px 20px;
+    			border-radius: 100px;
+    			filter: drop-shadow(0px 4px 6px black);
+    			margin-right: 41px;
+		}
+		.fab.fa-yandex{
+			background-color: #ded81f;
+    			padding: 10px 20px;
+    			border-radius: 100px;
+    			filter: drop-shadow(2px 4px 6px black);
+    			margin-right: 45px;
 		}
 
 		.oauthButton p {
 			margin: auto 0;
+			font-weight: 500;
+			transition: .6s;
 		}
-
 		#logout {
 			-webkit-box-sizing: content-box;
 			        box-sizing: content-box;
@@ -277,7 +323,15 @@
 			    -ms-flex-pack: center;
 			        justify-content: center;
 		}
-
+		.oauthButton.btn:hover i{
+			filter: drop-shadow(4px 4px 20px black);
+			transition: .6s;
+		}
+		
+		.oauthButton.btn:hover p{
+			text-shadow: 1px 1px black;
+			transition: .6s;
+		}
 		#optionsAgreement {
 			margin-bottom: 3px;
 		}
@@ -303,6 +357,9 @@
 
 		#mailForm > button, #smsForm > button {
 			margin-left: 3px;
+		}
+		.form-check{
+			margin-top: 30px;
 		}
 
 		@media (max-width: 990px ) {
@@ -360,6 +417,37 @@
 			}
 
 		}
+		@media(min-width: 991px){
+			.fab.fa-vk{
+				margin-right: 51px;
+			}
+			.oauthButton p{
+				font-size: 25px;
+			}
+			.fab.fa-odnoklassniki{
+				padding: 10px 15px;
+				margin-right: 52px;
+			}
+			.fab.fa-yandex{
+				padding: 10px 15px;
+				margin-right: 56px;
+			}
+		}
+		@media(max-width:990px){
+			iframe{
+				width: 631px!important;
+				height: 85px!important;
+			}
+		}
+		text, button, p, image, g, div, input, label{
+			-moz-user-select: none;
+    			-webkit-user-select: none;
+    			-webkit-touch-callout: none;   
+    			-ms-user-select: none;
+    			-o-user-select: none;
+    			user-select: none;
+    			-khtml-user-select: none;
+		}
 
 	</style>
 	<!-- Yandex.Metrika counter -->
@@ -389,15 +477,15 @@
 
 	<dialog id="authDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<button id="vkAuth" type="button" class="oauthButton btn btn-dark">
+		<button id="vkAuth" type="button" class="oauthButton btn">
 			<i class="fab fa-vk"></i>
 			<p>Войти с помощью VK</p>
 		</button>
-		<button id="okAuth" type="button" class="oauthButton btn btn-primary">
+		<button id="okAuth" type="button" class="oauthButton btn">
 			<i class="fab fa-odnoklassniki"></i>
 			<p>Войти с помощью OK</p>
 		</button>
-		<button id="yandexAuth" type="button" class="oauthButton btn btn-warning">
+		<button id="yandexAuth" type="button" class="oauthButton btn">
 			<i class="fab fa-yandex"></i>
 			<p>Войти с помощью Yandex</p>
 		</button>
@@ -456,7 +544,7 @@
 
 	<dialog id="shareDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<div class="ya-share2" data-curtain data-size="l" data-shape="round" data-services="telegram,viber,whatsapp,vkontakte,odnoklassniki">
+		<div id="shareGroup" class="ya-share2" data-curtain data-size="l" data-shape="round" data-services="telegram,viber,whatsapp,vkontakte,odnoklassniki">
 		</div>
 		<div class="custom-share">
 			<img src="../images/email.png" alt="Loading..." class="share" id="mail-button">
