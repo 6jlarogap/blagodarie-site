@@ -1184,8 +1184,9 @@ async function onNodeClick(nodeType, uuid, txt){
 	else if(nodeType == NODE_TYPES.INVITE) {
 		shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
 		share.updateContent({
-			url: shareLink,
-			title: document.querySelector(".userName").textContent + ' предлагает Вам своё доверие в системе' + ' благодари.рф'
+			title: document.querySelector(".userName").textContent + ' предлагает Вам своё доверие в системе' + ' благодари.рф',
+			url: shareLink
+			
 		});
 		shareDialog.style.display = "flex";
 	}
