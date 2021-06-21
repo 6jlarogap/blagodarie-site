@@ -69,10 +69,11 @@ var share = Ya.share2(shareGroup);
 var shareLink;
 
 //auth buttons
+/* comment auth
 var vkAuth = document.getElementById("vkAuth");
 var yandexAuth = document.getElementById("yandexAuth");
 var okAuth = document.getElementById("okAuth");
-
+*/
 //agreement stuff
 var agreementLink = document.getElementById("agreementLink");
 var agreementCheck = document.getElementById("agreementCheck");
