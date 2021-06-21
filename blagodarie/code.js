@@ -1179,7 +1179,8 @@ async function onNodeClick(nodeType, uuid, txt){
 	else if(nodeType == NODE_TYPES.INVITE) {
 		shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
 		share.updateContent({
-			url: shareLink
+			url: shareLink,
+			title = 'rf'
 		});
 		shareDialog.style.display = "flex";
 	}
