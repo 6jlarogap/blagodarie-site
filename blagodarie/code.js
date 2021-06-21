@@ -1150,7 +1150,7 @@ function initDefs(){
 		.attr("r", "16")
 		.attr("fill", "#ff0000");
 }
-var myName = (document.querySelector('.userName'));
+var myName = document.querySelector('.userName');
 
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
