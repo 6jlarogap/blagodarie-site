@@ -69,10 +69,11 @@ var share = Ya.share2(shareGroup);
 var shareLink;
 
 //auth buttons
+/*
 var vkAuth = document.getElementById("vkAuth");
 var yandexAuth = document.getElementById("yandexAuth");
 var okAuth = document.getElementById("okAuth");
-
+*/
 //agreement stuff
 var agreementLink = document.getElementById("agreementLink");
 var agreementCheck = document.getElementById("agreementCheck");
@@ -360,20 +361,23 @@ document.getElementById("logOut").addEventListener("click", () => {
 })
 
 //vk auth
+/*
 vkAuth.addEventListener("click", () => {
 	window.location.href = `https://oauth.vk.com/authorize?client_id=${settings.vk.client_id}&response_type=code&redirect_uri=${settings.vk.redirect_uri}`
 })
-
+*/
 //yandex auth
+/*
 yandexAuth.addEventListener("click", () => {
 	window.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${settings.yandex.client_id}`
 })
-
+*/
 //ok auth
+/*
 okAuth.addEventListener("click", () => {
 	window.location.href = `http://ok.ru/oauth/authorize?client_id=${settings.ok.client_id}&response_type=code&redirect_uri=${settings.ok.redirect_uri}`
 })
-
+*/
 document.getElementById("keys").addEventListener("click", async () => {
 	await rootFunctions('keys')
 })
