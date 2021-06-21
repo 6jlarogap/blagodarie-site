@@ -1150,6 +1150,7 @@ function initDefs(){
 		.attr("r", "16")
 		.attr("fill", "#ff0000");
 }
+var myName = (document.querySelector('.userName'));
 
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
@@ -1180,7 +1181,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
 		share.updateContent({
 			url: shareLink,
-			title: 'ФИО предлагает Вам своё доверие в системе БлагоДари.РФ'
+			title: myName.textContent + ' предлагает Вам своё доверие в системе БлагоДари.РФ'
 		});
 		shareDialog.style.display = "flex";
 	}
