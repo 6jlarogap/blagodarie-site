@@ -1181,8 +1181,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
 		share.updateContent({
 			url: shareLink,
-			title: document.querySelector(".userName").textContent + ' предлагает Вам своё доверие в системе' + ' благодари.рф',
-			description: 'To rule them all'
+			title: document.querySelector(".userName").textContent + ' предлагает Вам своё доверие в системе' + ' благодари.рф'
 		});
 		shareDialog.style.display = "flex";
 	}
