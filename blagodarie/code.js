@@ -1181,7 +1181,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
 		share.updateContent({
 			url: shareLink,
-			title: document.querySelector(".userName").textContent + ' предлагает Вам своё доверие в системе БлагоДари.РФ'
+			title: document.querySelector(".userName").textContent + ' предлагает Вам своё доверие в системе' + 'https://xn--80aabjfzq0au.xn--p1ai/'
 		});
 		shareDialog.style.display = "flex";
 	}
