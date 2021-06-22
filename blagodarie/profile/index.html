@@ -455,10 +455,15 @@
 			color:white;
 			padding: 6px 15px;
 			background-color:#333;
-			display:none;
+			z-index:1000;
+			border-radius: 10px;
+			-webkit-transform: translate(-50%,-50%);
+			opacity:0;
+			transition:0.7s;
 		}
 		.copied_alert.active{
-			display:block;
+			opacity:1;
+			transition:0.7s;
 		}
 	</style>
 	<!-- Yandex.Metrika counter -->
