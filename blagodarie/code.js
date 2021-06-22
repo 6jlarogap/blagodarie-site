@@ -232,7 +232,11 @@ function copyTextf(){
 copier.value = window.location.href;
  copier.select();
   document.execCommand("copy");
-  alert("Copied the text: " + copier.value);
+  copied_alert = document.querySelector('.copied_alert');
+  copied_alert.classList.add('active');
+  setTimeout(function(){
+  	copied_alert.classList.remove('active');
+  }, 3000);
 }
 
 
