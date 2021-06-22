@@ -225,7 +225,7 @@ deleteCookie("","set_trust", "set_mistrust");
 //copy
 
 
-console.log(copyText);
+
 function copyTextf(){
   event.preventDefault();
 	var copier = document.querySelector('#copier');
