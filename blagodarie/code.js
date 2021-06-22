@@ -229,7 +229,7 @@ deleteCookie("","set_trust", "set_mistrust");
 function copyTextf(){
   event.preventDefault();
 	var copier = document.querySelector('#copier');
-copier.textContent = window.location.href;
+copier.value = window.location.href;
  copier.select();
   document.execCommand("copy");
   alert("Copied the text: " + copier.value);
