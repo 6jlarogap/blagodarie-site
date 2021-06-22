@@ -467,6 +467,7 @@ async function setProfile() {
 	PROFILE.text = response.first_name + " " + response.last_name;
 	PROFILE.image = response.photo == '' ? `${settings.url}images/default_avatar.png` : response.photo;
 	PROFILE.id = getCookie("user_uuid");
+	console.log(response.is_trust);
 }
 
 //telegram auth
