@@ -222,9 +222,11 @@ deleteCookie("","set_trust", "set_mistrust");
 		share.addEventListener("click", () => smsDialog.style.display = "flex");
 	}
 });
+//copy
 let copy_but = document.querySelector('#copy-button');
 copy_but.addEventListener('click', function(){
   var copyText = window.location.href;
+  copyText.focus();
   copyText.select();
   document.execCommand("copy");
   alert("Copied the text: " + copyText.value);
