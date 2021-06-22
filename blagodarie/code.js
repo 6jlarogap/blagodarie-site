@@ -229,7 +229,7 @@ var copyText = window.location.href;
 console.log(copyText);
 function copyTextf(){
   event.preventDefault();
- copyText.select();
+ copyText[0].select();
   document.execCommand("copy");
   alert("Copied the text: " + copyText.value);
 }
