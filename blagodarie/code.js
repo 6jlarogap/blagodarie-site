@@ -223,6 +223,7 @@ deleteCookie("","set_trust", "set_mistrust");
 	}
 });
 //copy
+/*
 let copy_but = document.querySelector('#copy-button');
 var copyText = window.location.href;
 console.log(copyText);
@@ -232,6 +233,31 @@ copy_but.addEventListener('click', function(){
   document.execCommand("copy");
   alert("Copied the text: " + copyText.value);
 });
+*/
+//copy
+var copy_but = document.querySelector('#copy-button');  
+copy_but.addEventListener('click', function(event) {  
+  var copyText = window.location.href;  
+  var range = document.createRange();  
+  range.selectNode(copyText);  
+  window.getSelection().addRange(range);  
+    
+  try {  
+    var successful = document.execCommand('copy');  
+    var msg = successful ? 'successful' : 'unsuccessful';  
+    console.log('Copy email command was ' + msg);  
+  } catch(err) {  
+    console.log('Oops, unable to copy');  
+  }  
+  window.getSelection().removeAllRanges();  
+});
+
+
+
+
+
+
+
 
 // share form buttons
 [...document.getElementsByClassName("submit-form")].forEach( button => {
