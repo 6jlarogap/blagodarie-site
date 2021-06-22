@@ -224,15 +224,15 @@ deleteCookie("","set_trust", "set_mistrust");
 });
 //copy
 
-let copy_but = document.querySelector('#copy-button');
+
 var copyText = window.location.href;
 console.log(copyText);
-copy_but.addEventListener('click', function(){
+copyTextf(){
   event.preventDefault();
- window.location.href.select();
+ copyText.select();
   document.execCommand("copy");
   alert("Copied the text: " + copyText.value);
-});
+}
 
 
 
