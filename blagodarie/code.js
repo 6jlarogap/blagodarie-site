@@ -225,12 +225,11 @@ deleteCookie("","set_trust", "set_mistrust");
 //copy
 
 
-var copyText = window.location.href;
 console.log(copyText);
 function copyTextf(){
   event.preventDefault();
 	var copier = document.querySelector('#copier');
-copier.textContent = copyText;
+copier.textContent = window.location.href;
  copier.select();
   document.execCommand("copy");
   alert("Copied the text: " + copier.value);
