@@ -227,6 +227,7 @@ let copy_but = document.querySelector('#copy-button');
 var copyText = window.location.href;
 console.log(copyText);
 copy_but.addEventListener('click', function(){
+  event.preventDefault();
   copyText.select();
   document.execCommand("copy");
   alert("Copied the text: " + copyText.value);
