@@ -1487,7 +1487,8 @@ setInterval(function(){
 					for(d; d==children[i].id; children[i].id++){
 						
 						children[i].style.background = 'azure';
-						document.querySelector('#addElement').addEventListener('click', function(){
+						let addElement = document.querySelector('#addElement');
+						addElement.addEventListener('click', function(){
 							children[i].style.removeProperty('background');
 						})
 					}
