@@ -1485,10 +1485,11 @@ setInterval(function(){
   			for (var i = 0; i < children.length; ++i) {
     				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
 					for(d; d==children[i].id; children[i].id++){
-						if(children[i].id == "1"){
-							console.log(this.style);
-						}
-						children[i].style = 'background-color: azure';
+						
+						children[i].style.background = 'azure';
+						document.querySelector('#addElement').addEventListener('click', function(){
+							children[i].style.removeProperty('background');
+						})
 					}
   				}
 			}
