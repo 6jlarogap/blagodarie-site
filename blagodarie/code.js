@@ -1471,11 +1471,5 @@ function copyToClipboard(txt){
 		console.log('Something went wrong', err);
 	});
 }
-setInterval(function(){
-	if (document.querySelector('#addElementDialog #keyTypesBtns') == true){
-		console.log('true');
-	}
-	else console.log('false');
-}, 1000);
 
 
