@@ -1480,18 +1480,21 @@ setInterval(function(){
 		
 		
 		if (buttons_cont.hasChildNodes()) {
-  			// Таким образом, сначала мы проверяем, не пуст ли объект, есть ли у него дети
-  		var children = buttons_cont.childNodes;
+  			var children = buttons_cont.childNodes;
 		
-  		for (var i = 0; i < children.length; ++i) {
-    			let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
-			for(d; d==children[i].id; children[i].id++){
-				children[i].style = 'background-color: azure';
-				
+  			for (var i = 0; i < children.length; ++i) {
+    				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
+					for(d; d==children[i].id; children[i].id++){
+						if(document.querySelector('#addElementDialog').style.display == 'flex'){
+							children[i].style = 'background-color: azure';
+						}
+						else {
+							children[i].style = 'background-color: #6c757d';
+						}
+					}
+  				}
 			}
-  			}
 		}
-	}
 	else {
 		;/*
 		document.querySelector('#keyTypesBtns #3').style = "background-color: #6c757d";
