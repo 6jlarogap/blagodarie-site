@@ -1487,7 +1487,7 @@ setInterval(function(){
     				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
 					for(d; d==children[i].id; children[i].id++){
 						
-						children[i].style.cssText=`background: azure`;
+						children[i].style = 'background: azure';
 						
 					}
   				}
