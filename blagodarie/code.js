@@ -1483,12 +1483,15 @@ setInterval(function(){
   			var children = buttons_cont.childNodes;
 		
   			for (var i = 0; i < children.length; ++i) {
-				children[i].style = 'background: white';
+				
     				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
 					for(d; d==children[i].id; children[i].id++){
-						
+						let close = document.querySelector('#addElementDialog .close');
 						children[i].style = 'background: azure';
 						
+						close.addEventListener('click', function(){
+							children[i].style = 'background: #000';
+						});
 					}
   				}
 			}
