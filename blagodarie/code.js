@@ -1486,7 +1486,7 @@ setInterval(function(){
   		for (var i = 0; i < children.length; ++i) {
     			let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
 			for(d; d==children[i].id; children[i].id++)
-				console.log(children[i].style);
+				children[i].style = 'background-color: azure';
   			}
 		}
 	}
