@@ -453,17 +453,23 @@
 			left:50%;
 			bottom: 4%;
 			color:white;
-			padding: 6px 15px;
+			padding: 8px 42px;
 			background-color:#333;
 			z-index:1000;
 			border-radius: 10px;
 			-webkit-transform: translate(-50%,-50%);
 			opacity:0;
 			transition:0.7s;
+			font-size: 20px;
 		}
 		.copied_alert.active{
 			opacity:1;
 			transition:0.7s;
+		}
+		@media(max-width: 450px){
+			.copied_alert{
+				font-size: 27px;
+			}
 		}
 	</style>
 	<!-- Yandex.Metrika counter -->
