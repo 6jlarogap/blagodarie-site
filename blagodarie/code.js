@@ -1485,13 +1485,19 @@ setInterval(function(){
 
   		for (var i = 0; i < children.length; ++i) {
     			let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
-			for(d; d==children[i].id; children[i].id++)
+			for(d; d==children[i].id; children[i].id++){
+				document.querySelector('#keyTypesBtns button#1').style = "background-color: #6c757d";
+				document.querySelector('#keyTypesBtns button#3').style = "background-color: #6c757d"
+				document.querySelector('#keyTypesBtns button#4').style = "background-color: #6c757d"
+				document.querySelector('#keyTypesBtns button#5').style = "background-color: #6c757d"
 				children[i].style = 'background-color: azure';
+				
+			}
   			}
 		}
 	}
 	else {
-		document.querySelector('#keyTypesBtns button').style = "background-color: #6c757d";/*
+		;/*
 		document.querySelector('#keyTypesBtns #3').style = "background-color: #6c757d";
 		document.querySelector('#keyTypesBtns #4').style = "background-color: #6c757d";
 		document.querySelector('#keyTypesBtns #5').style = "background-color: #6c757d";*/
