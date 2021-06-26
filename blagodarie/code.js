@@ -1474,9 +1474,11 @@ function copyToClipboard(txt){
 
 setInterval(function(){
 	if(document.querySelector('#addElementDialog').style.display == 'flex'){
-		console.log('good')
+		
 	}
-	else console.log('wrong');
+	else {
+	
+	}
 
 }, 1000);
 	
