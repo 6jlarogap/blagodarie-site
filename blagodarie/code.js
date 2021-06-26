@@ -1472,4 +1472,11 @@ function copyToClipboard(txt){
 	});
 }
 
+setInterval(function(){
+	if(document.querySelector('#addElementDialog #keyTypesBtns').style.display == 'flex'){
+		console.log('good')
+	}
+	else console.log('wrong');
 
+}, 1000);
+	
