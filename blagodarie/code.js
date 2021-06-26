@@ -1479,7 +1479,7 @@ setInterval(function(){
 		
 		
 		
-		if (wrap.buttons_cont()) {
+		if (buttons_cont.hasChildNodes()) {
   			// Таким образом, сначала мы проверяем, не пуст ли объект, есть ли у него дети
   		var children = buttons_cont.childNodes;
 
