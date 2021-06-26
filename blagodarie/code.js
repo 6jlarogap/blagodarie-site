@@ -1471,14 +1471,10 @@ function copyToClipboard(txt){
 		console.log('Something went wrong', err);
 	});
 }
-
+// change buttons
 setInterval(function(){
 	if(document.querySelector('#addElementDialog').style.display == 'flex'){
 		let buttons_cont = document.querySelector('#addElementDialog #keyTypesBtns');
-		
-		
-		
-		
 		if (buttons_cont.hasChildNodes()) {
   			var children = buttons_cont.childNodes;
 		
@@ -1491,11 +1487,6 @@ setInterval(function(){
 				else {
 					children[i].style = 'background: #6c757d;box-shadow: 0 0 0 0.25rem rgb(130 138 145 / 50%);'
 				}
-					/*for(d; d==children[i].id; children[i].id++){
-						children[i].style = 'background: azure';
-						
-						
-					}*/
   				}
 			}
 		}
