@@ -1471,7 +1471,7 @@ function copyToClipboard(txt){
 		console.log('Something went wrong', err);
 	});
 }
-/*
+
 setInterval(function(){
 	if(document.querySelector('#addElementDialog').style.display == 'flex'){
 		let buttons_cont = document.querySelector('#addElementDialog #keyTypesBtns');
@@ -1489,11 +1489,11 @@ setInterval(function(){
 							children[i].style = 'background: #6c757d';
 						}
 				else{children[i].style = 'background: azure'}
-					for(d; d==children[i].id; children[i].id++){
+					/*for(d; d==children[i].id; children[i].id++){
 						children[i].style = 'background: azure';
 						
 						
-					}
+					}*/
   				}
 			}
 		}
@@ -1502,4 +1502,4 @@ setInterval(function(){
 	}
 
 }, 1000);
-	*/
+	
