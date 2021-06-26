@@ -1488,7 +1488,9 @@ setInterval(function(){
 				if (children[i].id != d){
 							children[i].style = 'background: #6c757d';
 						}
-				else{children[i].style = 'background: azure'}
+				else {
+					children[i].style = 'background: #6c757d;box-shadow: 0 0 0 0.25rem rgb(130 138 145 / 50%);'
+				}
 					/*for(d; d==children[i].id; children[i].id++){
 						children[i].style = 'background: azure';
 						
