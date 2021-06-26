@@ -1473,7 +1473,7 @@ function copyToClipboard(txt){
 }
 
 setInterval(function(){
-	if(document.querySelector('#addElementDialog #keyTypesBtns').style.display == 'flex'){
+	if(document.querySelector('#addElementDialog').style.display == 'flex'){
 		console.log('good')
 	}
 	else console.log('wrong');
