@@ -1491,7 +1491,7 @@ setInterval(function(){
 						
 						
 					}
-				children[i].style = 'background: #000';
+				
   				}
 			}
 		}
