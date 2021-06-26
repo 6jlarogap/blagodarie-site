@@ -1491,7 +1491,10 @@ setInterval(function(){
 		}
 	}
 	else {
-	
+		document.querySelector('#keyTypesBtns button#1').style = "background-color: #6c757d";
+		document.querySelector('#keyTypesBtns button#3').style = "background-color: #6c757d";
+		document.querySelector('#keyTypesBtns button#4').style = "background-color: #6c757d";
+		document.querySelector('#keyTypesBtns button#5').style = "background-color: #6c757d";
 	}
 
 }, 1000);
