@@ -1486,13 +1486,13 @@ setInterval(function(){
 						
     				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
 					for(d; d==children[i].id; children[i].id++){
-						if (children[i].id != d){
-							children[i].style = 'background: #fff';
-						}
 						children[i].style = 'background: azure';
 						
 						
 					}
+				if (children[i].id != d){
+							children[i].style = 'background: #fff';
+						}
 				
   				}
 			}
