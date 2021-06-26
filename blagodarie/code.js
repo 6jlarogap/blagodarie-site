@@ -1486,7 +1486,7 @@ setInterval(function(){
     				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
 					for(d; d==children[i].id; children[i].id++){
 						if(children[i].id == "1"){
-							console.log(this);
+							console.log(this.style);
 						}
 						children[i].style = 'background-color: azure';
 					}
