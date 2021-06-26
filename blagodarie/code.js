@@ -1475,7 +1475,20 @@ function copyToClipboard(txt){
 setInterval(function(){
 	if(document.querySelector('#addElementDialog').style.display == 'flex'){
 		let buttons_cont = document.querySelector('#addElementDialog #keyTypesBtns');
-		console.log(buttons_cont);
+		
+		
+		
+		
+		if (wrap.buttons_cont()) {
+  			// Таким образом, сначала мы проверяем, не пуст ли объект, есть ли у него дети
+  		var children = buttons_cont.childNodes;
+
+  		for (var i = 0; i < children.length; ++i) {
+    			let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
+			for(d; d==children[i].id; children[i].id++)
+				console.log(children[i].id);
+  			}
+		}
 	}
 	else {
 	
