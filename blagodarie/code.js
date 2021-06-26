@@ -1471,7 +1471,7 @@ function copyToClipboard(txt){
 		console.log('Something went wrong', err);
 	});
 }
-
+/*
 setInterval(function(){
 	if(document.querySelector('#addElementDialog').style.display == 'flex'){
 		let buttons_cont = document.querySelector('#addElementDialog #keyTypesBtns');
@@ -1502,4 +1502,4 @@ setInterval(function(){
 	}
 
 }, 1000);
-	
+	*/
