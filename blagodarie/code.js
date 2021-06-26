@@ -1485,11 +1485,11 @@ setInterval(function(){
   			for (var i = 0; i < children.length; ++i) {
     				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
 					for(d; d==children[i].id; children[i].id++){
-						
+						buttons_cont.classList.remove('diactive');
 						children[i].style.background = 'azure';
 						let addElement = document.querySelector('.close.btn.btn-danger');
 						addElement.addEventListener('click', function(){
-							children[i].style.removeProperty('background');
+							buttons_cont.classList.add('diactive');
 						})
 					}
   				}
