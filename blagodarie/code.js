@@ -1484,16 +1484,15 @@ setInterval(function(){
 		
   			for (var i = 0; i < children.length; ++i) {
 						
-    				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
+    				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue;
+				if (children[i].id != d){
+							children[i].style = 'background: #6c757d';
+						}
 					for(d; d==children[i].id; children[i].id++){
 						children[i].style = 'background: azure';
 						
 						
 					}
-				if (children[i].id != d){
-							children[i].style = 'background: #fff';
-						}
-				
   				}
 			}
 		}
