@@ -1485,21 +1485,14 @@ setInterval(function(){
   			for (var i = 0; i < children.length; ++i) {
     				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue
 					for(d; d==children[i].id; children[i].id++){
-						if(document.querySelector('#addElementDialog').style.display == 'flex'){
-							children[i].style = 'background-color: azure';
-						}
-						else {
-							children[i].style = 'background-color: #6c757d';
-						}
+						console.log(children[i].id);
+						children[i].style = 'background-color: azure';
 					}
   				}
 			}
 		}
 	else {
-		;/*
-		document.querySelector('#keyTypesBtns #3').style = "background-color: #6c757d";
-		document.querySelector('#keyTypesBtns #4').style = "background-color: #6c757d";
-		document.querySelector('#keyTypesBtns #5').style = "background-color: #6c757d";*/
+		
 	}
 
 }, 1000);
