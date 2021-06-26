@@ -1474,7 +1474,8 @@ function copyToClipboard(txt){
 
 setInterval(function(){
 	if(document.querySelector('#addElementDialog').style.display == 'flex'){
-		
+		let buttons_cont = document.querySelector('#addElementDialog #keyTypesBtns');
+		console.log(buttons_cont);
 	}
 	else {
 	
