@@ -1491,10 +1491,10 @@ setInterval(function(){
 		}
 	}
 	else {
-		document.querySelector('#keyTypesBtns #1').style = "background-color: #6c757d";
+		document.querySelector('#keyTypesBtns button').style = "background-color: #6c757d";/*
 		document.querySelector('#keyTypesBtns #3').style = "background-color: #6c757d";
 		document.querySelector('#keyTypesBtns #4').style = "background-color: #6c757d";
-		document.querySelector('#keyTypesBtns #5').style = "background-color: #6c757d";
+		document.querySelector('#keyTypesBtns #5').style = "background-color: #6c757d";*/
 	}
 
 }, 1000);
