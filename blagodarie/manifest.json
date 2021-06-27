@@ -1,8 +1,8 @@
 {
     "name": "БлагоДари.РФ",
     "short_name": "БлагоДари",
-    "theme_color": "#000000",
-    "background_color": "#000000",
+    "theme_color": "#fff",
+    "background_color": "#fff",
     "display": "standalone",
     "orientation": "portrait",
     "start_url": ".",

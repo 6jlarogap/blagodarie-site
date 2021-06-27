@@ -448,7 +448,29 @@
     			user-select: none;
     			-khtml-user-select: none;
 		}
-
+		.copied_alert{
+			position:absolute;
+			left:50%;
+			bottom: 4%;
+			color:white;
+			padding: 8px 42px;
+			background-color:#333;
+			z-index:1000;
+			border-radius: 10px;
+			-webkit-transform: translate(-50%,-50%);
+			opacity:0;
+			transition:0.7s;
+			font-size: 20px;
+		}
+		.copied_alert.active{
+			opacity:1;
+			transition:0.7s;
+		}
+		@media (max-width: 450px){
+			.copied_alert{
+				font-size: 27px!important;
+			}
+		}
 	</style>
 	<!-- Yandex.Metrika counter -->
 	<script type="text/javascript">
@@ -550,9 +572,11 @@
 			<img src="../images/email.png" alt="Loading..." class="share" id="mail-button">
 			<img src="../images/sms.png" alt="Loading..." class="share" id="sms-button">
 			<img src="../images/qr-code.png" alt="Loading..." class="share" id="qrcode-button">
+			<img src="../images/copy.png" alt="Loading..." class="share" id="copy-button" onclick="copyTextf()">
 		</div>
+		<input type="text" id="copier" style="opacity:0">
 	</dialog>
-
+	<p class="copied_alert">Скопировано</p>
 	<dialog id="qrDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<div id="qrcode"></div>

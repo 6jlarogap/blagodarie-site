@@ -69,11 +69,14 @@ var share = Ya.share2(shareGroup);
 var shareLink;
 
 //auth buttons
+
 /* comment auth
+
 var vkAuth = document.getElementById("vkAuth");
 var yandexAuth = document.getElementById("yandexAuth");
 var okAuth = document.getElementById("okAuth");
 */
+
 //agreement stuff
 var agreementLink = document.getElementById("agreementLink");
 var agreementCheck = document.getElementById("agreementCheck");
@@ -156,13 +159,14 @@ telegramAuth.setAttribute('data-request-access', "write")
 
 authDialog.insertBefore(telegramAuth, authDialog.lastElementChild);
 
-var tgIframe;
+
 setTimeout(() => {
+	var tgIframe;
 	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 	tgIframe.style.marginTop = '80px';
 	tgIframe.style.marginBottom = '45px';
 	
-}, 1000)
+}, 2000)
 
 if (getCookie("auth_data")) {
 	var auth_data = getCookie("auth_data");
@@ -221,6 +225,31 @@ deleteCookie("","set_trust", "set_mistrust");
 		share.addEventListener("click", () => smsDialog.style.display = "flex");
 	}
 });
+//copy
+
+
+
+function copyTextf(){
+  event.preventDefault();
+	var copier = document.querySelector('#copier');
+copier.value = window.location.href;
+ copier.select();
+  document.execCommand("copy");
+  copied_alert = document.querySelector('.copied_alert');
+  copied_alert.classList.add('active');
+  setTimeout(function(){
+  	copied_alert.classList.remove('active');
+  }, 3000);
+}
+
+
+
+
+
+
+
+
+
 
 // share form buttons
 [...document.getElementsByClassName("submit-form")].forEach( button => {
@@ -441,6 +470,7 @@ async function setProfile() {
 	PROFILE.text = response.first_name + " " + response.last_name;
 	PROFILE.image = response.photo == '' ? `${settings.url}images/default_avatar.png` : response.photo;
 	PROFILE.id = getCookie("user_uuid");
+	console.log(response.trust_count);
 }
 
 //telegram auth
@@ -823,7 +853,7 @@ d3.json(apiUrl)
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links));
 	simulation.force("charge", d3.forceManyBody().strength(0.5));
 	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("collide", d3.forceCollide().strength(0.2).radius(80).iterations(1));
+	simulation.force("collide", d3.forceCollide().strength(0.6).radius(100).iterations(1));
 	simulation.force("x", d3.forceX(width / 2).strength(0.2));
 	simulation.force("y", d3.forceY(height / 2).strength(0.2));
 	
@@ -1155,6 +1185,7 @@ function initDefs(){
 		.attr("fill", "#ff0000");
 }
 
+
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
@@ -1183,7 +1214,9 @@ async function onNodeClick(nodeType, uuid, txt){
 	else if(nodeType == NODE_TYPES.INVITE) {
 		shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
 		share.updateContent({
+			title: document.querySelector(".userName").textContent + ' предлагает Вам своё доверие в системе Благодари.РФ',
 			url: shareLink
+			
 		});
 		shareDialog.style.display = "flex";
 	}
@@ -1441,3 +1474,28 @@ function copyToClipboard(txt){
 		console.log('Something went wrong', err);
 	});
 }
+// change buttons
+setInterval(function(){
+	if(document.querySelector('#addElementDialog').style.display == 'flex'){
+		let buttons_cont = document.querySelector('#addElementDialog #keyTypesBtns');
+		if (buttons_cont.hasChildNodes()) {
+  			var children = buttons_cont.childNodes;
+		
+  			for (var i = 0; i < children.length; ++i) {
+						
+    				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue;
+				if (children[i].id != d){
+							children[i].style = 'background: #6c757d';
+						}
+				else {
+					children[i].style = 'background: #6c757d;box-shadow: 0 0 0 0.25rem rgb(130 138 145 / 50%);'
+				}
+  				}
+			}
+		}
+	else {
+		
+	}
+
+}, 1000);
+	
