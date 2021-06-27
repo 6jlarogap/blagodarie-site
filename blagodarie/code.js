@@ -853,7 +853,7 @@ d3.json(apiUrl)
 	simulation.force("collide", d3.forceCollide().strength(0.2).radius(80).iterations(1));
 	simulation.force("x", d3.forceX(width / 2).strength(0.2));
 	simulation.force("y", d3.forceY(height / 2).strength(0.2));
-	
+	simulation.gravity(0.05);
 
 	initializeDisplay();
 	initializeSimulation();
