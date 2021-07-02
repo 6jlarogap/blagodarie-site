@@ -475,6 +475,21 @@ async function setProfile() {
 }
 
 
+async function count_plus() {
+	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=` + userIdFrom, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+
+	console.log(response.trust_count);
+	console.log(response);
+}
+await count_plus();
+
+
+
 
 
 
