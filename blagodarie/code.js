@@ -1235,7 +1235,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		if (isAuth) {
 			if (isConnection) {
 				if (isTrust) {
-					await updateTrust(4);
+					await updateTrust(3);
 					
 					
 				}
