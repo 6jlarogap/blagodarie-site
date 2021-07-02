@@ -1236,21 +1236,21 @@ async function onNodeClick(nodeType, uuid, txt){
 			if (isConnection) {
 				if (isTrust) {
 					await updateTrust(4);
-					await thankPlus();
+					
 					
 				}
 				else {
-					await thankPlus();
+					
 					await updateTrust(4);
 					await updateTrust(3);
 				}
 			}
 			else {
-				await thankPlus();
+				
 				await updateTrust(3);
 				
 			}
-			await thankPlus();
+			
 			await showCount();
 			window.location.reload();
 		}
@@ -1402,18 +1402,7 @@ async function updateTrust(operationId, referal = null) {
 
 
 
-async function thankPlus(referal = null) {
-	
 
-	const response = await fetch(`${settings.api}api/addoperation`, {
-		method: "POST",
-		headers: {
-			"Authorization": "Token " + getCookie("auth_token"),
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "thanks_count": +1})
-	}).then(data => data.json())
-}
 
 
 
@@ -1531,12 +1520,4 @@ setInterval(function(){
 
 }, 1000);
 	
-async function showCount() {
-	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-	}).then(data => data.json());
-	console.log(response.trust_count);
-}
+
