@@ -565,6 +565,7 @@ d3.json(apiUrl)
 
 	if (isAuth) {
 		await setProfile();
+		await count_plus()
 		nodes.push(PROFILE);
 	}
 
