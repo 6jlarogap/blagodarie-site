@@ -628,15 +628,17 @@ d3.json(apiUrl)
 		}
 		}).then(data => data.json());
 
-	console.log(response.thanks_count);
-	console.log(response);
-
+	//console.log(response.thanks_count);
+	//console.log(response);
+	if(response.thanks_count >= 1){
+		resp = response.thanks_count
+	}
 		
 		//добавить вершину доверие/недоверие
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			tspan: response.thanks_count++,
+			tspan: resp,
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			nodeType: NODE_TYPES.TRUST
 		});
