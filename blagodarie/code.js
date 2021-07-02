@@ -1235,18 +1235,19 @@ async function onNodeClick(nodeType, uuid, txt){
 			if (isConnection) {
 				if (isTrust) {
 					await updateTrust(4);
-					await showCount();
+					
 				}
 				else {
-					await showCount();
+					
 					await updateTrust(4);
 					await updateTrust(3);
 				}
 			}
 			else {
 				await updateTrust(3);
-				await showCount();
+				
 			}
+			await showCount();
 			window.location.reload();
 		}
 		else {
@@ -1260,19 +1261,19 @@ async function onNodeClick(nodeType, uuid, txt){
 			if (isConnection) {
 				if (!isTrust) {
 					await updateTrust(4);
-					await showCount();
+					
 				}
 				else {
 					await updateTrust(4);
 					await updateTrust(2);
-					await showCount();
+					
 				}
 			}
 			else {
 				await updateTrust(2);
-				await showCount();
+				
 			}
-
+			await showCount();
 			window.location.reload();
 		}
 		else {
