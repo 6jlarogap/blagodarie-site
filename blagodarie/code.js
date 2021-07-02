@@ -632,20 +632,21 @@ d3.json(apiUrl)
 	//console.log(response);
 	async function resp_count_view(){
 	if(response.thanks_count >= 1){
-		await resp = response.thanks_count
+		 resp = response.thanks_count
 		
 	}
 	else{
-		await resp = '';
+		 resp = '';
 		
 	}
+		return resp
 	}
 		
 		//добавить вершину доверие/недоверие
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			tspan: resp,
+			tspan: await resp_count_view(),
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			nodeType: NODE_TYPES.TRUST
 		});
