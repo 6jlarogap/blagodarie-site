@@ -1253,6 +1253,7 @@ async function onNodeClick(nodeType, uuid, txt){
 			if (isConnection) {
 				if (!isTrust) {
 					await updateTrust(4);
+					console.log('111');
 				}
 				else {
 					await updateTrust(4);
