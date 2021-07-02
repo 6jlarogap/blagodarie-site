@@ -1231,10 +1231,10 @@ async function onNodeClick(nodeType, uuid, txt){
 			if (isConnection) {
 				if (isTrust) {
 					await updateTrust(4);
-					console.log('не было');
+					await setProfile();
 				}
 				else {
-					console.log('было');
+					await setProfile()
 					await updateTrust(4);
 					await updateTrust(3);
 				}
