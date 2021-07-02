@@ -565,7 +565,6 @@ d3.json(apiUrl)
 
 	if (isAuth) {
 		await setProfile();
-		await count_plus()
 		nodes.push(PROFILE);
 	}
 
@@ -635,6 +634,7 @@ d3.json(apiUrl)
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
+			text: await count_plus(),
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			nodeType: NODE_TYPES.TRUST
 		});
