@@ -1275,12 +1275,12 @@ async function onNodeClick(nodeType, uuid, txt){
 				else {
 					
 					await updateTrust(4);
-					await updateTrust(3);
+					await updateTrust(5);
 				}
 			}
 			else {
 				
-				await updateTrust(3);
+				await updateTrust(5);
 				
 			}
 			
