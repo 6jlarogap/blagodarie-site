@@ -630,7 +630,7 @@ d3.json(apiUrl)
 
 	//console.log(response.thanks_count);
 	//console.log(response);
-	async function resp_count_view(){
+	
 	if(response.thanks_count >= 1){
 		 resp = response.thanks_count
 		
@@ -639,14 +639,13 @@ d3.json(apiUrl)
 		 resp = '';
 		
 	}
-		return resp
-	}
+	
 		
 		//добавить вершину доверие/недоверие
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			tspan: await resp_count_view(),
+			tspan: resp,
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			nodeType: NODE_TYPES.TRUST
 		});
@@ -1299,7 +1298,7 @@ async function onNodeClick(nodeType, uuid, txt){
 			if (isConnection) {
 				if (!isTrust) {
 					await updateTrust(4);
-					await resp_count_view()
+					
 				}
 				else {
 					await updateTrust(4);
