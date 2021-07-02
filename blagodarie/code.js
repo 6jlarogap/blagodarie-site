@@ -475,17 +475,7 @@ async function setProfile() {
 }
 
 
-async function count_plus() {
-	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=` + userIdFrom, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-	}).then(data => data.json());
 
-	console.log(response.thanks_count);
-	console.log(response);
-}
 
 
 
@@ -629,15 +619,28 @@ d3.json(apiUrl)
 		var inactiveMistrust = `${settings.url}images/mistrust_inactive.png`;
 
 		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
+		
+		async function count_plus() {
+		const response = await fetch(`${settings.api}api/getprofileinfo?uuid=` + userIdFrom, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+		}).then(data => data.json());
 
+	console.log(response.thanks_count);
+	console.log(response);
+
+		
 		//добавить вершину доверие/недоверие
 		nodes.push({
 			id: TRUST_ID,
-			text: "Доверие" + await count_plus(),
+			text: "Доверие" + response.thanks_count,
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			nodeType: NODE_TYPES.TRUST
 		});
-
+		}
+		await count_plus()
 		nodes.push({
 			id: MISTRUST_ID,
 			text: "Недоверие",
