@@ -633,8 +633,7 @@ d3.json(apiUrl)
 		//добавить вершину доверие/недоверие
 		nodes.push({
 			id: TRUST_ID,
-			text: "Доверие",
-			text: await count_plus(),
+			text: "Доверие" + await count_plus(),
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			nodeType: NODE_TYPES.TRUST
 		});
