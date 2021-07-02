@@ -1294,7 +1294,7 @@ async function onNodeClick(nodeType, uuid, txt){
 			if (isConnection) {
 				if (!isTrust) {
 					await updateTrust(4);
-					
+					resp = "";
 				}
 				else {
 					await updateTrust(4);
