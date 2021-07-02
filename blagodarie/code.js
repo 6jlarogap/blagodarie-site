@@ -645,7 +645,7 @@ d3.json(apiUrl)
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			tspan: resp,
+			tspan: inactiveTrust ? resp = "" : activeTrust ? resp,
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			nodeType: NODE_TYPES.TRUST
 		});
