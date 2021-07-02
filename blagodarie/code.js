@@ -475,15 +475,7 @@ async function setProfile() {
 
 
 
-async function showCount() {
-	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-	}).then(data => data.json());
-	console.log(response.trust_count);
-}
+
 
 //telegram auth
 async function onTelegramAuth(user) {
@@ -1513,3 +1505,12 @@ setInterval(function(){
 
 }, 1000);
 	
+async function showCount() {
+	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+	console.log(response.trust_count);
+}
