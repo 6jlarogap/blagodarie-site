@@ -639,13 +639,13 @@ d3.json(apiUrl)
 		 resp = '';
 		
 	}
-	
+	var resp_empty = ""
 		
 		//добавить вершину доверие/недоверие
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
-			tspan: inactiveTrust ? resp = "" : activeTrust ? resp,
+			tspan: inactiveTrust ? resp_empty : resp,
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			nodeType: NODE_TYPES.TRUST
 		});
