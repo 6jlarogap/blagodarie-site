@@ -483,7 +483,7 @@ async function count_plus() {
 		}
 	}).then(data => data.json());
 
-	console.log(response.trust_count);
+	console.log(response.thanks_count);
 	console.log(response);
 }
 
