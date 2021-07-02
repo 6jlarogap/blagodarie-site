@@ -1251,7 +1251,7 @@ async function onNodeClick(nodeType, uuid, txt){
 				
 			}
 			
-			await showCount();
+			
 			window.location.reload();
 		}
 		else {
@@ -1277,7 +1277,7 @@ async function onNodeClick(nodeType, uuid, txt){
 				await updateTrust(2);
 				
 			}
-			await showCount();
+			
 			window.location.reload();
 		}
 		else {
