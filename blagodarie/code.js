@@ -630,11 +630,15 @@ d3.json(apiUrl)
 
 	//console.log(response.thanks_count);
 	//console.log(response);
+	async function resp_count_view(){
 	if(response.thanks_count >= 1){
-		resp = response.thanks_count
+		await resp = response.thanks_count
+		
 	}
 	else{
-		resp = '';
+		await resp = '';
+		
+	}
 	}
 		
 		//добавить вершину доверие/недоверие
@@ -1294,7 +1298,7 @@ async function onNodeClick(nodeType, uuid, txt){
 			if (isConnection) {
 				if (!isTrust) {
 					await updateTrust(4);
-					resp = "";
+					await resp_count_view()
 				}
 				else {
 					await updateTrust(4);
