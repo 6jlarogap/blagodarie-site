@@ -633,6 +633,9 @@ d3.json(apiUrl)
 	if(response.thanks_count >= 1){
 		resp = response.thanks_count
 	}
+	else{
+		resp = '';
+	}
 		
 		//добавить вершину доверие/недоверие
 		nodes.push({
