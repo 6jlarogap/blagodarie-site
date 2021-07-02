@@ -486,7 +486,7 @@ async function count_plus() {
 	console.log(response.trust_count);
 	console.log(response);
 }
-await count_plus();
+
 
 
 
