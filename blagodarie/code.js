@@ -471,7 +471,17 @@ async function setProfile() {
 	PROFILE.image = response.photo == '' ? `${settings.url}images/default_avatar.png` : response.photo;
 	PROFILE.id = getCookie("user_uuid");
 	console.log(response.trust_count);
+	console.log(response);
 }
+
+
+
+
+
+
+
+
+
 
 //telegram auth
 async function onTelegramAuth(user) {
@@ -609,15 +619,38 @@ d3.json(apiUrl)
 		var inactiveMistrust = `${settings.url}images/mistrust_inactive.png`;
 
 		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
+		
+		async function count_plus() {
+		const response = await fetch(`${settings.api}api/getprofileinfo?uuid=` + userIdFrom, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+		}).then(data => data.json());
 
+	//console.log(response.thanks_count);
+	//console.log(response);
+	
+	if(response.thanks_count >= 1){
+		 resp = response.thanks_count
+		
+	}
+	else{
+		 resp = '';
+		
+	}
+	var resp_empty = ""
+		
 		//добавить вершину доверие/недоверие
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
+			tspan: !isConnection ? resp_empty : isTrust ? resp : resp_empty,
 			nodeType: NODE_TYPES.TRUST
 		});
-
+		}
+		await count_plus()
 		nodes.push({
 			id: MISTRUST_ID,
 			text: "Недоверие",
@@ -979,6 +1012,11 @@ function initializeDisplay() {
 				return "friendPortrait";
 			}
 		});
+	node.append("text")
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : 10))
+		.attr("font-size", "20")
+		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
+		.text(d => (d.tspan));
 	
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : 48))
@@ -1230,16 +1268,23 @@ async function onNodeClick(nodeType, uuid, txt){
 		if (isAuth) {
 			if (isConnection) {
 				if (isTrust) {
-					await updateTrust(4);
+					await updateTrust(5);
+					
+					
 				}
 				else {
+					
 					await updateTrust(4);
-					await updateTrust(3);
+					await updateTrust(5);
 				}
 			}
 			else {
-				await updateTrust(3);
+				
+				await updateTrust(5);
+				
 			}
+			
+			
 			window.location.reload();
 		}
 		else {
@@ -1253,16 +1298,19 @@ async function onNodeClick(nodeType, uuid, txt){
 			if (isConnection) {
 				if (!isTrust) {
 					await updateTrust(4);
+					
 				}
 				else {
 					await updateTrust(4);
 					await updateTrust(2);
+					
 				}
 			}
 			else {
 				await updateTrust(2);
+				
 			}
-
+			
 			window.location.reload();
 		}
 		else {
@@ -1385,6 +1433,12 @@ async function updateTrust(operationId, referal = null) {
 	}).then(data => data.json())
 }
 
+
+
+
+
+
+
 async function getProfileInfo(uuid) {
 	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${uuid}`, {
 		method: 'GET',
@@ -1499,3 +1553,4 @@ setInterval(function(){
 
 }, 1000);
 	
+
