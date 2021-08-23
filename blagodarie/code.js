@@ -1241,12 +1241,12 @@ async function onNodeClick(nodeType, uuid, txt){
 		authDialog.style.display = "flex"
 	}
 	else if(nodeType == NODE_TYPES.FILTER) {
+		window.location.href = `${settings.url}profile?id=` + uuid;
 		if (localStorage.getItem("filter")) {
 			filterInput.value = localStorage.getItem("filter");
-			window.location.href = `${settings.url}profile?id=` + uuid;
 		}
 		filterDialog.style.display = "flex";
-		window.location.href = `${settings.url}profile?id=` + uuid;
+		
 	}
 	else if (nodeType == NODE_TYPES.SHARE) {
 		share.updateContent({
