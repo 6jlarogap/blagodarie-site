@@ -1011,6 +1011,9 @@ function initializeDisplay() {
 			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FRIEND){
         			return "friendPortrait friend";
     			}
+			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FILTER){
+        			return "friendPortrait active_filer_icon";
+    			}
     			
 			else {
 				return "friendPortrait";
@@ -1226,9 +1229,7 @@ function initDefs(){
 		.attr("r", "16")
 		.attr("fill", "#ff0000");
 }
-if (localStorage.getItem("filter")) {
-	console.log('filer blur');
-}
+
 
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
