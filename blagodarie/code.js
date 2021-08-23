@@ -1008,6 +1008,12 @@ function initializeDisplay() {
 			else if (d.nodeType == NODE_TYPES.FILTERED) {
 				return "filtered";
 			}
+			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FRIEND){
+        			console.log("true")
+    			}
+    			else if(localStorage.getItem('filter') == undefined || localStorage.getItem('filter') == null){
+        			console.log("false")
+    			}
 			else {
 				return "friendPortrait";
 			}
