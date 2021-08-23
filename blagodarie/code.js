@@ -160,13 +160,13 @@ telegramAuth.setAttribute('data-request-access', "write")
 authDialog.insertBefore(telegramAuth, authDialog.lastElementChild);
 
 
-setTimeout(() => {
+/*setTimeout(() => {
 	var tgIframe;
 	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 	tgIframe.style.marginTop = '80px';
 	tgIframe.style.marginBottom = '45px';
 	
-}, 2000)
+}, 2000)*/
 
 if (getCookie("auth_data")) {
 	var auth_data = getCookie("auth_data");
@@ -1243,6 +1243,7 @@ async function onNodeClick(nodeType, uuid, txt){
 	else if(nodeType == NODE_TYPES.FILTER) {
 		if (localStorage.getItem("filter")) {
 			filterInput.value = localStorage.getItem("filter");
+			window.location.href = `${settings.url}profile?id=` + uuid;
 		}
 		filterDialog.style.display = "flex";
 		window.location.href = `${settings.url}profile?id=` + uuid;
