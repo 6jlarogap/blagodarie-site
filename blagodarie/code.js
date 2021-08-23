@@ -1226,7 +1226,9 @@ function initDefs(){
 		.attr("r", "16")
 		.attr("fill", "#ff0000");
 }
-
+if (localStorage.getItem("filter")) {
+	console.log('filer blur');
+}
 
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
@@ -1245,7 +1247,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		window.location.href = `${settings.url}profile?id=` + uuid;
 	}
 	else if(nodeType == NODE_TYPES.FILTER) {
-		//window.location.href = `${settings.url}profile?id=` + uuid;
+		
 		if (localStorage.getItem("filter")) {
 			filterInput.value = localStorage.getItem("filter");
 		}
