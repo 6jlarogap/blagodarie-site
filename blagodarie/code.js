@@ -1240,6 +1240,10 @@ async function onNodeClick(nodeType, uuid, txt){
 	} else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex"
 	}
+	else if (nodeType == NODE_TYPES.FILTERED) {
+
+		window.location.href = `${settings.url}profile?id=` + uuid;
+	}
 	else if(nodeType == NODE_TYPES.FILTER) {
 		//window.location.href = `${settings.url}profile?id=` + uuid;
 		if (localStorage.getItem("filter")) {
