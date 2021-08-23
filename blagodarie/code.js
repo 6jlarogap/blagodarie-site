@@ -1009,11 +1009,9 @@ function initializeDisplay() {
 				return "filtered";
 			}
 			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FRIEND){
-        			console.log("true")
+        			return "friendPortrait friend";
     			}
-    			else if(localStorage.getItem('filter') == undefined || localStorage.getItem('filter') == null){
-        			console.log("false")
-    			}
+    			
 			else {
 				return "friendPortrait";
 			}
