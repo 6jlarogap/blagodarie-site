@@ -1245,6 +1245,7 @@ async function onNodeClick(nodeType, uuid, txt){
 			filterInput.value = localStorage.getItem("filter");
 		}
 		filterDialog.style.display = "flex";
+		window.location.href = `${settings.url}profile?id=` + uuid;
 	}
 	else if (nodeType == NODE_TYPES.SHARE) {
 		share.updateContent({
