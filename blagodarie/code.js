@@ -472,6 +472,7 @@ async function setProfile() {
 	PROFILE.id = getCookie("user_uuid");
 	console.log(response.trust_count);
 	console.log(response);
+	console.log(response.ability);
 }
 
 
