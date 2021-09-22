@@ -663,7 +663,7 @@ d3.json(apiUrl)
 	}
 	nodes.push({
 			id: ABILITY_ID,
-			text: 'l',
+			text: (d.ability),
 			nodeType: NODE_TYPES.ABILITY
 	});
 	
