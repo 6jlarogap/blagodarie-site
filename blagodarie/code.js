@@ -571,7 +571,7 @@ if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') ===
 	console.log('example3');
 }
 }else if(window.location.href == 'https://dev.blagodarie.org/?page=2'){
-	var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=5&number=5`;
+	var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=100&number=5`;
 	if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
 		apiUrl = `${settings.api}api/profile_graph?from=5&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
 		console.log('example1');
