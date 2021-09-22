@@ -371,8 +371,7 @@ async function filter_head(query_inp) {
 	console.log(response);
 	};
 
-		filter_head('nikita');
-console.log(filterInput.value);
+		
 
 
 
@@ -380,7 +379,9 @@ console.log(filterInput.value);
 document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
 		localStorage.setItem("filter", filterInput.value);
-		window.location.reload()
+		//window.location.reload()
+		filter_head(filterInput.value);
+		console.log(filterInput.value);
 	}
 	
 
