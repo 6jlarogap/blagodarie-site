@@ -557,7 +557,7 @@ if (invite && !isAuth) {
 var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
-if(window.location.href == 'https://dev.blagodarie.org/' || window.location.href == 'https://dev.blagodarie.org' ||){
+if(window.location.href == 'https://dev.blagodarie.org/' || window.location.href == 'https://dev.blagodarie.org'){
 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
 
 if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
