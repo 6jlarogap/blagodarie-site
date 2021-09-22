@@ -571,7 +571,7 @@ function PrevPage(){
 	do_pagination_func();
 }
 let current_page2 = window.location.search;
-let replacer = current_page2.replace('/page=')
+let replacer = current_page2.replace('/page=', " ")
 document.querySelector('#page').innerHTML = replacer;
 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
 
