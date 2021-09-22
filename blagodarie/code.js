@@ -589,9 +589,9 @@ if (localStorage.getItem('filter') != null) {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
-	
-		responseee.users.forEach(function(d){
 		console.log(responseee.users.uuid)
+		responseee.users.forEach(function(d){
+		
 			if(d.ability === null){
 			nodes.push ({
 				id: d.uuid,
