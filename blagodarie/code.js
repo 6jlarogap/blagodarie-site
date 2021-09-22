@@ -573,8 +573,8 @@ d3.json(apiUrl)
 			}else{
 				nodes.push ({
 				id: d.uuid,
-				text: (d.first_name + " " + d.last_name + "\n " + d.ability),
-				tspan: (d.ability),
+				text: (d.first_name + " " + d.last_name),
+				tabil: (d.ability),
 				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
@@ -1047,6 +1047,11 @@ function initializeDisplay() {
 		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.text));
+	node.append("text")
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  70 : d.nodeType == NODE_TYPES.FILTERED ? 70 : 70))
+		.attr("font-size", "20")
+		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "textability" : "ability"))
+		.text(d => (d.tabil));
 }
 
 function ticked() {
