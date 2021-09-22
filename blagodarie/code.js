@@ -557,7 +557,11 @@ if (invite && !isAuth) {
 var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
+
+
+
 let current_page = 1;
+document.querySelector('#page').innerHTML = current_page;
 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
 
 if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
