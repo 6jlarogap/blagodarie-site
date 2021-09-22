@@ -20,7 +20,8 @@ const NODE_TYPES = Object.freeze({
 });
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const KEYS_ROOT_ID = "KEYS_ROOT";
-const ABILITIES_ROOT_ID = "ABILITIES_ROOT"
+const ABILITIES_ROOT_ID = "ABILITIES_ROOT";
+const ABILITY_ID = "ABILITY";
 const AUTH_ID = "AUTH_ROOT";
 const SHARE_ID = "SHARE_ROOT";
 const OPTIONS_ID = "OPTIONS_ROOT";
@@ -660,6 +661,11 @@ d3.json(apiUrl)
 			nodeType: NODE_TYPES.MISTRUST
 		});
 	}
+	nodes.push({
+			id: ABILITY_ID,
+			text: d.ability,
+			nodeType: NODE_TYPES.ABILITY
+	});
 	
 	if (isAuth) {
 		// добавить вершину options
@@ -831,6 +837,10 @@ d3.json(apiUrl)
 			break;
 		case ABILITIES_ROOT_ID:
 			d.fx = width / 2 + 400;
+			d.fy = height / 2;
+			break;
+		case ABILITY_ID:
+			d.fx = width / 2 + 500;
 			d.fy = height / 2;
 			break;
 		case SHARE_ID:
