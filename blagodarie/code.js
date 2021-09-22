@@ -371,8 +371,8 @@ async function filter_head(query_inp) {
 	console.log(response);
 	};
 
-		filter_head('Елиз');
-		
+		filter_head('nikita');
+console.log(filterInput.value);
 
 
 
