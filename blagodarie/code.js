@@ -588,7 +588,29 @@ d3.json(apiUrl)
 	}
 
 if (localStorage.getItem('filter') != null) {
-	console.log('happy')
+	//добавить пользователей в вершины
+filter_head(query_inp).users.forEach(function(responseee){
+		if (!nodes.some(user => user.id == responseee.uuid)) {
+			if(d.ability === null){
+			nodes.push ({
+				id: responseee.uuid,
+				text: (responseee.first_name + " " + responseee.last_name + " " + " "),
+				image: responseee.photo == '' ? `${settings.url}images/default_avatar.png` : responseee.photo,
+				nodeType: (responseee.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(responseee.first_name + " " + responseee.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
+			});
+			}else{
+				nodes.push ({
+				id: responseee.uuid,
+				text: (responseee.first_name + " " + responseee.last_name),
+				tabil: (responseee.ability),
+				image: responseee.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
+				nodeType: (responseee.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(responseee.first_name + " " + responseee.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
+			});
+			}
+			
+			
+		}
+	});
 }else{
 console.log(localStorage.getItem('filter'))			
 	//добавить пользователей в вершины
