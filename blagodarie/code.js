@@ -380,7 +380,7 @@ document.getElementById("filterSearch").addEventListener("click", () => {
 		window.location.reload()
 	}
 	filter_head(filterInput.value);
-};
+
 	
 	
 })
