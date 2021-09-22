@@ -566,7 +566,7 @@ function nextPage(){
 	window.location.assign(window.location.href + '?page=' + current_page)
 }
 
-document.querySelector('#page').innerHTML = current_page;
+document.querySelector('#page').innerHTML = window.location.search.replace('/page=');
 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
 
 if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
