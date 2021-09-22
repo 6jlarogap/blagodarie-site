@@ -587,7 +587,7 @@ d3.json(apiUrl)
 
 	
 	
-	async function filter_head(query_inp) {
+	/*async function filter_head(query_inp) {
 	const responseee = await fetch(`${settings.api}/api/getstats/user_connections_graph?query=${query_inp}`, {
 		method: "GET",
 		headers: {
@@ -596,11 +596,12 @@ d3.json(apiUrl)
 	}).then(data => data.json());
 		console.log(responseee)
 		
-	}
+	}*/
 		
 	//добавить пользователей в вершины
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
+			console.log(d);
 			if(d.ability === null){
 			nodes.push ({
 				id: d.uuid,
