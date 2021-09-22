@@ -362,13 +362,14 @@ addElement.addEventListener("click", async () => {
 
 
 async function filter_head(query_inp) {
-	const response = await fetch(`${settings.api}/api/getstats/user_connections_graph?query=${query_inp}`, {
+	const responseee = await fetch(`${settings.api}/api/getstats/user_connections_graph?query=${query_inp}`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
-	console.log(response);
+	console.log(responseee);
+	return.responseee
 	};
 
 		
@@ -379,9 +380,8 @@ async function filter_head(query_inp) {
 document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
 		localStorage.setItem("filter", filterInput.value);
-		//window.location.reload()
-		filter_head(filterInput.value);
-		console.log(filterInput.value);
+		window.location.reload()
+		
 	}
 	
 
@@ -590,6 +590,9 @@ d3.json(apiUrl)
 	//добавить пользователей в вершины
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
+			if (filterInput.value != "") {
+				console.log('happy')
+			}else{
 			if(d.ability === null){
 			nodes.push ({
 				id: d.uuid,
@@ -605,6 +608,7 @@ d3.json(apiUrl)
 				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
+			}
 			}
 			
 		}
