@@ -586,10 +586,11 @@ d3.json(apiUrl)
 		await setProfile();
 		nodes.push(PROFILE);
 	}
-if (filterInput.value != "") {
+
+if (filterInput.value != " ") {
 	console.log('happy')
 }else{
-console.log(filterInput.value)			
+console.log(localStorage.getItem('filter'))			
 	//добавить пользователей в вершины
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
