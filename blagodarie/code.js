@@ -587,14 +587,14 @@ d3.json(apiUrl)
 
 	
 	
-	/*async function filter_head(query_inp) {
+	async function filter_head(query_inp) {
 	const responseee = await fetch(`${settings.api}/api/getstats/user_connections_graph?query=${query_inp}`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
-		console.log(responseee)*/
+		console.log(responseee)
 		
 		
 		
