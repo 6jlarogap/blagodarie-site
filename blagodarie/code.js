@@ -587,7 +587,7 @@ d3.json(apiUrl)
 		nodes.push(PROFILE);
 	}
 
-if (filterInput.value != " ") {
+if (filterInput.value != "") {
 	console.log('happy')
 }else{
 console.log(localStorage.getItem('filter'))			
