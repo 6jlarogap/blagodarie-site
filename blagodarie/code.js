@@ -356,12 +356,33 @@ addElement.addEventListener("click", async () => {
 	})
 })
 
+
+
+
+
+
+async function filter_head(query_inp) {
+	const response = await fetch(`${settings.api}/api/getstats/user_connections_graph?query=${query_inp}`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+	console.log(response);
+	};
+
+
+
 //filter
 document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
 		localStorage.setItem("filter", filterInput.value)
 		window.location.reload()
 	}
+	filter_head(filterInput.value);
+};
+	
+	
 })
 
 document.getElementById("filterNullify").addEventListener("click", () => {
