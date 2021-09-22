@@ -371,7 +371,7 @@ async function filter_head(query_inp) {
 	console.log(response);
 	};
 
-		filter_head(filterInput.value);
+		filter_head('Елиз');
 		
 
 
