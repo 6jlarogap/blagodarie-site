@@ -596,7 +596,7 @@ d3.json(apiUrl)
 	}).then(data => data.json());
 		console.log(responseee)
 		
-		
+	}
 		
 	//добавить пользователей в вершины
 	data.users.forEach(function(d){
