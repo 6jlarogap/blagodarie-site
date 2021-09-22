@@ -586,14 +586,12 @@ d3.json(apiUrl)
 		await setProfile();
 		nodes.push(PROFILE);
 	}
-
+if (filterInput.value != "") {
+				console.log('happy')
+			}else{
 	//добавить пользователей в вершины
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
-			if (filterInput.value != "") {
-				console.log('happy')
-			}else{
-			console.log(filterInput.value);
 			if(d.ability === null){
 			nodes.push ({
 				id: d.uuid,
@@ -610,11 +608,11 @@ d3.json(apiUrl)
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
 			}
-			}
+			
 			
 		}
 	});
-
+			}
 	if (data.wishes != null){
 		//добавить вершину желаний
 		nodes.push({
