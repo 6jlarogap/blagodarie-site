@@ -589,7 +589,7 @@ if (localStorage.getItem('filter') != null) {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
-		console.log(responseee.users.uuid)
+		console.log(responseee)
 		responseee.users.forEach(function(d){
 		
 			if(d.ability === null){
