@@ -369,7 +369,7 @@ async function filter_head(query_inp) {
 		}
 	}).then(data => data.json());
 	console.log(responseee);
-	return.responseee
+	return responseee
 	};
 
 		
