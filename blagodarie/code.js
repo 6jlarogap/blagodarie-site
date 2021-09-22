@@ -597,11 +597,11 @@ d3.json(apiUrl)
 		console.log(responseee)
 		
 	}*/
-		
+	console.log(data.users.length)
 	//добавить пользователей в вершины
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
-			console.log(users);
+			
 			if(d.ability === null){
 			nodes.push ({
 				id: d.uuid,
