@@ -470,7 +470,7 @@ async function setProfile() {
 	}).then(data => data.json());
 
 	PROFILE.text = response.first_name + " " + response.last_name;
-	PROFILE.tabil = response.ability;
+	PROFILE.abil = response.ability;
 	PROFILE.image = response.photo == '' ? `${settings.url}images/default_avatar.png` : response.photo;
 	PROFILE.id = getCookie("user_uuid");
 	console.log(response.trust_count);
@@ -1054,6 +1054,12 @@ function initializeDisplay() {
 		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "friendName" : "friendName"))
 		.text(d => (d.tabil));
+	
+	node.append("text")
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  90 : d.nodeType == NODE_TYPES.FILTERED ? 90 : 90))
+		.attr("font-size", "20")
+		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "friendName" : "friendName"))
+		.text(d => (d.abil));
 }
 
 function ticked() {
