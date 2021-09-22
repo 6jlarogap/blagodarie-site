@@ -561,6 +561,11 @@ var fromApp = url.searchParams.get("from_app");
 
 
 let current_page = 1;
+function nextPage(){
+	current_page++;
+	window.location.assign(window.location.href + '?page=' + current_page)
+}
+
 document.querySelector('#page').innerHTML = current_page;
 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
 
