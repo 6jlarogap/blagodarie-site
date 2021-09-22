@@ -587,8 +587,9 @@ d3.json(apiUrl)
 		nodes.push(PROFILE);
 	}
 if (filterInput.value != "") {
-				console.log('happy')
-			}else{
+	console.log('happy')
+}else{
+console.log(filterInput.value)			
 	//добавить пользователей в вершины
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
@@ -612,7 +613,14 @@ if (filterInput.value != "") {
 			
 		}
 	});
-			}
+				
+				
+				
+}
+	
+	
+	
+	
 	if (data.wishes != null){
 		//добавить вершину желаний
 		nodes.push({
