@@ -560,9 +560,9 @@ var fromApp = url.searchParams.get("from_app");
 
 var apiUrl = `${settings.api}api/getstats/user_connections_graph`;
 
-if (userIdFrom != null && userIdTo != null){
+if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') != null){
 	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
-} else if(userIdFrom != null){
+} else if(userIdFrom != null && localStorage.getItem('filter') != null){
 	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom;
 } else if(localStorage.getItem('filter') != null){
 	apiUrl = `${settings.api}api/getstats/user_connections_graph?query=`+localStorage.getItem('filter');
