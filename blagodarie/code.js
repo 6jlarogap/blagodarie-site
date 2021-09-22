@@ -582,7 +582,7 @@ if (localStorage.getItem('filter') != null) {
 	//добавить пользователей в вершины
 	
 	
-	async function filter_head(localStorage.getItem('filter')) {
+	async function filter_head(query_inp) {
 	const responseee = await fetch(`${settings.api}/api/getstats/user_connections_graph?query=${query_inp}`, {
 		method: "GET",
 		headers: {
@@ -618,7 +618,7 @@ if (localStorage.getItem('filter') != null) {
 	};
 	
 	
-	
+filter_head(localStorage.getItem('filter'))	
 	
 	
 	
