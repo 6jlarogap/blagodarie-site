@@ -591,7 +591,7 @@ if (localStorage.getItem('filter') != null) {
 	}).then(data => data.json());
 	
 		responseee.users.forEach(function(d){
-		console.log(responseee.users.id)
+		console.log(responseee.users.uuid)
 			if(d.ability === null){
 			nodes.push ({
 				id: d.uuid,
