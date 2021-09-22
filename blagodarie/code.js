@@ -370,17 +370,16 @@ async function filter_head(query_inp) {
 	}).then(data => data.json());
 	console.log(response);
 	};
-if (filterInput.value != "") {
+
 		filter_head(filterInput.value);
 		
-}
+
 
 
 //filter
 document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
 		localStorage.setItem("filter", filterInput.value);
-		filter_head(filterInput.value);
 		window.location.reload()
 	}
 	
