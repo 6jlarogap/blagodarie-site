@@ -370,7 +370,10 @@ async function filter_head(query_inp) {
 	}).then(data => data.json());
 	console.log(response);
 	};
-
+if (filterInput.value != "") {
+		filter_head(filterInput.value);
+		
+}
 
 
 //filter
