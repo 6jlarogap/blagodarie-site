@@ -361,16 +361,7 @@ addElement.addEventListener("click", async () => {
 
 
 
-async function filter_head(query_inp) {
-	const responseee = await fetch(`${settings.api}/api/getstats/user_connections_graph?query=${query_inp}`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-	}).then(data => data.json());
-	console.log(responseee);
-	return responseee
-	};
+
 
 		
 
@@ -589,8 +580,17 @@ d3.json(apiUrl)
 
 if (localStorage.getItem('filter') != null) {
 	//добавить пользователей в вершины
-	filter_head(localStorage.getItem('filter'));
-responseee.users.forEach(function(responseee){
+	
+	
+	async function filter_head(localStorage.getItem('filter')) {
+	const responseee = await fetch(`${settings.api}/api/getstats/user_connections_graph?query=${query_inp}`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+	
+		responseee.users.forEach(function(responseee){
 		if (!nodes.some(user => user.id == responseee.uuid)) {
 			if(d.ability === null){
 			nodes.push ({
@@ -612,6 +612,17 @@ responseee.users.forEach(function(responseee){
 			
 		}
 	});
+		
+		
+		
+	};
+	
+	
+	
+	
+	
+	
+
 }else{
 console.log(localStorage.getItem('filter'))			
 	//добавить пользователей в вершины
