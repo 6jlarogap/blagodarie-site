@@ -38,6 +38,32 @@
 		.round {
 			border-radius: 50%;
 		}
+		.pagination_block{
+			display: flex;
+    			position: absolute;
+    			bottom: 0;
+    			left: 50%;
+    			width: 180px;
+    			margin-left: -90px;
+			align-items: center;
+    			justify-content: space-between;
+		}
+		#btn_prev{
+			text-decoration: none;
+    			color: #fff;
+    			background-color: #000;
+    			padding: 5px 11px;
+    			border-radius: 12px;
+    			font-weight: 700;
+		}
+		#btn_next{
+			text-decoration: none;
+    			color: #fff;
+    			background-color: #000;
+    			padding: 5px 11px;
+    			border-radius: 12px;
+    			font-weight: 700;
+		}
 
 		image.userPortrait {
 			width: 128px;
@@ -506,8 +532,8 @@
 		</div>
 	</dialog>
 	<div class="pagination_block">
-        	<a href="javascript:prevPage()" id="btn_prev">Предидущая страница</a>
-        	<a href="javascript:nextPage()" id="btn_next">Следующая страница</a> Страница: <span id="page"></span>
+        	<a href="javascript:prevPage()" id="btn_prev">Предидущая страница</a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">Следующая страница</a>
+        	
     	</div>
 	<dialog id="rootDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
