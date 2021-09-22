@@ -593,6 +593,7 @@ d3.json(apiUrl)
 			if (filterInput.value != "") {
 				console.log('happy')
 			}else{
+			console.log(filterInput.value);
 			if(d.ability === null){
 			nodes.push ({
 				id: d.uuid,
