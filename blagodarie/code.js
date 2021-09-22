@@ -1048,7 +1048,7 @@ function initializeDisplay() {
 		.text(d => (d.text));
 	
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  70 : d.nodeType == NODE_TYPES.FILTERED ? 85 : 70))
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  70 : d.nodeType == NODE_TYPES.FILTERED ? 85 : 85))
 		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.tabil));
