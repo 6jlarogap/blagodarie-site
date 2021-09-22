@@ -571,15 +571,15 @@ if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') ===
 	console.log('example3');
 }
 }else if(window.location.href == 'https://dev.blagodarie.org/?page=2'){
-	var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=5&number=10`;
+	var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=5&number=5`;
 	if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
-		apiUrl = `${settings.api}api/profile_graph?from=5&number=10&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+		apiUrl = `${settings.api}api/profile_graph?from=5&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
 		console.log('example1');
 	} else if(userIdFrom != null && localStorage.getItem('filter') === null){
-		apiUrl = `${settings.api}api/profile_graph?from=5&number=10&uuid=` + userIdFrom;
+		apiUrl = `${settings.api}api/profile_graph?from=5&number=5&uuid=` + userIdFrom;
 		console.log('example2');
 	} else if(localStorage.getItem('filter') != null){
-		apiUrl = `${settings.api}api/getstats/user_connections_graph?from=5&number=10&query=`+localStorage.getItem('filter');
+		apiUrl = `${settings.api}api/getstats/user_connections_graph?from=5&number=5&query=`+localStorage.getItem('filter');
 		console.log('example3');
 	}
 }
