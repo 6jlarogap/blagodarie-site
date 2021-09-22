@@ -468,7 +468,7 @@ async function setProfile() {
 		}
 	}).then(data => data.json());
 
-	PROFILE.text = response.first_name + " " + response.last_name;
+	PROFILE.text = response.first_name + " " + response.last_name + " " + response.ability;
 	PROFILE.image = response.photo == '' ? `${settings.url}images/default_avatar.png` : response.photo;
 	PROFILE.id = getCookie("user_uuid");
 	console.log(response.trust_count);
