@@ -557,20 +557,32 @@ if (invite && !isAuth) {
 var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
-
+if(window.location.href == 'https://dev.blagodarie.org/' || window.location.href == 'https://dev.blagodarie.org' ||){
 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
 
 if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
-	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+	apiUrl = `${settings.api}api/profile_graph?from=0&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
 	console.log('example1');
 } else if(userIdFrom != null && localStorage.getItem('filter') === null){
-	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom;
+	apiUrl = `${settings.api}api/profile_graph?from=0&number=5&uuid=` + userIdFrom;
 	console.log('example2');
 } else if(localStorage.getItem('filter') != null){
-	apiUrl = `${settings.api}api/getstats/user_connections_graph?query=`+localStorage.getItem('filter');
+	apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5&query=`+localStorage.getItem('filter');
 	console.log('example3');
 }
-
+}else if(window.location.href == 'https://dev.blagodarie.org/?page=2'){
+	var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=5&number=10`;
+	if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
+		apiUrl = `${settings.api}api/profile_graph?from=5&number=10&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+		console.log('example1');
+	} else if(userIdFrom != null && localStorage.getItem('filter') === null){
+		apiUrl = `${settings.api}api/profile_graph?from=5&number=10&uuid=` + userIdFrom;
+		console.log('example2');
+	} else if(localStorage.getItem('filter') != null){
+		apiUrl = `${settings.api}api/getstats/user_connections_graph?from=5&number=10&query=`+localStorage.getItem('filter');
+		console.log('example3');
+	}
+}
 
 var isConnection;
 var isTrust;
