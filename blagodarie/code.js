@@ -562,10 +562,13 @@ var apiUrl = `${settings.api}api/getstats/user_connections_graph`;
 
 if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') != null){
 	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+	console.log('example1');
 } else if(userIdFrom != null && localStorage.getItem('filter') != null){
 	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom;
+	console.log('example2');
 } else if(localStorage.getItem('filter') != null){
 	apiUrl = `${settings.api}api/getstats/user_connections_graph?query=`+localStorage.getItem('filter');
+	console.log('example3');
 }
 
 
