@@ -565,7 +565,7 @@ d3.json(apiUrl)
 		if (!nodes.some(user => user.id == d.uuid)) {
 			nodes.push ({
 				id: d.uuid,
-				text: (d.first_name + " " + d.last_name + " " + (d.ability) ? d.ability : " "),
+				text: (d.first_name + " " + d.last_name + " " + d.ability),
 				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
