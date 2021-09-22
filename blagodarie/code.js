@@ -589,7 +589,7 @@ d3.json(apiUrl)
 
 if (localStorage.getItem('filter') != null) {
 	//добавить пользователей в вершины
-filter_head(query_inp).users.forEach(function(responseee){
+filter_head(localStorage.getItem('filter')).users.forEach(function(responseee){
 		if (!nodes.some(user => user.id == responseee.uuid)) {
 			if(d.ability === null){
 			nodes.push ({
