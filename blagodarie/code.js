@@ -564,7 +564,10 @@ if (userIdFrom != null && userIdTo != null){
 	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
 } else if(userIdFrom != null){
 	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom;
+} else if(localStorage.getItem('filter') != null){
+	apiUrl = `${settings.api}api/getstats/user_connections_graph?query=`+localStorage.getItem('filter');
 }
+
 
 var isConnection;
 var isTrust;
