@@ -558,7 +558,7 @@ var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
 
-var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=6`;
+var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=100`;
 
 if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
 	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
