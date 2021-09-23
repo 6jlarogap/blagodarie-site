@@ -620,6 +620,10 @@ if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') ===
 var isConnection;
 var isTrust;
 
+
+
+setInterval(function(){
+
 d3.json(apiUrl)
 	.then(async function(data) {
 
@@ -644,6 +648,7 @@ d3.json(apiUrl)
 	}*/
 	console.log(data.users.length)
 	//добавить пользователей в вершины
+	
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
 			
@@ -1004,6 +1009,15 @@ d3.json(apiUrl)
 	initializeDisplay();
 	initializeSimulation();
 });
+
+
+
+
+
+},8000);
+
+
+
 
 function initializeSimulation() {
 	simulation.nodes(nodes);
