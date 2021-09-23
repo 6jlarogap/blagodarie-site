@@ -624,10 +624,10 @@ if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') ===
 
 
 
-let newUrlApi = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5`;
+
 function nextPage(){
 	document.querySelector('#page').innerHTML = ++current_page;
-	
+	let newUrlApi = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5`;
 
 	if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
 		newUrlApi = `${settings.api}api/profile_graph?from=${plus_int}&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
@@ -640,14 +640,7 @@ function nextPage(){
 		console.log('example3');
 	}
 	plus_int += 5;
-	console.log(plus_int);
-	console.log(apiUrl);
-	add_users_pag();
-}
-
-
-
-function add_users_pag(){
+	console.log(newUrlApi);
 	d3.json(newUrlApi)
 	.then(async function(data) {
 
@@ -787,12 +780,11 @@ function add_users_pag(){
 	initializeDisplay();
 	initializeSimulation();
 	});
-		
-		
-		
-		
-		
 }
+
+
+
+
 
 
 
