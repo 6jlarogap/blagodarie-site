@@ -579,7 +579,8 @@ function nextPage(){
 			console.log(min_int);
 			min_int++;
 			console.log(min_int);
-			//localStorage.setItem('cur_page', min_int);
+			localStorage.setItem('cur_page', min_int);
+			console.log(localStorage.getItem('cur_page'));
 			//window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(-2) + (+localStorage.getItem('cur_page')));
 		}
 	}
