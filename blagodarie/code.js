@@ -603,6 +603,28 @@ function prevPage(){
 
 let current_page2 = window.location.search;
 document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');*/
+
+let current_page = 1;
+let plus_int = 0;
+document.querySelector('#page').innerHTML = current_page;
+function nextPage(){
+	current++;
+	var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5`;
+
+	if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
+		apiUrl = `${settings.api}api/profile_graph?from=${plus_int}&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+		console.log('example1');
+	} else if(userIdFrom != null && localStorage.getItem('filter') === null){
+		apiUrl = `${settings.api}api/profile_graph?from=${plus_int}&number=5&uuid=` + userIdFrom;
+		console.log('example2');
+	} else if(localStorage.getItem('filter') != null){
+		apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5&query=`+localStorage.getItem('filter');
+		console.log('example3');
+	}
+	plus_int += 5;
+}
+
+
 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
 
 if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
@@ -622,7 +644,6 @@ var isTrust;
 
 
 
-setInterval(function(){
 
 d3.json(apiUrl)
 	.then(async function(data) {
@@ -648,7 +669,7 @@ d3.json(apiUrl)
 	}*/
 	console.log(data.users.length)
 	//добавить пользователей в вершины
-	
+	function add_new_user(){
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
 			
@@ -672,6 +693,7 @@ d3.json(apiUrl)
 			
 		}
 	});
+	};
 				
 				
 				
@@ -1014,7 +1036,7 @@ d3.json(apiUrl)
 
 
 
-},8000);
+
 
 
 
