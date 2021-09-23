@@ -563,13 +563,18 @@ var fromApp = url.searchParams.get("from_app");
 let current_page = 1;
 function nextPage(){
 	current_page++;
-	do_pagination_func();
-	window.location.assign(window.location.href + '?page=' + current_page)
+	if(window.location.href.includes('?page=')){
+	window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1));
+	}
 }
 function PrevPage(){
 	current_page--;
 	do_pagination_func();
 }
+do_pagination_func(){
+	
+}
+
 let current_page2 = window.location.search;
 document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
