@@ -573,7 +573,7 @@ function nextPage(){
 			window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
 		}
 		else if(localStorage.getItem('cur_page') < 99){
-			let new_int = window.location.search.slice(-2);
+			let new_int = window.location.search.slice(1, -1);
 			+new_int;
 			new_int++;
 			localStorage.setItem('cur_page', new_int);
