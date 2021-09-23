@@ -565,7 +565,7 @@ function nextPage(){
 	
 	current_page++;
 	if(window.location.href.includes('?page=' || '&page=')){
-		if(localStorage.getItem('cur_page') < 9){
+		if(localStorage.getItem('cur_page') < 10){
 			let new_int = window.location.search.slice(-1);
 			+new_int;
 			new_int++;
