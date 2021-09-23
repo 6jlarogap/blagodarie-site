@@ -641,6 +641,7 @@ function nextPage(){
 	}
 	plus_int += 5;
 	console.log(plus_int);
+	console.log(apiUrl);
 	add_users_pag();
 }
 
