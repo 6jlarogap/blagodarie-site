@@ -626,7 +626,7 @@ if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') ===
 
 
 function nextPage(){
-	current_page++;
+	++current_page;
 	var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5`;
 
 	if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
@@ -640,7 +640,7 @@ function nextPage(){
 		console.log('example3');
 	}
 	plus_int += 5;
-	add_new_user();
+	
 }
 
 
@@ -662,7 +662,7 @@ var isTrust;
 
 
 
-function add_new_user(){
+
 d3.json(apiUrl)
 	.then(async function(data) {
 
@@ -677,7 +677,8 @@ d3.json(apiUrl)
 	
 	
 	//добавить пользователей в вершины
-	
+	let next_but = document.querySelector('#btn_next');
+	next_but.addEventListener('click', ()=>{
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
 			
@@ -701,7 +702,9 @@ d3.json(apiUrl)
 			
 		}
 	});
-	
+		
+		
+	});
 	
 				
 				
@@ -1041,7 +1044,7 @@ d3.json(apiUrl)
 	initializeSimulation();
 });
 
-}
+
 
 
 
