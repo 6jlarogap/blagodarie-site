@@ -564,7 +564,10 @@ let current_page = 1;
 function nextPage(){
 	current_page++;
 	if(window.location.href.includes('?page=')){
-	window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1));
+	let new_int = window.location.search.toString.slice(-1);
+	+new_int;
+	new_int++;
+	window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + new_int);
 	}
 }
 function PrevPage(){
