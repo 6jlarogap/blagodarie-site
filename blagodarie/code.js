@@ -647,6 +647,12 @@ function nextPage(){
 function add_new_user(){
 	d3.json(apiUrl)
 	.then(async function(data) {
+		
+		if (isAuth) {
+		await setProfile();
+		nodes.push(PROFILE);
+	}
+		
 		data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
 			
