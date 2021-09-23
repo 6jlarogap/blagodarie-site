@@ -560,7 +560,7 @@ var fromApp = url.searchParams.get("from_app");
 
 
 
-let current_page = 1;
+/*let current_page = 1;
 function nextPage(){
 	
 	current_page++;
@@ -602,7 +602,7 @@ function prevPage(){
 
 
 let current_page2 = window.location.search;
-document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
+document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');*/
 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
 
 if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
