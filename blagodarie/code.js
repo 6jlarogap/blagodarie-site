@@ -570,7 +570,7 @@ function nextPage(){
 	window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + new_int);
 	}
 }
-function PrevPage(){
+function prevPage(){
 	current_page--;
 	if(window.location.href.includes('?page=')){
 		let new_int = window.location.search.slice(-1);
