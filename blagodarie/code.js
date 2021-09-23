@@ -574,11 +574,13 @@ function nextPage(){
 		}
 		else if(localStorage.getItem('cur_page') < 99){
 			let min_int = window.location.search.slice(1, -2);
+			console.log(min_int);
 			+min_int;
+			console.log(min_int);
 			min_int++;
 			console.log(min_int);
-			localStorage.setItem('cur_page', min_int);
-			window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(1, -1) + (+localStorage.getItem('cur_page')));
+			//localStorage.setItem('cur_page', min_int);
+			//window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(1, -1) + (+localStorage.getItem('cur_page')));
 		}
 	}
 }
