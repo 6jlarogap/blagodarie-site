@@ -558,10 +558,11 @@ var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
 
-
+localStorage.setItem('cur_page', '1');
 
 let current_page = 1;
 function nextPage(){
+	localStorage.setItem('cur_page', '1+1');
 	current_page++;
 	if(window.location.href.includes('?page=')){
 	let new_int = window.location.search.slice(-1);
