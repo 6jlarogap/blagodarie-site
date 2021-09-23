@@ -677,8 +677,7 @@ d3.json(apiUrl)
 	
 	
 	//добавить пользователей в вершины
-	let next_but = document.querySelector('#btn_next');
-	next_but.addEventListener('click', ()=>{
+	
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
 			
@@ -704,7 +703,7 @@ d3.json(apiUrl)
 	});
 		
 		
-	});
+	
 	
 				
 				
