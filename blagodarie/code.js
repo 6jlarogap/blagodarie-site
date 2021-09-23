@@ -571,9 +571,7 @@ function PrevPage(){
 	current_page--;
 	do_pagination_func();
 }
-do_pagination_func(){
-	
-}
+
 
 let current_page2 = window.location.search;
 document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
