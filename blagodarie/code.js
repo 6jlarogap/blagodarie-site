@@ -626,7 +626,7 @@ if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') ===
 
 
 function nextPage(){
-	current++;
+	current_page++;
 	var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5`;
 
 	if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
