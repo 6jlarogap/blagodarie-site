@@ -625,23 +625,7 @@ if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') ===
 
 
 
-function nextPage(){
-	current_page++;
-	var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5`;
 
-	if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
-		apiUrl = `${settings.api}api/profile_graph?from=${plus_int}&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
-		console.log('example1');
-	} else if(userIdFrom != null && localStorage.getItem('filter') === null){
-		apiUrl = `${settings.api}api/profile_graph?from=${plus_int}&number=5&uuid=` + userIdFrom;
-		console.log('example2');
-	} else if(localStorage.getItem('filter') != null){
-		apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5&query=`+localStorage.getItem('filter');
-		console.log('example3');
-	}
-	plus_int += 5;
-	add_new_user();
-}
 
 
 
@@ -701,6 +685,23 @@ d3.json(apiUrl)
 		}
 	});
 	};
+	function nextPage(){
+	current_page++;
+	var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5`;
+
+	if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
+		apiUrl = `${settings.api}api/profile_graph?from=${plus_int}&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+		console.log('example1');
+	} else if(userIdFrom != null && localStorage.getItem('filter') === null){
+		apiUrl = `${settings.api}api/profile_graph?from=${plus_int}&number=5&uuid=` + userIdFrom;
+		console.log('example2');
+	} else if(localStorage.getItem('filter') != null){
+		apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5&query=`+localStorage.getItem('filter');
+		console.log('example3');
+	}
+	plus_int += 5;
+	add_new_user();
+}
 				
 				
 				
