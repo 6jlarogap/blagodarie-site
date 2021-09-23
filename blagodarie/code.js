@@ -605,7 +605,7 @@ let current_page2 = window.location.search;
 document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');*/
 
 let current_page = 1;
-
+let plus_int = 5;
 document.querySelector('#page').innerHTML = current_page;
 
 
@@ -626,7 +626,7 @@ if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') ===
 
 
 function nextPage(){
-	let plus_int = 5;
+	
 	document.querySelector('#page').innerHTML = ++current_page;
 	let newUrlApi = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5`;
 
