@@ -564,7 +564,7 @@ let current_page = 1;
 function nextPage(){
 	
 	current_page++;
-	if(window.location.href.includes('?page=')){
+	if(window.location.href.includes('?page=' || '&page=')){
 	let new_int = window.location.search.slice(-1);
 	+new_int;
 	new_int++;
@@ -574,12 +574,16 @@ function nextPage(){
 }
 function prevPage(){
 	current_page--;
-	if(window.location.href.includes('?page=')){
-		let new_int = window.location.search.slice(-1);
-		+new_int;
-		new_int--;
-		localStorage.setItem('cur_page', new_int);
-		window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
+	if(window.location.href.includes('?page=' || '&page=')){
+		if(localStorage.getItem('cur_page') >= 2){
+			let new_int = window.location.search.slice(-1);
+			+new_int;
+			new_int--;
+			localStorage.setItem('cur_page', new_int);
+			window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
+		}else{
+		
+		}
 	}
 }
 
