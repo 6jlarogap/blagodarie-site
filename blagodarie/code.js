@@ -560,7 +560,7 @@ var fromApp = url.searchParams.get("from_app");
 
 
 
-/*let current_page = 1;
+let current_page = 1;
 function nextPage(){
 	
 	current_page++;
@@ -602,11 +602,11 @@ function prevPage(){
 
 
 let current_page2 = window.location.search;
-document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');*/
+document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 
-let current_page = 1;
+/*let current_page = 1;
 let plus_int = 5;
-document.querySelector('#page').innerHTML = current_page;
+document.querySelector('#page').innerHTML = current_page;*/
 
 
 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
@@ -621,174 +621,6 @@ if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') ===
 	apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5&query=`+localStorage.getItem('filter');
 	console.log('example3');
 }
-
-
-
-
-function nextPage(){
-	
-	document.querySelector('#page').innerHTML = ++current_page;
-	let newUrlApi = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5`;
-
-	if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null){
-		newUrlApi = `${settings.api}api/profile_graph?from=${plus_int}&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
-		console.log('example1');
-	} else if(userIdFrom != null && localStorage.getItem('filter') === null){
-		newUrlApi = `${settings.api}api/profile_graph?from=${plus_int}&number=5&uuid=` + userIdFrom;
-		console.log('example2');
-	} else if(localStorage.getItem('filter') != null){
-		newUrlApi = `${settings.api}api/getstats/user_connections_graph?from=${plus_int}&number=5&query=`+localStorage.getItem('filter');
-		console.log('example3');
-	}
-	plus_int += 5;
-	console.log(newUrlApi);
-	d3.json(newUrlApi)
-	.then(async function(data) {
-
-
-		if (isAuth) {
-			await setProfile();
-			nodes.push(PROFILE);
-		}
-		data.users.forEach(function(d){
-		if (!nodes.some(user => user.id == d.uuid)) {
-			
-			if(d.ability === null){
-			nodes.push ({
-				id: d.uuid,
-				text: (d.first_name + " " + d.last_name + " " + " "),
-				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
-				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
-			});
-			}else{
-				nodes.push ({
-				id: d.uuid,
-				text: (d.first_name + " " + d.last_name),
-				tabil: (d.ability),
-				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
-				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
-			});
-			}
-			
-			
-			}
-		});
-		data.users.forEach(function(d){
-		if (!nodes.some(user => user.id == d.uuid)) {
-			
-			if(d.ability === null){
-			nodes.push ({
-				id: d.uuid,
-				text: (d.first_name + " " + d.last_name + " " + " "),
-				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
-				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
-			});
-			}else{
-				nodes.push ({
-				id: d.uuid,
-				text: (d.first_name + " " + d.last_name),
-				tabil: (d.ability),
-				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
-				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
-			});
-			}
-			
-			
-		}
-	});
-	nodes.forEach(function(d) {
-		switch(d.id){
-		case userIdFrom:
-			d.fx = width / 2;
-			d.fy = height / 2;
-			break;
-		case WISHES_ROOT_ID:
-			d.fx = width / 2 + 400;
-			d.fy = height / 2 + 200;
-			break;
-		case KEYS_ROOT_ID:
-			d.fx = width / 2 + 400;
-			d.fy = height / 2 - 200;
-			break;
-		case ABILITIES_ROOT_ID:
-			d.fx = width / 2 + 400;
-			d.fy = height / 2;
-			break;
-		case ABILITY_ID:
-			d.fx = width / 2 + 500;
-			d.fy = height / 2;
-			break;
-		case SHARE_ID:
-			d.fx = width / 2 + 300;
-			d.fy = height / 2 - 300;
-			break;
-		case FILTER_ID:
-			d.fx = width / 2 + 400;
-			d.fy = height / 2 - 300;
-			break;
-		case OPTIONS_ID:
-			d.fx = width / 2 - 400;
-			d.fy = height / 2 - 300;	
-			break;
-		case INVITE_ID:
-				d.fx = width / 2 - 200;
-				d.fy = height / 2 - 300;	
-				break;
-		case HOME_ID:
-			d.fx = width / 2 - 300;
-			d.fy = height / 2 - 300;
-			break;
-		case TRUST_ID:
-			d.fx = width / 2 + 50;
-			d.fy = height / 2 + 100;
-			break;
-		case MISTRUST_ID:
-			d.fx = width / 2 - 50;
-			d.fy = height / 2 + 100;
-			break;
-		case AUTH_ID:
-			if (!userIdFrom) {
-				d.fx = width / 2;
-				d.fy = height / 2;
-			}
-			else {
-				d.fx = width / 2 - 200;
-				d.fy = height / 2;
-			}
-			break;
-		case PROFILE.id:
-			if (userIdFrom && userIdFrom != PROFILE.id) {
-				d.fx = width / 2 - 200;
-				d.fy = height / 2;
-			} else {
-				d.fx = width / 2;
-				d.fy = height / 2;
-			}
-			
-			break;
-		}
-	});
-	
-	simulation = d3.forceSimulation(nodes);
-	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links));
-	simulation.force("charge", d3.forceManyBody().strength(0.5));
-	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("collide", d3.forceCollide().strength(0.6).radius(80).iterations(1));
-	simulation.force("x", d3.forceX(width / 2).strength(0.2));
-	simulation.force("y", d3.forceY(height / 2).strength(0.2));
-	
-
-	initializeDisplay();
-	initializeSimulation();
-	});
-}
-
-
-
-
-
-
-
 
 
 
