@@ -610,7 +610,8 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
         
         
         if (!window.location.href.includes('page=')) {
-		
+		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
+		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
             localStorage.setItem('item_plus', 0);
 		localStorage.setItem('selected_val', 25);
 		document.querySelector('.pagination_select').style.display = 'block';
@@ -618,18 +619,12 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 		console.log(apiUrl);
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=0&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;		
-		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
-		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
 		    console.log(apiUrl);
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=0&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom;    		
-		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
-		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
 		    console.log(apiUrl);
             } else if (localStorage.getItem('filter') != null) {
                 apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${localStorage.getItem('selected_val')}&query=` + localStorage.getItem('filter');	
-		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
-		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
 		   console.log(apiUrl);
             }
 
@@ -726,6 +721,8 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 
         if (window.location.href.includes('page=')) {
 		document.querySelector('.pagination_select').style.display = 'none';
+		document.querySelector('#btn_prev').style.background = '#000;';
+		document.querySelector('#btn_prev').style.cursor = 'pointer;';
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=${localStorage.getItem('selected_val')}`;
 		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
@@ -742,8 +739,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 		    document.querySelector('.pagination_select').style.display = 'none';
             }
 		
-		document.querySelector('#btn_prev').style.background = '#000;';
-		document.querySelector('#btn_prev').style.cursor = 'pointer;';
+
         }
 
 
