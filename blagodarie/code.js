@@ -623,7 +623,10 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                 apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5&query=` + localStorage.getItem('filter');
                 console.log('example3');
             }
-
+		
+		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
+		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
+	
         }
 
 
@@ -723,7 +726,8 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                 apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=5&query=` + localStorage.getItem('filter');
                 console.log('example3');
             }
-
+		document.querySelector('#btn_prev').style.background = '#000;';
+		document.querySelector('#btn_prev').style.cursor = 'pointer;';
         }
 
 
@@ -747,8 +751,14 @@ d3.json(apiUrl)
 		nodes.push(PROFILE);
 	}
 	
-	
-	console.log(data.users.length);
+	if(data.users.length < 5){
+		document.querySelector('#btn_next').style.background = '#aaa0a0;';
+		document.querySelector('#btn_next').style.cursor = 'context-menu;';
+	}
+	else if(data.users.length == 5){
+		document.querySelector('#btn_next').style.background = '#000';
+		document.querySelector('#btn_next').style.cursor = 'pointer;';
+	}
 	
 	
 	
