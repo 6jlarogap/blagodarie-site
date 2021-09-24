@@ -606,7 +606,9 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 
 
 
+
         if(!window.location.href.includes('page=')){
+            localStorage.setItem('item_plus', 0);
         var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
 
         if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
@@ -619,6 +621,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
             apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5&query=` + localStorage.getItem('filter');
             console.log('example3');
         }
+       
     }
 
 
@@ -633,21 +636,31 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     new_int;
                     new_int++;
                     localStorage.setItem('cur_page', new_int);
+                    localStorage.setItem('item_plus', 5);
+                    let item_plus_int = localStorage.getItem('item_plus');
+                    +item_plus_int += 5;
+                    localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
                 } else if (localStorage.getItem('cur_page') < 99) {
                     let new_int = window.location.search.slice(-2); +
                     new_int;
                     new_int++;
                     localStorage.setItem('cur_page', new_int);
+                    let item_plus_int = localStorage.getItem('item_plus');
+                    +item_plus_int += 5;
+                    localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
                 }
             } else if (window.location.href.includes('?id')) {
                 window.location.assign(window.location.origin + window.location.pathname + window.location.search + '&page=2');
                 localStorage.setItem('cur_page', 2);
+                localStorage.setItem('item_plus', 5);
             } else {
                 window.location.assign(window.location.origin + window.location.pathname + window.location.search + '?page=2');
                 localStorage.setItem('cur_page', 2);
+                localStorage.setItem('item_plus', 5);
             }
+
 
         }
 
@@ -655,20 +668,28 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
             current_page--;
             if (window.location.href.includes('page=')) {
                 if (localStorage.getItem('cur_page') < 3 && window.location.href.includes('?page=2')) {
-                    window.location.assign(window.location.origin + window.location.pathname + window.location.search.replace('?page=2', ''))
+                    window.location.assign(window.location.origin + window.location.pathname + window.location.search.replace('?page=2', ''));
+                    localStorage.setItem('item_plus', 0);
                 } else if (localStorage.getItem('cur_page') < 3 && window.location.href.includes('&page=2')) {
-                    window.location.assign(window.location.origin + window.location.pathname + window.location.search.replace('&page=2', ''))
+                    window.location.assign(window.location.origin + window.location.pathname + window.location.search.replace('&page=2', ''));
+                    localStorage.setItem('item_plus', 0);
                 } else if (localStorage.getItem('cur_page') < 10) {
                     let new_int = window.location.search.slice(-1); +
                     new_int;
                     new_int--;
                     localStorage.setItem('cur_page', new_int);
+                    let item_plus_int = localStorage.getItem('item_plus');
+                    +item_plus_int -= 5;
+                    localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
                 } else if (localStorage.getItem('cur_page') < 99) {
                     let new_int = window.location.search.slice(-2); +
                     new_int;
                     new_int--;
                     localStorage.setItem('cur_page', new_int);
+                    let item_plus_int = localStorage.getItem('item_plus');
+                    +item_plus_int -= 5;
+                    localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
                 }
             }
@@ -679,6 +700,25 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
         } else {
             document.querySelector('#page').innerHTML = current_page;
         }
+
+
+
+        if(window.location.href.includes('page=')){
+            
+        var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=5`;
+
+        if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
+            apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+            console.log('example1');
+        } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
+            apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=5&uuid=` + userIdFrom;
+            console.log('example2');
+        } else if (localStorage.getItem('filter') != null) {
+            apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=5&query=` + localStorage.getItem('filter');
+            console.log('example3');
+        }
+       
+    }
 
 
 
