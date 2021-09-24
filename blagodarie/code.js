@@ -672,12 +672,12 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                 window.location.assign(window.location.origin + window.location.pathname + window.location.search + '&page=2');
 		    
                 localStorage.setItem('cur_page', 2);
-                localStorage.setItem('item_plus', 5);
+                localStorage.setItem('item_plus', localStorage.getItem('selected_val'));
             } else {
                 window.location.assign(window.location.origin + window.location.pathname + window.location.search + '?page=2');
 		    
                 localStorage.setItem('cur_page', 2);
-                localStorage.setItem('item_plus', 5);
+                localStorage.setItem('item_plus', localStorage.getItem('selected_val'));
             }
 
 
