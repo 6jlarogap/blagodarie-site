@@ -610,8 +610,10 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
         
         
         if (!window.location.href.includes('page=')) {
-		let pagination_select = document.querySelector('.pagination_select');
+		
             localStorage.setItem('item_plus', 0);
+		localStorage.setItem('selected_val', 25);
+		document.querySelector('.pagination_select').style.display = 'block';
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${pagination_select.value}`;
 		console.log(apiUrl);
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
@@ -646,7 +648,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     +new_int;
                     new_int++;
                     localStorage.setItem('cur_page', new_int);
-                    
+                    document.querySelector('.pagination_select').style.display = 'none';
                     let item_plus_int = +localStorage.getItem('item_plus'); 
                     +item_plus_int;
                     item_plus_int += 5;
@@ -657,6 +659,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     +new_int;
                     new_int++;
                     localStorage.setItem('cur_page', new_int);
+			document.querySelector('.pagination_select').style.display = 'none';
                     let item_plus_int = +localStorage.getItem('item_plus'); 
                     +item_plus_int;
                     item_plus_int += 5;
@@ -665,10 +668,12 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                 }
             } else if (window.location.href.includes('?id')) {
                 window.location.assign(window.location.origin + window.location.pathname + window.location.search + '&page=2');
+		    
                 localStorage.setItem('cur_page', 2);
                 localStorage.setItem('item_plus', 5);
             } else {
                 window.location.assign(window.location.origin + window.location.pathname + window.location.search + '?page=2');
+		    
                 localStorage.setItem('cur_page', 2);
                 localStorage.setItem('item_plus', 5);
             }
@@ -718,19 +723,23 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 
 
         if (window.location.href.includes('page=')) {
-
+		document.querySelector('.pagination_select').style.display = 'none';
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=5`;
-
+		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
                 console.log('example1');
+		    document.querySelector('.pagination_select').style.display = 'none';
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=5&uuid=` + userIdFrom;
                 console.log('example2');
+		    document.querySelector('.pagination_select').style.display = 'none';
             } else if (localStorage.getItem('filter') != null) {
                 apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=5&query=` + localStorage.getItem('filter');
                 console.log('example3');
+		    document.querySelector('.pagination_select').style.display = 'none';
             }
+		
 		document.querySelector('#btn_prev').style.background = '#000;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
         }
