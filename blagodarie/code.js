@@ -752,13 +752,13 @@ d3.json(apiUrl)
 		nodes.push(PROFILE);
 	}
 	
-	if(data.users.length < 5){
-		document.querySelector('#btn_next').style.background = '#aaa0a0;';
-		document.querySelector('#btn_next').style.cursor = 'context-menu;';
+	if(data.users.length == 5){
+		document.querySelector('#btn_next').style.background = '#000;';
+		document.querySelector('#btn_next').style.cursor = 'pointer;';
 	}
 	else{
-		document.querySelector('#btn_next').style.background = '#000';
-		document.querySelector('#btn_next').style.cursor = 'pointer;';
+		document.querySelector('#btn_next').style.background = '#aaa0a0;';
+		document.querySelector('#btn_next').style.cursor = 'context-menu;';
 	}
 	
 	
