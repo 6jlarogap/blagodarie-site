@@ -751,7 +751,7 @@ d3.json(apiUrl)
 		nodes.push(PROFILE);
 	}
 	
-	if(data.users.length < 5){
+	else if(data.users.length < 5){
 		document.querySelector('#btn_next').style.background = '#aaa0a0;';
 		document.querySelector('#btn_next').style.cursor = 'context-menu;';
 	}
