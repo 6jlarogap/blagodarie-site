@@ -746,8 +746,9 @@ d3.json(apiUrl)
 		await setProfile();
 		nodes.push(PROFILE);
 	}
-
-	console.log(data.users);
+	
+	
+	console.log(data.users.length);
 	
 	
 	
