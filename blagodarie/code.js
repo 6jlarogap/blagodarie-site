@@ -764,7 +764,9 @@ d3.json(apiUrl)
 		await setProfile();
 		nodes.push(PROFILE);
 	}
+	else{
 	
+	}
 	if(data.users.length == 5){
 		document.querySelector('#btn_next').style.background = '#000;';
 		document.querySelector('#btn_next').style.cursor = 'pointer;';
