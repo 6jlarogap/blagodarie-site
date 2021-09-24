@@ -610,21 +610,25 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
         
         
         if (!window.location.href.includes('page=')) {
+		let pagination_select = document.querySelector('.pagination_select');
             localStorage.setItem('item_plus', 0);
-            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
-
+            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${pagination_select.value}`;
+		console.log(apiUrl);
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=0&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;		
+                apiUrl = `${settings.api}api/profile_graph?from=0&number=${pagination_select.value}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;		
 		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
 		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
+		    console.log(apiUrl);
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=0&number=5&uuid=` + userIdFrom;    		
+                apiUrl = `${settings.api}api/profile_graph?from=0&number=${pagination_select.value}&uuid=` + userIdFrom;    		
 		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
 		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
+		    console.log(apiUrl);
             } else if (localStorage.getItem('filter') != null) {
-                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5&query=` + localStorage.getItem('filter');	
+                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${pagination_select.value}&query=` + localStorage.getItem('filter');	
 		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
 		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
+		   console.log(apiUrl);
             }
 
 	
