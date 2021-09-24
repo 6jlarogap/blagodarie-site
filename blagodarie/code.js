@@ -747,7 +747,7 @@ d3.json(apiUrl)
 		nodes.push(PROFILE);
 	}
 
-
+	console.log(data.users);
 	
 	
 	
