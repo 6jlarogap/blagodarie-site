@@ -544,13 +544,16 @@
 		</div>
 	</dialog>
 	<div class="pagination_block">
-		<a href="javascript:prevPage()" id="btn_prev"><</a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a>
-		<select class='pagination_select' onchange="localStorage.setItem('selected_val', this.value);window.location.reload();">
+        	<a href="javascript:prevPage()" id="btn_prev"><</a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a>
+		<div style='display:flex;flex-direction:column;align-items:center;justify-content:center;'>
+        	<select class='pagination_select' onchange="localStorage.setItem('selected_val', this.value);window.location.reload();">
 			<option>Пагинация голов</option>
     			<option value="25">25</option>
     			<option value="50">50</option>
 			<option value="100">100</option>
 		</select>
+			<p class="pagination_count" style="margin:0;font-weight: 500;"></p>
+			</div>
     	</div>
 	<dialog id="rootDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
