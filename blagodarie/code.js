@@ -607,22 +607,23 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 
 
 
-        if(!window.location.href.includes('page=')){
+        
+        if (!window.location.href.includes('page=')) {
             localStorage.setItem('item_plus', 0);
-        var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
+            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
 
-        if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
-            apiUrl = `${settings.api}api/profile_graph?from=0&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
-            console.log('example1');
-        } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
-            apiUrl = `${settings.api}api/profile_graph?from=0&number=5&uuid=` + userIdFrom;
-            console.log('example2');
-        } else if (localStorage.getItem('filter') != null) {
-            apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5&query=` + localStorage.getItem('filter');
-            console.log('example3');
+            if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
+                apiUrl = `${settings.api}api/profile_graph?from=0&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+                console.log('example1');
+            } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
+                apiUrl = `${settings.api}api/profile_graph?from=0&number=5&uuid=` + userIdFrom;
+                console.log('example2');
+            } else if (localStorage.getItem('filter') != null) {
+                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5&query=` + localStorage.getItem('filter');
+                console.log('example3');
+            }
+
         }
-       
-    }
 
 
 
@@ -637,8 +638,9 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     new_int++;
                     localStorage.setItem('cur_page', new_int);
                     localStorage.setItem('item_plus', 5);
-                    let item_plus_int = localStorage.getItem('item_plus');
-                    +item_plus_int += 5;
+                    let item_plus_int = localStorage.getItem('item_plus'); +
+                    item_plus_int;
+                    item_plus_int += 5;
                     localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
                 } else if (localStorage.getItem('cur_page') < 99) {
@@ -646,8 +648,9 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     new_int;
                     new_int++;
                     localStorage.setItem('cur_page', new_int);
-                    let item_plus_int = localStorage.getItem('item_plus');
-                    +item_plus_int += 5;
+                    let item_plus_int = localStorage.getItem('item_plus'); +
+                    item_plus_int;
+                    item_plus_int += 5;
                     localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
                 }
@@ -678,8 +681,9 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     new_int;
                     new_int--;
                     localStorage.setItem('cur_page', new_int);
-                    let item_plus_int = localStorage.getItem('item_plus');
-                    +item_plus_int -= 5;
+                    let item_plus_int = localStorage.getItem('item_plus'); +
+                    item_plus_int;
+                    item_plus_int -= 5;
                     localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
                 } else if (localStorage.getItem('cur_page') < 99) {
@@ -687,8 +691,9 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     new_int;
                     new_int--;
                     localStorage.setItem('cur_page', new_int);
-                    let item_plus_int = localStorage.getItem('item_plus');
-                    +item_plus_int -= 5;
+                    let item_plus_int = localStorage.getItem('item_plus'); +
+                    item_plus_int;
+                    item_plus_int -= 5;
                     localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
                 }
@@ -703,23 +708,22 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 
 
 
-        if(window.location.href.includes('page=')){
-            
-        var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=5`;
+        if (window.location.href.includes('page=')) {
 
-        if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
-            apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
-            console.log('example1');
-        } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
-            apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=5&uuid=` + userIdFrom;
-            console.log('example2');
-        } else if (localStorage.getItem('filter') != null) {
-            apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=5&query=` + localStorage.getItem('filter');
-            console.log('example3');
+            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=5`;
+
+            if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
+                apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=5&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+                console.log('example1');
+            } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
+                apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=5&uuid=` + userIdFrom;
+                console.log('example2');
+            } else if (localStorage.getItem('filter') != null) {
+                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=5&query=` + localStorage.getItem('filter');
+                console.log('example3');
+            }
+
         }
-       
-    }
-
 
 
 
