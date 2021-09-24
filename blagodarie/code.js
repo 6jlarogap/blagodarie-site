@@ -644,8 +644,12 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 			        new_int--;
 			        localStorage.setItem('cur_page', new_int);
 			        window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
-		        }else{
-		
+		        }else if(localStorage.getItem('cur_page') > 9){
+                    let new_int = window.location.search.slice(-2);
+			        +new_int;
+			        new_int--;
+			        localStorage.setItem('cur_page', new_int);
+			        window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
 		        }
 	        }
         }
