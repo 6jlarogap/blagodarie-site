@@ -638,7 +638,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
        function prevPage(){
 	        current_page--;
 	        if(window.location.href.includes('page=')){
-                	if(localStorage.getItem('cur_page') < 2){
+                	if(localStorage.getItem('cur_page') < 3){
                     		window.location.assign(window.location.origin + window.location.pathname + window.location.search.replace('?page=', ''))
                 	}else if(localStorage.getItem('cur_page') < 10){
 			        let new_int = window.location.search.slice(-1);
