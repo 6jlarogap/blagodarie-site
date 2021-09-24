@@ -726,6 +726,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 
         if (window.location.href.includes('page=')) {
 		document.querySelector('.pagination_select').style.display = 'none';
+		console.log(data.users);
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=${localStorage.getItem('selected_val')}`;
 		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
