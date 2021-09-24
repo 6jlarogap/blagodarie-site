@@ -651,7 +651,8 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     document.querySelector('.pagination_select').style.display = 'none';
                     let item_plus_int = +localStorage.getItem('item_plus'); 
                     +item_plus_int;
-                    item_plus_int += localStorage.getItem('selected_val');
+                    let selected_val = +localStorage.getItem('selected_val');
+                    item_plus_int += selected_val;
                     localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
                 } else if (localStorage.getItem('cur_page') < 99) {
@@ -662,7 +663,8 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 			document.querySelector('.pagination_select').style.display = 'none';
                     let item_plus_int = +localStorage.getItem('item_plus'); 
                     +item_plus_int;
-                    item_plus_int += localStorage.getItem('selected_val');
+			let selected_val = +localStorage.getItem('selected_val');
+                    item_plus_int += selected_val;
                     localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
                 }
