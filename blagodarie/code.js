@@ -610,8 +610,10 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
         
         
         if (!window.location.href.includes('page=')) {
-		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
-		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
+		let btn_prev_n = document.querySelector('#btn_prev');
+		btn_prev_n.style.background = '#aaa0a0';
+		btn_prev_n.style.cursor = 'context-menu';
+		btn_prev_n.style.pointerEvents = 'none';
             localStorage.setItem('item_plus', 0);
 		let selected_val = +localStorage.getItem('selected_val');
 		localStorage.setItem('selected_val', selected_val);
@@ -801,10 +803,12 @@ d3.json(apiUrl)
 	if(data.users.length == selected_val_num){
 		but_next.style.background = '#000';
 		but_next.style.cursor = 'pointer';
+		but_next.style.pointerEvents = 'all';
 	}
 	else if (data.users.length < selected_val_num){
 		but_next.style.background = '#aaa0a0';
 		but_next.style.cursor = 'context-menu';
+		but_next.style.pointerEvents = 'none';
 	}
 				
 				
