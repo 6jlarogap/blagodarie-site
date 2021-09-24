@@ -797,6 +797,10 @@ d3.json(apiUrl)
 		
 	
 	let selected_val_num = localStorage.getItem('selected_val');
+	console.log(selected_val_num);
+	console.log(data.users.length);
+	console.log(data.users.length == selected_val_num);
+	console.log(document.querySelector('#btn_next'));
 	if(data.users.length == selected_val_num){
 		document.querySelector('#btn_next').style.background = '#000;';
 		document.querySelector('#btn_next').style.cursor = 'pointer;';
