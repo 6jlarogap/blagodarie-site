@@ -614,20 +614,20 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
             localStorage.setItem('item_plus', 0);
 		localStorage.setItem('selected_val', 25);
 		document.querySelector('.pagination_select').style.display = 'block';
-            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${pagination_select.value}`;
+            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${localStorage.getItem('selected_val')}`;
 		console.log(apiUrl);
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=0&number=${pagination_select.value}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;		
+                apiUrl = `${settings.api}api/profile_graph?from=0&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;		
 		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
 		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
 		    console.log(apiUrl);
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=0&number=${pagination_select.value}&uuid=` + userIdFrom;    		
+                apiUrl = `${settings.api}api/profile_graph?from=0&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom;    		
 		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
 		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
 		    console.log(apiUrl);
             } else if (localStorage.getItem('filter') != null) {
-                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${pagination_select.value}&query=` + localStorage.getItem('filter');	
+                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${localStorage.getItem('selected_val')}&query=` + localStorage.getItem('filter');	
 		document.querySelector('#btn_prev').style.background = '#aaa0a0;';
 		document.querySelector('#btn_prev').style.cursor = 'context-menu;';
 		   console.log(apiUrl);
