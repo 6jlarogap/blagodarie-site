@@ -41,8 +41,8 @@
     			position: absolute;
     			bottom: 0;
     			left: 50%;
-    			width: 220px;
-    			margin-left: -110px;
+    			width: 300px;
+    			margin-left: -150px;
 			align-items: center;
     			justify-content: space-between;
 		}
@@ -545,6 +545,12 @@
 	</dialog>
 	<div class="pagination_block">
 		<a href="javascript:prevPage()" id="btn_prev"><</a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a>
+		<select class='pagination_select'>
+			<option disabled>Пагинация голов</option>
+    			<option value="25">25</option>
+    			<option value="50">50</option>
+			<option value="100">100</option>
+		</select>
     	</div>
 	<dialog id="rootDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
