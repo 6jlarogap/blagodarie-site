@@ -608,6 +608,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 
 
         
+        
         if (!window.location.href.includes('page=')) {
             localStorage.setItem('item_plus', 0);
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=5`;
@@ -639,7 +640,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     localStorage.setItem('cur_page', new_int);
                     localStorage.setItem('item_plus', 5);
                     let item_plus_int = localStorage.getItem('item_plus'); +
-                    item_plus_int;
+                    +item_plus_int;
                     item_plus_int += 5;
                     localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
@@ -649,7 +650,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     new_int++;
                     localStorage.setItem('cur_page', new_int);
                     let item_plus_int = localStorage.getItem('item_plus'); +
-                    item_plus_int;
+                    +item_plus_int;
                     item_plus_int += 5;
                     localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
@@ -682,7 +683,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     new_int--;
                     localStorage.setItem('cur_page', new_int);
                     let item_plus_int = localStorage.getItem('item_plus'); +
-                    item_plus_int;
+                    +item_plus_int;
                     item_plus_int -= 5;
                     localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
@@ -692,7 +693,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
                     new_int--;
                     localStorage.setItem('cur_page', new_int);
                     let item_plus_int = localStorage.getItem('item_plus'); +
-                    item_plus_int;
+                    +item_plus_int;
                     item_plus_int -= 5;
                     localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
@@ -724,7 +725,6 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
             }
 
         }
-
 
 
 
