@@ -752,11 +752,11 @@ d3.json(apiUrl)
 		nodes.push(PROFILE);
 	}
 	
-	else if(data.users.length < 5){
+	if(data.users.length < 5){
 		document.querySelector('#btn_next').style.background = '#aaa0a0;';
 		document.querySelector('#btn_next').style.cursor = 'context-menu;';
 	}
-	else if(data.users.length == 5){
+	else{
 		document.querySelector('#btn_next').style.background = '#000';
 		document.querySelector('#btn_next').style.cursor = 'pointer;';
 	}
