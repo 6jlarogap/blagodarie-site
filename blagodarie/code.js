@@ -764,17 +764,8 @@ d3.json(apiUrl)
 		await setProfile();
 		nodes.push(PROFILE);
 	}
-	else{
 	
-	}
-	if(data.users.length == 5){
-		document.querySelector('#btn_next').style.background = '#000;';
-		document.querySelector('#btn_next').style.cursor = 'pointer;';
-	}
-	else{
-		document.querySelector('#btn_next').style.background = '#aaa0a0;';
-		document.querySelector('#btn_next').style.cursor = 'context-menu;';
-	}
+	
 	
 	
 	
@@ -784,6 +775,16 @@ d3.json(apiUrl)
 		if (!nodes.some(user => user.id == d.uuid)) {
 			
 			if(d.ability === null){
+			let selected_val_num = localStorage.getItem('selected_val');
+	if(data.users.length == selected_val_num){
+		document.querySelector('#btn_next').style.background = '#000;';
+		document.querySelector('#btn_next').style.cursor = 'pointer;';
+	}
+	else if (data.users.length < selected_val_num){
+		document.querySelector('#btn_next').style.background = '#aaa0a0;';
+		document.querySelector('#btn_next').style.cursor = 'context-menu;';
+	}	
+			
 			nodes.push ({
 				id: d.uuid,
 				text: (d.first_name + " " + d.last_name + " " + " "),
@@ -791,6 +792,15 @@ d3.json(apiUrl)
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
 			}else{
+				let selected_val_num = localStorage.getItem('selected_val');
+	if(data.users.length == selected_val_num){
+		document.querySelector('#btn_next').style.background = '#000;';
+		document.querySelector('#btn_next').style.cursor = 'pointer;';
+	}
+	else if (data.users.length < selected_val_num){
+		document.querySelector('#btn_next').style.background = '#aaa0a0;';
+		document.querySelector('#btn_next').style.cursor = 'context-menu;';
+	}
 				nodes.push ({
 				id: d.uuid,
 				text: (d.first_name + " " + d.last_name),
@@ -803,7 +813,6 @@ d3.json(apiUrl)
 			
 		}
 	});
-		
 		
 	
 	
