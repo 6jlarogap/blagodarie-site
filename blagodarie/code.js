@@ -639,7 +639,7 @@ document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');
 	        current_page--;
 	        if(window.location.href.includes('page=')){
                 	if(localStorage.getItem('cur_page') < 3){
-                    		window.location.assign(window.location.origin + window.location.pathname + window.location.search.replace('?page=', ''))
+                    		window.location.assign(window.location.origin + window.location.pathname + window.location.search.replace('?page=2', ''))
                 	}else if(localStorage.getItem('cur_page') < 10){
 			        let new_int = window.location.search.slice(-1);
 			        +new_int;
