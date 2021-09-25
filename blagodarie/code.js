@@ -658,8 +658,8 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 	function onMapClick(e) {
     		marker
         		.setLatLng(e.latlng)
-        		.setContent("You clicked the map at " + e.latlng.toString())
-        		.openOn(mapid);
+        		
+        		/*.openOn(mapid);*/
 	}
 
 	mapid.on('click', onMapClick);
