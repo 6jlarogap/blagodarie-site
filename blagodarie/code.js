@@ -558,57 +558,7 @@ var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
 
-
-/*
-let current_page = 1;
-function nextPage(){
-	
-	current_page++;
-	if(window.location.href.includes('?page=' || '&page=')){
-		if(localStorage.getItem('cur_page') < 10){
-			let new_int = window.location.search.slice(-1);
-			+new_int;
-			new_int++;
-			localStorage.setItem('cur_page', new_int);
-			window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
-		}
-		else if(localStorage.getItem('cur_page') < 99){
-			let min_int = window.location.search.slice(-2);
-			console.log(min_int);
-			+min_int;
-			console.log(min_int);
-			min_int++;
-			console.log(min_int);
-			localStorage.setItem('cur_page', min_int);
-			console.log(localStorage.getItem('cur_page'));
-			window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
-		}
-	}
-}
-function prevPage(){
-	current_page--;
-	if(window.location.href.includes('?page=' || '&page=')){
-		if(localStorage.getItem('cur_page') > 2){
-			let new_int = window.location.search.slice(-1);
-			+new_int;
-			new_int--;
-			localStorage.setItem('cur_page', new_int);
-			window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
-		}else{
-		
-		}
-	}
-}
-
-
-let current_page2 = window.location.search;
-document.querySelector('#page').innerHTML = current_page2.replace('?page=', '');*/
-
-
-
-
-        
-        
+       
         if (!window.location.href.includes('page=')) {
 		let btn_prev_n = document.querySelector('#btn_prev');
 		btn_prev_n.style.background = '#aaa0a0';
