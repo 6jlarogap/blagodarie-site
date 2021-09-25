@@ -496,20 +496,49 @@
 		.mapid_close{
 			display:none;
 			position: absolute;
-			top: 0;
-			right: 0;
+			top: 10px;
+			right: 10px;
+			cursor: pointer;
+			width: 30px;
+    			height: 29px;
+    			text-align: center;
+    			background-color: #fff;
+    			font-weight: 900;
+    			border-radius: 6px;
+    			border: 2px solid rgba(0,0,0,0.2);
+			
 		}
 		.mapid_send{
 			display:none;
 			position: absolute;
-			top: 10%;
-			left:0;
+			top: 85px;
+			left: 10px;
+			padding: 4px 10px;
+    			background-color: #fff;
+    			border-radius: 7px;
+    			cursor: pointer;
+    			border: 2px solid rgba(0,0,0,0.2);
+    			font-weight: 500;
+			opacity: 0.7;
+			transition: .5s;
 		}
 		.mapid_clean{
 			display:none;
 			position: absolute;
-			right: 0;
-			bottom:0;
+			right: 10px;
+    			bottom: 20px;
+    			opacity: 0.7;
+			padding: 4px 10px;
+    			background-color: #fff;
+    			border-radius: 7px;
+    			cursor: pointer;
+    			border: 2px solid rgba(0,0,0,0.2);
+    			font-weight: 500;
+			transition: .5s;
+		}
+		.mapid_send:hover, .mapid_clean:hover{
+			opacity: 1;
+			transition: .5s;
 		}
 	</style>
 	<!-- Yandex.Metrika counter -->
