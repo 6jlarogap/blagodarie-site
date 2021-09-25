@@ -621,6 +621,8 @@ function show_smart_map(lat, long){
 	mapid.style.top = '0';
 	mapid.style.left = '0';
 	mapid = L.map('mapid').setView([lat, long], 13);
+	if(!document.querySelector('.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom')){}
+	else{
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
     		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     		maxZoom: 18,
@@ -628,7 +630,7 @@ function show_smart_map(lat, long){
     		tileSize: 512,
     		zoomOffset: -1,
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
-	}).addTo(mapid);
+	}).addTo(mapid);}
 	var marker = L.marker([lat, long]).addTo(mapid);
 	function onMapClick(e) {
     		marker
