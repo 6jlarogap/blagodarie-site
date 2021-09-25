@@ -650,10 +650,11 @@ function show_smart_map(lat, long){
 	mapid_send.style.zIndex = '12';
 	mapid_clean.style.zIndex = '12';
 	mapid_close.addEventListener('click', ()=> {
+		let mapid = document.querySelector('#mapid');
 		mapid.style.display = 'none';
 		mapid_send.style.display = 'none';
 		mapid_clean.style.display = 'none';
-	})
+	});
 	
 }
 
