@@ -587,16 +587,22 @@ function report(state) {
 
 
 let get_position = document.querySelector('#get_position');
+let mapid = document.querySelector('#mapid');
 if(get_position){
 get_position.addEventListener('click', ()=>{
 	get_cur_position();
 });
 }
+
 function get_cur_position(){
 navigator.geolocation.getCurrentPosition(
     // Функция обратного вызова при успешном извлечении локации
     function(position) {
-	    console.log(position.coords)
+	    console.log(position.coords);
+	    let lat = position.coords.latitude;
+	    let long = position.coords.longitude;
+	    show_smart_map(lat, long);
+	    
         /*
         В объекте position изложена подробная информация
         о позиции устройства:
@@ -629,6 +635,12 @@ navigator.geolocation.getCurrentPosition(
         */
     }
 );
+}
+
+show_smart_map(lat, long){
+	mapid.style.display = 'block';
+	mapid.style.height = '180px';
+	mapid = L.map('mapid').setView([51.505, -0.09], 13);
 }
 
        
