@@ -639,7 +639,12 @@ navigator.geolocation.getCurrentPosition(
 
 function show_smart_map(lat, long){
 	mapid.style.display = 'block';
-	mapid.style.height = '180px';
+	mapid.style.height = '100%';
+	mapid.style.width = '100%';
+	mapid.style.zIndex = '10';
+	mapid.style.position = 'absolute!important';
+	mapid.style.top = '0';
+	mapid.style.left = '0';
 	mapid = L.map('mapid').setView([51.505, -0.09], 13);
 }
 
