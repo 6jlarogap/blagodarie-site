@@ -588,6 +588,7 @@ function report(state) {
 
 let get_position = document.querySelector('#get_position');
 let mapid = document.querySelector('#mapid');
+let map_container = document.querySelector('.map_container');
 let mapid_close = document.querySelector('.mapid_close');
 let mapid_send = document.querySelector('.mapid_send');
 let mapid_clean = document.querySelector('.mapid_clean');
@@ -613,13 +614,7 @@ navigator.geolocation.getCurrentPosition(
 }
 
 function show_smart_map(lat, long){
-	let mapid = document.querySelector('#mapid');
-	mapid.style.display = 'block';
-	mapid.style.height = '100%';
-	mapid.style.width = '100%';
-	mapid.style.zIndex = '10';
-	mapid.style.top = '0';
-	mapid.style.left = '0';
+	map_container.style.display = "block";
 	if(mapid.hasChildNodes()){}
 	else{
 	mapid = L.map('mapid').setView([lat, long], 13);
@@ -637,7 +632,7 @@ function show_smart_map(lat, long){
     		marker
         		.setLatLng(e.latlng)
         		
-        		/*.openOn(mapid);*/
+        		
 		console.log('e.latlng ' + e.latlng);
 		lat = e.latlng;
 		console.log('after ' + lat);
@@ -646,20 +641,8 @@ function show_smart_map(lat, long){
 	console.log('before ' + lat, long);
 
 	mapid.on('click', onMapClick);
-	mapid_close.style.display = 'block';
-	mapid_send.style.display = 'block';
-	mapid_clean.style.display = 'block';
-	
-	mapid_close.style.zIndex = '12';
-	mapid_send.style.zIndex = '12';
-	mapid_clean.style.zIndex = '12';
-	
-	
 	mapid_close.addEventListener('click', ()=> {
-		let mapid = document.querySelector('#mapid');
-		mapid.style.display = 'none';
-		mapid_send.style.display = 'none';
-		mapid_clean.style.display = 'none';
+		map_container.style.display = "none";
 	});
 	
 }
