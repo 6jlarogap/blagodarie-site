@@ -501,6 +501,9 @@
 				font-size: 27px!important;
 			}
 		}
+		#mapid{
+			display:none;
+		}
 	</style>
 	<!-- Yandex.Metrika counter -->
 	<script type="text/javascript">
@@ -560,6 +563,7 @@
 			<p class="pagination_count" style="margin:0;font-weight: 500;"></p>
 			</div>
     	</div>
+	<div id="mapid"></div>
 	<dialog id="rootDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<ul id="rootList">
@@ -585,7 +589,7 @@
 		<button class="btn btn-primary" id="keys">Ключи</button>
 		<button class="btn btn-primary" id="abilities">Возможности</button>
 		<button class="btn btn-primary" id="wishes">Желания</button>
-		<button class="btn btn-primary" id="invite">Местоположение</button>
+		<button class="btn btn-primary" id="get_position">Местоположение</button>
 		<button class="btn btn-primary" id="optionsAgreement" onclick="window.open('../agreement/index.html', '_blank')">
 			<p>Условия Пользования</p>
 			<i class="far fa-file-alt"></i>
