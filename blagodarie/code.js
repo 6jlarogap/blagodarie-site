@@ -660,7 +660,12 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
         		.setLatLng(e.latlng)
         		
         		/*.openOn(mapid);*/
+		console.log('e.latlng ' + e.latlng);
+		lat = e.latlng;
+		console.log('after ' + lat);
 	}
+	
+	console.log('before ' + lat, long);
 
 	mapid.on('click', onMapClick);
 }
