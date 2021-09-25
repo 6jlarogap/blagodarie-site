@@ -613,6 +613,7 @@ navigator.geolocation.getCurrentPosition(
 }
 
 function show_smart_map(lat, long){
+	let mapid = document.querySelector('#mapid');
 	mapid.style.display = 'block';
 	mapid.style.height = '100%';
 	mapid.style.width = '100%';
