@@ -493,6 +493,24 @@
 			display:none;
 			position: absolute!important;
 		}
+		.mapid_close{
+			display:none;
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
+		.mapid_send{
+			display:none;
+			position: absolute;
+			top: 10%;
+			left:0;
+		}
+		.mapid_clean{
+			display:none;
+			position: absolute;
+			right: 0;
+			bottom:0;
+		}
 	</style>
 	<!-- Yandex.Metrika counter -->
 	<script type="text/javascript">
@@ -553,6 +571,9 @@
 			</div>
     	</div>
 	<div id="mapid"></div>
+	<p class="mapid_close">&#215;</p>
+	<div class="mapid_send">Опубликовать</div>
+	<div class="mapid_clean">Очистить</div>
 	<dialog id="rootDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<ul id="rootList">
