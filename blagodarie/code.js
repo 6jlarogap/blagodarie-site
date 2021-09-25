@@ -588,6 +588,10 @@ function report(state) {
 
 let get_position = document.querySelector('#get_position');
 let mapid = document.querySelector('#mapid');
+let mapid_close = document.querySelector('.mapid_close');
+let mapid_send = document.querySelector('.mapid_send');
+let mapid_clean = document.querySelector('.mapid_clean');
+
 if(get_position){
 get_position.addEventListener('click', ()=>{
 	get_cur_position();
@@ -596,43 +600,14 @@ get_position.addEventListener('click', ()=>{
 
 function get_cur_position(){
 navigator.geolocation.getCurrentPosition(
-    // Функция обратного вызова при успешном извлечении локации
     function(position) {
 	    console.log(position.coords);
 	    let lat = position.coords.latitude;
 	    let long = position.coords.longitude;
 	    show_smart_map(lat, long);
-	    
-        /*
-        В объекте position изложена подробная информация
-        о позиции устройства:
-        position = {
-            coords: {
-                latitude - Широта.
-                longitude - Долгота.
-                altitude - Высота в метрах над уровнем моря.
-                accuracy - Погрешность в метрах.
-                altitudeAccuracy - Погрешность высоты над уровнем моря в метрах.
-                heading - Направление устройства по отношению к северу.
-                speed - Скорость в метрах в секунду.
-            }
-            timestamp - Время извлечения информации.
-        }
-        */
     },
-    // Функция обратного вызова при неуспешном извлечении локации
     function(error){
 	    console.log(error)
-        /*
-        При неудаче, будет доступен объект error:
-        error = {
-	code - Тип ошибки
-                    1 - PERMISSION_DENIED
-                    2 - POSITION_UNAVAILABLE
-                    3 - TIMEOUT
-            message - Детальная информация.
-        }
-        */
     }
 );
 }
@@ -642,18 +617,17 @@ function show_smart_map(lat, long){
 	mapid.style.height = '100%';
 	mapid.style.width = '100%';
 	mapid.style.zIndex = '10';
-	
 	mapid.style.top = '0';
 	mapid.style.left = '0';
 	mapid = L.map('mapid').setView([lat, long], 13);
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
-}).addTo(mapid);
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
+    		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    		maxZoom: 18,
+    		id: 'mapbox/streets-v11',
+    		tileSize: 512,
+    		zoomOffset: -1,
+    		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
+	}).addTo(mapid);
 	var marker = L.marker([lat, long]).addTo(mapid);
 	function onMapClick(e) {
     		marker
@@ -668,6 +642,19 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 	console.log('before ' + lat, long);
 
 	mapid.on('click', onMapClick);
+	mapid_close.style.display = 'block';
+	mapid_send.style.display = 'block';
+	mapid_clean.style.display = 'block';
+	
+	mapid_close.style.zIndex = '12';
+	mapid_send.style.zIndex = '12';
+	mapid_clean.style.zIndex = '12';
+	mapid_close.addEventListener('click', ()=> {
+		mapid.style.display = 'none';
+		mapid_send.style.display = 'none';
+		mapid_clean.style.display = 'none';
+	})
+	
 }
 
 
