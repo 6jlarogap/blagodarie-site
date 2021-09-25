@@ -558,6 +558,32 @@ var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
 
+//разрешение местоположения
+
+function handlePermission() {
+  navigator.permissions.query({name:'geolocation'}).then(function(result) {
+    if (result.state == 'granted') {
+      report(result.state);
+      geoBtn.style.display = 'none';
+    } else if (result.state == 'prompt') {
+      report(result.state);
+      geoBtn.style.display = 'none';
+      navigator.geolocation.getCurrentPosition(revealPosition,positionDenied,geoSettings);
+    } else if (result.state == 'denied') {
+      report(result.state);
+      geoBtn.style.display = 'inline';
+    }
+    result.onchange = function() {
+      report(result.state);
+    }
+  });
+}
+
+function report(state) {
+  console.log('Permission ' + state);
+}
+
+
        
         if (!window.location.href.includes('page=')) {
 		let btn_prev_n = document.querySelector('#btn_prev');
