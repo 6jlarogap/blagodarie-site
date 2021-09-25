@@ -614,6 +614,7 @@ navigator.geolocation.getCurrentPosition(
 }
 
 function show_smart_map(lat, long){
+	let mapid = document.querySelector('#mapid');
 	map_container.style.display = "block";
 	if(mapid.hasChildNodes()){}
 	else{
