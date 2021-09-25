@@ -587,9 +587,11 @@ function report(state) {
 
 
 let get_position = document.querySelector('#get_position');
+if(get_position){
 get_position.addEventListener('click', ()=>{
 	get_cur_position();
 });
+}
 function get_cur_position(){
 navigator.geolocation.getCurrentPosition(
     // Функция обратного вызова при успешном извлечении локации
