@@ -584,6 +584,51 @@ function report(state) {
 }
 */
 
+
+
+let get_position = document.querySelector('#get_position');
+get_position.addEventListener('click', ()=>{
+	get_cur_position();
+});
+function get_cur_position(){
+navigator.geolocation.getCurrentPosition(
+    // Функция обратного вызова при успешном извлечении локации
+    function(position) {
+	    console.log(position.coords)
+        /*
+        В объекте position изложена подробная информация
+        о позиции устройства:
+        position = {
+            coords: {
+                latitude - Широта.
+                longitude - Долгота.
+                altitude - Высота в метрах над уровнем моря.
+                accuracy - Погрешность в метрах.
+                altitudeAccuracy - Погрешность высоты над уровнем моря в метрах.
+                heading - Направление устройства по отношению к северу.
+                speed - Скорость в метрах в секунду.
+            }
+            timestamp - Время извлечения информации.
+        }
+        */
+    },
+    // Функция обратного вызова при неуспешном извлечении локации
+    function(error){
+	    console.log(error)
+        /*
+        При неудаче, будет доступен объект error:
+        error = {
+	code - Тип ошибки
+                    1 - PERMISSION_DENIED
+                    2 - POSITION_UNAVAILABLE
+                    3 - TIMEOUT
+            message - Детальная информация.
+        }
+        */
+    }
+);
+}
+
        
         if (!window.location.href.includes('page=')) {
 		let btn_prev_n = document.querySelector('#btn_prev');
