@@ -637,7 +637,7 @@ navigator.geolocation.getCurrentPosition(
 );
 }
 
-show_smart_map(lat, long){
+function show_smart_map(lat, long){
 	mapid.style.display = 'block';
 	mapid.style.height = '180px';
 	mapid = L.map('mapid').setView([51.505, -0.09], 13);
