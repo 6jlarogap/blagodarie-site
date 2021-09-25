@@ -559,7 +559,7 @@ var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
 
 //разрешение местоположения
-let geoBtn = confirm('Разрешите своё местоположение');
+/*let geoBtn = confirm('Разрешите своё местоположение');
 function handlePermission() {
   navigator.permissions.query({name:'geolocation'}).then(function(result) {
     if (result.state == 'granted') {
@@ -582,7 +582,7 @@ function handlePermission() {
 function report(state) {
   console.log('Permission ' + state);
 }
-
+*/
 
        
         if (!window.location.href.includes('page=')) {
