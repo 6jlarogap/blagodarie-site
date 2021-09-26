@@ -631,7 +631,7 @@ function show_smart_map(lati, long){
 	var marker = L.marker([lati, long]).addTo(mapid);
 	function onMapClick(e) {
     		marker.setLatLng(e.latlng)
-        	console.log(marker.getLatLng())
+        	console.log(marker.getLatLng(lat))
         		
 		
 		console.log('after ' + lati + long);
