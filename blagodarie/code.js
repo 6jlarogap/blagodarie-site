@@ -587,7 +587,7 @@ navigator.geolocation.getCurrentPosition(
 	    show_smart_map(lati, long);
     },
     function(error){
-	    console.log(error)
+	    show_smart_map(53.89948354993688, 27.557659149169925);
     }
 );
 }
