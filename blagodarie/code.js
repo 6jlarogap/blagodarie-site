@@ -638,6 +638,23 @@ function show_smart_map(lati, long){
 		
 		console.log('after ' + lati + long);
 		
+		
+		
+		document.querySelector(".mapid_send").addEventListener("click", async () => {
+			const result = await fetch(`${settings.api}api/updateprofileinfo`, {
+		method: "POST",
+		headers: {
+			"Authorization": `Token ${getCookie("auth_token")}`
+		}
+	})
+
+	
+
+	window.location.href = settings.url;
+})
+		
+		
+		
 	}
 	}
 	console.log('before ' + lati, long);
