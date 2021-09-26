@@ -640,8 +640,10 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null , "longitude": new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null })
 	}).then(data => data.json());
 	mapid_alert.style.display = "block";
-	mapid_alert.style.transition = "1s";
-	mapid_alert.style.opacity = "1";
+	setTimeout(function(){
+		mapid_alert.style.transition = "1s";
+		mapid_alert.style.opacity = "1";
+	}, 200);
 	setTimeout(function(){
 		mapid_alert.style.transition = "1s";
 		mapid_alert.style.opacity = "0";
