@@ -558,32 +558,6 @@ var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
 
-//разрешение местоположения
-/*let geoBtn = confirm('Разрешите своё местоположение');
-function handlePermission() {
-  navigator.permissions.query({name:'geolocation'}).then(function(result) {
-    if (result.state == 'granted') {
-      report(result.state);
-      geoBtn.style.display = 'none';
-    } else if (result.state == 'prompt') {
-      report(result.state);
-      geoBtn.style.display = 'none';
-      navigator.geolocation.getCurrentPosition(revealPosition,positionDenied,geoSettings);
-    } else if (result.state == 'denied') {
-      report(result.state);
-      geoBtn.style.display = 'inline';
-    }
-    result.onchange = function() {
-      report(result.state);
-    }
-  });
-}
-
-function report(state) {
-  console.log('Permission ' + state);
-}
-*/
-
 
 
 let get_position = document.querySelector('#get_position');
@@ -658,7 +632,7 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 			"Content-Type": "application/json",
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
-		body: JSON.stringify("user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker.lat, "longitude": new_cur_pos_marker.lng)
+		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker.lat, "longitude": new_cur_pos_marker.lng })
 	}).then(data => data.json());
 
 window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
