@@ -631,7 +631,6 @@ function show_smart_map(lat, long){
 	var marker = L.marker([lat, long]).addTo(mapid);
 	function onMapClick(e) {
     		marker
-			console.log(e.lat, e.lon);
         		.setLatLng(e.lat, e.lon)
         		
         		
