@@ -645,7 +645,10 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 	setTimeout(function(){
 		mapid_alert.style.transition = "1s";
 		mapid_alert.style.opacity = "0";
-	}, 15000)
+	}, 2500);
+	setTimeout(function(){
+		mapid_alert.style.display = "none";
+	}, 3500)
 });
 
 
