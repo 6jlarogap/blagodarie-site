@@ -567,6 +567,9 @@ let mapid_close = document.querySelector('.mapid_close');
 let mapid_send = document.querySelector('.mapid_send');
 let mapid_clean = document.querySelector('.mapid_clean');
 
+let new_cur_pos_marker_lat;
+let new_cur_pos_marker_lng;
+
 if(get_position){
 get_position.addEventListener('click', ()=>{
 	get_cur_position();
@@ -603,12 +606,12 @@ function show_smart_map(lati, long){
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(mapid);
 	var marker = L.marker([lati, long]).addTo(mapid);
-	let new_cur_pos_marker;
+	let new_cur_pos_marker_lat;
 	function onMapClick(e) {
     		marker.setLatLng(e.latlng)
         	new_cur_pos_marker = marker.getLatLng();
-		console.log(new_cur_pos_marker.lat);
-		console.log(new_cur_pos_marker.lng);
+		new_cur_pos_marker_lat = new_cur_pos_marker.lat;
+		new_cur_pos_marker_lng = new_cur_pos_marker.lng;
         		
 		
 		console.log('after ' + lati + long);
@@ -632,7 +635,7 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 			"Content-Type": "application/json",
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker.lat, "longitude": new_cur_pos_marker.lng })
+		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker_lat, "longitude": new_cur_pos_marker_lng })
 	}).then(data => data.json());
 
 window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
