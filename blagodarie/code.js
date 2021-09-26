@@ -635,7 +635,7 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 			"Content-Type": "application/json",
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker_lat, "longitude": new_cur_pos_marker_lng })
+		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker_lat ? new_cur_pos_marker_lat : null , "longitude": new_cur_pos_marker_lng ? new_cur_pos_marker_lng : null })
 	}).then(data => data.json());
 
 	/*window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;*/
