@@ -638,12 +638,21 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 		},
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null , "longitude": new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null })
 	}).then(data => data.json());
+});
 
-	/*window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;*/
-	console.log('lat ' + new_cur_pos_marker_lat);
-	console.log('lng ' + new_cur_pos_marker_lng);
-})
 
+
+document.querySelector(".mapid_clean").addEventListener("click", async () => {
+			const response = await fetch(`${settings.api}api/updateprofileinfo`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Token ${getCookie("auth_token")}`
+		},
+		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": null , "longitude": null })
+	}).then(data => data.json());
+	map_container.style.display = "none";
+});
 
 
 
