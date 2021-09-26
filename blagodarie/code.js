@@ -579,7 +579,7 @@ get_position.addEventListener('click', ()=>{
 }
 
 function get_cur_position(){
-if(navigator.geolocation){
+
 navigator.geolocation.getCurrentPosition(
     function(position) {
 	    console.log(position.coords);
@@ -591,9 +591,7 @@ navigator.geolocation.getCurrentPosition(
 	    show_smart_map(53.89948354993688, 27.557659149169925);
     }
 );
-}else{
-	alert('Пожалуйста, включите геолокацию на Вашем устройстве!')
-}
+
 }
 
 function show_smart_map(lati, long){
