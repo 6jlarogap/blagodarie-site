@@ -603,9 +603,9 @@ function get_cur_position(){
 navigator.geolocation.getCurrentPosition(
     function(position) {
 	    console.log(position.coords);
-	    let lat = position.coords.latitude;
+	    let lati = position.coords.latitude;
 	    let long = position.coords.longitude;
-	    show_smart_map(lat, long);
+	    show_smart_map(lati, long);
     },
     function(error){
 	    console.log(error)
@@ -613,12 +613,12 @@ navigator.geolocation.getCurrentPosition(
 );
 }
 
-function show_smart_map(lat, long){
+function show_smart_map(lati, long){
 	
 	map_container.style.display = "block";
 	if(document.querySelector('#mapid').hasChildNodes()){}
 	else{
-	mapid = L.map('mapid').setView([lat, long], 13);
+	mapid = L.map('mapid').setView([lati, long], 13);
 	
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
     		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -628,21 +628,21 @@ function show_smart_map(lat, long){
     		zoomOffset: -1,
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(mapid);
-	var marker = L.marker([lat, long]).addTo(mapid);
+	var marker = L.marker([lati, long]).addTo(mapid);
 	function onMapClick(e) {
     		marker
         		.setLatLng(e.latlng)
         		
         		
 		console.log('e.latlng ' + e.latlng);
-		lat = e.latlng.toString();
-		lat.slice(-10);
+		lati = e.latlng.toString();
+		lati.slice(-10);
 		long = e.latlng;
-		console.log('after ' + lat + long);
+		console.log('after ' + lati + long);
 		
 	}
 	}
-	console.log('before ' + lat, long);
+	console.log('before ' + lati, long);
 
 	mapid.on('click', onMapClick);
 	mapid_close.addEventListener('click', ()=> {
