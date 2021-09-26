@@ -686,7 +686,12 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 		btn_prev_n.style.pointerEvents = 'none';
             localStorage.setItem('item_plus', 0);
 		let selected_val = +localStorage.getItem('selected_val');
-		localStorage.setItem('selected_val', 25);
+		if(+localStorage.getItem('selected_val') == 0){
+			localStorage.setItem('selected_val', '25');
+		}
+		else{
+		localStorage.setItem('selected_val', 'selected_val');
+		}
 		document.querySelector('.pagination_select').style.display = 'block';
 		document.querySelector('.pagination_count').innerHTML = localStorage.getItem('selected_val');
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${localStorage.getItem('selected_val')}`;
