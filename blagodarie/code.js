@@ -638,6 +638,7 @@ function show_smart_map(lat, long){
 		lat = e.latlng;
 		long = e.latlng;
 		console.log('after ' + lat + long);
+		console.log('after ' + lat.slice(-2) + long.slice(5));
 	}
 	}
 	console.log('before ' + lat, long);
