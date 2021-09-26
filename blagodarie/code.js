@@ -634,10 +634,7 @@ function show_smart_map(lati, long){
         		.setLatLng(e.latlng)
         		.getLatLng(lati=e.lat, long=e.lon)
         		
-		console.log('e.latlng ' + e.latlng);
-		lati = e.latlng.toString();
-		lati.slice(-10);
-		long = e.latlng;
+		
 		console.log('after ' + lati + long);
 		
 	}
