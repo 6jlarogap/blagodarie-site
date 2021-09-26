@@ -687,7 +687,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
             localStorage.setItem('item_plus', 0);
 		let selected_val = +localStorage.getItem('selected_val');
 		if(+localStorage.getItem('selected_val') == 0){
-			localStorage.setItem('selected_val', '25');
+			localStorage.setItem('selected_val', 25);
 		}
 		else{
 		localStorage.setItem('selected_val', 'selected_val');
