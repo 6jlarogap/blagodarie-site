@@ -638,7 +638,9 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker_lat, "longitude": new_cur_pos_marker_lng })
 	}).then(data => data.json());
 
-window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
+	/*window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;*/
+	console.log('lat ' + new_cur_pos_marker_lat);
+	console.log('lng ' + new_cur_pos_marker_lng);
 })
 
 
