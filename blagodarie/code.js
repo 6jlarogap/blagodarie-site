@@ -566,7 +566,8 @@ let map_container = document.querySelector('.map_container');
 let mapid_close = document.querySelector('.mapid_close');
 let mapid_send = document.querySelector('.mapid_send');
 let mapid_clean = document.querySelector('.mapid_clean');
-
+let lati;
+let long;
 let new_cur_pos_marker_lat;
 let new_cur_pos_marker_lng;
 
@@ -580,8 +581,8 @@ function get_cur_position(){
 navigator.geolocation.getCurrentPosition(
     function(position) {
 	    console.log(position.coords);
-	    let lati = position.coords.latitude;
-	    let long = position.coords.longitude;
+	    lati = position.coords.latitude;
+	    long = position.coords.longitude;
 	    show_smart_map(lati, long);
     },
     function(error){
