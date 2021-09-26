@@ -632,7 +632,7 @@ function show_smart_map(lati, long){
 	function onMapClick(e) {
     		marker
         		.setLatLng(e.latlng)
-        		.getLatLng(e.lat, e.lon)
+        		.getLatLng(lati=e.lat, long=e.lon)
         		
 		console.log('e.latlng ' + e.latlng);
 		lati = e.latlng.toString();
