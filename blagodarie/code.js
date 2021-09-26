@@ -649,7 +649,7 @@ function show_smart_map(lati, long){
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker.lat, "longitude": new_cur_pos_marker.lng})
 		}).then(data => data.json())
 		
-		window.location.href(settings.url)
+		window.location.assign(settings.url)
 		})
 		
 		
