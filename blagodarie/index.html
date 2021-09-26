@@ -546,6 +546,21 @@
 			transition: .5s;
 			z-index: 13;
 		}
+		.mapid_alert{
+			display: none;
+			opacity: 0;
+			position: absolute;
+			left: 50%;
+    			top: 50%;
+			padding: 4px 10px;
+    			background-color: #fff;
+    			border-radius: 7px;
+    			cursor: pointer;
+    			border: 2px solid rgba(0,0,0,0.2);
+    			font-weight: 500;
+			transition: 1s;
+			z-index: 13;
+		}
 		.mapid_send:hover, .mapid_clean:hover{
 			opacity: 1;
 			transition: .5s;
@@ -614,6 +629,7 @@
 	<p class="mapid_close">&#215;</p>
 	<div class="mapid_send">Опубликовать</div>
 	<div class="mapid_clean">Очистить</div>
+	<p class="mapid_alert">Ваше местоположение<br>закреплено здесь!</p>
 	</div>
 		
 	<dialog id="rootDialog">
