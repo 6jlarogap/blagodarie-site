@@ -629,30 +629,15 @@ function show_smart_map(lati, long){
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(mapid);
 	var marker = L.marker([lati, long]).addTo(mapid);
+	let new_cur_pos_marker;
 	function onMapClick(e) {
     		marker.setLatLng(e.latlng)
-        	let new_cur_pos_marker = marker.getLatLng();
+        	new_cur_pos_marker = marker.getLatLng();
 		console.log(new_cur_pos_marker.lat);
 		console.log(new_cur_pos_marker.lng);
         		
 		
 		console.log('after ' + lati + long);
-		
-		
-		
-		document.querySelector(".mapid_send").addEventListener("click", async () => {
-			const result = await fetch(`${settings.api}api/updateprofileinfo`, {
-		method: "POST",
-		headers: {
-			"Authorization": `Token ${getCookie("auth_token")}`
-		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker.lat, "longitude": new_cur_pos_marker.lng})
-		}).then(data => data.json())
-		
-		console.log(response)
-		})
-		
-		
 		
 	}
 	}
@@ -664,6 +649,20 @@ function show_smart_map(lati, long){
 	});
 	
 }
+
+
+document.querySelector(".mapid_send").addEventListener("click", async () => {
+			const response = await fetch(`${settings.api}api/updateprofileinfo`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Token ${getCookie("auth_token")}`
+		},
+		body: JSON.stringify("user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker.lat, "longitude": new_cur_pos_marker.lng)
+	}).then(data => data.json());
+
+window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
+})
 
 
 
