@@ -635,8 +635,8 @@ function show_smart_map(lat, long){
         		
         		
 		console.log('e.latlng ' + e.latlng);
-		lat = e.latlng(lat);
-		long = e.latlng(lon);
+		lat = latlng(lat);
+		long = latlng(lon);
 		console.log('after ' + lat + lon);
 	}
 	}
