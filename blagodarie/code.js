@@ -606,7 +606,7 @@ function show_smart_map(lati, long){
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(mapid);
 	var marker = L.marker([lati, long]).addTo(mapid);
-	let new_cur_pos_marker_lat;
+	let new_cur_pos_marker;
 	function onMapClick(e) {
     		marker.setLatLng(e.latlng)
         	new_cur_pos_marker = marker.getLatLng();
