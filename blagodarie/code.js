@@ -631,13 +631,13 @@ function show_smart_map(lat, long){
 	var marker = L.marker([lat, long]).addTo(mapid);
 	function onMapClick(e) {
     		marker
-        		.setLatLng(e.lat, e.lon)
+        		.setLatLng(e.latlng)
         		
         		
 		console.log('e.latlng ' + e.latlng);
-		lat = e.lat;
-		long = e.lon;
-		console.log('after ' + lat);
+		lat = e.latlng(lat);
+		long = e.latlng(lon);
+		console.log('after ' + lat + lon);
 	}
 	}
 	console.log('before ' + lat, long);
