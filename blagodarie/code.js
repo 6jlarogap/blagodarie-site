@@ -652,6 +652,10 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": null , "longitude": null })
 	}).then(data => data.json());
 	map_container.style.display = "none";
+	lati = null;
+	long = null;
+	new_cur_pos_marker_lat = null;
+	new_cur_pos_marker_lng = null;
 });
 
 
