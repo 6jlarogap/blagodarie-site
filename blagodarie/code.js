@@ -635,10 +635,10 @@ function show_smart_map(lat, long){
         		
         		
 		console.log('e.latlng ' + e.latlng);
-		lat = e.latlng;
+		lat = e.latlng.toString();
 		long = e.latlng;
 		console.log('after ' + lat + long);
-		console.log('after ' + lat.slice(-2) + long.slice(5));
+		
 	}
 	}
 	console.log('before ' + lat, long);
