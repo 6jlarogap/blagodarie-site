@@ -1133,6 +1133,8 @@ d3.json(apiUrl)
 	
 	//зафиксировать вершины пользователя, желаний и ключей
 	if(window.innerWidth > 500){
+	console.log('window > 500');
+	console.log(window.innerWidth);
 	nodes.forEach(function(d) {
 		switch(d.id){
 		case userIdFrom:
@@ -1207,6 +1209,8 @@ d3.json(apiUrl)
 	});
 	
 	}else if(window.innerWidth < 500){
+		console.log('window < 500');
+		console.log(window.innerWidth)
 		nodes.forEach(function(d) {
 		switch(d.id){
 		case userIdFrom:
