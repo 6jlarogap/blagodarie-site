@@ -1206,78 +1206,7 @@ d3.json(apiUrl)
 		}
 	});
 	
-		nodes.forEach(function(d) {
-		switch(d.id){
-		case userIdFrom:
-			d.fx = width / 2;
-			d.fy = height / 2;
-			break;
-		case WISHES_ROOT_ID:
-			d.fx = width / 2 + 400;
-			d.fy = height / 2 + 200;
-			break;
-		case KEYS_ROOT_ID:
-			d.fx = width / 2 + 400;
-			d.fy = height / 2 - 200;
-			break;
-		case ABILITIES_ROOT_ID:
-			d.fx = width / 2 + 400;
-			d.fy = height / 2;
-			break;
-		case ABILITY_ID:
-			d.fx = width / 2 + 500;
-			d.fy = height / 2;
-			break;
-		case SHARE_ID:
-			d.fx = width / 2 + 10;
-			d.fy = height / 2 - 150;
-			break;
-		case FILTER_ID:
-			d.fx = width / 2 + 30;
-			d.fy = height / 2 - 150;
-			break;
-		case OPTIONS_ID:
-			d.fx = width / 2 - 50;
-			d.fy = height / 2 - 150;	
-			break;
-		case INVITE_ID:
-				d.fx = width / 2 - 10;
-				d.fy = height / 2 - 150;	
-				break;
-		case HOME_ID:
-			d.fx = width / 2 - 30;
-			d.fy = height / 2 - 150;
-			break;
-		case TRUST_ID:
-			d.fx = width / 2 + 50;
-			d.fy = height / 2 + 100;
-			break;
-		case MISTRUST_ID:
-			d.fx = width / 2 - 50;
-			d.fy = height / 2 + 100;
-			break;
-		case AUTH_ID:
-			if (!userIdFrom) {
-				d.fx = width / 2;
-				d.fy = height / 2;
-			}
-			else {
-				d.fx = width / 2 - 200;
-				d.fy = height / 2;
-			}
-			break;
-		case PROFILE.id:
-			if (userIdFrom && userIdFrom != PROFILE.id) {
-				d.fx = width / 2 - 200;
-				d.fy = height / 2;
-			} else {
-				d.fx = width / 2;
-				d.fy = height / 2;
-			}
-			
-			break;
-		}
-	});
+		
 	
 	
 	simulation = d3.forceSimulation(nodes);
