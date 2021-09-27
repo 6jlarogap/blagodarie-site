@@ -590,7 +590,7 @@ navigator.geolocation.getCurrentPosition(
     },
     function(error){
 	    show_smart_map(53.89948354993688, 27.557659149169925);
-	    mapid_whereI.style.display = 'none!important';
+	    mapid_whereI.style.display = 'none';
     }
 );
 
@@ -634,7 +634,7 @@ function show_smart_map(lati, long){
 	    		},
     			function(error){
 	    			show_smart_map(53.89948354993688, 27.557659149169925);
-				mapid_whereI.style.display = 'none!important';
+				mapid_whereI.style.display = 'none';
     			}
 			);
 		});
