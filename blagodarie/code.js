@@ -571,6 +571,7 @@ let long;
 let new_cur_pos_marker_lat;
 let new_cur_pos_marker_lng;
 let mapid_alert = document.querySelector('.mapid_alert');
+let mapid_whereI = document.querySelector('.mapid_whereI');
 
 if(get_position){
 get_position.addEventListener('click', ()=>{
@@ -618,12 +619,31 @@ function show_smart_map(lati, long){
 		new_cur_pos_marker_lng = new_cur_pos_marker.lng;
         		
 		
-		console.log('after ' + lati + long);
+		
+		
+		mapid_whereI.addEventListener('click', ()=> {
+		navigator.geolocation.getCurrentPosition(
+    			function(position) {
+	    			lati = position.coords.latitude;
+	    			long = position.coords.longitude;
+				marker.setLatLng([lati, long]);
+	    		},
+    			function(error){
+	    			show_smart_map(53.89948354993688, 27.557659149169925);
+    			}
+			);
+		});
+		
+		
 		
 	}
 	}
 	console.log('before ' + lati, long);
-
+	
+	
+	
+	
+	
 	mapid.on('click', onMapClick);
 	mapid_close.addEventListener('click', ()=> {
 		map_container.style.display = "none";
