@@ -590,6 +590,7 @@ navigator.geolocation.getCurrentPosition(
     },
     function(error){
 	    show_smart_map(53.89948354993688, 27.557659149169925);
+	    mapid_whereI.style.display = 'none';
     }
 );
 
@@ -627,9 +628,13 @@ function show_smart_map(lati, long){
 	    			lati = position.coords.latitude;
 	    			long = position.coords.longitude;
 				marker.setLatLng([lati, long]);
+				new_cur_pos_marker = marker.getLatLng();
+				new_cur_pos_marker_lat = new_cur_pos_marker.lat;
+				new_cur_pos_marker_lng = new_cur_pos_marker.lng;
 	    		},
     			function(error){
 	    			show_smart_map(53.89948354993688, 27.557659149169925);
+				mapid_whereI.style.display = 'none';
     			}
 			);
 		});
