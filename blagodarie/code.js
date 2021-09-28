@@ -538,13 +538,150 @@ var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
 
-var apiUrl = `${settings.api}api/getstats/user_connections_graph`;
 
-if (userIdFrom != null && userIdTo != null){
-	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
-} else if(userIdFrom != null){
-	apiUrl = `${settings.api}api/profile_graph?uuid=` + userIdFrom;
-}
+
+
+       
+        if (!window.location.href.includes('page=')) {
+		let btn_prev_n = document.querySelector('#btn_prev');
+		btn_prev_n.style.background = '#aaa0a0';
+		btn_prev_n.style.cursor = 'context-menu';
+		btn_prev_n.style.pointerEvents = 'none';
+            localStorage.setItem('item_plus', 0);
+		let selected_val = +localStorage.getItem('selected_val');
+		if(+localStorage.getItem('selected_val') == 0){
+			localStorage.setItem('selected_val', 25);
+		}
+		document.querySelector('.pagination_select').style.display = 'block';
+		document.querySelector('.pagination_count').innerHTML = localStorage.getItem('selected_val');
+            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${localStorage.getItem('selected_val')}`;
+		console.log(apiUrl);
+            if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
+                apiUrl = `${settings.api}api/profile_graph?from=0&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;		
+		    console.log(apiUrl);
+            } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
+                apiUrl = `${settings.api}api/profile_graph?from=0&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom;    		
+		    console.log(apiUrl);
+            } else if (localStorage.getItem('filter') != null) {
+                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${localStorage.getItem('selected_val')}&query=` + localStorage.getItem('filter');	
+		   console.log(apiUrl);
+            }
+
+	
+        }
+
+
+
+
+        let current_page = 1;
+
+        function nextPage() {
+            if (window.location.href.includes('page=')) {
+                if (localStorage.getItem('cur_page') < 10) {
+                    let new_int = window.location.search.slice(-1); 
+                    +new_int;
+                    new_int++;
+                    localStorage.setItem('cur_page', new_int);
+                    document.querySelector('.pagination_select').style.display = 'none';
+                    let item_plus_int = +localStorage.getItem('item_plus'); 
+                    +item_plus_int;
+                    let selected_val = +localStorage.getItem('selected_val');
+                    item_plus_int += selected_val;
+                    localStorage.setItem('item_plus', item_plus_int);
+                    window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
+                } else if (localStorage.getItem('cur_page') < 99) {
+                    let new_int = window.location.search.slice(-2); 
+                    +new_int;
+                    new_int++;
+                    localStorage.setItem('cur_page', new_int);
+			document.querySelector('.pagination_select').style.display = 'none';
+                    let item_plus_int = +localStorage.getItem('item_plus'); 
+                    +item_plus_int;
+			let selected_val = +localStorage.getItem('selected_val');
+                    item_plus_int += selected_val;
+                    localStorage.setItem('item_plus', item_plus_int);
+                    window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
+                }
+            } else if (window.location.href.includes('?id')) {
+                window.location.assign(window.location.origin + window.location.pathname + window.location.search + '&page=2');
+		    
+                localStorage.setItem('cur_page', 2);
+                localStorage.setItem('item_plus', localStorage.getItem('selected_val'));
+            } else {
+                window.location.assign(window.location.origin + window.location.pathname + window.location.search + '?page=2');
+		    
+                localStorage.setItem('cur_page', 2);
+                localStorage.setItem('item_plus', localStorage.getItem('selected_val'));
+            }
+
+
+        }
+
+        function prevPage() {
+            current_page--;
+            if (window.location.href.includes('page=')) {
+                if (localStorage.getItem('cur_page') < 3 && window.location.href.includes('?page=2')) {
+                    window.location.assign(window.location.origin + window.location.pathname + window.location.search.replace('?page=2', ''));
+                    localStorage.setItem('item_plus', 0);
+                } else if (localStorage.getItem('cur_page') < 3 && window.location.href.includes('&page=2')) {
+                    window.location.assign(window.location.origin + window.location.pathname + window.location.search.replace('&page=2', ''));
+                    localStorage.setItem('item_plus', 0);
+                } else if (localStorage.getItem('cur_page') < 10) {
+                    let new_int = window.location.search.slice(-1); 
+                    +new_int;
+                    new_int--;
+                    localStorage.setItem('cur_page', new_int);
+                    let item_plus_int = localStorage.getItem('item_plus'); 
+                    +item_plus_int;
+                    item_plus_int -= localStorage.getItem('selected_val');
+                    localStorage.setItem('item_plus', item_plus_int);
+                    window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -1) + (+localStorage.getItem('cur_page')));
+                } else if (localStorage.getItem('cur_page') < 99) {
+                    let new_int = window.location.search.slice(-2); 
+                    +new_int;
+                    new_int--;
+                    localStorage.setItem('cur_page', new_int);
+                    let item_plus_int = localStorage.getItem('item_plus'); 
+                    +item_plus_int;
+                    item_plus_int -= localStorage.getItem('selected_val');
+                    localStorage.setItem('item_plus', item_plus_int);
+                    window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
+                }
+            }
+        }
+
+        if (window.location.href.includes('page=')) {
+            document.querySelector('#page').innerHTML = localStorage.getItem('cur_page');
+        } else {
+            document.querySelector('#page').innerHTML = current_page;
+        }
+
+
+
+        if (window.location.href.includes('page=')) {
+		document.querySelector('.pagination_select').style.display = 'none';
+		document.querySelector('#btn_prev').style.background = '#000;';
+		document.querySelector('#btn_prev').style.cursor = 'pointer;';
+            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=${localStorage.getItem('selected_val')}`;
+		
+            if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
+                apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+                console.log('example1');
+		    document.querySelector('.pagination_select').style.display = 'none';
+            } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
+                apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom;
+                console.log('example2');
+		    document.querySelector('.pagination_select').style.display = 'none';
+            } else if (localStorage.getItem('filter') != null) {
+                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=${localStorage.getItem('selected_val')}&query=` + localStorage.getItem('filter');
+                console.log('example3');
+		    document.querySelector('.pagination_select').style.display = 'none';
+            }
+		
+
+        }
+
+
 
 var isConnection;
 var isTrust;
