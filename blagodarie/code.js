@@ -919,6 +919,7 @@ d3.json(apiUrl)
 	data.users.forEach(function(d){
 	if(d.latitude){	
 			map_users.push({
+				user_photo: d.photo,
 				user_name: d.first_name,
 				user_lastname: d.last_name,
 				user_latitude: d.latitude,
@@ -1305,7 +1306,9 @@ function show_map_style(){
 	if(map_users.length > 0){
 		for(let i = 0; i < map_users.length; i++){
 			var new_marker = new L.marker([map_users[i].user_latitude, map_users[0].user_longitude])
-			.addTo(new_map);
+			.setIcon([map_users[i].user_photo])
+			.addTo(new_map)
+			
 		}
 	}
 	}
