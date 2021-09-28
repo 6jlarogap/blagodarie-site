@@ -855,6 +855,9 @@ var isTrust;
 
 
 let map_users = [];
+let map_latitude;
+let map_longitude;
+let new_map = document.querySelector('#new_map');
 d3.json(apiUrl)
 	.then(async function(data) {
 
@@ -912,10 +915,7 @@ d3.json(apiUrl)
 	
 	
 	/*maps*/
-	let latitude;
-	let longitude;
 	
-	let new_map = document.querySelector('#new_map');
 	data.users.forEach(function(d){
 		
 			map_users.push({
@@ -929,21 +929,7 @@ d3.json(apiUrl)
 		
 	});
 	console.log(map_users);
-	function show_map_style(){
-		if(document.querySelector('#new_map').hasChildNodes()){}
-	else{
-	new_map = L.map('new_map').setView([50.019638199999996, 36.226296399999995], 13);
 	
-	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
-    		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    		maxZoom: 18,
-    		id: 'mapbox/streets-v11',
-    		tileSize: 512,
-    		zoomOffset: -1,
-    		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
-	}).addTo(new_map);
-	}		
-	}
 	
 	
 	
@@ -1075,7 +1061,7 @@ d3.json(apiUrl)
 	//Добавляем вершину карт
 	nodes.push({
 		id: MAPS_ID,
-		text: "Режим карты",
+		text: "Карта",
 		image: `${settings.url}images/map_button.png`,
 		nodeType: NODE_TYPES.MAPS
 	});
@@ -1294,6 +1280,22 @@ d3.json(apiUrl)
 	initializeSimulation();
 });
 
+
+function show_map_style(){
+		if(document.querySelector('#new_map').hasChildNodes()){}
+	else{
+	new_map = L.map('new_map').setView([50.019638199999996, 36.226296399999995], 13);
+	
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
+    		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    		maxZoom: 18,
+    		id: 'mapbox/streets-v11',
+    		tileSize: 512,
+    		zoomOffset: -1,
+    		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
+	}).addTo(new_map);
+	}		
+	}
 
 
 
