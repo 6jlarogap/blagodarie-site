@@ -714,7 +714,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 		if(+localStorage.getItem('selected_val') == 0){
 			localStorage.setItem('selected_val', 25);
 		}
-		document.querySelector('.pagination_select').style.display = 'block';
+	//document.querySelector('.pagination_select').style.display = 'block';
 		document.querySelector('.pagination_count').innerHTML = localStorage.getItem('selected_val');
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${localStorage.getItem('selected_val')}`;
 		console.log(apiUrl);
@@ -744,7 +744,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
                     +new_int;
                     new_int++;
                     localStorage.setItem('cur_page', new_int);
-                    document.querySelector('.pagination_select').style.display = 'none';
+                 //document.querySelector('.pagination_select').style.display = 'none';
                     let item_plus_int = +localStorage.getItem('item_plus'); 
                     +item_plus_int;
                     let selected_val = +localStorage.getItem('selected_val');
@@ -756,7 +756,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
                     +new_int;
                     new_int++;
                     localStorage.setItem('cur_page', new_int);
-			document.querySelector('.pagination_select').style.display = 'none';
+		//document.querySelector('.pagination_select').style.display = 'none';
                     let item_plus_int = +localStorage.getItem('item_plus'); 
                     +item_plus_int;
 			let selected_val = +localStorage.getItem('selected_val');
@@ -821,7 +821,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 
 
         if (window.location.href.includes('page=')) {
-		document.querySelector('.pagination_select').style.display = 'none';
+		//document.querySelector('.pagination_select').style.display = 'none';
 		document.querySelector('#btn_prev').style.background = '#000;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=${localStorage.getItem('selected_val')}`;
@@ -829,15 +829,15 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
                 console.log('example1');
-		    document.querySelector('.pagination_select').style.display = 'none';
+		    //document.querySelector('.pagination_select').style.display = 'none';
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom;
                 console.log('example2');
-		    document.querySelector('.pagination_select').style.display = 'none';
+		    //document.querySelector('.pagination_select').style.display = 'none';
             } else if (localStorage.getItem('filter') != null) {
                 apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=${localStorage.getItem('selected_val')}&query=` + localStorage.getItem('filter');
                 console.log('example3');
-		    document.querySelector('.pagination_select').style.display = 'none';
+		    //document.querySelector('.pagination_select').style.display = 'none';
             }
 		
 
