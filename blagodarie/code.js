@@ -1282,8 +1282,13 @@ d3.json(apiUrl)
 
 
 function show_map_style(){
-	map_latitude = map_users[0].user_latitude;
-	map_longitude = map_users[0].user_longitude;
+	if(map_users.length > 0){
+		map_latitude = map_users[0].user_latitude;
+		map_longitude = map_users[0].user_longitude;
+	}else{
+		map_latitude = 49.019638199999996;
+		map_longitude = 35.226296399999995;
+	}
 	if(document.querySelector('#new_map').hasChildNodes()){}
 	else{
 	new_map = L.map('new_map').setView([map_latitude, map_longitude], 13);
