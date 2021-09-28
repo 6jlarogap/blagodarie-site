@@ -1280,11 +1280,12 @@ d3.json(apiUrl)
 	initializeSimulation();
 });
 
-
+map_latitude = map_users[0].latitude;
+map_longitude = map_users[0].longitude;
 function show_map_style(){
 		if(document.querySelector('#new_map').hasChildNodes()){}
 	else{
-	new_map = L.map('new_map').setView([map_users[0].latitude, map_users[0].longitude], 13);
+	new_map = L.map('new_map').setView([map_latitude, map_longitude], 13);
 	
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
     		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
