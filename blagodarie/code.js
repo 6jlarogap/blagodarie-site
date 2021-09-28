@@ -1308,16 +1308,8 @@ function show_map_style(){
 			var myIcon = L.icon({
     				iconUrl: map_users[i].user_photo,
     				iconSize: [38, 38],
-    				iconAnchor: [map_users[i].user_latitude, map_users[i].user_longitude],
-    				popupAnchor: [-3, -76],
-    				shadowUrl: map_users[i].user_photo,
-    				shadowSize: [38, 38],
-    				shadowAnchor: [map_users[i].user_latitude, map_users[i].user_longitude]
+    				iconAnchor: [map_users[i].user_latitude, map_users[i].user_longitude]
 			});
-			
-			
-			
-			
 			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIcon})
 			.addTo(new_map)
 			
