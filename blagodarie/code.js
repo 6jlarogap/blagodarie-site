@@ -1304,7 +1304,7 @@ function show_map_style(){
 	}
 	if(map_users.length > 0){
 		for(let i = 0; i < map_users.length; i++){
-			new_marker = new L.marker([map_users[i].user_latitude, map_users[0].user_longitude]);
+			var new_marker = new L.marker([map_users[i].user_latitude, map_users[0].user_longitude]);
 			.addTo(new_map);
 		}
 	}
