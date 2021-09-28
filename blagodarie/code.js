@@ -824,6 +824,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 		//document.querySelector('.pagination_select').style.display = 'none';
 		document.querySelector('#btn_prev').style.background = '#000;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
+		document.querySelector('.pagination_count').innerHTML = localStorage.getItem('selected_val');
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=${localStorage.getItem('selected_val')}`;
 		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
