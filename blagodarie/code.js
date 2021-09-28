@@ -1310,6 +1310,12 @@ function show_map_style(){
     				iconSize: [38, 38],
     				iconAnchor: [map_users[i].user_latitude, map_users[i].user_longitude]
 			});
+			var textLatLng = [map_users[i].user_latitude, map_users[i].user_longitude];  
+        		var myTextLabel = L.marker(textLatLng, {icon: L.divIcon({className: 'text-labels', html: 'A Text Label'}),zIndexOffset: 1000})
+			.addTo(new_map)
+			
+			
+			
 			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIcon})
 			.bindTooltip(`${map_users[i].user_name} ${map_users[i].user_lastname ? map_users[i].user_lastname : ''}`).openTooltip()
 			.addTo(new_map)
