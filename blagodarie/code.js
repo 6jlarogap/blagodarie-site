@@ -1301,7 +1301,12 @@ function show_map_style(){
     		zoomOffset: -1,
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(new_map);
-	}		
+	}
+	if(map_users.length > 0){
+		for(let i = 0; i < map_users.length; i++){
+			marker = new L.marker([map_users[i].user_latitude, map_users[0].user_longitude]);
+		}
+	}
 	}
 
 
