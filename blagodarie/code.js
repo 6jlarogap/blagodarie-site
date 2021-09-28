@@ -716,6 +716,20 @@ d3.json(apiUrl)
 			}
 		}
 	});
+	
+	
+	let selected_val_num = localStorage.getItem('selected_val');
+	let but_next = document.querySelector('#btn_next');
+	if(data.users.length == selected_val_num){
+		but_next.style.background = '#000';
+		but_next.style.cursor = 'pointer';
+		but_next.style.pointerEvents = 'all';
+	}
+	else if (data.users.length < selected_val_num){
+		but_next.style.background = '#aaa0a0';
+		but_next.style.cursor = 'context-menu';
+		but_next.style.pointerEvents = 'none';
+	}
 
 	if (data.wishes != null){
 		//добавить вершину желаний
