@@ -1280,10 +1280,11 @@ d3.json(apiUrl)
 	initializeSimulation();
 });
 
-map_latitude = map_users[0].latitude;
-map_longitude = map_users[0].longitude;
+
 function show_map_style(){
-		if(document.querySelector('#new_map').hasChildNodes()){}
+	map_latitude = map_users[0].latitude;
+	map_longitude = map_users[0].longitude;
+	if(document.querySelector('#new_map').hasChildNodes()){}
 	else{
 	new_map = L.map('new_map').setView([map_latitude, map_longitude], 13);
 	
