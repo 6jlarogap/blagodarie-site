@@ -915,7 +915,7 @@ d3.json(apiUrl)
 	
 	
 	/*maps*/
-	
+	if(data.users.latitude){
 	data.users.forEach(function(d){
 		
 			map_users.push({
@@ -929,7 +929,7 @@ d3.json(apiUrl)
 		
 	});
 	console.log(map_users);
-	
+	}
 	
 	
 	
