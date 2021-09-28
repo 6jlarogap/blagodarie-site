@@ -906,7 +906,18 @@ d3.json(apiUrl)
 		but_next.style.pointerEvents = 'none';
 	}
 				
-				
+		
+	
+	
+	/*maps*/
+	let latitude;
+	let longitude;
+	data.users.forEach(function(d){
+		if(d.latitude){
+			console.log(d.latitude);
+			console.log(d.longitude);
+		}
+	});
 				
 
 	
