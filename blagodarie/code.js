@@ -1062,7 +1062,7 @@ d3.json(apiUrl)
 	nodes.push({
 		id: MAPS_ID,
 		text: "Режим карты",
-		image: `${settings.url}images/home.png`,
+		image: `${settings.url}images/map_button.png`,
 		nodeType: NODE_TYPES.MAPS
 	});
 
