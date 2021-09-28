@@ -1319,6 +1319,9 @@ function show_map_style(){
 			
 			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIcon})
 			.addTo(new_map)
+			new_marker.addEventListener('click', ()=>{
+				window.location.assign(window.location.href + map_users[i].user_uuid)
+			})
 			
 		}
 	}
