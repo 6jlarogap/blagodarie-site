@@ -912,18 +912,20 @@ d3.json(apiUrl)
 	/*maps*/
 	let latitude;
 	let longitude;
+	let map_users = [];
 	data.users.forEach(function(d){
 		if(d.latitude){
-			let map_users = {
+			map_users.push({
 				user_name: d.first_name,
 				user_lastname: d.last_name,
 				user_latitude: d.latitude,
 				user_longitude: d.longitude,
 				user_ability: d.ability
-				} 
+				} );
 			
 		}
 	});
+	console.log(map_users);
 				
 
 	
