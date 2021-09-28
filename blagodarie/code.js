@@ -1311,7 +1311,7 @@ function show_map_style(){
     				iconAnchor: [map_users[i].user_latitude, map_users[i].user_longitude]
 			});
 			var textLatLng = [map_users[i].user_latitude, map_users[i].user_longitude];  
-        		var myTextLabel = L.marker(textLatLng, {icon: L.divIcon({className: 'text-labels', html: `${map_users[i].user_name} ${map_users[i].user_lastname ? map_users[i].user_lastname : ''}`}),zIndexOffset: 1000})
+        		var myTextLabel = L.marker(textLatLng, {icon: L.divIcon({className: 'text-labels', html: `${map_users[i].user_name} ${map_users[i].user_lastname ? map_users[i].user_lastname : ''} </br> ${map_users[i].user_ability ? map_users[i].user_ability : ''}`}),zIndexOffset: 1000})
 			.addTo(new_map)
 			
 			
