@@ -916,7 +916,7 @@ d3.json(apiUrl)
 	
 	/*maps*/
 	
-	data.users.latitude.forEach(function(d){
+	data.users.forEach(function(d){
 	if(d.latitude){	
 			map_users.push({
 				user_name: d.first_name,
