@@ -1328,7 +1328,13 @@ function show_map_style(){
 	}
 	}
 
+let new_map_container = document.querySelector('.new_map_container');
+if(localStorage.getItem('is_map_visible') == true){
+	new_map_container.classList.add('active');
+}
+else{
 
+}
 
 
 
@@ -1679,7 +1685,7 @@ function initDefs(){
 		.attr("fill", "#ff0000");
 }
 
-let new_map_container = document.querySelector('.new_map_container');
+
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
@@ -1723,6 +1729,7 @@ async function onNodeClick(nodeType, uuid, txt){
 	else if(nodeType == NODE_TYPES.MAPS){
 		new_map_container.classList.toggle('active');
 		show_map_style();
+		localStorage.setItem('is_map_visible', 'true');
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
