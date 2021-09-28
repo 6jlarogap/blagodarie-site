@@ -916,7 +916,7 @@ d3.json(apiUrl)
 	let longitude;
 	let map_users = [];
 	data.users.forEach(function(d){
-		if(d.latitude){
+		
 			map_users.push({
 				user_name: d.first_name,
 				user_lastname: d.last_name,
@@ -925,7 +925,7 @@ d3.json(apiUrl)
 				user_ability: d.ability
 				} );
 			
-		}
+		
 	});
 	console.log(map_users);
 				
