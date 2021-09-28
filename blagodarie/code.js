@@ -1632,7 +1632,7 @@ function initDefs(){
 		.attr("fill", "#ff0000");
 }
 
-
+let new_map_container = document.querySelector('.new_map_container');
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
@@ -1672,6 +1672,9 @@ async function onNodeClick(nodeType, uuid, txt){
 	}
 	else if(nodeType == NODE_TYPES.HOME) {
 		window.location.href = settings.url
+	}
+	else if(nodeType == NODE_TYPES.MAPS){
+		new_map_container.classList.toggle('active');
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
