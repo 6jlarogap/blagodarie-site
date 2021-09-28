@@ -16,7 +16,8 @@ const NODE_TYPES = Object.freeze({
 	"HOME": "home",
 	"FILTER": "filter",
 	"FILTERED": "filtered",
-	"INVITE": "invite"
+	"INVITE": "invite",
+	"MAPS": "maps"
 });
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const KEYS_ROOT_ID = "KEYS_ROOT";
@@ -29,6 +30,7 @@ const TRUST_ID = "TRUST_ROOT";
 const MISTRUST_ID = "MISTRUST_ROOT";
 const FILTER_ID = "FILTER_ROOT";
 const HOME_ID = "HOME_ROOT";
+const MAPS_ID = "MAPS_ROOT";
 const INVITE_ID = "INVITE_ROOT";
 const PROFILE = {
 	id: "",
@@ -1054,7 +1056,15 @@ d3.json(apiUrl)
 		text: "Домой",
 		image: `${settings.url}images/home.png`,
 		nodeType: NODE_TYPES.HOME
-	})
+	});
+	
+	//Добавляем вершину карт
+	nodes.push({
+		id: MAPS_ID,
+		text: "Режим карты",
+		image: `${settings.url}images/home.png`,
+		nodeType: NODE_TYPES.MAPS
+	});
 
 	//добавить вершину filter
 	nodes.push({
@@ -1217,6 +1227,10 @@ d3.json(apiUrl)
 				break;
 		case HOME_ID:
 			d.fx = width / 2 - 300;
+			d.fy = height / 2 - 300;
+			break;
+		case MAPS_ID:
+			d.fx = width / 2 - 100;
 			d.fy = height / 2 - 300;
 			break;
 		case TRUST_ID:
