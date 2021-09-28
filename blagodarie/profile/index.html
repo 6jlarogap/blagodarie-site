@@ -43,6 +43,18 @@
 		.round {
 			border-radius: 50%;
 		}
+		.new_map_container{
+			position: absolute;
+			left:0;
+			top:0;
+			width:100%;
+			height:100%;
+			display:none;
+		}
+		#new_map{
+			width:100%;
+			height:100%;
+		}
 		.pagination_block{
 			display: flex;
     			position: absolute;
@@ -778,6 +790,9 @@
 		<p class="mapid_alert">Ваше местоположение<br>закреплено здесь!</p>
 		<div class="mapid_whereI">Где я?</div>
 	</div>
+	<div class="new_map_container">
+		<div id="new_map"></div>
+		</div>
 	<dialog id="rootDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<ul id="rootList">
