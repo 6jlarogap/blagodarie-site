@@ -915,9 +915,9 @@ d3.json(apiUrl)
 	
 	
 	/*maps*/
-	if(data.users.latitude){
+	
 	data.users.forEach(function(d){
-		
+	if(data.users.latitude){	
 			map_users.push({
 				user_name: d.first_name,
 				user_lastname: d.last_name,
@@ -926,11 +926,11 @@ d3.json(apiUrl)
 				user_ability: d.ability
 				} );
 			
-		
+	}	
 	});
-	console.log(map_users);
-	}
 	
+	
+	console.log(map_users);
 	
 	
 	
@@ -1284,7 +1284,7 @@ d3.json(apiUrl)
 function show_map_style(){
 		if(document.querySelector('#new_map').hasChildNodes()){}
 	else{
-	new_map = L.map('new_map').setView([50.019638199999996, 36.226296399999995], 13);
+	new_map = L.map('new_map').setView([map_users[0].latitude, map_users[0].longitude], 13);
 	
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
     		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
