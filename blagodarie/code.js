@@ -1311,6 +1311,7 @@ function show_map_style(){
     				iconAnchor: [map_users[i].user_latitude, map_users[i].user_longitude]
 			});
 			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIcon})
+			.bindTooltip("my tooltip text").openTooltip()
 			.addTo(new_map)
 			
 		}
