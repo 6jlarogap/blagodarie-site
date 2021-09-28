@@ -924,7 +924,8 @@ d3.json(apiUrl)
 				user_lastname: d.last_name,
 				user_latitude: d.latitude,
 				user_longitude: d.longitude,
-				user_ability: d.ability
+				user_ability: d.ability,
+				user_uuid: d.uuid
 				} );
 			
 	}	
@@ -1281,7 +1282,7 @@ d3.json(apiUrl)
 	initializeSimulation();
 });
 
-
+var myIcon;
 function show_map_style(){
 	if(map_users.length > 0){
 		map_latitude = map_users[0].user_latitude;
@@ -1305,7 +1306,7 @@ function show_map_style(){
 	}
 	if(map_users.length > 0){
 		for(let i = 0; i < map_users.length; i++){
-			var myIcon = L.icon({
+			myIcon = L.icon({
     				iconUrl: map_users[i].user_photo != '' ? map_users[i].user_photo : `${settings.url}images/default_avatar.png`,
     				iconSize: [38, 38],
     				iconAnchor: [map_users[i].user_latitude, map_users[i].user_longitude]
