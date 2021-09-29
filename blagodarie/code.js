@@ -1322,7 +1322,7 @@ d3.json(apiUrl)
 	initializeDisplay();
 	initializeSimulation();
 });
-
+var latlngs = [];
 var myIcon;
 function show_map_style(){
 	if(map_users.length > 0 && map_users[0].user_latitude != null){
@@ -1368,7 +1368,7 @@ function show_map_style(){
 			
 			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIcon})
 			.addTo(new_map);
-			var latlngs = [];
+			
 			latlngs.push([map_users[i].user_latitude, map_users[i].user_longitude]);
 			console.log(latlngs);
 			var polyline = L.polyline(latlngs, {color: 'red'}).addTo(new_map);
