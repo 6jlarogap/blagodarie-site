@@ -1345,7 +1345,7 @@ function show_map_style(){
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(new_map);
 	}
-	if(map_users.length > 0 /*&& map_users[0].user_latitude != null*/){
+	if(map_users.length > 0 && map_users[0].user_latitude != null){
 		for(let i = 0; i < map_users.length; i++){
 			
 			myIcon = L.icon({
@@ -1359,7 +1359,7 @@ function show_map_style(){
 			
 			
 			
-			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIc45on})
+			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIcon})
 			.addTo(new_map);
 			
 			latlngs.push([map_users[i].user_latitude, map_users[i].user_longitude]);
