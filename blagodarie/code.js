@@ -478,7 +478,7 @@ function deleteCookie(subdomain,...Cookies) {
 		document.cookie = `${cookie}=''; path=/ ; ${subdomain === '' ? '' : `domain=${subdomain + domain};` }expires=${new Date(0).toUTCString()}`
 	})
 }
-
+let map_users = [];
 async function setProfile() {
 	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`, {
 		method: "GET",
@@ -494,6 +494,16 @@ async function setProfile() {
 	console.log(response.trust_count);
 	console.log(response);
 	console.log(response.ability);
+	map_users.push({
+		user_photo: response.photo,
+		user_name: response.first_name,
+		user_lastname: response.last_name,
+		user_latitude: response.latitude,
+		user_longitude: response.longitude,
+		user_ability: response.ability,
+		user_uuid: response.uuid
+	} );
+	console.log(map_users);
 }
 
 
@@ -855,7 +865,7 @@ var isTrust;
 
 
 
-let map_users = [];
+
 let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
