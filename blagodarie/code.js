@@ -1344,17 +1344,10 @@ function show_map_style(){
     		zoomOffset: -1,
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(new_map);
-	/*var latLon = L.latLng(50.019638199999996, 36.226296399999995, 50.019638199999996, 36.226296399999995, 16.059007957581034, 75.42336344718935);
-		console.log(latLon);
-		
-			var bounds = latLon.toBounds(500); // 500 = metres
-			new_map.panTo(latLon).fitBounds(bounds);*/
-	}
+	
 	if(map_users.length > 0 && map_users[0].user_latitude != null){
 		for(let i = 0; i < map_users.length; i++){
-			//delete
 			
-			//end delete
 			myIcon = L.icon({
     				iconUrl: map_users[i].user_photo != '' ? map_users[i].user_photo : `${settings.url}images/default_avatar.png`,
     				iconSize: [38, 38],
@@ -1371,7 +1364,7 @@ function show_map_style(){
 			
 			latlngs.push([map_users[i].user_latitude, map_users[i].user_longitude]);
 			console.log(latlngs);
-			var polyline = L.polyline(latlngs, {color: 'red'}).addTo(new_map);
+			var polyline = L.polyline(latlngs, {color: 'inherit'}).addTo(new_map);
 
 			// zoom the map to the polyline
 			new_map.fitBounds(polyline.getBounds());
