@@ -1344,7 +1344,7 @@ function show_map_style(){
     		zoomOffset: -1,
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(new_map);
-	
+	}
 	if(map_users.length > 0 && map_users[0].user_latitude != null){
 		for(let i = 0; i < map_users.length; i++){
 			
@@ -1386,7 +1386,7 @@ function show_map_style(){
 	})
 	}
 	}
-}
+
 let new_map_container = document.querySelector('.new_map_container');
 /*if(localStorage.getItem('is_map_visible') == 'true'){
 	new_map_container.classList.add('active');
