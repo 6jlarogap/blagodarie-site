@@ -1334,7 +1334,7 @@ function show_map_style(){
 	}
 	if(document.querySelector('#new_map').hasChildNodes()){}
 	else{
-	new_map = L.map('new_map').setView([map_latitude, map_longitude], 13);
+	new_map = L.map('new_map')/*.setView([map_latitude, map_longitude], 13*/);
 	
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
     		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -1365,10 +1365,9 @@ function show_map_style(){
 				window.open(window.location.origin + '/profile/?id=' + map_users[i].user_uuid);
 			})
 			
-			var poygon_lines = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
-			
-			var polygon = L.polygon(poygon_lines, {color: 'red'}).addTo(new_map);
-			new_map.fitBounds(polygon.getBounds());
+			var latLon = L.latLng(40.737, -73.923);
+			var bounds = latLon.toBounds(500); // 500 = metres
+			new_map.panTo(latLon).fitBounds(bounds);
 			
 		}
 		
