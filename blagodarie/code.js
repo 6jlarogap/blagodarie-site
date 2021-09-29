@@ -1365,6 +1365,11 @@ function show_map_style(){
 				window.open(window.location.origin + '/profile/?id=' + map_users[i].user_uuid);
 			})
 			
+			var poygon_lines = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
+			
+			var polygon = L.polygon(poygon_lines, {color: 'red'}).addTo(map);
+			new_map.fitBounds(polygon.getBounds());
+			
 		}
 		
 	}
