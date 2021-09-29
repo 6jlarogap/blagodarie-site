@@ -1364,7 +1364,7 @@ function show_map_style(){
 			
 			latlngs.push([map_users[i].user_latitude, map_users[i].user_longitude]);
 			console.log(latlngs);
-			var polyline = L.polyline(latlngs).addTo(new_map);
+			var polyline = L.polyline(latlngs, {color: 'inherit'}).addTo(new_map);
 
 			// zoom the map to the polyline
 			new_map.fitBounds(polyline.getBounds());
