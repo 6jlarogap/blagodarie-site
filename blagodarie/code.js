@@ -479,6 +479,7 @@ function deleteCookie(subdomain,...Cookies) {
 	})
 }
 let map_users = [];
+let response_smat_map;
 async function setProfile() {
 	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`, {
 		method: "GET",
@@ -503,6 +504,7 @@ async function setProfile() {
 		user_ability: response.ability,
 		user_uuid: response.uuid
 	} );
+	response_smat_map = map_users;
 	console.log(map_users);
 }
 
@@ -578,8 +580,8 @@ let map_container = document.querySelector('.map_container');
 let mapid_close = document.querySelector('.mapid_close');
 let mapid_send = document.querySelector('.mapid_send');
 let mapid_clean = document.querySelector('.mapid_clean');
-let lati;
-let long;
+let lati = response_smat_map[0].user_latitude;
+let long = response_smat_map[0].user_longtitude;
 let new_cur_pos_marker_lat;
 let new_cur_pos_marker_lng;
 let mapid_alert = document.querySelector('.mapid_alert');
@@ -613,8 +615,9 @@ function show_smart_map(lati, long){
 	map_container.style.display = "block";
 	if(document.querySelector('#mapid').hasChildNodes()){}
 	else{
+		
 	mapid = L.map('mapid').setView([lati, long], 13);
-	
+		
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
     		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     		maxZoom: 18,
