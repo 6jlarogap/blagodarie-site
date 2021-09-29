@@ -1336,7 +1336,7 @@ function show_map_style(){
 			})
 			
 		}
-		new_map.fitBounds(new_marker.getBounds());
+		
 	}
 	let new_map_close = document.querySelector('.new_map_close');
 	new_map_close.addEventListener('click', ()=>{
