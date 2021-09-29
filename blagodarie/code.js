@@ -1344,7 +1344,7 @@ function show_map_style(){
     		zoomOffset: -1,
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(new_map);
-	var latLon = [[50.019638199999996, 36.226296399999995],[50.019638199999996, 36.226296399999995],[16.059007957581034, 75.42336344718935]];
+	var latLon = L.latLng(50.019638199999996, 36.226296399999995, 50.019638199999996, 36.226296399999995, 16.059007957581034, 75.42336344718935);
 		console.log(latLon);
 		
 			var bounds = latLon.toBounds(500); // 500 = metres
