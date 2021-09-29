@@ -580,12 +580,22 @@ let map_container = document.querySelector('.map_container');
 let mapid_close = document.querySelector('.mapid_close');
 let mapid_send = document.querySelector('.mapid_send');
 let mapid_clean = document.querySelector('.mapid_clean');
-let lati = response_smat_map[0].user_latitude;
-let long = response_smat_map[0].user_longtitude;
+//let lati = response_smat_map[0].user_latitude;
+//let long = response_smat_map[0].user_longtitude;
 let new_cur_pos_marker_lat;
 let new_cur_pos_marker_lng;
 let mapid_alert = document.querySelector('.mapid_alert');
 let mapid_whereI = document.querySelector('.mapid_whereI');
+
+if(response_smat_map[0].user_latitude != null){
+	let lati = response_smat_map[0].user_latitude;
+	let long = response_smat_map[0].user_longtitude;
+}else{
+	let lati;
+	let long;
+}
+
+
 
 if(get_position){
 get_position.addEventListener('click', ()=>{
