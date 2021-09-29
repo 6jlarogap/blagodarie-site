@@ -56,6 +56,23 @@
 			width:100%;
 			height:100%;
 		}
+		.new_map_close{
+			display: block;
+    			position: absolute;
+    			top: 10px;
+    			right: 10px;
+    			cursor: pointer;
+    			width: 50px;
+    			height: 50px;
+    			text-align: center;
+    			padding-top: 6px;
+    			background-color: #fff;
+    			font-weight: 900;
+    			border-radius: 6px;
+    			border: 2px solid rgba(0,0,0,0.2);
+    			z-index: 13;
+    			font-size: 23px;
+		}
 		.pagination_block{
 			display: flex;
     			position: absolute;
@@ -910,7 +927,8 @@
 	</div>
 	<div class="new_map_container">
 		<div id="new_map"></div>
-		</div>
+		<p class="new_map_close">&#215;</p>
+	</div>
 	<dialog id="rootDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<ul id="rootList">
