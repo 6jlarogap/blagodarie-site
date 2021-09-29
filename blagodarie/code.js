@@ -1314,6 +1314,7 @@ function show_map_style(){
     		zoomOffset: -1,
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(new_map);
+	
 	}
 	if(map_users.length > 0){
 		for(let i = 0; i < map_users.length; i++){
@@ -1335,6 +1336,7 @@ function show_map_style(){
 			})
 			
 		}
+		new_map.fitBounds(new_marker.getBounds());
 	}
 	let new_map_close = document.querySelector('.new_map_close');
 	new_map_close.addEventListener('click', ()=>{
