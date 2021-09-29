@@ -1374,7 +1374,7 @@ function show_map_style(){
 			var polyline = L.polyline(latlngs, {color: 'red'}).addTo(new_map);
 
 			// zoom the map to the polyline
-			map.fitBounds(polyline.getBounds());
+			new_map.fitBounds(polyline.getBounds());
 			
 			
 			new_marker.addEventListener('click', ()=>{
