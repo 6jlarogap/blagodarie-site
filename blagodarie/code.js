@@ -1388,14 +1388,13 @@ function show_map_style(){
 	}
 
 let new_map_container = document.querySelector('.new_map_container');
-/*if(localStorage.getItem('is_map_visible') == 'true'){
+if(localStorage.getItem('is_map_visible') == 'true'){
+	window.onload(
 	new_map_container.classList.add('active');
 	show_map_style();
+	)
 }
-else{
 
-}
-*/
 
 
 
