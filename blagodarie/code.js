@@ -1334,7 +1334,7 @@ function show_map_style(){
 	}
 	if(document.querySelector('#new_map').hasChildNodes()){}
 	else{
-	new_map = L.map('new_map').setView([map_latitude, map_longitude], 7);
+	new_map = L.map('new_map').setView([map_latitude, map_longitude], 13);
 	
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
     		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -1345,11 +1345,17 @@ function show_map_style(){
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(new_map);
 	var latLon = L.latLng(40.737, -73.923);
+		console.log(latLon);
+		
 			var bounds = latLon.toBounds(500); // 500 = metres
 			new_map.panTo(latLon).fitBounds(bounds);
 	}
 	if(map_users.length > 0 && map_users[0].user_latitude != null){
 		for(let i = 0; i < map_users.length; i++){
+			//delete
+			var llllooooo = [map_users[i].user_latitude, map_users[i].user_longitude]
+			console.log(llllooooo)
+			//end delete
 			myIcon = L.icon({
     				iconUrl: map_users[i].user_photo != '' ? map_users[i].user_photo : `${settings.url}images/default_avatar.png`,
     				iconSize: [38, 38],
