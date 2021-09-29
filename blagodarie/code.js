@@ -1386,7 +1386,7 @@ function show_map_style(){
 	})
 	}
 	}
-
+}
 let new_map_container = document.querySelector('.new_map_container');
 /*if(localStorage.getItem('is_map_visible') == 'true'){
 	new_map_container.classList.add('active');
