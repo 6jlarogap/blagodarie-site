@@ -688,7 +688,8 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 		mapid_alert.style.opacity = "0";
 	}, 2500);
 	setTimeout(function(){
-		mapid_alert.style.display = "none";
+		//mapid_alert.style.display = "none";
+		window.location.reload()
 	}, 3500)
 });
 
@@ -703,11 +704,12 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 		},
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": null , "longitude": null })
 	}).then(data => data.json());
-	map_container.style.display = "none";
+	//map_container.style.display = "none";
 	lati = null;
 	long = null;
 	new_cur_pos_marker_lat = null;
 	new_cur_pos_marker_lng = null;
+	window.location.reload()
 });
 
 
