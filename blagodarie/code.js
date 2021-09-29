@@ -1325,7 +1325,7 @@ d3.json(apiUrl)
 var latlngs = [];
 var myIcon;
 function show_map_style(){
-	if(map_users.length > 0 && map_users[0].user_latitude != null )){
+	if(map_users.length > 0 && map_users[0].user_latitude != null ){
 		map_latitude = map_users[0].user_latitude;
 		map_longitude = map_users[0].user_longitude;
 	}else{
