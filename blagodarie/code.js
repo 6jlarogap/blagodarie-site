@@ -616,7 +616,7 @@ navigator.geolocation.getCurrentPosition(
     function(error){
 	    if(response_smat_map[0].user_latitude != null){
 			let lati = +response_smat_map[0].user_latitude;
-			let long = +response_smat_map[0].user_longtitude;
+			let long = +response_smat_map[0].user_longitude;
 		    show_smart_map(lati, long);
 		}
 	    show_smart_map(53.89948354993688, 27.557659149169925);
@@ -633,7 +633,7 @@ function show_smart_map(lati, long){
 	else{
 		if(response_smat_map[0].user_latitude != null){
 			let lati = +response_smat_map[0].user_latitude;
-			let long = +response_smat_map[0].user_longtitude;
+			let long = +response_smat_map[0].user_longitude;
 		}
 		
 	mapid = L.map('mapid').setView([lati, long], 13);
