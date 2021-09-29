@@ -609,14 +609,19 @@ function get_cur_position(){
 navigator.geolocation.getCurrentPosition(
     function(position) {
 	    console.log(position.coords);
+	    if(response_smat_map[0].user_latitude != null){
+	    	lati = +response_smat_map[0].user_latitude;
+		long = +response_smat_map[0].user_longitude;
+	    }else{
 	    lati = position.coords.latitude;
 	    long = position.coords.longitude;
+	    }
 	    show_smart_map(lati, long);
     },
     function(error){
 	    if(response_smat_map[0].user_latitude != null){
-			let lati = +response_smat_map[0].user_latitude;
-			let long = +response_smat_map[0].user_longitude;
+			lati = +response_smat_map[0].user_latitude;
+			long = +response_smat_map[0].user_longitude;
 		    show_smart_map(lati, long);
 		}
 	    show_smart_map(53.89948354993688, 27.557659149169925);
