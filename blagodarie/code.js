@@ -1326,6 +1326,10 @@ function show_map_style(){
 			
 		}
 	}
+	let new_map_close = document.querySelector('.new_map_close');
+	new_map_close.addEventListener('click', ()=>{
+		new_map_container.classList.remove('active');
+	})
 	}
 
 let new_map_container = document.querySelector('.new_map_container');
