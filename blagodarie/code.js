@@ -1367,7 +1367,7 @@ function show_map_style(){
 			
 			var poygon_lines = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
 			
-			var polygon = L.polygon(poygon_lines, {color: 'red'}).addTo(map);
+			var polygon = L.polygon(poygon_lines, {color: 'red'}).addTo(new_map);
 			new_map.fitBounds(polygon.getBounds());
 			
 		}
