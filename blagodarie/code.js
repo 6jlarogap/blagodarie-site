@@ -1383,16 +1383,17 @@ function show_map_style(){
 	let new_map_close = document.querySelector('.new_map_close');
 	new_map_close.addEventListener('click', ()=>{
 		new_map_container.classList.remove('active');
+		localStorage.removeItem('is_map_visible')
 	})
 	}
 	}
 
 let new_map_container = document.querySelector('.new_map_container');
 if(localStorage.getItem('is_map_visible') == 'true'){
-	window.onload(
+	window.onload = function(){
 	new_map_container.classList.add('active');
 	show_map_style();
-	)
+	}
 }
 
 
