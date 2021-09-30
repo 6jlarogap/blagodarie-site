@@ -1396,7 +1396,7 @@ if(localStorage.getItem('is_map_visible') == 'true'){
 	}
 }
 
-
+console.log('Илья Митченко');
 
 
 
