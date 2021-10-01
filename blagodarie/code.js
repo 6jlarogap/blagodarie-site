@@ -1792,7 +1792,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		window.location.href = window.location.href + "&map_visible";
 		new_map_container.classList.toggle('active');
 		show_map_style();
-		localStorage.setItem('is_map_visible', 'true');
+		//localStorage.setItem('is_map_visible', 'true');
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
