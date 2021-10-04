@@ -1322,6 +1322,33 @@ d3.json(apiUrl)
 	initializeDisplay();
 	initializeSimulation();
 });
+
+// функ удаления параметров из адресной строки
+
+function removeParam(key, sourceURL) {
+  var splitUrl = sourceURL.split('?'),
+    rtn = splitUrl[0],
+    param,
+    params_arr = [],
+    queryString = (sourceURL.indexOf("?") !== -1) ? splitUrl[1] : '';
+  if (queryString !== '') {
+    params_arr = queryString.split('&');
+    for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+      param = params_arr[i].split('=')[0];
+      if (param === key) {
+        params_arr.splice(i, 1);
+      }
+    }
+    rtn = rtn + '?' + params_arr.join('&');
+  }
+  return rtn;
+}
+let delUrl = window.location.href;
+
+
+
+
+
 var latlngs = [];
 var myIcon;
 
@@ -1386,7 +1413,8 @@ function show_map_style(){
 	new_map_close.addEventListener('click', ()=>{
 		//new_map_container.classList.remove('active');
 		//localStorage.removeItem('is_map_visible')
-		window.location.replace('')
+		//window.location.replace('')
+		removeParam("map_visible", delUrl);
 	})
 	}
 	}
