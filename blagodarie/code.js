@@ -1415,6 +1415,7 @@ function show_map_style(){
 		//localStorage.removeItem('is_map_visible')
 		//window.location.replace('')
 		removeParam("map_visible", delUrl);
+		window.location.reload();
 	})
 	}
 	}
