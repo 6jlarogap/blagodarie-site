@@ -1384,8 +1384,9 @@ function show_map_style(){
 	if(document.querySelector('.new_map_close')){
 	let new_map_close = document.querySelector('.new_map_close');
 	new_map_close.addEventListener('click', ()=>{
-		new_map_container.classList.remove('active');
-		localStorage.removeItem('is_map_visible')
+		//new_map_container.classList.remove('active');
+		//localStorage.removeItem('is_map_visible')
+		window.location.replace('')
 	})
 	}
 	}
@@ -1788,7 +1789,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		window.location.href = settings.url
 	}
 	else if(nodeType == NODE_TYPES.MAPS){
-		window.location.href = window.location.href + "&map_visible";
+		window.location.href = window.location.href.includes('&') ? window.location.href + "?map_visible" : window.location.href + "&map_visible";
 		new_map_container.classList.toggle('active');
 		show_map_style();
 		//localStorage.setItem('is_map_visible', 'true');
