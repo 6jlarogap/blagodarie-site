@@ -1325,7 +1325,7 @@ d3.json(apiUrl)
 
 // функ удаления параметров из адресной строки
 
-function removeParam(key, sourceURL = window.location.href) {
+function removeParam(key, sourceURL) {
   var splitUrl = sourceURL.split('?'),
     rtn = splitUrl[0],
     param,
@@ -1414,8 +1414,8 @@ function show_map_style(){
 		//new_map_container.classList.remove('active');
 		//localStorage.removeItem('is_map_visible')
 		//window.location.replace('')
-		removeParam("map_visible", sourceURL);
-		window.location.reload();
+		removeParam("map_visible", window.location.href);
+		//window.location.reload();
 	})
 	}
 	}
