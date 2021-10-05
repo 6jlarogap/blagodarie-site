@@ -1421,6 +1421,7 @@ function show_map_style(){
 		url.searchParams.delete('map_visible');
 		
 		console.log(url);
+		window.location.href = url;
 	})
 	}
 	}
