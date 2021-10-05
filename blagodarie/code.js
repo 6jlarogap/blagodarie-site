@@ -1414,8 +1414,13 @@ function show_map_style(){
 		//new_map_container.classList.remove('active');
 		//localStorage.removeItem('is_map_visible')
 		//window.location.replace('')
-		removeParam("map_visible", window.location.href);
+		//removeParam("map_visible", window.location.href);
 		//window.location.reload();
+		var link = window.location.href;
+		var url = new URL(link);
+		url.searchParams.delete('map_visible');
+		
+		console.log(url);
 	})
 	}
 	}
