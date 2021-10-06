@@ -1410,7 +1410,7 @@ function show_map_style(){
 
 let new_map_container = document.querySelector('.new_map_container');
 if(window.location.href.includes('map_visible')){
-	document.onload = function(){
+	window.onload = function(){
 	new_map_container.classList.add('active');
 	
 	show_map_style();
