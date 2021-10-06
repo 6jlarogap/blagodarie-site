@@ -1330,7 +1330,8 @@ d3.json(apiUrl)
 
 
 
-
+var link = window.location.href;
+var url = new URL(link);
 
 var latlngs = [];
 var myIcon;
@@ -1399,8 +1400,7 @@ function show_map_style(){
 		//window.location.replace('')
 		//removeParam("map_visible", window.location.href);
 		//window.location.reload();
-		var link = window.location.href;
-		var url = new URL(link);
+		
 		url.searchParams.delete('map_visible');
 		console.log(url);
 		window.location.href = url;
@@ -1807,7 +1807,7 @@ async function onNodeClick(nodeType, uuid, txt){
 	}
 	else if(nodeType == NODE_TYPES.MAPS){
 		//window.location.href = window.location.href.includes('map_visible') ? " " : window.location.href.includes('?') ? window.location.href + "&map_visible" : window.location.href + "?map_visible";
-		url.searchParams.append('map_visible', true);
+		url.searchParams.append('map_visible', 'true');
 		new_map_container.classList.toggle('active');
 		show_map_style();
 		//localStorage.setItem('is_map_visible', 'true');
