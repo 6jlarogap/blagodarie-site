@@ -1411,8 +1411,9 @@ function show_map_style(){
 let new_map_container = document.querySelector('.new_map_container');
 if(window.location.href.includes('map_visible')){
 	new_map_container.classList.add('active');
+	document.onload = function(){
 	show_map_style();
-	
+	}
 }
 
 
