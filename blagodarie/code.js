@@ -1377,7 +1377,7 @@ function show_map_style(){
 			
 			latlngs.push([map_users[i].user_latitude, map_users[i].user_longitude]);
 			console.log(latlngs);
-			var polyline = L.polyline(latlngs, {color: 'inherit'}).addTo(new_map);
+			var polyline = L.polyline(latlngs, {color: 'green'}).addTo(new_map);
 
 			// zoom the map to the polyline
 			new_map.fitBounds(polyline.getBounds());
@@ -1395,11 +1395,6 @@ function show_map_style(){
 	if(document.querySelector('.new_map_close')){
 	let new_map_close = document.querySelector('.new_map_close');
 	new_map_close.addEventListener('click', ()=>{
-		//new_map_container.classList.remove('active');
-		//localStorage.removeItem('is_map_visible')
-		//window.location.replace('')
-		//removeParam("map_visible", window.location.href);
-		//window.location.reload();
 		
 		url.searchParams.delete('map_visible');
 		console.log(url);
@@ -1808,12 +1803,9 @@ async function onNodeClick(nodeType, uuid, txt){
 		window.location.href = settings.url
 	}
 	else if(nodeType == NODE_TYPES.MAPS){
-		//window.location.href = window.location.href.includes('map_visible') ? " " : window.location.href.includes('?') ? window.location.href + "&map_visible" : window.location.href + "?map_visible";
+		
 		url.searchParams.append('map_visible', 'true');
 		window.location.href = url;
-		//new_map_container.classList.toggle('active');
-		//show_map_style();
-		//localStorage.setItem('is_map_visible', 'true');
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
