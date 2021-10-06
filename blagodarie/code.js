@@ -1376,11 +1376,7 @@ function show_map_style(){
 			.addTo(new_map);
 			
 			latlngs.push([map_users[i].user_latitude, map_users[i].user_longitude]);
-			console.log(latlngs);
-			var polyline = L.polyline(latlngs, {color: 'green'}).addTo(new_map);
-
-			// zoom the map to the polyline
-			new_map.fitBounds(polyline.getBounds());
+			//this
 			
 			
 			new_marker.addEventListener('click', ()=>{
@@ -1390,6 +1386,11 @@ function show_map_style(){
 			
 			
 		}
+		console.log(latlngs);
+			var polyline = L.polyline(latlngs, {color: 'green'}).addTo(new_map);
+
+			// zoom the map to the polyline
+			new_map.fitBounds(polyline.getBounds());
 		
 	}
 	if(document.querySelector('.new_map_close')){
