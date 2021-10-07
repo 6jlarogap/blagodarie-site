@@ -748,6 +748,8 @@ url.searchParams.append('selected_val', 0);
 url.searchParams.append('head_from', 0);
        
         if (!window.location.href.includes('page=')) {
+			
+			
 		let btn_prev_n = document.querySelector('#btn_prev');
 		btn_prev_n.style.background = '#aaa0a0';
 		btn_prev_n.style.cursor = 'context-menu';
