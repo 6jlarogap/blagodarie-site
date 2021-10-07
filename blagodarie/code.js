@@ -862,7 +862,7 @@ var url = new URL(link);
         }
 
         if (window.location.href.includes('page=')) {
-            document.querySelector('#page').innerHTML = localStorage.getItem('cur_page');
+            document.querySelector('#page').innerHTML = url.searchParams.get('page');
         } else {
             document.querySelector('#page').innerHTML = current_page;
         }
