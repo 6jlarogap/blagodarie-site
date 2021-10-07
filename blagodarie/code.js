@@ -761,7 +761,7 @@ var url = new URL(link);
 				
 			}
 
-		document.querySelector('.pagination_count').innerHTML = localStorage.getItem('selected_val');
+		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('selected_val');
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${url.searchParams.get('selected_val')}`;
 		console.log(apiUrl);
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
