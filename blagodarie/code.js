@@ -743,6 +743,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 
 var link = window.location.href;
 var url = new URL(link);
+url.searchParams.append('page', 1);
 url.searchParams.append('selected_val', 0);
 url.searchParams.append('head_from', 0);
        
@@ -751,11 +752,7 @@ url.searchParams.append('head_from', 0);
 		btn_prev_n.style.background = '#aaa0a0';
 		btn_prev_n.style.cursor = 'context-menu';
 		btn_prev_n.style.pointerEvents = 'none';
-           // localStorage.setItem('item_plus', 0);
-		//let selected_val = +localStorage.getItem('selected_val');
-		/*if(+localStorage.getItem('selected_val') == 0){
-			localStorage.setItem('selected_val', 25);
-		}*/
+         
 			if(url.searchParams.get('selected_val') && +url.searchParams.get('selected_val') == 0){
 				url.searchParams.set('selected_val', 25);
 				
