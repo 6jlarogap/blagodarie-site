@@ -758,6 +758,7 @@ url.searchParams.append('selected_val', 0);
 		}*/
 			if(url.searchParams.get('selected_val') && +url.searchParams.get('selected_val') == 0){
 				url.searchParams.set('selected_val', 25);
+				
 			}
 
 		document.querySelector('.pagination_count').innerHTML = localStorage.getItem('selected_val');
@@ -774,7 +775,7 @@ url.searchParams.append('selected_val', 0);
 		   console.log(apiUrl);
             }
 
-	
+			window.location.href = url.href;
         }
 
 
