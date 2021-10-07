@@ -741,7 +741,9 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 });
 
 
-
+var link = window.location.href;
+var url = new URL(link);
+url.searchParams.append('selected_val', 0);
 
        
         if (!window.location.href.includes('page=')) {
@@ -749,23 +751,26 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 		btn_prev_n.style.background = '#aaa0a0';
 		btn_prev_n.style.cursor = 'context-menu';
 		btn_prev_n.style.pointerEvents = 'none';
-            localStorage.setItem('item_plus', 0);
-		let selected_val = +localStorage.getItem('selected_val');
-		if(+localStorage.getItem('selected_val') == 0){
+           // localStorage.setItem('item_plus', 0);
+		//let selected_val = +localStorage.getItem('selected_val');
+		/*if(+localStorage.getItem('selected_val') == 0){
 			localStorage.setItem('selected_val', 25);
-		}
-	//document.querySelector('.pagination_select').style.display = 'block';
+		}*/
+			if(url.searchParams.get('selected_val') && +url.searchParams.get('selected_val') == 0){
+				url.searchParams.set('selected_val', 25);
+			}
+
 		document.querySelector('.pagination_count').innerHTML = localStorage.getItem('selected_val');
-            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${localStorage.getItem('selected_val')}`;
+            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${url.searchParams.get('selected_val')}`;
 		console.log(apiUrl);
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=0&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;		
+                apiUrl = `${settings.api}api/profile_graph?from=0&number=${url.searchParams.get('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;		
 		    console.log(apiUrl);
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=0&number=${localStorage.getItem('selected_val')}&uuid=` + userIdFrom;    		
+                apiUrl = `${settings.api}api/profile_graph?from=0&number=${url.searchParams.get('selected_val')}&uuid=` + userIdFrom;    		
 		    console.log(apiUrl);
             } else if (localStorage.getItem('filter') != null) {
-                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${localStorage.getItem('selected_val')}&query=` + localStorage.getItem('filter');	
+                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${url.searchParams.get('selected_val')}&query=` + localStorage.getItem('filter');	
 		   console.log(apiUrl);
             }
 
@@ -1330,8 +1335,6 @@ d3.json(apiUrl)
 
 
 
-var link = window.location.href;
-var url = new URL(link);
 
 var latlngs = [];
 var myIcon;
@@ -1394,7 +1397,6 @@ function show_map_style(){
 	new_map_close.addEventListener('click', ()=>{
 		
 		url.searchParams.delete('map_visible');
-		console.log(url);
 		window.location.href = url;
 	})
 	}
