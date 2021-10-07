@@ -746,11 +746,14 @@ var url = new URL(link);
 
        
         if (!window.location.href.includes('page=')) {
-			
+			if(url.searchParams.has('page')){
+				
+			}
+			else{
 			url.searchParams.append('page', 1);
 			url.searchParams.append('selected_val', 0);
 			url.searchParams.append('head_from', 0);
-			
+			}
 		let btn_prev_n = document.querySelector('#btn_prev');
 		btn_prev_n.style.background = '#aaa0a0';
 		btn_prev_n.style.cursor = 'context-menu';
