@@ -774,7 +774,7 @@ url.searchParams.append('selected_val', 0);
                 apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${url.searchParams.get('selected_val')}&query=` + localStorage.getItem('filter');	
 		   console.log(apiUrl);
             }
-
+			window.history.pushState(url)
 			
         }
 
@@ -890,7 +890,7 @@ url.searchParams.append('selected_val', 0);
 
         }
 
-window.location.href = url;
+
 
 
 
