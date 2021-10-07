@@ -774,7 +774,7 @@ url.searchParams.append('head_from', 0);
                 apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${url.searchParams.get('selected_val')}&query=` + localStorage.getItem('filter');	
 		   console.log(apiUrl);
             }
-			window.history.pushState(null, null, url.searchParams.search)
+			window.history.pushState(null, null, url.search)
 			
         }
 
