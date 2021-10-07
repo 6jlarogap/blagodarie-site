@@ -775,7 +775,7 @@ url.searchParams.append('selected_val', 0);
 		   console.log(apiUrl);
             }
 
-			window.location.href = url.href;
+			
         }
 
 
@@ -890,7 +890,7 @@ url.searchParams.append('selected_val', 0);
 
         }
 
-
+window.location.href = url;
 
 
 
