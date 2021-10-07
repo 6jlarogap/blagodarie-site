@@ -744,7 +744,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 var link = window.location.href;
 var url = new URL(link);
 url.searchParams.append('selected_val', 0);
-
+url.searchParams.append('head_from', 0);
        
         if (!window.location.href.includes('page=')) {
 		let btn_prev_n = document.querySelector('#btn_prev');
@@ -774,7 +774,7 @@ url.searchParams.append('selected_val', 0);
                 apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${url.searchParams.get('selected_val')}&query=` + localStorage.getItem('filter');	
 		   console.log(apiUrl);
             }
-			window.history.pushState(null, null, url.searchParams.get('selected_val'))
+			window.history.pushState(null, null, url.searchParams.search)
 			
         }
 
