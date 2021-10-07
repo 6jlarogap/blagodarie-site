@@ -743,12 +743,13 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 
 var link = window.location.href;
 var url = new URL(link);
-url.searchParams.append('page', 1);
-url.searchParams.append('selected_val', 0);
-url.searchParams.append('head_from', 0);
+
        
         if (!window.location.href.includes('page=')) {
 			
+			url.searchParams.append('page', 1);
+			url.searchParams.append('selected_val', 0);
+			url.searchParams.append('head_from', 0);
 			
 		let btn_prev_n = document.querySelector('#btn_prev');
 		btn_prev_n.style.background = '#aaa0a0';
