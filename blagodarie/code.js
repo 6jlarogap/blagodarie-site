@@ -828,13 +828,13 @@ var url = new URL(link);
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=${url.searchParams.get('selected_val')}`;
 		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=${url.searchParams.get('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('head_from')}&number=${url.searchParams.get('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
                 console.log('apiUrl');
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=${localStorage.getItem('item_plus')}&number=${url.searchParams.get('selected_val')}&uuid=` + userIdFrom;
+                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('head_from')}&number=${url.searchParams.get('selected_val')}&uuid=` + userIdFrom;
                 console.log('apiUrl');
             } else if (localStorage.getItem('filter') != null) {
-                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=${url.searchParams.get('selected_val')}&query=` + localStorage.getItem('filter');
+                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('head_from')}&number=${url.searchParams.get('selected_val')}&query=` + localStorage.getItem('filter');
                 console.log('apiUrl');
             }
 		
