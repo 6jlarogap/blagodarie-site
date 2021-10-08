@@ -1331,7 +1331,9 @@ if(window.location.href.includes('map_visible')){
 	show_map_style();
 	}
 }else{
+	window.onload = function(){
 	show_map_style();
+	}
 }
 
 
