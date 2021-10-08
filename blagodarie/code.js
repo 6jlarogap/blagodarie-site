@@ -1758,6 +1758,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		url.searchParams.append('map_visible', 'true');
 		window.history.pushState(null, null, url.search)
 		show_map_style();
+		new_map_container.classList.add('active');
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
