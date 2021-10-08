@@ -213,6 +213,12 @@
 			 border-radius: 12%; 
 			border: solid black 0px;
 		}
+		.close_auth_dialog{
+			position: absolute;
+			top: 25px;
+			right: 25px;
+			cursor: pointer;
+		}
 		@media(max-width: 990px){
 			dialog{
 				width: 770px;
@@ -801,6 +807,7 @@
 	<button id="install_button" class="btn btn-danger" hidden>Установить БлагоДари</button>
 
 	<dialog id="authDialog">
+	<p class="close_auth_dialog">&#10006;</p>
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<button id="vkAuth" type="button" class="oauthButton btn">
 			<i class="fab fa-vk"></i>
