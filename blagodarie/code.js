@@ -1350,6 +1350,7 @@ function show_map_style(){
 	new_map_close.addEventListener('click', ()=>{
 		let new_map_container = document.querySelector('.new_map_container');
 		url.searchParams.delete('map_visible');
+		window.history.pushState(null, null, url.search);
 		new_map_container.classList.remove('active');
 	})
 	}
