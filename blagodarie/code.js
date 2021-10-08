@@ -825,7 +825,7 @@ var url = new URL(link);
 		document.querySelector('#btn_prev').style.background = '#000;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
 		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('selected_val');
-            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${localStorage.getItem('item_plus')}&number=${url.searchParams.get('selected_val')}`;
+            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('head_from')}&number=${url.searchParams.get('selected_val')}`;
 		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('head_from')}&number=${url.searchParams.get('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
