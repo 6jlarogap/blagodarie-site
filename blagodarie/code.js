@@ -744,8 +744,27 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 var link = window.location.href;
 var url = new URL(link);
 
-       
-        if (!window.location.href.includes('page=')) {
+       if(!url.searchParams.has('selected_val') && !url.searchParams.has('head_from')){
+		   	url.searchParams.append('selected_val', 0);
+			url.searchParams.append('head_from', 0);
+		   	window.history.pushState(null, null, url.search);
+		   	window.location.href = url.href;
+	   }
+		else{
+			let selected_val = +url.searchParams.get('selected_val');
+			let head_from = +url.searchParams.get('head_from');
+			if(head_from/selected_val == 0 || head_from/selected_val == infinity){
+				document.querySelector('#page').innerHTML = 1;
+				let btn_prev_n = document.querySelector('#btn_prev');
+				btn_prev_n.style.background = '#aaa0a0';
+				btn_prev_n.style.cursor = 'context-menu';
+				btn_prev_n.style.pointerEvents = 'none';
+			}else{
+			document.querySelector('#page').innerHTML = 1 + (head_from / selected_val);
+			}
+		}
+		
+        /*if (!window.location.href.includes('page=')) {
 			if(url.searchParams.has('page')){
 				
 			}
@@ -786,15 +805,15 @@ var url = new URL(link);
 			btn_prev_n.style.pointerEvents = 'none';
 			
 		}
-
+		*/
 
 
 
 
         function nextPage() {
-			let new_int = +url.searchParams.get('page');
+			/*let new_int = +url.searchParams.get('page');
 			new_int++;
-			url.searchParams.set('page', new_int);
+			url.searchParams.set('page', new_int);*/
 			let item_plus_int = +url.searchParams.get('head_from');
 			let selected_val = +url.searchParams.get('selected_val');
 			item_plus_int += selected_val;
@@ -803,9 +822,9 @@ var url = new URL(link);
         }
 
         function prevPage() {
-			let new_int = +url.searchParams.get('page');
+			/*let new_int = +url.searchParams.get('page');
 			new_int--;
-			url.searchParams.set('page', new_int);
+			url.searchParams.set('page', new_int);*/
 			let item_plus_int = +url.searchParams.get('head_from');
 			let selected_val = +url.searchParams.get('selected_val');
 			item_plus_int -= selected_val;
@@ -813,15 +832,15 @@ var url = new URL(link);
 			window.location.href = url.href;
         }
 
-        if (window.location.href.includes('page=')) {
+        /*if (window.location.href.includes('page=')) {
             document.querySelector('#page').innerHTML = url.searchParams.get('page');
         } else {
             document.querySelector('#page').innerHTML = current_page;
-        }
+        }*/
 
 
 
-        if (window.location.href.includes('page=')) {
+      //  if (window.location.href.includes('page=')) {
 		document.querySelector('#btn_prev').style.background = '#000;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
 		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('selected_val');
@@ -839,7 +858,7 @@ var url = new URL(link);
             }
 		
 
-        }
+       // }
 
 
 
