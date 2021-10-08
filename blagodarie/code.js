@@ -745,7 +745,7 @@ var link = window.location.href;
 var url = new URL(link);
 
        if(!url.searchParams.has('selected_val') && !url.searchParams.has('head_from')){
-		   	url.searchParams.append('selected_val', 0);
+		   	url.searchParams.append('selected_val', 25);
 			url.searchParams.append('head_from', 0);
 		   	window.history.pushState(null, null, url.search);
 		   	window.location.href = url.href;
