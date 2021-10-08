@@ -753,7 +753,7 @@ var url = new URL(link);
 		else{
 			let selected_val = +url.searchParams.get('selected_val');
 			let head_from = +url.searchParams.get('head_from');
-			if(head_from/selected_val == 0 || head_from/selected_val == infinity){
+			if(head_from/selected_val == 0 || head_from/selected_val == Infinity){
 				document.querySelector('#page').innerHTML = 1;
 				let btn_prev_n = document.querySelector('#btn_prev');
 				btn_prev_n.style.background = '#aaa0a0';
