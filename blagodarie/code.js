@@ -1329,7 +1329,7 @@ if(window.location.href.includes('map_visible')){
 	setTimeout(function(){
 		new_map_container.classList.add('active');
 		show_map_style();
-	},200);
+	},300);
 	
 	}
 }
