@@ -544,6 +544,16 @@ async function onTelegramAuth(user) {
 initDefs();
 
 
+if(document.querySelector('.close_auth_dialog')){
+	let close_auth_dialog = document.querySelector('.close_auth_dialog');
+	close_auth_dialog.addEventListener('click', function(){
+		let authDialog = document.querySelector('#authDialog');
+		authDialog.style.display = "none";
+	})
+}
+
+
+
 // load the data
 
 var url = new URL(window.location.href);
