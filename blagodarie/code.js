@@ -1346,10 +1346,11 @@ function show_map_style(){
 	}
 	if(document.querySelector('.new_map_close')){
 	let new_map_close = document.querySelector('.new_map_close');
-	new_map_close.addEventListener('click', ()=>{
 		
+	new_map_close.addEventListener('click', ()=>{
+		let new_map_container = document.querySelector('.new_map_container');
 		url.searchParams.delete('map_visible');
-		window.location.href = url;
+		new_map_container.classList.remove('active');
 	})
 	}
 	}
