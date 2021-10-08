@@ -803,8 +803,8 @@ var url = new URL(link);
         }
 
         function prevPage() {
-            if (window.location.href.includes('page=')) {
-				/*
+            /*if (window.location.href.includes('page=')) {
+				
                 if (localStorage.getItem('cur_page') < 3 && window.location.href.includes('?page=2')) {
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.replace('?page=2', ''));
                     localStorage.setItem('item_plus', 0);
@@ -832,8 +832,8 @@ var url = new URL(link);
                     localStorage.setItem('item_plus', item_plus_int);
                     window.location.assign(window.location.origin + window.location.pathname + window.location.search.slice(0, -2) + (+localStorage.getItem('cur_page')));
                 }
-            }*/
-				
+            }
+				*/
 			let new_int = +url.searchParams.get('page');
 			new_int--;
 			url.searchParams.set('page', new_int);
