@@ -763,57 +763,8 @@ var url = new URL(link);
 			document.querySelector('#page').innerHTML = 1 + (head_from / selected_val);
 			}
 		}
-		
-        /*if (!window.location.href.includes('page=')) {
-			if(url.searchParams.has('page')){
-				
-			}
-			else{
-			url.searchParams.append('page', 1);
-			url.searchParams.append('selected_val', 0);
-			url.searchParams.append('head_from', 0);
-			}
-		let btn_prev_n = document.querySelector('#btn_prev');
-		btn_prev_n.style.background = '#aaa0a0';
-		btn_prev_n.style.cursor = 'context-menu';
-		btn_prev_n.style.pointerEvents = 'none';
-         
-			if(url.searchParams.get('selected_val') && +url.searchParams.get('selected_val') == 0){
-				url.searchParams.set('selected_val', 25);
-				
-			}
-
-		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('selected_val');
-            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${url.searchParams.get('selected_val')}`;
-		console.log(apiUrl);
-            if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=0&number=${url.searchParams.get('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;		
-		    console.log(apiUrl);
-            } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=0&number=${url.searchParams.get('selected_val')}&uuid=` + userIdFrom;    		
-		    console.log(apiUrl);
-            } else if (localStorage.getItem('filter') != null) {
-                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=${url.searchParams.get('selected_val')}&query=` + localStorage.getItem('filter');	
-		   console.log(apiUrl);
-            }
-			window.history.pushState(null, null, url.search)
-			
-        }else if(window.location.href.includes('page=1')){
-			let btn_prev_n = document.querySelector('#btn_prev');
-			btn_prev_n.style.background = '#aaa0a0';
-			btn_prev_n.style.cursor = 'context-menu';
-			btn_prev_n.style.pointerEvents = 'none';
-			
-		}
-		*/
-
-
-
-
+	
         function nextPage() {
-			/*let new_int = +url.searchParams.get('page');
-			new_int++;
-			url.searchParams.set('page', new_int);*/
 			let item_plus_int = +url.searchParams.get('head_from');
 			let selected_val = +url.searchParams.get('selected_val');
 			item_plus_int += selected_val;
@@ -822,9 +773,6 @@ var url = new URL(link);
         }
 
         function prevPage() {
-			/*let new_int = +url.searchParams.get('page');
-			new_int--;
-			url.searchParams.set('page', new_int);*/
 			let item_plus_int = +url.searchParams.get('head_from');
 			let selected_val = +url.searchParams.get('selected_val');
 			item_plus_int -= selected_val;
@@ -832,15 +780,7 @@ var url = new URL(link);
 			window.location.href = url.href;
         }
 
-        /*if (window.location.href.includes('page=')) {
-            document.querySelector('#page').innerHTML = url.searchParams.get('page');
-        } else {
-            document.querySelector('#page').innerHTML = current_page;
-        }*/
 
-
-
-      //  if (window.location.href.includes('page=')) {
 		document.querySelector('#btn_prev').style.background = '#000;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
 		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('selected_val');
@@ -857,8 +797,6 @@ var url = new URL(link);
                 console.log('apiUrl');
             }
 		
-
-       // }
 
 
 
