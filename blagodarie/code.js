@@ -954,7 +954,7 @@ d3.json(apiUrl)
 	});
 		
 	
-	let selected_val_num = localStorage.getItem('selected_val');
+	let selected_val_num = +url.searchParams.get('selected_val');
 	let but_next = document.querySelector('#btn_next');
 	if(data.users.length == selected_val_num){
 		but_next.style.background = '#000';
