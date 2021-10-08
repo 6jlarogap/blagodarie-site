@@ -1330,6 +1330,8 @@ if(window.location.href.includes('map_visible')){
 	
 	show_map_style();
 	}
+}else{
+	show_map_style();
 }
 
 
@@ -1727,9 +1729,9 @@ async function onNodeClick(nodeType, uuid, txt){
 		url.searchParams.append('map_visible', 'true');
 		window.history.pushState(null, null, url.search);
 		new_map_container.classList.add('active');
-		window.onload = function(){
+		/*window.onload = function(){
 			show_map_style();
-		}
+		}*/
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
