@@ -1330,8 +1330,8 @@ if(window.location.href.includes('map_visible')){
 		new_map_container.classList.add('active');
 		show_map_style();
 	},300);
-	
 	}
+	
 }
 
 
