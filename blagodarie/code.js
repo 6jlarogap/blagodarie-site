@@ -779,7 +779,13 @@ var url = new URL(link);
             }
 			window.history.pushState(null, null, url.search)
 			
-        }
+        }else if(window.location.href.includes('page=1')){
+			let btn_prev_n = document.querySelector('#btn_prev');
+			btn_prev_n.style.background = '#aaa0a0';
+			btn_prev_n.style.cursor = 'context-menu';
+			btn_prev_n.style.pointerEvents = 'none';
+			
+		}
 
 
 
