@@ -754,15 +754,15 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 var link = window.location.href;
 var url = new URL(link);
 
-       if(!url.searchParams.has('selected_val') && !url.searchParams.has('head_from')){
-		   	url.searchParams.append('selected_val', 25);
-			url.searchParams.append('head_from', 0);
+       if(!url.searchParams.has('q') && !url.searchParams.has('f')){
+		   	url.searchParams.append('q', 50);
+			url.searchParams.append('f', 0);
 		   	window.history.pushState(null, null, url.search);
 		   	window.location.href = url.href;
 	   }
 		else{
-			let selected_val = +url.searchParams.get('selected_val');
-			let head_from = +url.searchParams.get('head_from');
+			let selected_val = +url.searchParams.get('q');
+			let head_from = +url.searchParams.get('f');
 			if(head_from/selected_val == 0 || head_from/selected_val == Infinity){
 				document.querySelector('#page').innerHTML = 1;
 				let btn_prev_n = document.querySelector('#btn_prev');
@@ -775,35 +775,35 @@ var url = new URL(link);
 		}
 	
         function nextPage() {
-			let item_plus_int = +url.searchParams.get('head_from');
-			let selected_val = +url.searchParams.get('selected_val');
+			let item_plus_int = +url.searchParams.get('f');
+			let selected_val = +url.searchParams.get('q');
 			item_plus_int += selected_val;
-			url.searchParams.set('head_from', item_plus_int);
+			url.searchParams.set('f', item_plus_int);
 			window.location.href = url.href;
         }
 
         function prevPage() {
-			let item_plus_int = +url.searchParams.get('head_from');
-			let selected_val = +url.searchParams.get('selected_val');
+			let item_plus_int = +url.searchParams.get('f');
+			let selected_val = +url.searchParams.get('q');
 			item_plus_int -= selected_val;
-			url.searchParams.set('head_from', item_plus_int);
+			url.searchParams.set('f', item_plus_int);
 			window.location.href = url.href;
         }
 
 
 		document.querySelector('#btn_prev').style.background = '#000;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
-		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('selected_val');
-            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('head_from')}&number=${url.searchParams.get('selected_val')}`;
+		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('q');
+            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
 		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('head_from')}&number=${url.searchParams.get('selected_val')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
                 console.log('apiUrl');
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('head_from')}&number=${url.searchParams.get('selected_val')}&uuid=` + userIdFrom;
+                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
                 console.log('apiUrl');
             } else if (localStorage.getItem('filter') != null) {
-                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('head_from')}&number=${url.searchParams.get('selected_val')}&query=` + localStorage.getItem('filter');
+                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
                 console.log('apiUrl');
             }
 		
@@ -863,7 +863,7 @@ d3.json(apiUrl)
 	});
 		
 	
-	let selected_val_num = +url.searchParams.get('selected_val');
+	let selected_val_num = +url.searchParams.get('q');
 	let but_next = document.querySelector('#btn_next');
 	if(data.users.length == selected_val_num){
 		but_next.style.background = '#000';
