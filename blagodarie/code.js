@@ -164,13 +164,13 @@ telegramAuth.setAttribute('data-request-access', "write")
 authDialog.insertBefore(telegramAuth, authDialog.lastElementChild);
 
 
-setTimeout(() => {
+/*setTimeout(() => {
 	var tgIframe;
 	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 	tgIframe.style.marginTop = '80px';
 	tgIframe.style.marginBottom = '45px';
 	
-}, 2000)
+}, 2000)*/
 
 if (getCookie("auth_data")) {
 	var auth_data = getCookie("auth_data");
@@ -583,7 +583,6 @@ var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
 
 
-
 let get_position = document.querySelector('#get_position');
 let mapid = document.querySelector('#mapid');
 let map_container = document.querySelector('.map_container');
@@ -606,13 +605,12 @@ let mapid_whereI = document.querySelector('.mapid_whereI');
 
 
 
-
-
 if(get_position){
 get_position.addEventListener('click', ()=>{
 	get_cur_position();
 });
 }
+
 
 function get_cur_position(){
 
@@ -835,8 +833,7 @@ d3.json(apiUrl)
 	
 	
 	
-	
-	//добавить пользователей в вершины
+		//добавить пользователей в вершины
 	
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
@@ -875,10 +872,8 @@ d3.json(apiUrl)
 		but_next.style.cursor = 'context-menu';
 		but_next.style.pointerEvents = 'none';
 	}
-				
-		
-	
-	
+
+
 	/*maps*/
 	
 	data.users.forEach(function(d){
@@ -898,8 +893,6 @@ d3.json(apiUrl)
 	
 	console.log(data.users.latitude);
 	console.log(map_users);
-	
-	
 	
 	if (data.wishes != null){
 		//добавить вершину желаний
@@ -1457,6 +1450,13 @@ function initializeDisplay() {
 			else if (d.nodeType == NODE_TYPES.FILTERED) {
 				return "filtered";
 			}
+			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FRIEND){
+        			return "friendPortrait friend";
+    			}
+			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FILTER){
+        			return "friendPortrait active_filer_icon";
+    			}
+    			
 			else {
 				return "friendPortrait";
 			}
@@ -1468,13 +1468,13 @@ function initializeDisplay() {
 		.text(d => (d.tspan));
 	
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : 48))
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : 65))
 		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
 		.text(d => (d.text));
 	  
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : 48))
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : 65))
 		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.text));
@@ -1489,6 +1489,7 @@ function initializeDisplay() {
 		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "friendName" : "friendName"))
 		.text(d => (d.abil));
+
 }
 
 function ticked() {
@@ -1696,11 +1697,17 @@ async function onNodeClick(nodeType, uuid, txt){
 	} else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex"
 	}
+	else if (nodeType == NODE_TYPES.FILTERED) {
+
+		window.location.href = `${settings.url}profile?id=` + uuid;
+	}
 	else if(nodeType == NODE_TYPES.FILTER) {
+		
 		if (localStorage.getItem("filter")) {
 			filterInput.value = localStorage.getItem("filter");
 		}
 		filterDialog.style.display = "flex";
+		
 	}
 	else if (nodeType == NODE_TYPES.SHARE) {
 		share.updateContent({
