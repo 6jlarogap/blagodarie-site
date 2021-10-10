@@ -5,27 +5,26 @@
 	<meta name="http-equiv" content="Content-type: text/html;">
 	<meta charset="utf-8">
 	<meta name="google-signin-client_id" content="1040490348184-banrg8accupfj3ptg8vrvd6p412jrkgp.apps.googleusercontent.com">
-	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 	<link rel="manifest" href="./manifest.json">
 	<style>
 		/* HTML styles */
-		html {
-			width: 100%;
-			height: 100%;
-		}
-
-		body {
-			width: 100%;
-			height: 100%;
-			margin: 0;
-			padding: 0;
-			display: -webkit-box;
-			display: -ms-flexbox;
-			display: flex;
-			background-color: #ffffff;
+		.text-labels{
+			margin-left: -47px!important;
+    			margin-top: 0px!important;
+    			width: unset!important;
+    			height: 24px!important;
+			font-weight: 700!important;
+			text-align: center!important;
+			white-space: nowrap;
 		}
 
 		/* SVG styles */
@@ -33,6 +32,44 @@
 			-ms-flex-preferred-size: 100%;
 			    flex-basis: 100%;
 			/* min-width: 200px; */
+		}
+		.round {
+			border-radius: 50%;
+		}
+		#new_map .leaflet-marker-icon.leaflet-zoom-animated.leaflet-interactive{
+			border-radius: 100px;
+		}
+		.new_map_container{
+			position: absolute;
+			left:0;
+			top:0;
+			width:100%;
+			height:100%;
+			display:none;
+			z-index: 1;
+		}
+		.new_map_container.active{
+			display: block;
+		}
+		#new_map{
+			width:100%;
+			height:100%;
+			z-index: 3;
+		}
+		.new_map_close{
+			display:block;
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			cursor: pointer;
+			width: 30px;
+    			height: 29px;
+    			text-align: center;
+    			background-color: #fff;
+    			font-weight: 900;
+    			border-radius: 6px;
+    			border: 2px solid rgba(0,0,0,0.2);
+			z-index: 13;
 		}
 		.pagination_block{
 			display: flex;
@@ -43,6 +80,7 @@
     			margin-left: -150px;
 			align-items: center;
     			justify-content: space-between;
+			z-index:2;
 		}
 		#btn_prev{
 			text-decoration: none;
@@ -59,10 +97,6 @@
     			padding: 20px 27px;
     			border-radius: 50px;
     			font-weight: 700;
-		}
-
-		.round {
-			border-radius: 50%;
 		}
 
 		image.userPortrait {
@@ -164,6 +198,13 @@
 			 border-radius: 61px; 
 			border: solid black 0px;
 		}
+		.close_auth_dialog{
+			position: absolute;
+			top: 25px;
+			right: 25px;
+			cursor: pointer;
+		}
+		
 		@media(max-width: 990px){
 			dialog{
 				width:770px;
@@ -264,6 +305,24 @@
     				z-index: 13!important;
     				font-size: 23px!important;
 			}
+			.new_map_close{
+				display: block!important;
+    				position: absolute!important;
+    				top: 10px!important;
+    				right: 10px!important;
+    				cursor: pointer!important;
+    				width: 50px!important;
+    				height: 50px!important;
+    				text-align: center!important;
+    				padding-top: 6px!important;
+    				background-color: #fff!important;
+    				font-weight: 900!important;
+    				border-radius: 6px!important;
+    				border: 2px solid rgba(0,0,0,0.2)!important;
+    				z-index: 13!important;
+    				font-size: 23px!important;
+			}
+
 			.mapid_whereI{
 			display: block;
     			position: absolute!important;
@@ -281,6 +340,46 @@
    			z-index: 13!important;
    			font-size: 27px!important;
 			}
+			.mapid_alert{
+				font-size: 36px!important;
+			}
+		}
+		@media(max-width: 425px){
+			.pagination_block{
+				display: flex!important;
+    				position: absolute!important;
+    				bottom: 0!important;
+    				left: 0!important;
+    				width: 100%!important;
+    				margin-left: 0!important;
+    				align-items: center!important;
+    				justify-content: space-between!important;
+    				font-size: 37px!important;
+			}
+			#btn_prev{
+				padding: 40px 55px!important;
+    				border-radius: 100px!important;
+    				font-weight: 700!important;
+    				font-size: 33px!important;
+			}
+			.pagination_block #page{
+				font-size: 47px!important;
+    				font-weight: 700!important;
+
+			}
+			#btn_next{
+				padding: 40px 55px!important;
+    				border-radius: 100px!important;
+    				font-weight: 700!important;
+    				font-size: 33px!important;
+			}
+			.pagination_select{
+				font-size: 25px!important;
+			}
+			.pagination_select option{
+				font-size: 20px!important;
+			}
+
 		}
 
 		dialog form {
@@ -689,13 +788,194 @@
     			user-select: none;
     			-khtml-user-select: none;
 		}
-		.friendPortrait.friend{
-			width: 128px!important;
-   			height: 128px!important;
+
+		.map_container{
+			display:none;
+			position: absolute;
+			left:0;
+			right:0;
 		}
-		.friendPortrait.active_filer_icon{
-			clip-path: circle(231.25% at center center)!important;
-    			filter: drop-shadow(0px 6px 11px #222222);
+		#mapid{
+			position: relative;
+    			display: block;
+    			height: 100vh;
+    			width: 100%;
+			z-index: 10;
+		}
+		.mapid_close{
+			display:block;
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			cursor: pointer;
+			width: 30px;
+    			height: 29px;
+    			text-align: center;
+    			background-color: #fff;
+    			font-weight: 900;
+    			border-radius: 6px;
+    			border: 2px solid rgba(0,0,0,0.2);
+			z-index: 13;
+		}
+		.mapid_send{
+			display:block;
+			position: absolute;
+			top: 85px;
+			left: 10px;
+			padding: 4px 10px;
+    			background-color: #fff;
+    			border-radius: 7px;
+    			cursor: pointer;
+    			border: 2px solid rgba(0,0,0,0.2);
+    			font-weight: 500;
+			opacity: 0.7;
+			transition: .5s;
+			z-index: 13;
+		}
+		.mapid_clean{
+			display:block;
+			position: absolute;
+			right: 10px;
+    			bottom: 20px;
+    			opacity: 0.7;
+			padding: 4px 10px;
+    			background-color: #fff;
+    			border-radius: 7px;
+    			cursor: pointer;
+    			border: 2px solid rgba(0,0,0,0.2);
+    			font-weight: 500;
+			transition: .5s;
+			z-index: 13;
+		}
+		.mapid_alert{
+			display: none;
+			opacity: 0;
+			position: absolute;
+			left: 43%;
+    			top: 50%;
+			padding: 4px 10px;
+    			background-color: #fff;
+    			border-radius: 7px;
+    			cursor: pointer;
+    			border: 2px solid rgba(0,0,0,0.2);
+    			font-weight: 500;
+			transition: 1s;
+			z-index: 13;
+		}
+		.mapid_send:hover, .mapid_clean:hover{
+			opacity: 1;
+			transition: .5s;
+		}
+		.mapid_whereI{
+			display: block;
+    			position: absolute;
+    			bottom: 90px;
+    			right: 10px;
+    			cursor: pointer;
+    			width: 95px;
+    			height: 38px;
+    			text-align: center;
+   			 padding-top: 6px;
+    			background-color: #fff;
+    			font-weight: 800;
+    			border-radius: 6px;
+    			border: 2px solid rgba(0,0,0,0.2);
+    			z-index: 13;
+    			font-size: 15px;
+			}
+		@media(max-width: 550px){
+			.leaflet-touch .leaflet-bar a{
+				width: 60px!important;
+    				height: 60px!important;
+    				display: flex!important;
+    				line-height: 0!important;
+    				align-items: center!important;
+    				justify-content: center!important;
+    				font-size: 44px!important;
+			}
+			.mapid_send{
+				display: block;
+    				position: absolute;
+    				top: 160px;
+    				left: 10px;
+    				padding: 4px 10px;
+    				background-color: #fff;
+    				border-radius: 7px;
+    				cursor: pointer;
+    				border: 2px solid rgba(0,0,0,0.2);
+    				font-weight: 500;
+    				opacity: 0.7;
+   				transition: .5s;
+    				z-index: 13;
+    				font-size: 32px;
+    				font-weight: 700;
+			}
+			.mapid_clean{
+				display: block;
+    				position: absolute;
+    				bottom: unset;
+    				opacity: 0.7;
+    				padding: 4px 10px;
+    				background-color: #fff;
+    				border-radius: 7px;
+    				cursor: pointer;
+    				border: 2px solid rgba(0,0,0,0.2);
+    				font-weight: 700;
+    				transition: .5s;
+    				z-index: 13;
+    				left: 10px;
+    				top: 235px;
+    				font-size: 32px;
+			}
+			.mapid_close{
+				display: block;
+    				position: absolute;
+    				top: 10px;
+    				right: 10px;
+    				cursor: pointer;
+    				width: 50px;
+    				height: 50px;
+    				text-align: center;
+    				padding-top: 6px;
+    				background-color: #fff;
+    				font-weight: 900;
+    				border-radius: 6px;
+    				border: 2px solid rgba(0,0,0,0.2);
+    				z-index: 13;
+    				font-size: 23px;
+			}
+			.mapid_whereI{
+			display: block;
+    			position: absolute;
+    			bottom: 90px;
+   			right: 10px;
+   			cursor: pointer;
+   			width: 125px;
+    			height: 60px;
+   			text-align: center;
+   			padding-top: 6px;
+   			background-color: #fff;
+   			font-weight: 800;
+   			border-radius: 6px;
+   			border: 2px solid rgba(0,0,0,0.2);
+   			z-index: 13;
+   			font-size: 27px;
+			}
+		}
+		html {
+			width: 100%;
+			height: 100%;
+		}
+
+		body {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			background-color: #ffffff;
 		}
 	</style>
 	<!-- Yandex.Metrika counter -->
@@ -739,7 +1019,8 @@
 			<i class="fab fa-yandex"></i>
 			<p>Войти с помощью Yandex</p>
 		</button>-->
-		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
+		<p class="close_auth_dialog">&#10006;</p>
+
 		<div class="form-check">
 			<input class="form-check-input inp" type="checkbox" value="" checked id="agreementCheck">
 			<label class="form-check-label" for="flexCheckDefault">
@@ -750,7 +1031,7 @@
 	<div class="pagination_block">
         	<a href="javascript:prevPage()" id="btn_prev"><</a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a>
 		<div style='display:flex;flex-direction:column;align-items:center;justify-content:center;'>
-        	<select class='pagination_select' onchange="localStorage.setItem('selected_val', this.value);window.location.reload();">
+        	<select class='pagination_select' onchange="url.searchParams.set('selected_val', this.value);url.searchParams.set('head_from', 0);window.location.href = url.href;">
 			<option>Профилей на странице</option>
     			<option value="25">25</option>
     			<option value="50">50</option>
@@ -761,6 +1042,18 @@
 			<p class="pagination_count" style="margin:0;font-weight: 500;"></p>
 			</div>
     	</div>
+	<div class="map_container">
+	<div id="mapid"></div>
+	<p class="mapid_close">&#215;</p>
+	<div class="mapid_send">Опубликовать</div>
+	<div class="mapid_clean">Очистить</div>
+	<p class="mapid_alert">Ваше местоположение<br>закреплено здесь!</p>
+	<div class="mapid_whereI">Где я?</div>
+	</div>
+	<div class="new_map_container">
+		<div id="new_map"></div>
+		<p class="new_map_close">&#215;</p>
+	</div>
 	<dialog id="rootDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<ul id="rootList">
@@ -786,7 +1079,7 @@
 		<button class="btn btn-primary" id="keys">Ключи</button>
 		<button class="btn btn-primary" id="abilities">Возможности</button>
 		<button class="btn btn-primary" id="wishes">Желания</button>
-		<button class="btn btn-primary" id="invite">Получить доверие</button>
+		<button class="btn btn-primary" id="get_position">Местоположение</button>
 		<button class="btn btn-primary" id="optionsAgreement" onclick="window.open('./agreement/index.html', '_blank')">
 			<p>Условия Пользования</p>
 			<i class="far fa-file-alt"></i>
