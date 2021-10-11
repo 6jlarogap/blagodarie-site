@@ -1031,7 +1031,7 @@
 	<div class="pagination_block">
         	<a href="javascript:prevPage()" id="btn_prev"><</a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a>
 		<div style='display:flex;flex-direction:column;align-items:center;justify-content:center;'>
-        	<select class='pagination_select' onchange="url.searchParams.set('selected_val', this.value);url.searchParams.set('head_from', 0);window.location.href = url.href;">
+        	<select class='pagination_select' onchange="url.searchParams.set('q', this.value);url.searchParams.set('f', 0);window.location.href = url.href;">
 			<option>Профилей на странице</option>
     			<option value="25">25</option>
     			<option value="50">50</option>
