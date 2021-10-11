@@ -41,8 +41,8 @@ const PROFILE = {
 }
 
 var svg = d3.select("#main");
-var width = +svg.node().getBoundingClientRect().width;
-var height = +svg.node().getBoundingClientRect().height;
+var width = +svg.node().getBoundingClientRect().width - 30;
+var height = +svg.node().getBoundingClientRect().height -30;
 var link;
 var node;
 var nodes = [];
