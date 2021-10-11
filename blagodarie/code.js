@@ -1539,6 +1539,7 @@ function calcX1(d){
 		x = sourceX - relX;
 	}
 	return x;
+	console.log('x1', x);
 }
 
 function calcY1(d){
@@ -1558,6 +1559,7 @@ function calcY1(d){
 		y = sourceY - relY;
 	}
 	return y;
+	console.log('y1', y);
 }
 
 function calcX2(d){
@@ -1577,6 +1579,7 @@ function calcX2(d){
 		x = targetX + relX;
 	}
 	return x;
+	console.log('x2', x);
 }
 
 function calcY2(d){
@@ -1596,6 +1599,7 @@ function calcY2(d){
 		y = targetY + relY;
 	}
 	return y;
+	console.log('y2', y);
 }
 
 d3.select(window).on("resize", function(){
