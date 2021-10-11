@@ -1374,10 +1374,10 @@ function initializeDisplay() {
 		.selectAll("g")
 		.data(links)
 		.join("g")
-		.attr("x1", calcX1-50)
-		.attr("y1", calcY1-50)
-		.attr("x2", calcX2-50)
-		.attr("y2", calcY2-50);
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
 		
 	link.append("svg:defs")
 		.append("linearGradient")
@@ -1586,6 +1586,7 @@ function calcY2(d){
 	const targetX = (d.target.x < 0 ? 0 : (d.target.x > width ? width : d.target.x));
 	const sourceY = (d.source.y < 0 ? 0 : (d.source.y > height ? height : d.source.y));
 	const targetY = (d.target.y < 0 ? 0 : (d.target.y > height ? height : d.target.y));
+	console.log(targetX);
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
