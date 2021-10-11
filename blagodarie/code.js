@@ -1601,6 +1601,7 @@ function calcY2(d){
 	return y;
 	console.log('y2', y);
 }
+console.log(calcX1, calcX2, calcY1, calcY2);
 
 d3.select(window).on("resize", function(){
 	width = +svg.node().getBoundingClientRect().width;
