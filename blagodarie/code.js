@@ -1500,7 +1500,6 @@ function ticked() {
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
 		}
-		console.log(x, y);
 		return `translate(${x},${y})`;
 	});
 	
