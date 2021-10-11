@@ -1374,10 +1374,10 @@ function initializeDisplay() {
 		.selectAll("g")
 		.data(links)
 		.join("g")
-		.attr("x1", calcX1)
-		.attr("y1", calcY1)
-		.attr("x2", calcX2)
-		.attr("y2", calcY2);
+		.attr("x1", calcX1-50)
+		.attr("y1", calcY1-50)
+		.attr("x2", calcX2-50)
+		.attr("y2", calcY2-50);
 		
 	link.append("svg:defs")
 		.append("linearGradient")
@@ -1539,7 +1539,6 @@ function calcX1(d){
 		x = sourceX - relX;
 	}
 	return x;
-	console.log('x1', x);
 }
 
 function calcY1(d){
@@ -1559,7 +1558,7 @@ function calcY1(d){
 		y = sourceY - relY;
 	}
 	return y;
-	console.log('y1', y);
+
 }
 
 function calcX2(d){
@@ -1579,7 +1578,7 @@ function calcX2(d){
 		x = targetX + relX;
 	}
 	return x;
-	console.log('x2', x);
+
 }
 
 function calcY2(d){
@@ -1599,9 +1598,9 @@ function calcY2(d){
 		y = targetY + relY;
 	}
 	return y;
-	console.log('y2', y);
+
 }
-console.log(calcX1(), calcX2(), calcY1(), calcY2());
+
 
 d3.select(window).on("resize", function(){
 	width = +svg.node().getBoundingClientRect().width;
