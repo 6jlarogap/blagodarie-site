@@ -1538,6 +1538,7 @@ function calcX1(d){
 	} else {
 		x = sourceX - relX;
 	}
+	console.log(x);
 	return x;
 }
 
