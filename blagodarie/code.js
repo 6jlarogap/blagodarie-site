@@ -1500,6 +1500,7 @@ function ticked() {
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
 		}
+		console.log(x, y);
 		return `translate(${x},${y})`;
 	});
 	
@@ -1586,7 +1587,6 @@ function calcY2(d){
 	const targetX = (d.target.x < 0 ? 0 : (d.target.x > width ? width : d.target.x));
 	const sourceY = (d.source.y < 0 ? 0 : (d.source.y > height ? height : d.source.y));
 	const targetY = (d.target.y < 0 ? 0 : (d.target.y > height ? height : d.target.y));
-	console.log(targetX);
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
