@@ -1438,12 +1438,13 @@ function initializeDisplay() {
 		});
 
 	node = svg.append("g")
+		.attr('id', 'allalal')
 		.selectAll("g")
 		.data(nodes)
 		.join("g")
 		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
-		.call(drag(simulation))
-		.attr('id', 'allalal');
+		.call(drag(simulation));
+		
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
