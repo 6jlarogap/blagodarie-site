@@ -40,7 +40,9 @@ const PROFILE = {
 	nodeType: NODE_TYPES.PROFILE
 }
 
-var svg = d3.select("#main");
+var svg = d3.select("#main").attr("id", "playgraph")
+			.attr("viewBox", "0 0 " + w + " " + h )
+			.attr("preserveAspectRatio", "xMidYMid meet");
 var width = +svg.node().getBoundingClientRect().width;
 var height = +svg.node().getBoundingClientRect().height;
 var link;
@@ -1500,6 +1502,7 @@ function ticked() {
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
 		}
+		
 		return `translate(${x},${y})`;
 	});
 	
@@ -1538,7 +1541,6 @@ function calcX1(d){
 	} else {
 		x = sourceX - relX;
 	}
-	console.log(x);
 	return x;
 }
 
@@ -1599,7 +1601,6 @@ function calcY2(d){
 		y = targetY + relY;
 	}
 	return y;
-
 }
 
 
