@@ -1438,8 +1438,6 @@ function initializeDisplay() {
 		});
 
 	node = svg.append("g")
-		.attr('id', 'allalal')
-		.attr("viewBox", "0 0 " + w + " " + h )
 		.selectAll("g")
 		.data(nodes)
 		.join("g")
@@ -1514,7 +1512,8 @@ function ticked() {
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2);
+		.attr("y2", calcY2)
+		.attr('id', "yo");
 		
 	link.selectAll("linearGradient")
 		.attr("x1", calcX1)
