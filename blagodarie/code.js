@@ -1502,7 +1502,7 @@ function ticked() {
 		var y = (d.y < 0 ? 0 : (d.y > height ? height: d.y));
 		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
 			simulation.force("x").x(x);
-			simulation.force("y").y(y);
+			simulation.force("y").y(y/2);
 		}
 		
 		return `translate(${x},${y})`;
@@ -1512,9 +1512,9 @@ function ticked() {
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2)
-		.attr('id', "yo");
+		.attr("y2", calcY2);
 		
+	
 	link.selectAll("linearGradient")
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
