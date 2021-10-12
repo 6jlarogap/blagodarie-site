@@ -1498,7 +1498,7 @@ function initializeDisplay() {
 
 function ticked() {
 	node.attr("transform", d => {
-		var x = (d.x < 0 ? 0 : (d.x > width ? width : d.x));
+		var x = (d.x < 0 ? 0 : (d.x > width ? width/2 : d.x)/2);
 		var y = (d.y < 0 ? 0 : (d.y > height ? height : d.y));
 		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
 			simulation.force("x").x(x);
