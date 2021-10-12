@@ -1439,6 +1439,7 @@ function initializeDisplay() {
 
 	node = svg.append("g")
 		.attr('id', 'allalal')
+		.attr("viewBox", "0 0 " + w + " " + h )
 		.selectAll("g")
 		.data(nodes)
 		.join("g")
