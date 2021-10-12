@@ -40,8 +40,7 @@ const PROFILE = {
 	nodeType: NODE_TYPES.PROFILE
 }
 
-var svg = d3.select("#main").attr("id", "playgraph")
-			.attr("viewBox", "0 0 " + w + " " + h )
+var svg = d3.select("#main").attr("viewBox", "0 0 " + w + " " + h )
 			.attr("preserveAspectRatio", "xMidYMid meet");
 var width = +svg.node().getBoundingClientRect().width;
 var height = +svg.node().getBoundingClientRect().height;
