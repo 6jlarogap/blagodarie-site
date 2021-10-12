@@ -1499,10 +1499,10 @@ function initializeDisplay() {
 function ticked() {
 	node.attr("transform", d => {
 		var x = (d.x < 0 ? 0 : (d.x > width ? width : d.x));
-		var y = (d.y < 0 ? 0 : (d.y > height ? height: d.y));
+		var y = (d.y < 0 ? 0 : (d.y > height ? height : d.y));
 		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
 			simulation.force("x").x(x);
-			simulation.force("y").y(y/2);
+			simulation.force("y").y(y);
 		}
 		
 		return `translate(${x},${y})`;
