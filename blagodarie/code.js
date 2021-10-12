@@ -1379,8 +1379,8 @@ function initializeDisplay() {
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2)
-		.attr("id", "lallaal");
+		.attr("y2", calcY2);
+		//.attr("id", "lallaal");
 		
 	link.append("svg:defs")
 		.append("linearGradient")
@@ -1442,7 +1442,8 @@ function initializeDisplay() {
 		.data(nodes)
 		.join("g")
 		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
-		.call(drag(simulation));
+		.call(drag(simulation))
+		.attr('id', 'allalal');
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
