@@ -1442,7 +1442,8 @@ function initializeDisplay() {
 		.data(nodes)
 		.join("g")
 		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
-		.call(drag(simulation));
+		.call(drag(simulation))
+		.attr('class', 'svg_elem');
 		
 		
 	
@@ -1505,7 +1506,8 @@ function ticked() {
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
 		}
-		console.log(d.id.height)
+		let svg_elem = document.querySelector('.svg_elem');
+		console.log(svg_elem.offsetHeight);
 		return `translate(${x},${y})`;
 	});
 	
