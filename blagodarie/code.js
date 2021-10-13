@@ -1444,6 +1444,7 @@ function initializeDisplay() {
 		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
 		.call(drag(simulation));
 		
+		
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
@@ -1504,7 +1505,7 @@ function ticked() {
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
 		}
-		console.log(d.fy, d.y);
+		console.log(d.id)
 		return `translate(${x},${y})`;
 	});
 	
