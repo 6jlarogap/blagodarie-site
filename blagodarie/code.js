@@ -1505,7 +1505,7 @@ function ticked() {
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
 		}
-		console.log(d.id)
+		console.log(d.id.height)
 		return `translate(${x},${y})`;
 	});
 	
