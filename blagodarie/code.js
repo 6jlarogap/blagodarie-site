@@ -1501,13 +1501,11 @@ function initializeDisplay() {
 function ticked() {
 	node.attr("transform", d => {
 		var x = (d.x < 0 ? 0 : (d.x > width ? width : d.x));
-		var y = (d.y < 0 ? 0 : (d.y > height ? height : d.y));
+		var y = (d.y < 0 ? 0 : (d.y > height-50 ? height-50 : d.y));
 		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
 		}
-		let svg_elem = document.querySelector('.svg_elem');
-		console.log(svg_elem.offsetHeight);
 		return `translate(${x},${y})`;
 	});
 	
