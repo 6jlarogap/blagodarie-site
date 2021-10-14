@@ -1475,18 +1475,18 @@ function initializeDisplay() {
 	
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 500 ? 15  : 65))
-		.attr("font-size", "20")
+		.attr("font-size", width<500 ? '12' : "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
 		.text(d => (d.text));
 	  
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 500 ? 15 : 65))
-		.attr("font-size", "20")
+		.attr("font-size", width<500 ? '12' : "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.text));
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  70 : d.nodeType == NODE_TYPES.FILTERED ? 70 : 70))
-		.attr("font-size", width<500 ? '12' : "20")
+		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "friendName" : "friendName"))
 		.text(d => (d.tabil));
 	
