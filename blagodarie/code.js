@@ -1500,8 +1500,8 @@ function initializeDisplay() {
 
 function ticked() {
 	node.attr("transform", d => {
-		var x = (d.x < 20 ? 20 : (d.x > width ? width : d.x));
-		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-30 && width<900 ? height-30 : d.y > height-70 ? height-70 : d.y));
+		var x = (d.x < 30 ? 30 : (d.x > width ? width-30 : d.x));
+		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 ? height-70 : d.y));
 		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
