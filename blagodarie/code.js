@@ -1172,7 +1172,7 @@ d3.json(apiUrl)
 			d.fy = height / 2;
 			break;
 		case SHARE_ID:
-			d.fx = width / 2 + 300;
+			d.fx = width<900 ? width/2+10 : width / 2 + 300;
 			d.fy = height / 2 - 300;
 			break;
 		case FILTER_ID:
