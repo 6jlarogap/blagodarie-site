@@ -1188,7 +1188,7 @@ d3.json(apiUrl)
 				d.fy = height / 2 - 300;	
 				break;
 		case HOME_ID:
-			d.fx = width<900 ? width/2-75 :width / 2 - 300;
+			d.fx = width<900 ? width/2-81 :width / 2 - 300;
 			d.fy = height / 2 - 300;
 			break;
 		
