@@ -1176,7 +1176,7 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;
 			break;
 		case FILTER_ID:
-			d.fx = width<900 ? width/2+140 : width / 2 + 400;
+			d.fx = width<900 ? width/2+170 : width / 2 + 400;
 			d.fy = height / 2 - 300;
 			break;
 		case OPTIONS_ID:
