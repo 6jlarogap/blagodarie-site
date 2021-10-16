@@ -1191,8 +1191,9 @@ d3.json(apiUrl)
 			d.fx = width / 2 - 300;
 			d.fy = height / 2 - 300;
 			break;
+		
 		case MAPS_ID:
-			d.fx = width / 2 - 50;
+			d.fx = width<900 ? width/2-10 : width / 2 - 50;
 			d.fy = height / 2 - 300;
 			break;
 		case TRUST_ID:
