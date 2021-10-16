@@ -1193,7 +1193,7 @@ d3.json(apiUrl)
 			break;
 		
 		case MAPS_ID:
-			d.fx = width<900 ? width/2+40 : width / 2 - 50;
+			d.fx = width<900 ? width/2+20 : width / 2 - 50;
 			d.fy = height / 2 - 300;
 			break;
 		case TRUST_ID:
