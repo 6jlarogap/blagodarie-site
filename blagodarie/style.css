@@ -216,6 +216,11 @@
     			x: -31;
     			y: -38px;
 			}
+			dialog{
+				left: 0;
+				margin-left: 0;
+				width: 73%;
+			}
 		}
 		
 		/*@media(max-width: 990px){
