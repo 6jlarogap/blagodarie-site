@@ -186,61 +186,7 @@
 			right: 25px;
 			cursor: pointer;
 		}
-		@media(max-width:900px){
-			.pagination_block{
-				left: 0;
-    			margin-left: 0;
-				flex-direction: row;
-			}
-			#btn_prev{
-				padding: 6px 12px;
-			}
-			#btn_next{
-				padding: 6px 12px;
-			}
-			.pagination_select{
-				font-size: 11px;
-			}
-			.pagination_count{
-				font-size: 12px;
-			}
-			image.friendPortrait{
-				width: 35px;
-    			height: 35px;
-    			x: -18;
-    			y: -21px;
-			}
-			image.userPortrait{
-				width: 60px;
-    			height: 60px;
-    			x: -31;
-    			y: -38px;
-			}
-			dialog{
-				left: 1%;
-				margin-left: 0;
-				width: 73%;
-			}
-			#shareDialog{
-				top: 10%;
-				
-			}
-			.ya-share2__container_shape_round.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon:not(.ya-share2__icon_messenger-contact):not(.ya-share2__icon_more):not(.ya-share2__icon_copy){
-				background-size: 50px 50px !important;
-			}
-			.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon{
-				width: 50px!important;
-				height: 50px!important;
-			}
-			.custom-share{
-				margin: 5px auto 0 0;
-			}
-			.share {
-    			width: 50px;
-    			height: 50px;
-    			cursor: pointer;
-			}
-		}
+		
 		
 		/*@media(max-width: 990px){
 			dialog{
@@ -1013,4 +959,59 @@
 			display: -ms-flexbox;
 			display: flex;
 			background-color: #ffffff;
+		}
+@media(max-width:900px){
+			.pagination_block{
+				left: 0;
+    			margin-left: 0;
+				flex-direction: row;
+			}
+			#btn_prev{
+				padding: 6px 12px;
+			}
+			#btn_next{
+				padding: 6px 12px;
+			}
+			.pagination_select{
+				font-size: 11px;
+			}
+			.pagination_count{
+				font-size: 12px;
+			}
+			image.friendPortrait{
+				width: 35px;
+    			height: 35px;
+    			x: -18;
+    			y: -21px;
+			}
+			image.userPortrait{
+				width: 60px;
+    			height: 60px;
+    			x: -31;
+    			y: -38px;
+			}
+			dialog{
+				left: 1%;
+				margin-left: 0;
+				width: 73%;
+			}
+			#shareDialog{
+				top: 10%;
+				
+			}
+			.ya-share2__container_shape_round.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon:not(.ya-share2__icon_messenger-contact):not(.ya-share2__icon_more):not(.ya-share2__icon_copy){
+				background-size: 50px 50px !important;
+			}
+			.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon{
+				width: 50px!important;
+				height: 50px!important;
+			}
+			.custom-share{
+				margin: 5px auto 0 0;
+			}
+			.share {
+    			width: 50px;
+    			height: 50px;
+    			cursor: pointer;
+			}
 		}
