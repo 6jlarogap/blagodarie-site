@@ -955,7 +955,7 @@ d3.json(apiUrl)
 		}
 		}).then(data => data.json());
 
-	console.log(response.thanks_count);
+	console.log(response.trust_count);
 	//console.log(response);
 	
 	if(response.thanks_count >= 1){
