@@ -958,8 +958,8 @@ d3.json(apiUrl)
 	//console.log(response.trust_count);
 	//console.log(response);
 	
-	if(response.trust_count >= 1){
-		 resp = response.trust_count
+	if(response.sum_thanks_count >= 1){
+		 resp = response.sum_thanks_count
 		
 	}
 	else{
@@ -1470,7 +1470,7 @@ function initializeDisplay() {
 			}
 		});
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : 10))
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : 30))
 		.attr("font-size", "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.tspan));
