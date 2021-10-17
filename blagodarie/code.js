@@ -494,7 +494,7 @@ async function setProfile() {
 	PROFILE.abil = response.ability;
 	PROFILE.image = response.photo == '' ? `${settings.url}images/default_avatar.png` : response.photo;
 	PROFILE.id = getCookie("user_uuid");
-	PROFILE.text = response.trust_count;
+	PROFILE.tabil = response.trust_count;
 	console.log(response.trust_count);
 	console.log(response);
 	console.log(response.ability);
