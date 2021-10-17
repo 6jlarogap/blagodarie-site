@@ -960,6 +960,9 @@
 			display: flex;
 			background-color: #ffffff;
 		}
+.active_filer_icon{
+	filter: blur(1px);
+}
 @media(max-width:900px){
 			.pagination_block{
 				left: 0;
