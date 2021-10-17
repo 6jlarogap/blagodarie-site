@@ -1162,7 +1162,7 @@ d3.json(apiUrl)
 			break;
 		case KEYS_ROOT_ID:
 			d.fx = width / 2 + 400;
-			d.fy = height / 2 - 200;
+			d.fy = width<900 ? height/2-50 : height / 2 - 200;
 			break;
 		case ABILITIES_ROOT_ID:
 			d.fx = width / 2 + 400;
