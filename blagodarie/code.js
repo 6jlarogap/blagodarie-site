@@ -941,8 +941,8 @@ d3.json(apiUrl)
 	if (userIdFrom && !(userIdFrom == PROFILE.id)) {
 		isConnection = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
 		
-		data.connections.some(link => PROFILE.count=link.thanks_count && link.source == PROFILE.id && link.target == userIdFrom);
-		console.log(PROFILE.count);
+		//data.connections.some(link => PROFILE.count=link.thanks_count && link.source == PROFILE.id && link.target == userIdFrom);
+		//console.log(PROFILE.count);
 		var activeTrust = `${settings.url}images/trust_active.png`;
 		var activeMistrust = `${settings.url}images/mistrust_active.png`;
 		var inactiveTrust = `${settings.url}images/trust_inactive.png`;
@@ -951,7 +951,7 @@ d3.json(apiUrl)
 		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
 		
 		async function count_plus() {
-		const response = await fetch(`${settings.api}api/getprofileinfo?uuid=` + userIdFrom, {
+		const response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
@@ -960,7 +960,7 @@ d3.json(apiUrl)
 
 	//console.log(response.trust_count);
 	//console.log(response);
-	
+	console.log(response.connections)
 	if(response.sum_thanks_count >= 1){
 		 resp = response.sum_thanks_count
 		
