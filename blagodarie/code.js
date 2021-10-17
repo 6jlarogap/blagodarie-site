@@ -496,7 +496,7 @@ async function setProfile() {
 	PROFILE.id = getCookie("user_uuid");
 	//PROFILE.tabil = response.trust_count;
 	console.log(response.users.trust_count);
-	console.log(response);
+	console.log(response.users);
 	console.log(response.users.ability);
 	map_users.push({
 		user_photo: response.users.photo,
