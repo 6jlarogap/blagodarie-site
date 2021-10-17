@@ -490,22 +490,22 @@ async function setProfile() {
 		}
 	}).then(data => data.json());
 
-	PROFILE.text = response.first_name + " " + response.last_name;
-	PROFILE.abil = response.ability;
-	PROFILE.image = response.photo == '' ? `${settings.url}images/default_avatar.png` : response.photo;
+	PROFILE.text = response.users.first_name + " " + response.users.last_name;
+	PROFILE.abil = response.users.ability;
+	PROFILE.image = response.users.photo == '' ? `${settings.url}images/default_avatar.png` : response.users.photo;
 	PROFILE.id = getCookie("user_uuid");
 	//PROFILE.tabil = response.trust_count;
-	console.log(response.trust_count);
+	console.log(response.users.trust_count);
 	console.log(response);
-	console.log(response.ability);
+	console.log(response.users.ability);
 	map_users.push({
-		user_photo: response.photo,
-		user_name: response.first_name,
-		user_lastname: response.last_name,
-		user_latitude: response.latitude,
-		user_longitude: response.longitude,
-		user_ability: response.ability,
-		user_uuid: response.uuid
+		user_photo: response.users.photo,
+		user_name: response.users.first_name,
+		user_lastname: response.users.last_name,
+		user_latitude: response.users.latitude,
+		user_longitude: response.users.longitude,
+		user_ability: response.users.ability,
+		user_uuid: response.users.uuid
 	} );
 	response_smat_map = map_users;
 	console.log(map_users);
