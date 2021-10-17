@@ -799,15 +799,15 @@ var url = new URL(link);
 		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
-                console.log('apiUrl');
+                //console.log(apiUrl);
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                console.log('apiUrl');
+                //console.log(apiUrl);
             } else if (localStorage.getItem('filter') != null) {
                 apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
-                console.log('apiUrl');
+                //console.log(apiUrl);
             }
-		
+		console.log(apiUrl);
 
 
 
