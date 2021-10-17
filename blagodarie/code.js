@@ -940,8 +940,8 @@ d3.json(apiUrl)
 
 	if (userIdFrom && !(userIdFrom == PROFILE.id)) {
 		isConnection = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
-		data.connections.some(link => link.thanks_count == PROFILE.count)
-		console.log(PROFILE.id, userIdFrom, PROFILE.count);
+		
+		console.log(data.connections.some(link => link.thanks_count));
 		var activeTrust = `${settings.url}images/trust_active.png`;
 		var activeMistrust = `${settings.url}images/mistrust_active.png`;
 		var inactiveTrust = `${settings.url}images/trust_inactive.png`;
