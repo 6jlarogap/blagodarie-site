@@ -210,7 +210,7 @@ html {
 			right: 25px;
 			cursor: pointer;
 		}
-		@media(max-width: 990px){
+		/*@media(max-width: 990px){
 			dialog{
 				width: 770px;
 				margin-left: -420px;
@@ -348,7 +348,7 @@ html {
 			.mapid_alert{
 				font-size: 36px!important;
 			}
-		}
+		}*/
 
 		dialog form {
 			display: -webkit-box;
@@ -569,7 +569,7 @@ html {
 			margin-top: 30px;
 		}
 
-		@media (max-width: 990px ) {
+		/*@media (max-width: 990px ) {
 			dialog {
 				/* width: 80%;
 				top: 30%; */
@@ -623,8 +623,8 @@ html {
 				width: 100%;
 			}
 
-		}
-		@media(min-width: 991px){
+		}*/
+		/*@media(min-width: 991px){
 			.fab.fa-vk{
 				margin-right: 51px;
 			}
@@ -645,7 +645,7 @@ html {
 				width: 631px!important;
 				height: 85px!important;
 			}
-		}
+		}*/
 		text, button, p, image, g, div, input, label{
 			-moz-user-select: none;
     			-webkit-user-select: none;
@@ -673,11 +673,11 @@ html {
 			opacity:1;
 			transition:0.7s;
 		}
-		@media (max-width: 450px){
+		/*@media (max-width: 450px){
 			.copied_alert{
 				font-size: 27px!important;
 			}
-		}
+		}*/
 		.map_container {
     display: none;
     position: absolute;
