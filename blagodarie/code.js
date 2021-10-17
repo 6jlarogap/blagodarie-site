@@ -960,7 +960,7 @@ d3.json(apiUrl)
 
 	//console.log(response.trust_count);
 	//console.log(response);
-	console.log(response.connections.find({source: PROFILE.id, target: userIdFrom}))
+	console.log(response.connections)
 	if(response.sum_thanks_count >= 1){
 		 resp = response.sum_thanks_count
 		
