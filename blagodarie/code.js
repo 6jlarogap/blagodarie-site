@@ -490,8 +490,8 @@ async function setProfile() {
 		}
 	}).then(data => data.json());
 
-	PROFILE.text = response.users.first_name + " " + response.users.last_name;
-	PROFILE.abil = response.users.ability;
+	PROFILE.text = response.users[0].first_name + " " + response.users[0].last_name;
+	PROFILE.abil = response.users[0].ability;
 	PROFILE.image = response.users.photo == '' ? `${settings.url}images/default_avatar.png` : response.users.photo;
 	PROFILE.id = getCookie("user_uuid");
 	//PROFILE.tabil = response.trust_count;
