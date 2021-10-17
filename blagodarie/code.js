@@ -492,20 +492,20 @@ async function setProfile() {
 
 	PROFILE.text = response.users[0].first_name + " " + response.users[0].last_name;
 	PROFILE.abil = response.users[0].ability;
-	PROFILE.image = response.users.photo == '' ? `${settings.url}images/default_avatar.png` : response.users.photo;
+	PROFILE.image = response.users[0].photo == '' ? `${settings.url}images/default_avatar.png` : response.users[0].photo;
 	PROFILE.id = getCookie("user_uuid");
 	//PROFILE.tabil = response.trust_count;
 	console.log(response.users.trust_count);
 	console.log(response.users);
 	console.log(response.users.ability);
 	map_users.push({
-		user_photo: response.users.photo,
-		user_name: response.users.first_name,
-		user_lastname: response.users.last_name,
-		user_latitude: response.users.latitude,
-		user_longitude: response.users.longitude,
-		user_ability: response.users.ability,
-		user_uuid: response.users.uuid
+		user_photo: response.users[0].photo,
+		user_name: response.users[0].first_name,
+		user_lastname: response.users[0].last_name,
+		user_latitude: response.users[0].latitude,
+		user_longitude: response.users[0].longitude,
+		user_ability: response.users[0].ability,
+		user_uuid: response.users[0].uuid
 	} );
 	response_smat_map = map_users;
 	console.log(map_users);
