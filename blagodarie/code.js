@@ -483,7 +483,7 @@ function deleteCookie(subdomain,...Cookies) {
 let map_users = [];
 let response_smat_map;
 async function setProfile() {
-	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`, {
+	const response = await fetch(`${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
