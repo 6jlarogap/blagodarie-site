@@ -965,7 +965,8 @@ d3.json(apiUrl)
         console.log(data);
         return data.source === PROFILE.id && data.target === userIdFrom;
     });
-	console.log(ans1)
+	console.log(ans1);
+	console.log(ans1.thanks_count)
 	if(response.sum_thanks_count >= 1){
 		 resp = response.sum_thanks_count
 		
