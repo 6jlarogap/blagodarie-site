@@ -834,4 +834,10 @@ html {
 	#optionsDialog{
 		top: 4em;
 	}
+	#logout{
+		display: grid;
+	}
+	#deleteProfile{
+		margin-top: 6px;
+	}
 		}
