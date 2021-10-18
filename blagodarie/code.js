@@ -958,7 +958,7 @@ d3.json(apiUrl)
 		}
 		}).then(data => data.json());
 
-if(response.connections){
+if(response.connections.length>0){
 	let ans = response.connections;
 	let ans1 = ans.find(data => {
   
