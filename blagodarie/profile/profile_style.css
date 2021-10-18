@@ -182,7 +182,7 @@ html {
 		dialog {
 			position: absolute;
 			padding: 40px;
-			top: 30%;
+			top: 3em;
 			/*left: 0;*/
 			width: 550px;
 			left:50%;
