@@ -965,10 +965,10 @@ d3.json(apiUrl)
         return data.source === PROFILE.id && data.target === userIdFrom;
     });
 	
-	console.log(response.connections.length)
-	let thank_count_plus = ans1.thanks_count ? ans1.thanks_count : 0;
-	if(thank_count_plus >= 1){
-		 resp = thank_count_plus
+	console.log(ans1)
+	
+	if(ans1.thanks_count >= 1){
+		 resp = ans1.thanks_count
 		
 	}
 	else{
