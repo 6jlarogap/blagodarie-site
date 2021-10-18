@@ -182,7 +182,7 @@ html {
 		dialog {
 			position: absolute;
 			padding: 40px;
-			top: 3em;
+			top: 30%;
 			/*left: 0;*/
 			width: 550px;
 			left:50%;
@@ -831,4 +831,7 @@ html {
     			height: 50px;
     			cursor: pointer;
 			}
+	#optionsDialog{
+		top: 4em;
+	}
 		}

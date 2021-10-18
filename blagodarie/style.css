@@ -1023,4 +1023,7 @@
     			height: 50px;
     			cursor: pointer;
 			}
+	#optionsDialog{
+		top: 4em;
+	}
 		}
