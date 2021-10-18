@@ -795,7 +795,7 @@ var url = new URL(link);
         }
 
 
-		document.querySelector('#btn_prev').style.background = '#000;';
+		document.querySelector('#btn_prev').style.background = '#6a2300;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
 		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('q');
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
@@ -869,7 +869,7 @@ d3.json(apiUrl)
 	let selected_val_num = +url.searchParams.get('q');
 	let but_next = document.querySelector('#btn_next');
 	if(data.users.length == selected_val_num){
-		but_next.style.background = '#000';
+		but_next.style.background = '#6a2300';
 		but_next.style.cursor = 'pointer';
 		but_next.style.pointerEvents = 'all';
 	}
