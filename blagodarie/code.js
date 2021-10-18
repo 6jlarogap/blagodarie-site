@@ -1196,7 +1196,7 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;
 			break;
 		case OPTIONS_ID:
-			d.fx = width / 2 - 400;
+			d.fx = width<900 ? 10 : width / 2 - 400;
 			d.fy = height / 2 - 300;	
 			break;
 		case INVITE_ID:
