@@ -958,13 +958,13 @@ d3.json(apiUrl)
 		}
 		}).then(data => data.json());
 
-if(response.connections.length>0){
+
 	let ans = response.connections;
 	let ans1 = ans.find(data => {
   
         return data.source === PROFILE.id && data.target === userIdFrom;
     });
-}
+	console.log(response.connections.length)
 
 	if(ans1.thanks_count >= 1){
 		 resp = ans1.thanks_count
