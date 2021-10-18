@@ -1308,6 +1308,7 @@ function show_map_style(){
     				iconSize: [38, 38],
     				iconAnchor: [map_users[i].user_latitude, map_users[i].user_longitude]
 			});
+			console.log(L)
 			var textLatLng = [map_users[i].user_latitude, map_users[i].user_longitude];  
         		var myTextLabel = L.marker(textLatLng, {icon: L.divIcon({className: 'text-labels', html: `${map_users[i].user_name} ${map_users[i].user_lastname ? map_users[i].user_lastname : ''} </br> ${map_users[i].user_ability ? map_users[i].user_ability : ''}`}),zIndexOffset: 1000})
 			.addTo(new_map)
@@ -1772,10 +1773,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		url.searchParams.append('map_visible', 'true');
 		window.history.pushState(null, null, url.search);
 		window.location.href = url.href;
-		//new_map_container.classList.add('active');
-		/*window.onload = function(){
-			show_map_style();
-		}*/
+		
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
