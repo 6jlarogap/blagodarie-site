@@ -1318,9 +1318,9 @@ function show_map_style(){
 			
 			
 			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIcon})
+			.addTo(new_map);
 			console.log(new_marker);
 			console.log(map_users[i].user_latitude, map_users[i].user_longitude);
-			.addTo(new_map);
 			//Добавляем юзеров на карту для центровки
 			latlngs.push([map_users[i].user_latitude, map_users[i].user_longitude]);
 			console.log(latlngs);
