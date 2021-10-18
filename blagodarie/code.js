@@ -1308,18 +1308,22 @@ function show_map_style(){
     				iconSize: [38, 38],
     				iconAnchor: [map_users[i].user_latitude, map_users[i].user_longitude]
 			});
-			console.log(L)
-			var textLatLng = [map_users[i].user_latitude, map_users[i].user_longitude];  
+			console.log(myIcon);
+			console.log(map_users[i].user_latitude, map_users[i].user_longitude);
+			var textLatLng = [map_users[i].user_latitude, map_users[i].user_longitude]; 
+			console.log(textLatLng);
         		var myTextLabel = L.marker(textLatLng, {icon: L.divIcon({className: 'text-labels', html: `${map_users[i].user_name} ${map_users[i].user_lastname ? map_users[i].user_lastname : ''} </br> ${map_users[i].user_ability ? map_users[i].user_ability : ''}`}),zIndexOffset: 1000})
 			.addTo(new_map)
 			
 			
 			
 			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIcon})
+			console.log(new_marker);
+			console.log(map_users[i].user_latitude, map_users[i].user_longitude);
 			.addTo(new_map);
 			//Добавляем юзеров на карту для центровки
 			latlngs.push([map_users[i].user_latitude, map_users[i].user_longitude]);
-			
+			console.log(latlngs);
 			
 			new_marker.addEventListener('click', ()=>{
 				window.open(window.location.origin + '/profile/?id=' + map_users[i].user_uuid);
