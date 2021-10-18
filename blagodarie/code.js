@@ -958,17 +958,16 @@ d3.json(apiUrl)
 		}
 		}).then(data => data.json());
 
-	//console.log(response.trust_count);
-	console.log(response);
+if(response.connections){
 	let ans = response.connections;
 	let ans1 = ans.find(data => {
-        console.log(data);
+  
         return data.source === PROFILE.id && data.target === userIdFrom;
     });
-	console.log(ans1);
-	console.log(ans1.thanks_count)
-	if(response.sum_thanks_count >= 1){
-		 resp = response.sum_thanks_count
+}
+
+	if(ans1.thanks_count >= 1){
+		 resp = ans1.thanks_count
 		
 	}
 	else{
