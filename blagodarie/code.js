@@ -960,7 +960,8 @@ d3.json(apiUrl)
 
 	//console.log(response.trust_count);
 	console.log(response);
-	console.log(response.connections)
+	let ans = response.connections.find({source: "11ad71ec-b463-4ef2-936d-ae15c72f627a"});
+	console.log(ans)
 	if(response.sum_thanks_count >= 1){
 		 resp = response.sum_thanks_count
 		
