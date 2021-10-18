@@ -590,13 +590,7 @@ html {
 				width: 150px;
 			}
 
-			.inp {
-				font-size: 40px;
-			}
-
-			.btn {
-				font-size: 40px;
-			}
+			
 
 			dialog .oauthButton i {
 				font-size: 50px;
@@ -805,7 +799,7 @@ html {
 				width: 60px;
     			height: 60px;
     			x: -31px;
-    			y: -38px;
+    			y: -31px;
 			}
 			dialog{
 				left: 1%;
