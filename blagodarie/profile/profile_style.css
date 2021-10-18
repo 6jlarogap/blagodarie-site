@@ -24,6 +24,10 @@ html {
 			display: flex;
 			justify-content: center;
 		}
+		.myIcon{
+			margin-left: -50.0209px!important;
+    		margin-top: -36.2297px!important;
+		}
 
 		/* SVG styles */
 		svg {
