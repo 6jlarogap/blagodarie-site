@@ -375,6 +375,8 @@ addElement.addEventListener("click", async () => {
 //filter
 document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
+		url.searchParams.set('f', 0);
+		url.searchParams.set('q', 50);
 		localStorage.setItem("filter", filterInput.value);
 		window.location.reload()
 		
