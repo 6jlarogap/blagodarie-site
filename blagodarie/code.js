@@ -1570,7 +1570,6 @@ function calcX1(d){
 	} else {
 		x = sourceX - relX;
 	}
-	console.log("relX1", relX/cosA);
 	return x;
 }
 
@@ -1590,7 +1589,6 @@ function calcY1(d){
 	} else {
 		y = sourceY - relY;
 	}
-	console.log("relY1", relY/sinA);
 	return y;
 
 }
@@ -1611,7 +1609,6 @@ function calcX2(d){
 	} else {
 		x = targetX + relX;
 	}
-	console.log("relX2", relX/cosA);
 	return x;
 
 }
@@ -1632,7 +1629,7 @@ function calcY2(d){
 	} else {
 		y = targetY + relY;
 	}
-	console.log("relY2", relY/sinA);
+	
 	return y;
 }
 
