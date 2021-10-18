@@ -378,7 +378,7 @@ document.getElementById("filterSearch").addEventListener("click", () => {
 		url.searchParams.set('f', 0);
 		url.searchParams.set('q', 50);
 		localStorage.setItem("filter", filterInput.value);
-		window.location.reload()
+		window.location.href = url.href;
 		
 	}
 	
