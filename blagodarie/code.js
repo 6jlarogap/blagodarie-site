@@ -1309,12 +1309,12 @@ function show_map_style(){
     				iconAnchor: [map_users[i].user_latitude, map_users[i].user_longitude],
 					className: "myIcon"
 			});
-
+			console.log(myIcon);
 			var textLatLng = [map_users[i].user_latitude, map_users[i].user_longitude]; 
 
         		var myTextLabel = L.marker(textLatLng, {icon: L.divIcon({className: 'text-labels', html: `${map_users[i].user_name} ${map_users[i].user_lastname ? map_users[i].user_lastname : ''} </br> ${map_users[i].user_ability ? map_users[i].user_ability : ''}`}),zIndexOffset: 1000})
 			.addTo(new_map)
-			
+			console.log(myTextLabel);
 			
 			
 			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIcon, className: 'new_marker'})
