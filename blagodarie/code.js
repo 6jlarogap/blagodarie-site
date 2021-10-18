@@ -959,7 +959,7 @@ d3.json(apiUrl)
 		}).then(data => data.json());
 
 	//console.log(response.trust_count);
-	//console.log(response);
+	console.log(response);
 	console.log(response.connections)
 	if(response.sum_thanks_count >= 1){
 		 resp = response.sum_thanks_count
