@@ -1050,7 +1050,7 @@ d3.json(apiUrl)
 	nodes.push({
 		id: FILTER_ID,
 		text: "Фильтр",
-		image: `${settings.url}images/filter.png`,
+		image: localStorage.getItem('filter') ? `${settings.url}images/home.png` : `${settings.url}images/filter.png`,
 		nodeType: NODE_TYPES.FILTER
 	});
 
