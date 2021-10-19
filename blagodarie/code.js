@@ -989,7 +989,8 @@ d3.json(apiUrl)
 			text: "Доверие",
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			tspan: !isConnection ? resp_empty : isTrust ? resp : resp_empty,
-			nodeType: NODE_TYPES.TRUST
+			nodeType: NODE_TYPES.TRUST,
+			classList: 'lalalallal'
 		});
 		}
 		await count_plus()
