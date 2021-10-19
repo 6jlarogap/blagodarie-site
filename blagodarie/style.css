@@ -160,7 +160,10 @@ text{
 			z-index: 1;
 		}
 		.svg_elem{
-			user-select: none;
+			-ms-user-select: none; 
+		-moz-user-select: none; 
+		-webkit-user-select: none; 
+		user-select: none;
 		}
 		#optionsDialog > .btn-primary {
 			margin-bottom: 3px;

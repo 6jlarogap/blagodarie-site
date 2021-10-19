@@ -188,7 +188,10 @@ text{
 			padding: 6 0 !important;
 		}
 .svg_elem{
-	user-select: none;
+	-ms-user-select: none; 
+		-moz-user-select: none; 
+		-webkit-user-select: none; 
+		user-select: none;
 }
 		dialog {
 			position: absolute;
