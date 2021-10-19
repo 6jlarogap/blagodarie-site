@@ -966,9 +966,7 @@
 			display: flex;
 			background-color: #ffffff;
 		}
-.active_filer_icon{
-	filter: drop-shadow(0px 1px 5px black);
-}
+.active_filer_icon{}
 @media(max-width:900px){
 			.pagination_block{
 				left: 0;
