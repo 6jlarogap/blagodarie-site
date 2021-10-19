@@ -171,7 +171,7 @@ setTimeout(() => {
 	var tgIframe;
 	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 	tgIframe.style.marginTop = '80px';
-	tgIframe.style.marginBottom = '45px';
+	tgIframe.style.marginBottom = '0px';
 	
 }, 2000)
 
@@ -284,12 +284,14 @@ agreementCheck.addEventListener("click", () => {
 		yandexAuth.disabled = false;
 		okAuth.disabled = false;*/
 		tgIframe.style.pointerEvents = '';
+		tgIframe.style.opacity = '1';
 	}
 	else {
 		/*vkAuth.disabled = true;
 		yandexAuth.disabled = true;
 		okAuth.disabled = true;*/
 		tgIframe.style.pointerEvents = 'none';
+		tgIframe.style.opacity = '0.3';
 	}
 })
 
@@ -1739,7 +1741,7 @@ async function onNodeClick(nodeType, uuid, txt){
 	
 	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 	tgIframe.style.marginTop = '80px';
-	tgIframe.style.marginBottom = '45px';
+	tgIframe.style.marginBottom = '0px';
 	
 
 	}
