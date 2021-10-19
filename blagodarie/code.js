@@ -961,13 +961,13 @@ d3.json(apiUrl)
 		}
 		}).then(data => data.json());
 
-
+	if(isAuth){
 	let ans = response.connections;
 	let ans1 = ans.find(data => {
   
         return data.source === PROFILE.id && data.target === userIdFrom;
     });
-	
+	}
 	if(ans1){
 		thank_count_trust = ans1.thanks_count;
 	}else{
