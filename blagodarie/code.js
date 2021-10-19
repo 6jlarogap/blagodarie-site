@@ -377,8 +377,10 @@ addElement.addEventListener("click", async () => {
 //filter
 document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
+		if(!window.location.href.includes('gen')){
 		url.searchParams.set('f', 0);
 		url.searchParams.set('q', 50);
+		}
 		localStorage.setItem("filter", filterInput.value);
 		window.location.href = url.href;
 		
@@ -1733,11 +1735,18 @@ async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
+		if(!window.location.href.includes('gen')){
+			window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
+		}else{
+			window.location.href = `${settings.url}profile?id=` + uuid;
+		}
 		
-		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 	} else if (nodeType == NODE_TYPES.PROFILE) {
-		
+		if(!window.location.href.includes('gen')){
 		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
+		}else{
+			window.location.href = `${settings.url}profile?id=` + uuid;
+		}
 	} else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex";
 	
@@ -1748,8 +1757,11 @@ async function onNodeClick(nodeType, uuid, txt){
 
 	}
 	else if (nodeType == NODE_TYPES.FILTERED) {
-		
+		if(!window.location.href.includes('gen')){
 		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
+		}else{
+			window.location.href = `${settings.url}profile?id=` + uuid;
+		}
 	}
 	else if(nodeType == NODE_TYPES.FILTER) {
 		
