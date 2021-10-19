@@ -1727,17 +1727,23 @@ async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
-
-		window.location.href = `${settings.url}profile?id=` + uuid;
+		if(url.searchParams.has('id')){
+		   		url.searchParams.delete('id');
+		   }
+		window.location.href = `${settings.url}profile?id=` + uuid + url.search;
 	} else if (nodeType == NODE_TYPES.PROFILE) {
-		
-		window.location.href = `${settings.url}profile?id=` + uuid;
+		if(url.searchParams.has('id')){
+		   		url.searchParams.delete('id');
+		   }
+		window.location.href = `${settings.url}profile?id=` + uuid + url.search;
 	} else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex"
 	}
 	else if (nodeType == NODE_TYPES.FILTERED) {
-
-		window.location.href = `${settings.url}profile?id=` + uuid;
+		if(url.searchParams.has('id')){
+		   		url.searchParams.delete('id');
+		   }
+		window.location.href = `${settings.url}profile?id=` + uuid + url.search;
 	}
 	else if(nodeType == NODE_TYPES.FILTER) {
 		
