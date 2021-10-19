@@ -37,10 +37,13 @@ const PROFILE = {
 	text: "",
 	tabil: " ",
 	image: "",
+	count: "",
 	nodeType: NODE_TYPES.PROFILE
 }
-
-var svg = d3.select("#main");
+let w = window.innerWidth;
+let h = window.innerHeight;
+var svg = d3.select("#main").attr("viewBox", "0 0 " + w + " " + h )
+			.attr("preserveAspectRatio", "xMidYMid meet");
 var width = +svg.node().getBoundingClientRect().width;
 var height = +svg.node().getBoundingClientRect().height;
 var link;
@@ -164,13 +167,13 @@ telegramAuth.setAttribute('data-request-access', "write")
 authDialog.insertBefore(telegramAuth, authDialog.lastElementChild);
 
 
-/*setTimeout(() => {
+setTimeout(() => {
 	var tgIframe;
 	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 	tgIframe.style.marginTop = '80px';
-	tgIframe.style.marginBottom = '45px';
+	tgIframe.style.marginBottom = '0px';
 	
-}, 2000)*/
+}, 2000)
 
 if (getCookie("auth_data")) {
 	var auth_data = getCookie("auth_data");
@@ -277,16 +280,18 @@ copier.value = window.location.href;
 // agreement check
 agreementCheck.addEventListener("click", () => {
 	if (agreementCheck.checked) {
-		vkAuth.disabled = false;
+		/*vkAuth.disabled = false;
 		yandexAuth.disabled = false;
-		okAuth.disabled = false;
+		okAuth.disabled = false;*/
 		tgIframe.style.pointerEvents = '';
+		tgIframe.style.opacity = '1';
 	}
 	else {
-		vkAuth.disabled = true;
+		/*vkAuth.disabled = true;
 		yandexAuth.disabled = true;
-		okAuth.disabled = true;
+		okAuth.disabled = true;*/
 		tgIframe.style.pointerEvents = 'none';
+		tgIframe.style.opacity = '0.3';
 	}
 })
 
@@ -372,8 +377,10 @@ addElement.addEventListener("click", async () => {
 //filter
 document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
+		url.searchParams.set('f', 0);
+		url.searchParams.set('q', 50);
 		localStorage.setItem("filter", filterInput.value);
-		window.location.reload()
+		window.location.href = url.href;
 		
 	}
 	
@@ -481,28 +488,29 @@ function deleteCookie(subdomain,...Cookies) {
 let map_users = [];
 let response_smat_map;
 async function setProfile() {
-	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`, {
+	const response = await fetch(`${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
 
-	PROFILE.text = response.first_name + " " + response.last_name;
-	PROFILE.abil = response.ability;
-	PROFILE.image = response.photo == '' ? `${settings.url}images/default_avatar.png` : response.photo;
+	PROFILE.text = response.users[0].first_name + " " + response.users[0].last_name;
+	PROFILE.abil = response.users[0].ability;
+	PROFILE.image = response.users[0].photo == '' ? `${settings.url}images/default_avatar.png` : response.users[0].photo;
 	PROFILE.id = getCookie("user_uuid");
-	console.log(response.trust_count);
-	console.log(response);
-	console.log(response.ability);
+	//PROFILE.tabil = response.trust_count;
+	console.log(response.users.trust_count);
+	console.log(response.users);
+	console.log(response.users.ability);
 	map_users.push({
-		user_photo: response.photo,
-		user_name: response.first_name,
-		user_lastname: response.last_name,
-		user_latitude: response.latitude,
-		user_longitude: response.longitude,
-		user_ability: response.ability,
-		user_uuid: response.uuid
+		user_photo: response.users[0].photo,
+		user_name: response.users[0].first_name,
+		user_lastname: response.users[0].last_name,
+		user_latitude: response.users[0].latitude,
+		user_longitude: response.users[0].longitude,
+		user_ability: response.users[0].ability,
+		user_uuid: response.users[0].uuid
 	} );
 	response_smat_map = map_users;
 	console.log(map_users);
@@ -789,22 +797,23 @@ var url = new URL(link);
         }
 
 
-		document.querySelector('#btn_prev').style.background = '#000;';
+		document.querySelector('#btn_prev').style.background = '#6a2300;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
 		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('q');
             var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
 		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
-                console.log('apiUrl');
+                //console.log(apiUrl);
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                console.log('apiUrl');
-            } else if (localStorage.getItem('filter') != null) {
-                apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
-                console.log('apiUrl');
+                //console.log(apiUrl);
+            } else if (localStorage.getItem('filter') != null && isAuth) {
+                apiUrl = `${settings.api}api/profile_graph?uuid=${getCookie('user_uuid')}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
+				
+                //console.log(apiUrl);
             }
-		
+		console.log(apiUrl);
 
 
 
@@ -863,7 +872,7 @@ d3.json(apiUrl)
 	let selected_val_num = +url.searchParams.get('q');
 	let but_next = document.querySelector('#btn_next');
 	if(data.users.length == selected_val_num){
-		but_next.style.background = '#000';
+		but_next.style.background = '#6a2300';
 		but_next.style.cursor = 'pointer';
 		but_next.style.pointerEvents = 'all';
 	}
@@ -936,7 +945,9 @@ d3.json(apiUrl)
 
 	if (userIdFrom && !(userIdFrom == PROFILE.id)) {
 		isConnection = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
-
+		
+		//data.connections.some(link => PROFILE.count=link.thanks_count && link.source == PROFILE.id && link.target == userIdFrom);
+		//console.log(PROFILE.count);
 		var activeTrust = `${settings.url}images/trust_active.png`;
 		var activeMistrust = `${settings.url}images/mistrust_active.png`;
 		var inactiveTrust = `${settings.url}images/trust_inactive.png`;
@@ -945,23 +956,34 @@ d3.json(apiUrl)
 		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
 		
 		async function count_plus() {
-		const response = await fetch(`${settings.api}api/getprofileinfo?uuid=` + userIdFrom, {
+		const response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 		}).then(data => data.json());
 
-	//console.log(response.thanks_count);
-	//console.log(response);
+	if(isAuth){
+	let ans = response.connections;
+	let ans1 = ans.find(data => {
+  
+        return data.source === PROFILE.id && data.target === userIdFrom;
+    });
 	
-	if(response.thanks_count >= 1){
-		 resp = response.thanks_count
+	if(ans1){
+		thank_count_trust = ans1.thanks_count;
+	}else{
+		thank_count_trust = 0;
+	}
+	
+	if(thank_count_trust >= 1){
+		 resp = thank_count_trust;
 		
 	}
 	else{
 		 resp = '';
 		
+	}
 	}
 	var resp_empty = ""
 		
@@ -1030,7 +1052,7 @@ d3.json(apiUrl)
 	nodes.push({
 		id: FILTER_ID,
 		text: "Фильтр",
-		image: `${settings.url}images/filter.png`,
+		image: localStorage.getItem('filter') ? `${settings.url}images/filter_act.png` : `${settings.url}images/filter.png`,
 		nodeType: NODE_TYPES.FILTER
 	});
 
@@ -1154,52 +1176,53 @@ d3.json(apiUrl)
 			d.fy = height / 2;
 			break;
 		case WISHES_ROOT_ID:
-			d.fx = width / 2 + 400;
-			d.fy = height / 2 + 200;
+			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
+			d.fy = width<900 ? height/2+50 : height / 2 + 200;
 			break;
 		case KEYS_ROOT_ID:
-			d.fx = width / 2 + 400;
-			d.fy = height / 2 - 200;
+			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
+			d.fy = width<900 ? height/2-70 : height / 2 - 200;
 			break;
 		case ABILITIES_ROOT_ID:
-			d.fx = width / 2 + 400;
-			d.fy = height / 2;
+			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
+			d.fy = width<900 ? height/2-10 : height / 2;
 			break;
 		case ABILITY_ID:
 			d.fx = width / 2 + 500;
 			d.fy = height / 2;
 			break;
 		case SHARE_ID:
-			d.fx = width / 2 + 300;
+			d.fx = width<900 ? width/2+80 : width / 2 + 300;
 			d.fy = height / 2 - 300;
 			break;
 		case FILTER_ID:
-			d.fx = width / 2 + 400;
+			d.fx = width<900 ? width/2+170 : width / 2 + 400;
 			d.fy = height / 2 - 300;
 			break;
 		case OPTIONS_ID:
-			d.fx = width / 2 - 400;
+			d.fx = width<900 ? 10 : width / 2 - 400;
 			d.fy = height / 2 - 300;	
 			break;
 		case INVITE_ID:
-				d.fx = width / 2 - 200;
+				d.fx = width<900 ? width/2-20 : width / 2 - 200;
 				d.fy = height / 2 - 300;	
 				break;
 		case HOME_ID:
-			d.fx = width / 2 - 300;
+			d.fx = width<900 ? width/2-81 :width / 2 - 300;
 			d.fy = height / 2 - 300;
 			break;
+		
 		case MAPS_ID:
-			d.fx = width / 2 - 50;
+			d.fx = width<900 ? width/2+30 : width / 2 - 50;
 			d.fy = height / 2 - 300;
 			break;
 		case TRUST_ID:
-			d.fx = width / 2 + 50;
-			d.fy = height / 2 + 100;
+			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
+			d.fy = width<900 ? height/2+65 : height / 2 + 120;
 			break;
 		case MISTRUST_ID:
-			d.fx = width / 2 - 50;
-			d.fy = height / 2 + 100;
+			d.fx = width<900 ? width / 2 - 30 :  width / 2 - 50;
+			d.fy = width<900 ? height/2+65 : height / 2 + 120;
 			break;
 		case AUTH_ID:
 			if (!userIdFrom) {
@@ -1213,7 +1236,7 @@ d3.json(apiUrl)
 			break;
 		case PROFILE.id:
 			if (userIdFrom && userIdFrom != PROFILE.id) {
-				d.fx = width / 2 - 200;
+				d.fx = width<900 ? width / 2 - 100 : width / 2 - 200;
 				d.fy = height / 2;
 			} else {
 				d.fx = width / 2;
@@ -1224,17 +1247,25 @@ d3.json(apiUrl)
 		}
 	});
 	
-		
-	
-	
-	simulation = d3.forceSimulation(nodes);
-	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links));
+	if(width<900){
+		simulation = d3.forceSimulation(nodes);
+	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links)); //distance(150)
 	simulation.force("charge", d3.forceManyBody().strength(0.5));
 	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("collide", d3.forceCollide().strength(0.6).radius(80).iterations(1));
-	simulation.force("x", d3.forceX(width / 2).strength(0.2));
-	simulation.force("y", d3.forceY(height / 2).strength(0.2));
+	simulation.force("collide", d3.forceCollide().strength(0.4).radius(55).iterations(1));//radius 80  strength(0.6)
+	simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
+	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))
+	}	
 	
+	else{
+	simulation = d3.forceSimulation(nodes);
+	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links)); //distance(150)
+	simulation.force("charge", d3.forceManyBody().strength(0.5));
+	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
+	simulation.force("collide", d3.forceCollide().strength(0.4).radius(80).iterations(1));//radius 80  strength(0.6)
+	simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
+	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))
+	}
 
 	initializeDisplay();
 	initializeSimulation();
@@ -1279,19 +1310,21 @@ function show_map_style(){
 			myIcon = L.icon({
     				iconUrl: map_users[i].user_photo != '' ? map_users[i].user_photo : `${settings.url}images/default_avatar.png`,
     				iconSize: [38, 38],
-    				iconAnchor: [map_users[i].user_latitude, map_users[i].user_longitude]
+    				iconAnchor: [map_users[i].user_latitude, map_users[i].user_longitude],
+					className: "myIcon"
 			});
-			var textLatLng = [map_users[i].user_latitude, map_users[i].user_longitude];  
+			console.log(myIcon);
+			var textLatLng = [map_users[i].user_latitude, map_users[i].user_longitude]; 
+
         		var myTextLabel = L.marker(textLatLng, {icon: L.divIcon({className: 'text-labels', html: `${map_users[i].user_name} ${map_users[i].user_lastname ? map_users[i].user_lastname : ''} </br> ${map_users[i].user_ability ? map_users[i].user_ability : ''}`}),zIndexOffset: 1000})
 			.addTo(new_map)
+			console.log(myTextLabel);
 			
 			
-			
-			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIcon})
+			var new_marker = new L.marker([map_users[i].user_latitude, map_users[i].user_longitude], {icon: myIcon, className: 'new_marker'})
 			.addTo(new_map);
 			//Добавляем юзеров на карту для центровки
 			latlngs.push([map_users[i].user_latitude, map_users[i].user_longitude]);
-			
 			
 			new_marker.addEventListener('click', ()=>{
 				window.open(window.location.origin + '/profile/?id=' + map_users[i].user_uuid);
@@ -1378,6 +1411,7 @@ function initializeDisplay() {
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
 		.attr("y2", calcY2);
+		//.attr("id", "lallaal");
 		
 	link.append("svg:defs")
 		.append("linearGradient")
@@ -1439,7 +1473,10 @@ function initializeDisplay() {
 		.data(nodes)
 		.join("g")
 		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
-		.call(drag(simulation));
+		.call(drag(simulation))
+		.attr('class', 'svg_elem');
+		
+		
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
@@ -1462,31 +1499,31 @@ function initializeDisplay() {
 			}
 		});
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : 10))
-		.attr("font-size", "20")
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
+		.attr("font-size", width<900 ? "15" : "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.tspan));
 	
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : 65))
-		.attr("font-size", "20")
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20  : 65))
+		.attr("font-size", width<900 ? '12' : "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
 		.text(d => (d.text));
 	  
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : 65))
-		.attr("font-size", "20")
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 65))
+		.attr("font-size", width<900 ? '12' : "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.text));
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  70 : d.nodeType == NODE_TYPES.FILTERED ? 70 : 70))
-		.attr("font-size", "20")
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 45 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  80 : d.nodeType == NODE_TYPES.FILTERED ? 70 : width<900 ? 35 : 70))
+		.attr("font-size", width<900 ? "15" : "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "friendName" : "friendName"))
 		.text(d => (d.tabil));
 	
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  90 : d.nodeType == NODE_TYPES.FILTERED ? 90 : 90))
-		.attr("font-size", "20")
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 45 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  90 : d.nodeType == NODE_TYPES.FILTERED ? 90 : 90))
+		.attr("font-size", width<900 ? "15" : "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "friendName" : "friendName"))
 		.text(d => (d.abil));
 
@@ -1494,8 +1531,8 @@ function initializeDisplay() {
 
 function ticked() {
 	node.attr("transform", d => {
-		var x = (d.x < 0 ? 0 : (d.x > width ? width : d.x));
-		var y = (d.y < 0 ? 0 : (d.y > height ? height: d.y));
+		var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
+		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 && width>900 ? height-70 : d.y));
 		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
@@ -1509,11 +1546,12 @@ function ticked() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2);
 		
+	
 	link.selectAll("linearGradient")
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2)
+		.attr("y2", calcY2);
 		
 	link.selectAll("line")
 		.attr("x1", calcX1)
@@ -1523,15 +1561,15 @@ function ticked() {
 }
 
 function calcX1(d){
-	const sourceX = (d.source.x < 0 ? 0 : (d.source.x > width ? width : d.source.x));
-	const targetX = (d.target.x < 0 ? 0 : (d.target.x > width ? width : d.target.x));
-	const sourceY = (d.source.y < 0 ? 0 : (d.source.y > height ? height : d.source.y));
-	const targetY = (d.target.y < 0 ? 0 : (d.target.y > height ? height : d.target.y));
+	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
+	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
+	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
+	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var cosA = lWidth / lLength;
-	var relX = (d.source.nodeType == NODE_TYPES.USER || d.source.nodeType == NODE_TYPES.PROFILE ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
+	var relX = (d.source.nodeType == NODE_TYPES.USER && width<900 || d.source.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.source.nodeType == NODE_TYPES.USER || d.source.nodeType == NODE_TYPES.PROFILE ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : width<900 ? 16 :  32) * cosA;//64
 	var x;
 	if (targetX > sourceX){
 		x = sourceX + relX;
@@ -1542,15 +1580,15 @@ function calcX1(d){
 }
 
 function calcY1(d){
-	const sourceX = (d.source.x < 0 ? 0 : (d.source.x > width ? width : d.source.x));
-	const targetX = (d.target.x < 0 ? 0 : (d.target.x > width ? width : d.target.x));
-	const sourceY = (d.source.y < 0 ? 0 : (d.source.y > height ? height : d.source.y));
-	const targetY = (d.target.y < 0 ? 0 : (d.target.y > height ? height : d.target.y));
+	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
+	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
+	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
+	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var sinA = lHeight / lLength;
-	var relY = (d.source.nodeType == NODE_TYPES.USER || d.source.nodeType == NODE_TYPES.PROFILE  ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
+	var relY = (d.source.nodeType == NODE_TYPES.USER && width<900 || d.source.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.source.nodeType == NODE_TYPES.USER || d.source.nodeType == NODE_TYPES.PROFILE  ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : width<900 ? 16 : 32) * sinA;
 	var y;
 	if (targetY > sourceY){
 		y = sourceY + relY;
@@ -1558,18 +1596,19 @@ function calcY1(d){
 		y = sourceY - relY;
 	}
 	return y;
+
 }
 
 function calcX2(d){
-	const sourceX = (d.source.x < 0 ? 0 : (d.source.x > width ? width : d.source.x));
-	const targetX = (d.target.x < 0 ? 0 : (d.target.x > width ? width : d.target.x));
-	const sourceY = (d.source.y < 0 ? 0 : (d.source.y > height ? height : d.source.y));
-	const targetY = (d.target.y < 0 ? 0 : (d.target.y > height ? height : d.target.y));
+	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
+	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
+	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
+	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var cosA = lWidth / lLength;
-	var relX = (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.PROFILE ? 64 : d.target.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * cosA;
+	var relX = (d.target.nodeType == NODE_TYPES.USER && width<900 || d.target.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.PROFILE ? 64 : d.target.nodeType == NODE_TYPES.FILTERED ? 16 : width<900 ? 16 : 32) * cosA;
 	var x;
 	if (targetX > sourceX){
 		x = targetX - relX;
@@ -1577,26 +1616,29 @@ function calcX2(d){
 		x = targetX + relX;
 	}
 	return x;
+
 }
 
 function calcY2(d){
-	const sourceX = (d.source.x < 0 ? 0 : (d.source.x > width ? width : d.source.x));
-	const targetX = (d.target.x < 0 ? 0 : (d.target.x > width ? width : d.target.x));
-	const sourceY = (d.source.y < 0 ? 0 : (d.source.y > height ? height : d.source.y));
-	const targetY = (d.target.y < 0 ? 0 : (d.target.y > height ? height : d.target.y));
+	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
+	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
+	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
+	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
 	var sinA = lHeight / lLength;
-	var relY = (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.PROFILE ? 64 : d.target.nodeType == NODE_TYPES.FILTERED ? 16 : 32) * sinA;
+	var relY = (d.target.nodeType == NODE_TYPES.USER && width<900 || d.target.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.PROFILE ? 64 : d.target.nodeType == NODE_TYPES.FILTERED ? 16 : width<900 ? 16 : 32) * sinA;
 	var y;
 	if (targetY > sourceY){
 		y = targetY - relY;
 	} else {
 		y = targetY + relY;
 	}
+	
 	return y;
 }
+
 
 d3.select(window).on("resize", function(){
 	width = +svg.node().getBoundingClientRect().width;
@@ -1684,22 +1726,28 @@ function initDefs(){
 		.attr("fill", "#ff0000");
 }
 
-
+var tgIframe;
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
-
-		window.location.href = `${settings.url}profile?id=` + uuid;
+		
+		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 	} else if (nodeType == NODE_TYPES.PROFILE) {
 		
-		window.location.href = `${settings.url}profile?id=` + uuid;
+		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 	} else if (nodeType == NODE_TYPES.AUTH) {
-		authDialog.style.display = "flex"
+		authDialog.style.display = "flex";
+	
+	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
+	tgIframe.style.marginTop = '80px';
+	tgIframe.style.marginBottom = '0px';
+	
+
 	}
 	else if (nodeType == NODE_TYPES.FILTERED) {
-
-		window.location.href = `${settings.url}profile?id=` + uuid;
+		
+		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 	}
 	else if(nodeType == NODE_TYPES.FILTER) {
 		
@@ -1736,10 +1784,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		url.searchParams.append('map_visible', 'true');
 		window.history.pushState(null, null, url.search);
 		window.location.href = url.href;
-		//new_map_container.classList.add('active');
-		/*window.onload = function(){
-			show_map_style();
-		}*/
+		
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
