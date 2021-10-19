@@ -807,7 +807,7 @@ var url = new URL(link);
                 apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
                 //console.log(apiUrl);
             } else if (localStorage.getItem('filter') != null) {
-                apiUrl = `${settings.api}api/profile_graph?uuid=${userIdTo}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
+                apiUrl = `${settings.api}api/profile_graph?uuid=${getCookie('user_uuid')}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
                 //console.log(apiUrl);
             }
 		console.log(apiUrl);
