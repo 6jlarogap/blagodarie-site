@@ -815,7 +815,7 @@ var url = new URL(link);
             }
 		console.log(apiUrl);
 }else{
-	 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=25`;
+	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}`;
 }
 
 
