@@ -14,6 +14,7 @@ const NODE_TYPES = Object.freeze({
 	"PROFILE": "profile_root",
 	"OPTIONS": "options",
 	"HOME": "home",
+	"GENESIS": "genesis",
 	"FILTER": "filter",
 	"FILTERED": "filtered",
 	"INVITE": "invite",
@@ -30,6 +31,7 @@ const TRUST_ID = "TRUST_ROOT";
 const MISTRUST_ID = "MISTRUST_ROOT";
 const FILTER_ID = "FILTER_ROOT";
 const HOME_ID = "HOME_ROOT";
+const GENESIS_ID = "GENESIS_ROOT";
 const MAPS_ID = "MAPS_ROOT";
 const INVITE_ID = "INVITE_ROOT";
 const PROFILE = {
@@ -1047,13 +1049,21 @@ d3.json(apiUrl)
 	});
 
 	//Добавить вершину home
+	if(!window.location.href.includes('gen')){
 	nodes.push({
 		id: HOME_ID,
 		text: "Домой",
 		image: `${settings.url}images/home.png`,
 		nodeType: NODE_TYPES.HOME
 	});
+	nodes.push({
+		id: GENESIS_ID,
+		text: "Род",
+		image: `${settings.url}images/home.png`,
+		nodeType: NODE_TYPES.GENESIS
+	});
 	
+	}
 	//Добавляем вершину карт
 	nodes.push({
 		id: MAPS_ID,
@@ -1222,8 +1232,16 @@ d3.json(apiUrl)
 				d.fy = height / 2 - 300;	
 				break;
 		case HOME_ID:
+			if(!window.location.href.includes('gen')){
 			d.fx = width<900 ? width/2-81 :width / 2 - 300;
 			d.fy = height / 2 - 300;
+			}
+			break;
+		case GENESIS_ID:
+			if(!window.location.href.includes('gen')){
+			d.fx = width<900 ? width/2-81 :width / 2;
+			d.fy = height / 2 - 300;
+			}
 			break;
 		
 		case MAPS_ID:
