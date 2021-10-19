@@ -167,13 +167,13 @@ telegramAuth.setAttribute('data-request-access', "write")
 authDialog.insertBefore(telegramAuth, authDialog.lastElementChild);
 
 
-/*setTimeout(() => {
+setTimeout(() => {
 	var tgIframe;
 	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
 	tgIframe.style.marginTop = '80px';
 	tgIframe.style.marginBottom = '45px';
 	
-}, 2000)*/
+}, 2000)
 
 if (getCookie("auth_data")) {
 	var auth_data = getCookie("auth_data");
