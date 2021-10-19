@@ -12,6 +12,7 @@ html {
 			display: -ms-flexbox;
 			display: flex;
 			background-color: #ffffff;
+			user-select: none!important;
 		}
 		.text-labels{
 			margin-left: -47px!important;

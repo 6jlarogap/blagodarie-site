@@ -1,4 +1,7 @@
 /* HTML styles */
+body{
+	user-select: none!important;
+}
 		.text-labels{
 			margin-left: -47px!important;
     			margin-top: 0px!important;
