@@ -1177,15 +1177,15 @@ d3.json(apiUrl)
 			break;
 		case WISHES_ROOT_ID:
 			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
-			d.fy = width<900 ? height/2-10 : height / 2 + 200;
+			d.fy = width<900 ? height/2+50 : height / 2 + 200;
 			break;
 		case KEYS_ROOT_ID:
 			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
-			d.fy = width<900 ? height/2-130 : height / 2 - 200;
+			d.fy = width<900 ? height/2-70 : height / 2 - 200;
 			break;
 		case ABILITIES_ROOT_ID:
 			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
-			d.fy = width<900 ? height/2-70 : height / 2;
+			d.fy = width<900 ? height/2-10 : height / 2;
 			break;
 		case ABILITY_ID:
 			d.fx = width / 2 + 500;
