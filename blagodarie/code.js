@@ -989,8 +989,7 @@ d3.json(apiUrl)
 			text: "Доверие",
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			tspan: !isConnection ? resp_empty : isTrust ? resp : resp_empty,
-			nodeType: NODE_TYPES.TRUST,
-			classList: 'lalalallal'
+			nodeType: NODE_TYPES.TRUST
 		});
 		}
 		await count_plus()
@@ -1219,7 +1218,7 @@ d3.json(apiUrl)
 			break;
 		case MISTRUST_ID:
 			d.fx = width / 2 - 50;
-			d.fy = height / 2 + 100;
+			d.fy = width<900 ? height/2+10 : height / 2 + 100;
 			break;
 		case AUTH_ID:
 			if (!userIdFrom) {
