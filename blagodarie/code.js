@@ -520,9 +520,19 @@ async function setProfile() {
 
 
 
-
-
-
+async function add_gen(){
+		const response = await fetch(`${settings.api}api/profile`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Token ${getCookie("auth_token")}`
+		},
+		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "first_name": "123"})
+	}).then(data => data.json());
+}
+if(window.location.href.includes('gen')){
+	add_gen();
+}
 
 
 
@@ -2089,13 +2099,4 @@ setInterval(function(){
 
 }, 1000);
 	
-if(window.location.href.includes('gen')){
-		const response = await fetch(`${settings.api}api/profile`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Token ${getCookie("auth_token")}`
-		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "first_name": "123"})
-	}).then(data => data.json());
-}
+
