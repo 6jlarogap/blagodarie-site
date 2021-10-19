@@ -1236,7 +1236,7 @@ d3.json(apiUrl)
 			break;
 		case PROFILE.id:
 			if (userIdFrom && userIdFrom != PROFILE.id) {
-				d.fx = width / 2 - 100;//200
+				d.fx = width<900 ? width / 2 - 100 : width / 2 - 200;
 				d.fy = height / 2;
 			} else {
 				d.fx = width / 2;
