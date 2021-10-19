@@ -280,15 +280,15 @@ copier.value = window.location.href;
 // agreement check
 agreementCheck.addEventListener("click", () => {
 	if (agreementCheck.checked) {
-		vkAuth.disabled = false;
+		/*vkAuth.disabled = false;
 		yandexAuth.disabled = false;
-		okAuth.disabled = false;
+		okAuth.disabled = false;*/
 		tgIframe.style.pointerEvents = '';
 	}
 	else {
-		vkAuth.disabled = true;
+		/*vkAuth.disabled = true;
 		yandexAuth.disabled = true;
-		okAuth.disabled = true;
+		okAuth.disabled = true;*/
 		tgIframe.style.pointerEvents = 'none';
 	}
 })
@@ -806,7 +806,7 @@ var url = new URL(link);
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
                 //console.log(apiUrl);
-            } else if (localStorage.getItem('filter') != null) {
+            } else if (localStorage.getItem('filter') != null && isAuth) {
                 apiUrl = `${settings.api}api/profile_graph?uuid=${getCookie('user_uuid')}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
 				
                 //console.log(apiUrl);
