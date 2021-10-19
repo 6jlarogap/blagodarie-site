@@ -1728,16 +1728,16 @@ async function onNodeClick(nodeType, uuid, txt){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
 		
-		window.location.href = `${settings.url}profile?id=` + uuid + url.searchParams('q') + url.searchParams('f');
+		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 	} else if (nodeType == NODE_TYPES.PROFILE) {
 		
-		window.location.href = `${settings.url}profile?id=` + uuid + url.searchParams('q') + url.searchParams('f');
+		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 	} else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex"
 	}
 	else if (nodeType == NODE_TYPES.FILTERED) {
 		
-		window.location.href = `${settings.url}profile?id=` + uuid + url.searchParams('q') + url.searchParams('f');
+		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 	}
 	else if(nodeType == NODE_TYPES.FILTER) {
 		
