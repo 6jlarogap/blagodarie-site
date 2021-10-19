@@ -1738,14 +1738,14 @@ async function onNodeClick(nodeType, uuid, txt){
 		if(!window.location.href.includes('gen')){
 			window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 		}else{
-			window.location.href = `${settings.url}profile?id=` + uuid;
+			window.location.href = `${settings.url}gen?id=` + uuid;
 		}
 		
 	} else if (nodeType == NODE_TYPES.PROFILE) {
 		if(!window.location.href.includes('gen')){
 		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 		}else{
-			window.location.href = `${settings.url}profile?id=` + uuid;
+			window.location.href = `${settings.url}gen?id=` + uuid;
 		}
 	} else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex";
@@ -1760,7 +1760,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		if(!window.location.href.includes('gen')){
 		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 		}else{
-			window.location.href = `${settings.url}profile?id=` + uuid;
+			window.location.href = `${settings.url}gen?id=` + uuid;
 		}
 	}
 	else if(nodeType == NODE_TYPES.FILTER) {
