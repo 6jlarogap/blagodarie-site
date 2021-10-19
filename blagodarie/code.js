@@ -967,7 +967,7 @@ d3.json(apiUrl)
   
         return data.source === PROFILE.id && data.target === userIdFrom;
     });
-	}
+	
 	if(ans1){
 		thank_count_trust = ans1.thanks_count;
 	}else{
@@ -981,6 +981,7 @@ d3.json(apiUrl)
 	else{
 		 resp = '';
 		
+	}
 	}
 	var resp_empty = ""
 		
