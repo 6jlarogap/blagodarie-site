@@ -178,7 +178,9 @@ html {
 			width: 100%;
 			padding: 6 0 !important;
 		}
-
+.svg_elem{
+	user-select: none;
+}
 		dialog {
 			position: absolute;
 			padding: 8%;

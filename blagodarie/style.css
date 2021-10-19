@@ -147,7 +147,9 @@
 		#optionsDialog {
 			z-index: 1;
 		}
-
+		.svg_elem{
+			user-select: none;
+		}
 		#optionsDialog > .btn-primary {
 			margin-bottom: 3px;
 			width: 100%;
