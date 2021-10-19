@@ -1217,11 +1217,11 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;
 			break;
 		case TRUST_ID:
-			d.fx = width / 2 + 50;
+			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
 			break;
 		case MISTRUST_ID:
-			d.fx = width / 2 - 50;
+			d.fx = width<900 ? width / 2 - 30 :  width / 2 - 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
 			break;
 		case AUTH_ID:
