@@ -519,7 +519,7 @@ async function setProfile() {
 }
 
 
-
+/*
 async function add_gen(){
 		const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
@@ -533,7 +533,7 @@ async function add_gen(){
 if(window.location.href.includes('gen')){
 	add_gen();
 }
-
+*/
 
 
 
