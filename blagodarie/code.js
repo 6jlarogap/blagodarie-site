@@ -756,7 +756,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 	window.location.reload()
 });
 
-
+if(!window.location.href.includes('gen')){
 var link = window.location.href;
 var url = new URL(link);
 
@@ -814,7 +814,9 @@ var url = new URL(link);
                 //console.log(apiUrl);
             }
 		console.log(apiUrl);
-
+}else{
+	 var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=0&number=25`;
+}
 
 
 
