@@ -870,7 +870,7 @@ d3.json(apiUrl)
 		}
 	});
 		
-	
+	if(!window.location.href.includes('gen')){
 	let selected_val_num = +url.searchParams.get('q');
 	let but_next = document.querySelector('#btn_next');
 	if(data.users.length == selected_val_num){
@@ -883,7 +883,7 @@ d3.json(apiUrl)
 		but_next.style.cursor = 'context-menu';
 		but_next.style.pointerEvents = 'none';
 	}
-
+	}
 
 	/*maps*/
 	
