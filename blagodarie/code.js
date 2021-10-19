@@ -1723,7 +1723,7 @@ function initDefs(){
 		.attr("fill", "#ff0000");
 }
 
-
+var tgIframe;
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
@@ -1734,7 +1734,13 @@ async function onNodeClick(nodeType, uuid, txt){
 		
 		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 	} else if (nodeType == NODE_TYPES.AUTH) {
-		authDialog.style.display = "flex"
+		authDialog.style.display = "flex";
+	
+	tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
+	tgIframe.style.marginTop = '80px';
+	tgIframe.style.marginBottom = '45px';
+	
+
 	}
 	else if (nodeType == NODE_TYPES.FILTERED) {
 		
