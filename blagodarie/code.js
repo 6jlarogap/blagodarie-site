@@ -1239,7 +1239,7 @@ d3.json(apiUrl)
 			break;
 		case GENESIS_ID:
 			if(!window.location.href.includes('gen')){
-			d.fx = width<900 ? width+20 :width / 2+100;
+			d.fx = width<900 ? 20 :width / 2+100;
 			d.fy = height / 2 - 250;
 			}
 			break;
