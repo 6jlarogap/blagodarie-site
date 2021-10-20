@@ -1063,6 +1063,13 @@ d3.json(apiUrl)
 		nodeType: NODE_TYPES.GENESIS
 	});
 	
+	}else{
+		nodes.push({
+		id: HOME_ID,
+		text: "В графы",
+		image: `${settings.url}images/home.png`,
+		nodeType: NODE_TYPES.HOME
+	});
 	}
 	//Добавляем вершину карт
 	nodes.push({
@@ -1232,10 +1239,10 @@ d3.json(apiUrl)
 				d.fy = height / 2 - 300;	
 				break;
 		case HOME_ID:
-			if(!window.location.href.includes('gen')){
+
 			d.fx = width<900 ? width/2-81 :width / 2 - 300;
 			d.fy = height / 2 - 300;
-			}
+			
 			break;
 		case GENESIS_ID:
 			if(!window.location.href.includes('gen')){
