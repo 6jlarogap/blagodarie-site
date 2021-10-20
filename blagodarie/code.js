@@ -1821,6 +1821,9 @@ async function onNodeClick(nodeType, uuid, txt){
 	else if(nodeType == NODE_TYPES.HOME) {
 		window.location.href = settings.url
 	}
+	else if(nodeType == NODE_TYPES.GENESIS) {
+		window.location.href = url.origin + '/gen';
+	}
 	else if(nodeType == NODE_TYPES.MAPS){
 		
 		url.searchParams.append('map_visible', 'true');
