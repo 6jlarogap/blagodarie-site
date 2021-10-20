@@ -1059,7 +1059,7 @@ d3.json(apiUrl)
 	nodes.push({
 		id: GENESIS_ID,
 		text: "Род",
-		image: `${settings.url}images/home.png`,
+		image: `${settings.url}images/genesis.png`,
 		nodeType: NODE_TYPES.GENESIS
 	});
 	
