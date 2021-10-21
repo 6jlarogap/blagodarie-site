@@ -963,7 +963,7 @@ d3.json(apiUrl)
 		isConnection = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
 		
 		//data.connections.some(link => PROFILE.count=link.thanks_count && link.source == PROFILE.id && link.target == userIdFrom);
-		//console.log(PROFILE.count);
+		console.log(data);
 		var activeTrust = `${settings.url}images/trust_active.png`;
 		var activeMistrust = `${settings.url}images/mistrust_active.png`;
 		var inactiveTrust = `${settings.url}images/trust_inactive.png`;
