@@ -1148,12 +1148,12 @@ d3.json(apiUrl)
 				reverse_is_trust: reverse_is_trust
 			});
 		}
-		links.push({
+		/*links.push({
 				source: d.source,
 				target: d.target,
 				is_trust: d.is_trust,
 				reverse_is_trust: reverse_is_trust
-			});
+			});*/
 	});
 	
 	if (data.wishes != null){
