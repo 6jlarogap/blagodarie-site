@@ -1923,20 +1923,20 @@ let svg_elem_click = document.querySelectorAll('.svg_elem');
 
 for(let i = 0; i<svg_elem_click.length; i++){
 		svg_elem_click[i].addEventListener('touchstart', ()=>{
-			if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
+			
     		timer = setTimeout(onlongtouch, touchduration); 	
 			console.log('start');
-			}
+			
 		});
 		svg_elem_click[i].addEventListener('touchend', ()=>{
-			if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
+			//if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
 	    	if (timer)
         	clearTimeout(timer);
 			console.log('end');
-			}
+			//}
 		});
 		onlongtouch = function() {
-			if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
+			//if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
 			let friendID = svg_elem_click[i].__data__.id;
 			if(!window.location.href.includes('id')){
 				url.searchParams.append('id', friendID);
@@ -1946,7 +1946,7 @@ for(let i = 0; i<svg_elem_click.length; i++){
 				window.location.assign = url.href;
 			}
 			console.log('func')
-			}
+			//}
 		}
 	
 }
