@@ -1914,7 +1914,7 @@ async function onNodeClick(nodeType, uuid, txt){
 //Открытие профиля в новой вкладке
 var onlongtouch; 
 var timer;
-var touchduration = 1000;
+var touchduration = 500;
 
 if(width<900){
 	
@@ -1923,10 +1923,12 @@ for(let i = 0; i<svg_elem_click.length; i++){
 	if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
 		svg_elem_click[i].addEventListener('touchstart', ()=>{
     		timer = setTimeout(onlongtouch, touchduration); 	
+			console.log('start');
 		});
 		svg_elem_click[i].addEventListener('touchend', ()=>{
 	    	if (timer)
         	clearTimeout(timer);
+			console.log('end');
 		});
 		onlongtouch = function() {
 			let friendID = svg_elem_click[i].__data__.id;
@@ -1937,6 +1939,7 @@ for(let i = 0; i<svg_elem_click.length; i++){
 				url.searchParams.set('id', friendID);
 				window.location.assign = url.href;
 			}
+			console.log('func')
 		}
 	}
 }
