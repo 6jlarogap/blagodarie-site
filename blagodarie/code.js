@@ -1914,8 +1914,32 @@ async function onNodeClick(nodeType, uuid, txt){
 //Открытие профиля в новой вкладке
 var onlongtouch; 
 var timer;
-var touchduration = 500;
+var touchduration = 1000;
+
 if(width<900){
+	
+let svg_elem_click = document.querySelectorAll('.svg_elem');
+for(let i = 0; i<svg_elem_click.length; i++){
+	if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
+		svg_elem_click[i].addEventListener('touchstart', ()=>{
+    		timer = setTimeout(onlongtouch, touchduration); 	
+		});
+		svg_elem_click[i].addEventListener('touchend', ()=>{
+	    	if (timer)
+        	clearTimeout(timer);
+		});
+		onlongtouch = function() {
+			let friendID = svg_elem_click[i].__data__.id;
+			if(!window.location.href.includes('id')){
+				url.searchParams.append('id', friendID);
+				window.location.assign = url.href;
+			}else{
+				url.searchParams.set('id', friendID);
+				window.location.assign = url.href;
+			}
+		}
+	}
+}
 document.addEventListener('touchstart', ()=>{
     timer = setTimeout(onlongtouch, touchduration); 	
 })
