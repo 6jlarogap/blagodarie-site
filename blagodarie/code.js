@@ -1919,6 +1919,7 @@ var touchduration = 500;
 if(width<900){
 	
 let svg_elem_click = document.querySelectorAll('.svg_elem');
+console.log(svg_elem_click)
 for(let i = 0; i<svg_elem_click.length; i++){
 		svg_elem_click[i].addEventListener('touchstart', ()=>{
 			if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
