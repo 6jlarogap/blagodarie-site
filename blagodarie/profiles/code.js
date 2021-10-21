@@ -9,7 +9,7 @@ function getCookie(name) {
 
 
 async function myProfilesinfo() {
-		const response = await fetch(`${settings.api}api/profile?uuid=` + url.searchParams.get('id'), {
+		const response = await fetch(`https://api.dev.blagodarie.org/api/profile?uuid=` + url.searchParams.get('id'), {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
