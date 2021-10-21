@@ -916,7 +916,7 @@ d3.json(apiUrl)
 	}	
 	});
 	
-	console.log(data.users.latitude);
+	console.log(data);
 	console.log(map_users);
 	
 	if (data.wishes != null){
