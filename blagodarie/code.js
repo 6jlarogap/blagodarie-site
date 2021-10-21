@@ -1916,13 +1916,16 @@ var onlongtouch;
 var timer;
 var touchduration = 500;
 if(width<900){
-touchstart() {
-    timer = setTimeout(onlongtouch, touchduration); 
-}
-touchend() {
-    if (timer)
+document.addEventListener('touchstart', ()=>{
+    timer = setTimeout(onlongtouch, touchduration); 	
+})
+document.addEventListener('touchend', ()=>{
+	    if (timer)
         clearTimeout(timer);
-}
+});
+
+
+
 onlongtouch = function() {
 	alert('good')
 }
