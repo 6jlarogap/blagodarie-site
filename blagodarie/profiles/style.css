@@ -5,6 +5,15 @@ table{
 th{
 	text-align: center;
 }
+th:nth-child(1){
+	width: 10%;
+}
+th:nth-child(2){
+	width: 60%;
+}
+td{
+	text-align: center;
+}
 table, th, td {
         border: 1px solid black;
     }
