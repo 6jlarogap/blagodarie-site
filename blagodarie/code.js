@@ -1149,17 +1149,11 @@ d3.json(apiUrl)
 			});
 		}
 		else if(window.location.href.includes('page')){
-			var family_link = d.is_trust;
-		data.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_trust == null){
-					family_link = dd.is_trust;
-				}
-			});
 			links.push({
 				source: d.source,
 				target: d.target,
 				is_trust: d.is_trust,
-				family_link: family_link
+				reverse_is_trust: reverse_is_trust
 			});
 		}
 	});
@@ -1476,16 +1470,14 @@ function initializeDisplay() {
 		.attr("y2", calcY2)
 		.selectAll("stop")
 		.data(d => {
-			return [[1,d.reverse_is_trust], [2,d.is_trust], [3,d.family_link]];
+			return [[1,d.reverse_is_trust], [2,d.is_trust]];
 		})
 		.join("stop")
 		.attr("offset", d => (d[0] == 1 ? "0%" : "100%"))
 		.attr("style", d => {
 			if (d[1]){
 				return "stop-color:rgb(0,255,0);stop-opacity:1";
-			}else if(d[3]){
-				return "stop-color:rgb(34, 74, 183);stop-opacity:1";
-			} else {
+			}else {
 				return "stop-color:rgb(255,0,0);stop-opacity:1";
 			}
 		});
