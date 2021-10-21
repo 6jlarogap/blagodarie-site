@@ -868,9 +868,7 @@ d3.json(apiUrl)
 				id: d.uuid,
 				text: (d.first_name + " " + d.last_name + " " + " "),
 				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
-				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND),
-				className: 'lal',
-				class: "123"
+				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
 			}else{
 				nodes.push ({
@@ -1913,7 +1911,23 @@ async function onNodeClick(nodeType, uuid, txt){
 		await rootFunctions('keys');
 	}
 }
-
+//Открытие профиля в новой вкладке
+var onlongtouch; 
+var timer;
+var touchduration = 500;
+if(width<900){
+touchstart() {
+    timer = setTimeout(onlongtouch, touchduration); 
+}
+touchend() {
+    if (timer)
+        clearTimeout(timer);
+}
+onlongtouch = function() {
+	alert('good')
+}
+}
+//
 async function rootFunctions(category) {
 	var categoryObj;
 	if (category == 'wishes') {
