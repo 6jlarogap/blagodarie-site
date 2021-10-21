@@ -15,7 +15,10 @@ async function myProfilesinfo() {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 }).then(data => data.json());
-	console.log(response)
+	console.log(response);
+	for(let i = 0; i<response.users.length; i++){
+		console.log(response.users[i]);
+	}
 }
 
 window.onload = myProfilesinfo();
