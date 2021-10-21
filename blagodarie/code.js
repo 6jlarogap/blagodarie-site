@@ -1940,19 +1940,6 @@ for(let i = 0; i<svg_elem_click.length; i++){
 		}
 	}
 }
-document.addEventListener('touchstart', ()=>{
-    timer = setTimeout(onlongtouch, touchduration); 	
-})
-document.addEventListener('touchend', ()=>{
-	    if (timer)
-        clearTimeout(timer);
-});
-
-
-
-onlongtouch = function() {
-	alert('good')
-}
 }
 //
 async function rootFunctions(category) {
