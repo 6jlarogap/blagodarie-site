@@ -1148,7 +1148,7 @@ d3.json(apiUrl)
 				reverse_is_trust: reverse_is_trust
 			});
 		}
-		else if(window.location.href.includes('page')){
+		else if(window.location.href.includes('gen')){
 			links.push({
 				source: d.source,
 				target: d.target,
