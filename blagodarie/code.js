@@ -1917,9 +1917,10 @@ var timer;
 var touchduration = 500;
 
 if(width<900){
-	
+	window.onload = function(){
+		setTimeout(function(){
 let svg_elem_click = document.querySelectorAll('.svg_elem');
-console.log(svg_elem_click)
+
 for(let i = 0; i<svg_elem_click.length; i++){
 		svg_elem_click[i].addEventListener('touchstart', ()=>{
 			if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
@@ -1949,6 +1950,11 @@ for(let i = 0; i<svg_elem_click.length; i++){
 		}
 	
 }
+			console.log(svg_elem_click);
+	}, 1500);
+	}
+	
+	
 }
 //
 async function rootFunctions(category) {
