@@ -605,7 +605,7 @@ var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
 let my_family_profiles = document.querySelector('#my_family_profiles');
 my_family_profiles.addEventListener('click', function(){
-	window.location.href = url.origin + '/profiles';
+	window.location.href = url.origin + '/profiles?id=' + url.searchParams.get('id');
 })
 
 
