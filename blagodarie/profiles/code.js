@@ -16,18 +16,6 @@ settingSets.forEach((setting, i) => {
 
 
 
-async function testFunc() {
-		const response = await fetch(`${settings.api}api/profile`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-}).then(data => data.json());
-	console.log(response);
-}
-
-
-
 
 
 
@@ -35,7 +23,7 @@ async function testFunc() {
 let user_table_body = document.querySelector('#user_table_body');
 
 async function myProfilesinfo() {
-		const response = await fetch(`${settings.api}api/profile_genesis?uuid=` + url.searchParams.get('id'), {
+		const response = await fetch(`${settings.api}api/profile`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
@@ -51,7 +39,7 @@ async function myProfilesinfo() {
 }
 
 window.onload = myProfilesinfo();
-window.onload = testFunc();
+
 
 //Добавить картинку род
 
