@@ -30,3 +30,12 @@ async function myProfilesinfo() {
 window.onload = myProfilesinfo();
 	
 
+
+var setting;
+settingSets.forEach((setting, i) => {
+	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
+		settings = setting;
+	}
+});
+console.log(settings);
+
