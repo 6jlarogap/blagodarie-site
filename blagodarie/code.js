@@ -1073,7 +1073,7 @@ d3.json(apiUrl)
 	}else{
 		nodes.push({
 		id: HOME_ID,
-		text: "В графы",
+		text: "Графы",
 		image: `${settings.url}images/home.png`,
 		nodeType: NODE_TYPES.HOME
 	});
