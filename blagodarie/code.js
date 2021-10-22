@@ -1515,11 +1515,8 @@ function initializeDisplay() {
 						}else{
 							return "#3548db";
 						}
-					} else if(d.source.nodeType == NODE_TYPES.MISTRUST) {
+					} else{
 						return "#ff0000";
-					}else{
-						console.log(d);
-						return "#3548db";
 					}
 				} else {
 					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
