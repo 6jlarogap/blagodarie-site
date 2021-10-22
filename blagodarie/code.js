@@ -1510,7 +1510,11 @@ function initializeDisplay() {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
 					if(d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
+						if(!window.location.href.includes('gen')){
 						return "#1c8401";
+						}else{
+							return "#3548db";
+						}
 					} else if(d.source.nodeType == NODE_TYPES.MISTRUST) {
 						return "#ff0000";
 					}else{
