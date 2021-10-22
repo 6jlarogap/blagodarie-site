@@ -6,6 +6,12 @@ function getCookie(name) {
   var parts = value.split("; " + name + "=");
   if (parts.length == 2) return parts.pop().split(";").shift();
 }
+var setting;
+settingSets.forEach((setting, i) => {
+	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
+		settings = setting;
+	}
+});
 
 
 
@@ -31,11 +37,4 @@ window.onload = myProfilesinfo();
 	
 
 
-var setting;
-settingSets.forEach((setting, i) => {
-	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
-		settings = setting;
-	}
-});
-console.log(settings);
 
