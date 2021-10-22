@@ -1073,7 +1073,7 @@ d3.json(apiUrl)
 	}else{
 		nodes.push({
 		id: HOME_ID,
-		text: "Графы",
+		text: "Граф",
 		image: `${settings.url}images/home.png`,
 		nodeType: NODE_TYPES.HOME
 	});
@@ -1155,7 +1155,7 @@ d3.json(apiUrl)
 				reverse_is_trust: reverse_is_trust
 			});
 		}
-		else if(window.location.href.includes('gen')){
+		/*else if(window.location.href.includes('gen')){
 			var fam_link = d.is_trust;
 			data.connections.forEach(function(dd){
 				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
@@ -1169,7 +1169,7 @@ d3.json(apiUrl)
 				fam_link: fam_link
 			});
 			console.log(links);
-		}
+		}*/
 	});
 	
 	if (data.wishes != null){
