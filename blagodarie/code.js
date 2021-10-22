@@ -1528,11 +1528,13 @@ function initializeDisplay() {
 		.attr("marker-end", d => {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
+					if(!window.location.href.includes('gen')){
 					return "url(#arrow-trust)";
-				} else if(d.source.nodeType == NODE_TYPES.MISTRUST){
+					}else{
+						return "url(#arrow-gen)";
+					}
+				} else{
 					return "url(#arrow-mistrust)";
-				}else{
-					return "url(#arrow-gen)";
 				}
 			} else {
 				return "url(#arrow-to-other)";
