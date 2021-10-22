@@ -33,6 +33,7 @@ table img{
 	display: flex;
     flex-direction: column-reverse;
     align-items: center;
+	cursor: pointer
 }
 .gen_container img{
 	width: 45px;
@@ -41,6 +42,7 @@ table img{
 }
 .gen_container p{
 	margin-bottom: 0;
+	font-weight: 700;
 }
 .add_profile_container{
 	display: flex;
@@ -58,4 +60,8 @@ table img{
     border-radius: 100px;
     font-weight: 700;
     cursor: pointer;
+}
+.add_profile_container p{
+	margin-bottom: 0;
+	font-weight: 700;
 }
