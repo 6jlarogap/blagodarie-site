@@ -1156,12 +1156,19 @@ d3.json(apiUrl)
 			});
 		}
 		else if(window.location.href.includes('gen')){
+			var fam_link = d.is_trust;
+			data.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
+					fam_link = dd.is_trust;
+				}
+			});
 			links.push({
 				source: d.source,
 				target: d.target,
 				is_trust: d.is_trust,
-				reverse_is_trust: reverse_is_trust
+				fam_link: fam_link
 			});
+			console.log(links);
 		}
 	});
 	
