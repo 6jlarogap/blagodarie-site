@@ -38,7 +38,8 @@ window.onload = myProfilesinfo();
 //Добавить картинку род
 
 let gen_container = document.querySelector('.gen_container');
-let img = document.createElement('img');
-gen_container.append(img);
+let div = document.createElement('div');
+div.innerHTML = `<img src="${settings.url}images/genesis.png" />`;
+gen_container.append(div);
 
 
