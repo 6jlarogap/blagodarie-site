@@ -17,3 +17,8 @@ td{
 table, th, td {
         border: 1px solid black;
     }
+table img{
+	width: 45px;
+	height: 45px;
+	border-radius: 100px;
+}
