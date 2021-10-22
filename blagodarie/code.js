@@ -1514,6 +1514,7 @@ function initializeDisplay() {
 					} else if(d.source.nodeType == NODE_TYPES.MISTRUST) {
 						return "#ff0000";
 					}else{
+						console.log(d);
 						return "#3548db";
 					}
 				} else {
