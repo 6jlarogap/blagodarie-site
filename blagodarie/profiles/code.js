@@ -22,7 +22,7 @@ async function myProfilesinfo() {
 	for(let i = 0; i<response.users.length; i++){
 		console.log(response.users[i]);
 		let tr = document.createElement('tr');
-		tr.innerHTML = "<td>1</td><td>2</td><td>3</td>";
+		tr.innerHTML = `<td><img src='${response.users[i].photo}' /></td><td>${response.users[i].last_name + ' ' + response.users[i].first_name + ' ' + response.users[i].middle_name}</td><td>Нет данных</td>`;
 		user_table_body.append(tr); 
 	}
 }
