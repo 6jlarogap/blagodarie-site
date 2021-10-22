@@ -15,6 +15,23 @@ settingSets.forEach((setting, i) => {
 
 
 
+
+async function testFunc() {
+		const response = await fetch(`${settings.api}api/profile`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+}).then(data => data.json());
+	console.log(response);
+}
+
+
+
+
+
+
+
 let user_table_body = document.querySelector('#user_table_body');
 
 async function myProfilesinfo() {
@@ -34,6 +51,7 @@ async function myProfilesinfo() {
 }
 
 window.onload = myProfilesinfo();
+window.onload = testFunc();
 
 //Добавить картинку род
 
