@@ -34,7 +34,11 @@ async function myProfilesinfo() {
 }
 
 window.onload = myProfilesinfo();
-	
 
+//Добавить картинку род
+
+let gen_container = document.querySelector('.gen_container');
+let img = document.createElement('img');
+gen_container.append(img);
 
 
