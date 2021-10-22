@@ -42,4 +42,10 @@ let div = document.createElement('div');
 div.innerHTML = `<img src="${settings.url}images/genesis.png" />`;
 gen_container.append(div);
 
+//кнопка род
+let gen_container = document.querySelector('.gen_container');
+gen_container.addEventListener('click', function(){
+	window.location.href = window.location.origin + '/gen';
+})
+
 
