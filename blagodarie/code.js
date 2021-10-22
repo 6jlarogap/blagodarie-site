@@ -402,7 +402,7 @@ document.getElementById("filterNullify").addEventListener("click", () => {
 
 // delete profile button
 document.getElementById("deleteProfile").addEventListener("click", async () => {
-	const result = await fetch(`${settings.api}api/updateprofileinfo`, {
+	const result = await fetch(`${settings.api}api/profile`, {
 		method: "DELETE",
 		headers: {
 			"Authorization": `Token ${getCookie("auth_token")}`
@@ -735,7 +735,7 @@ function show_smart_map(lati, long){
 
 
 document.querySelector(".mapid_send").addEventListener("click", async () => {
-			const response = await fetch(`${settings.api}api/updateprofileinfo`, {
+			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -761,7 +761,7 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 
 
 document.querySelector(".mapid_clean").addEventListener("click", async () => {
-			const response = await fetch(`${settings.api}api/updateprofileinfo`, {
+			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -2073,13 +2073,13 @@ async function updateTrust(operationId, referal = null) {
 
 
 
-async function getProfileInfo(uuid) {
+/*async function getProfileInfo(uuid) {
 	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${uuid}`, {
 		method: 'GET',
 	})
 
 	return response
-}
+}*/
 
 async function getReferalToken() {
 	const response = await fetch(`${settings.api}api/invite/gettoken`, {
