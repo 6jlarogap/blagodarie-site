@@ -1484,7 +1484,7 @@ function initializeDisplay() {
 		.attr("y2", calcY2)
 		.selectAll("stop")
 		.data(d => {
-			return [[1,d.reverse_is_trust], [2,d.is_trust], [3, d.fam_link]];
+			return [[1,d.reverse_is_trust], [2,d.is_trust]/*, [3, d.fam_link]*/];
 		})
 		.join("stop")
 		.attr("offset", d => (d[0] == 1 ? "0%" : "100%"))
