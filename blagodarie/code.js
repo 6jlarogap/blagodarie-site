@@ -1527,8 +1527,10 @@ function initializeDisplay() {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
 					return "url(#arrow-trust)";
-				} else {
+				} else if(d.source.nodeType == NODE_TYPES.MISTRUST){
 					return "url(#arrow-mistrust)";
+				}else{
+					return "url(#arrow-gen)";
 				}
 			} else {
 				return "url(#arrow-to-other)";
@@ -1740,6 +1742,19 @@ function initDefs(){
 		.attr("orient", "auto")
 		.append("path")
 		.attr("fill", "#1c8401")
+		.attr("d", "M0,-5 L10,0 L0,5");
+	
+	defs.append("marker")
+		.attr("xmlns", "http://www.w3.org/2000/svg")
+		.attr("id", "arrow-gen")
+		.attr("viewBox", "0 -5 10 20")
+		.attr("refX", "10")
+		.attr("refY", "0")
+		.attr("markerWidth", "20")
+		.attr("markerHeight", "20")
+		.attr("orient", "auto")
+		.append("path")
+		.attr("fill", "#3b59d6")
 		.attr("d", "M0,-5 L10,0 L0,5");
 		
 	defs.append("marker")
