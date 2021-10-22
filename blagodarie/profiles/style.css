@@ -28,6 +28,7 @@ table img{
 	display: flex;
     align-items: center;
     justify-content: space-between;
+	margin-top: 40px;
 }
 .gen_container{
 	display: flex;
