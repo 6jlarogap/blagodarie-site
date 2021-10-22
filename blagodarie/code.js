@@ -1484,14 +1484,18 @@ function initializeDisplay() {
 		.attr("y2", calcY2)
 		.selectAll("stop")
 		.data(d => {
-			return [[1,d.reverse_is_trust], [2,d.is_trust]];
+			return [[1,d.reverse_is_trust], [2,d.is_trust], [3, d.fam_link]];
 		})
 		.join("stop")
 		.attr("offset", d => (d[0] == 1 ? "0%" : "100%"))
 		.attr("style", d => {
 			if (d[1]){
 				return "stop-color:rgb(0,255,0);stop-opacity:1";
-			}else {
+			}
+		else if(d[3]){
+			return "stop-color:rgb(0,255,0);stop-opacity:1";
+		}
+		else {
 				return "stop-color:rgb(255,0,0);stop-opacity:1";
 			}
 		});
@@ -1507,8 +1511,10 @@ function initializeDisplay() {
 				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
 					if(d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
 						return "#1c8401";
-					} else {
+					} else if(d.source.nodeType == NODE_TYPES.MISTRUST) {
 						return "#ff0000";
+					}else{
+						return "#3548db";
 					}
 				} else {
 					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
