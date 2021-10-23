@@ -1631,6 +1631,7 @@ function initializeDisplay() {
 	
 	node.append("image")
 		.attr("xlink:href", ' ')
+		.attr("src", d => d.image)
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
 				return "userPortrait";
