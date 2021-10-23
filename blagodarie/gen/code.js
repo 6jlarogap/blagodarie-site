@@ -399,10 +399,6 @@ addElement.addEventListener("click", async () => {
 //filter
 document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
-		if(!window.location.href.includes('gen')){
-		url.searchParams.set('f', 0);
-		url.searchParams.set('q', 50);
-		}
 		localStorage.setItem("filter", filterInput.value);
 		window.location.href = url.href;
 		
@@ -539,49 +535,7 @@ async function setProfile() {
 	response_smat_map = map_users;
 	console.log(map_users);
 }
-/*async function setProfilesLinks(){
-	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-	}).then(data => data.json());
-	response.connections.forEach(function(d){
-		if (d.is_trust != null){
-			var reverse_is_trust = d.is_trust;
-			response.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
-					reverse_is_trust = dd.is_trust;
-				}
-			});
-			links.push({
-				source: d.source,
-				target: d.target,
-				is_trust: d.is_trust,
-				reverse_is_trust: reverse_is_trust
-			});
-		}
-	});
-}*/
 
-
-
-
-/*
-async function add_gen(){
-		const response = await fetch(`${settings.api}api/profile`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Token ${getCookie("auth_token")}`
-		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "first_name": "123"})
-	}).then(data => data.json());
-}
-if(window.location.href.includes('gen')){
-	add_gen();
-}
-*/
 
 
 
@@ -823,78 +777,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 	window.location.reload()
 });
 
-if(!window.location.href.includes('gen')){
-var link = window.location.href;
-var url = new URL(link);
-
-       if(!url.searchParams.has('q') && !url.searchParams.has('f')){
-		   	url.searchParams.append('q', 50);
-			url.searchParams.append('f', 0);
-		   	window.history.pushState(null, null, url.search);
-		   	window.location.href = url.href;
-	   }
-		else{
-			let selected_val = +url.searchParams.get('q');
-			let head_from = +url.searchParams.get('f');
-			if(head_from/selected_val == 0 || head_from/selected_val == Infinity){
-				document.querySelector('#page').innerHTML = 1;
-				let btn_prev_n = document.querySelector('#btn_prev');
-				btn_prev_n.style.background = '#aaa0a0';
-				btn_prev_n.style.cursor = 'context-menu';
-				btn_prev_n.style.pointerEvents = 'none';
-			}else{
-			document.querySelector('#page').innerHTML = 1 + (head_from / selected_val);
-			}
-		}
-	
-        function nextPage() {
-			let item_plus_int = +url.searchParams.get('f');
-			let selected_val = +url.searchParams.get('q');
-			item_plus_int += selected_val;
-			url.searchParams.set('f', item_plus_int);
-			window.location.href = url.href;
-        }
-
-        function prevPage() {
-			let item_plus_int = +url.searchParams.get('f');
-			let selected_val = +url.searchParams.get('q');
-			item_plus_int -= selected_val;
-			url.searchParams.set('f', item_plus_int);
-			window.location.href = url.href;
-        }
-
-
-		document.querySelector('#btn_prev').style.background = '#6a2300;';
-		document.querySelector('#btn_prev').style.cursor = 'pointer;';
-		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('q');
-            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
-		
-            if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
-                //console.log(apiUrl);
-            } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                //console.log(apiUrl);
-				//
-            } else if (localStorage.getItem('filter') != null && isAuth) {
-                apiUrl = `${settings.api}api/profile_graph?uuid=${getCookie('user_uuid')}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
-				
-                //console.log(apiUrl);
-            }
-		console.log(apiUrl);
-}else{
 	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}`;
-}
-
-
-//контекстное меню
-
-
-
-
-
-
-
 
 
 var isConnection;
@@ -943,20 +826,7 @@ d3.json(apiUrl)
 		}
 	});
 		
-	if(!window.location.href.includes('gen')){
-	let selected_val_num = +url.searchParams.get('q');
-	let but_next = document.querySelector('#btn_next');
-	if(data.users.length == selected_val_num){
-		but_next.style.background = '#6a2300';
-		but_next.style.cursor = 'pointer';
-		but_next.style.pointerEvents = 'all';
-	}
-	else if (data.users.length < selected_val_num){
-		but_next.style.background = '#aaa0a0';
-		but_next.style.cursor = 'context-menu';
-		but_next.style.pointerEvents = 'none';
-	}
-	}
+	
 
 	/*maps*/
 	
@@ -1108,13 +978,7 @@ d3.json(apiUrl)
 	});
 
 	//Добавить вершину home
-	if(!window.location.href.includes('gen')){
-	nodes.push({
-		id: HOME_ID,
-		text: "Домой",
-		image: `${settings.url}images/home.png`,
-		nodeType: NODE_TYPES.HOME
-	});
+	
 	nodes.push({
 		id: GENESIS_ID,
 		text: "Род",
@@ -1122,14 +986,14 @@ d3.json(apiUrl)
 		nodeType: NODE_TYPES.GENESIS
 	});
 	
-	}else{
+	
 		nodes.push({
 		id: HOME_ID,
 		text: "Граф",
 		image: `${settings.url}images/home.png`,
 		nodeType: NODE_TYPES.HOME
 	});
-	}
+	
 	//Добавляем вершину карт
 	nodes.push({
 		id: MAPS_ID,
@@ -1190,33 +1054,7 @@ d3.json(apiUrl)
 			nodeType: NODE_TYPES.AUTH
 		});
 	}
-	if(isAuth && !window.location.href.includes('id') && !window.location.href.includes('gen')){
-		async function setProfilesLinks(){
-	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-	}).then(data => data.json());
-	response.connections.forEach(function(d){
-		if (d.is_trust != null){
-			var reverse_is_trust = d.is_trust;
-			response.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
-					reverse_is_trust = dd.is_trust;
-				}
-			});
-			links.push({
-				source: d.source,
-				target: d.target,
-				is_trust: d.is_trust,
-				reverse_is_trust: reverse_is_trust
-			});
-		}
-	});
-		}
-		await setProfilesLinks();
-	}else{
+	
 	data.connections.forEach(function(d){
 		if (d.is_trust != null){
 			var reverse_is_trust = d.is_trust;
@@ -1232,23 +1070,9 @@ d3.json(apiUrl)
 				reverse_is_trust: reverse_is_trust
 			});
 		}
-		/*else if(window.location.href.includes('gen')){
-			var fam_link = d.is_trust;
-			data.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
-					fam_link = dd.is_trust;
-				}
-			});
-			links.push({
-				source: d.source,
-				target: d.target,
-				is_trust: d.is_trust,
-				fam_link: fam_link
-			});
-			console.log(links);
-		}*/
+		
 	});
-	}
+	
 	
 	
 	if (data.wishes != null){
@@ -1345,12 +1169,7 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;
 			
 			break;
-		case GENESIS_ID:
-			if(!window.location.href.includes('gen')){
-			d.fx = width<900 ? 20 :width / 2+100;
-			d.fy = height / 2 - 250;
-			}
-			break;
+		
 		
 		case MAPS_ID:
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
@@ -1591,11 +1410,7 @@ function initializeDisplay() {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
 					if(d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
-						if(!window.location.href.includes('gen')){
-						return "#1c8401";
-						}else{
 							return "#3548db";
-						}
 					} else{
 						return "#ff0000";
 					}
@@ -1609,11 +1424,7 @@ function initializeDisplay() {
 		.attr("marker-end", d => {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
-					if(!window.location.href.includes('gen')){
-					return "url(#arrow-trust)";
-					}else{
 						return "url(#arrow-gen)";
-					}
 				} else{
 					return "url(#arrow-mistrust)";
 				}
@@ -1920,19 +1731,12 @@ async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
-		if(!window.location.href.includes('gen')){
-			url.searchParams.set('f', 0);
-			window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
-		}else{
 			window.location.href = `${settings.url}gen?id=` + uuid;
-		}
+		
 		
 	} else if (nodeType == NODE_TYPES.PROFILE) {
-		if(!window.location.href.includes('gen')){
-		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
-		}else{
 			window.location.href = `${settings.url}gen?id=` + uuid;
-		}
+		
 	} else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex";
 	
@@ -1943,11 +1747,8 @@ async function onNodeClick(nodeType, uuid, txt){
 
 	}
 	else if (nodeType == NODE_TYPES.FILTERED) {
-		if(!window.location.href.includes('gen')){
-		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
-		}else{
 			window.location.href = `${settings.url}gen?id=` + uuid;
-		}
+		
 	}
 	else if(nodeType == NODE_TYPES.FILTER) {
 		
