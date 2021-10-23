@@ -1819,7 +1819,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
 		if(!window.location.href.includes('gen')){
-			url.searchParams.set('from', 0);
+			url.searchParams.set('f', 0);
 			window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 		}else{
 			window.location.href = `${settings.url}gen?id=` + uuid;
