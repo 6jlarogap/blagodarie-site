@@ -99,7 +99,7 @@ var elementAddInput = document.getElementById("elementAddInput");
 var keyTypesBtns = document.getElementById("keyTypesBtns");
 
 
-window.onload = (function(){
+/*window.onload = (function(){
 
     document.addEventListener("mouseup", function(evt){
         console.log(evt)
@@ -112,7 +112,7 @@ window.onload = (function(){
       evt.stopPropagation();
   });
 
-})();
+})();*/
 
 
 
@@ -2055,7 +2055,7 @@ async function onNodeClick(nodeType, uuid, txt){
 }
 //Открытие профиля в новой вкладке
 
-window.onload = function(){
+/*window.onload = function(){
 	setTimeout(function(){
 
 	let svg_elem_click = document.querySelectorAll('.svg_elem');
@@ -2099,7 +2099,7 @@ window.onload = function(){
 	}
 	
 }, 500);
-}
+}*/
 	
 
 //
