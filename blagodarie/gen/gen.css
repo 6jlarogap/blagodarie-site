@@ -615,6 +615,11 @@ text{
 .active_filer_icon{
 	
 }
+.recur_select_cont{
+	position: fixed;
+	right: 0;
+	bottom: 0;
+}
 @media(max-width:900px){
 			.pagination_block{
 				left: 0;

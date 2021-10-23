@@ -1843,6 +1843,8 @@ if(!url.searchParams.has('rec')){
 	url.searchParams.append('rec', 1);
 	window.location.href = url.href;
 }
+let recur_select_value = document.querySelector('.recur_select_value');
+recur_select_value.innerHTML = url.searchParams.get('rec');
 
 
 
