@@ -1650,7 +1650,8 @@ function initializeDisplay() {
 			else {
 				return "friendPortrait";
 			}
-		});
+		})
+		.attr("style", "opacity:0;z-index:1000;position:relative");
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
@@ -1671,7 +1672,8 @@ function initializeDisplay() {
 			else {
 				return "friendPortrait";
 			}
-		});
+		})
+		.attr("style", "z-index:1;");
 	
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
