@@ -2018,7 +2018,7 @@ window.onload = function(){
 	
 	for(let i = 0; i<svg_elem_click.length; i++){
 		if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
-		svg_elem_click[i].oncontextmenu = function(e){
+		svg_elem_click[i].addEventListener('contextmenu', function(e){
 			e.preventDefault();
 			console.log(this.querySelector('image'))
 			let friendID = svg_elem_click[i].__data__.id;
@@ -2031,7 +2031,7 @@ window.onload = function(){
 				window.open(url.href, '_blank');
 				
 			}
-		}
+		})
 		}
 	}
 	
@@ -2039,7 +2039,7 @@ window.onload = function(){
 	
 	for(let i = 0; i<svg_elem_img.length; i++){
 		if(svg_elem_img[i].__data__.nodeType == 'profile_root' || svg_elem_img[i].__data__.nodeType == 'friend'){
-		svg_elem_img[i].oncontextmenu = function(e){
+		svg_elem_img[i].addEventListener('contextmenu', function(e){
 			e.preventDefault();
 			let friendID = svg_elem_img[i].__data__.id;
 			if(!window.location.href.includes('id')){
@@ -2051,7 +2051,7 @@ window.onload = function(){
 				window.open(url.href, '_blank');
 				
 			}
-		}
+		})
 		}
 	}
 	
