@@ -829,6 +829,7 @@ var url = new URL(link);
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
                 //console.log(apiUrl);
+				//
             } else if (localStorage.getItem('filter') != null && isAuth) {
                 apiUrl = `${settings.api}api/profile_graph?uuid=${getCookie('user_uuid')}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
 				
@@ -1818,6 +1819,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
 		if(!window.location.href.includes('gen')){
+			url.searchParams.set('from', 0);
 			window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 		}else{
 			window.location.href = `${settings.url}gen?id=` + uuid;
@@ -2105,7 +2107,7 @@ async function updateTrust(operationId, referal = null) {
 
 
 
-
+/*
 async function getProfileInfo(uuid) {
 	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${uuid}`, {
 		method: 'GET',
@@ -2113,7 +2115,7 @@ async function getProfileInfo(uuid) {
 	
 	return response
 }
-
+*/
 async function getReferalToken() {
 	const response = await fetch(`${settings.api}api/invite/gettoken`, {
 		method: 'POST',
