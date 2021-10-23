@@ -519,6 +519,32 @@ async function setProfile() {
 	response_smat_map = map_users;
 	console.log(map_users);
 }
+async function setProfilesLinks(){
+	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+	response.connections.forEach(function(d){
+		if (d.is_trust != null){
+			var reverse_is_trust = d.is_trust;
+			response.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
+					reverse_is_trust = dd.is_trust;
+				}
+			});
+			links.push({
+				source: d.source,
+				target: d.target,
+				is_trust: d.is_trust,
+				reverse_is_trust: reverse_is_trust
+			});
+		}
+	});
+}
+
+
 
 
 /*
@@ -856,7 +882,6 @@ let map_longitude;
 let new_map = document.querySelector('#new_map');
 d3.json(apiUrl)
 	.then(async function(data) {
-	console.log(data);
 
 	if (isAuth) {
 		await setProfile();
@@ -1139,7 +1164,9 @@ d3.json(apiUrl)
 			nodeType: NODE_TYPES.AUTH
 		});
 	}
-
+	if(isAuth){
+		await setProfilesLinks();
+	}else{
 	//добавить связи пользователей в связи
 	data.connections.forEach(function(d){
 		if (d.is_trust != null){
@@ -1172,6 +1199,8 @@ d3.json(apiUrl)
 			console.log(links);
 		}*/
 	});
+}
+	
 	
 	if (data.wishes != null){
 		//добавить связь пользователя с вершиной желаний
