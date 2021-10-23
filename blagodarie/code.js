@@ -2012,10 +2012,9 @@ async function onNodeClick(nodeType, uuid, txt){
 }
 //Открытие профиля в новой вкладке
 
-	window.onload = function(){
-let svg_elem_click = document.querySelectorAll('.svg_elem');
-
-for(let i = 0; i<svg_elem_click.length; i++){
+window.onload = function(){
+	let svg_elem_click = document.querySelectorAll('.svg_elem');
+	for(let i = 0; i<svg_elem_click.length; i++){
 		if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
 		svg_elem_click[i].oncontextmenu = function(){
 			
@@ -2027,12 +2026,10 @@ for(let i = 0; i<svg_elem_click.length; i++){
 				url.searchParams.set('id', friendID);
 				window.open(url.href, '_blank');
 			}
-			
-			
 		}
-}
-}
+		}
 	}
+}
 	
 
 //
