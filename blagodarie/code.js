@@ -519,7 +519,7 @@ async function setProfile() {
 	response_smat_map = map_users;
 	console.log(map_users);
 }
-async function setProfilesLinks(){
+/*async function setProfilesLinks(){
 	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
 		method: "GET",
 		headers: {
@@ -542,7 +542,7 @@ async function setProfilesLinks(){
 			});
 		}
 	});
-}
+}*/
 
 
 
@@ -1164,9 +1164,9 @@ d3.json(apiUrl)
 			nodeType: NODE_TYPES.AUTH
 		});
 	}
-	if(isAuth){
+	/*if(isAuth){
 		await setProfilesLinks();
-	}else{
+	}else{*/
 	//добавить связи пользователей в связи
 	data.connections.forEach(function(d){
 		if (d.is_trust != null){
@@ -1199,7 +1199,7 @@ d3.json(apiUrl)
 			console.log(links);
 		}*/
 	});
-}
+//}
 	
 	
 	if (data.wishes != null){
