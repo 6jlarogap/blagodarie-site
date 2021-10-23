@@ -100,6 +100,7 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 
 
 window.onload = (function(){
+	setTimeout(function(){
     document.addEventListener("mouseup", function(evt){
         console.log(evt)
         evt.preventDefault();
@@ -110,6 +111,7 @@ window.onload = (function(){
       evt.preventDefault();
       evt.stopPropagation();
   });
+}, 500);
 })();
 
 
