@@ -14,6 +14,7 @@ const NODE_TYPES = Object.freeze({
 	"PROFILE": "profile_root",
 	"OPTIONS": "options",
 	"HOME": "home",
+	"GENESIS": "genesis",
 	"FILTER": "filter",
 	"FILTERED": "filtered",
 	"INVITE": "invite",
@@ -30,6 +31,7 @@ const TRUST_ID = "TRUST_ROOT";
 const MISTRUST_ID = "MISTRUST_ROOT";
 const FILTER_ID = "FILTER_ROOT";
 const HOME_ID = "HOME_ROOT";
+const GENESIS_ID = "GENESIS_ROOT";
 const MAPS_ID = "MAPS_ROOT";
 const INVITE_ID = "INVITE_ROOT";
 const PROFILE = {
@@ -95,6 +97,25 @@ var addElement = document.getElementById("addElement");
 var elementAddInput = document.getElementById("elementAddInput");
 
 var keyTypesBtns = document.getElementById("keyTypesBtns");
+
+
+/*window.onload = (function(){
+
+    document.addEventListener("mouseup", function(evt){
+        console.log(evt)
+        evt.preventDefault();
+        evt.stopPropagation();
+    });
+    document.addEventListener("contextmenu", function(evt){
+      console.log(evt);
+      evt.preventDefault();
+      evt.stopPropagation();
+  });
+
+})();*/
+
+
+
 
 //filter stuff
 var filterInput = document.getElementById("filterInput");
@@ -377,8 +398,10 @@ addElement.addEventListener("click", async () => {
 //filter
 document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
+		if(!window.location.href.includes('gen')){
 		url.searchParams.set('f', 0);
 		url.searchParams.set('q', 50);
+		}
 		localStorage.setItem("filter", filterInput.value);
 		window.location.href = url.href;
 		
@@ -398,7 +421,7 @@ document.getElementById("filterNullify").addEventListener("click", () => {
 
 // delete profile button
 document.getElementById("deleteProfile").addEventListener("click", async () => {
-	const result = await fetch(`${settings.api}api/updateprofileinfo`, {
+	const result = await fetch(`${settings.api}api/profile`, {
 		method: "DELETE",
 		headers: {
 			"Authorization": `Token ${getCookie("auth_token")}`
@@ -515,13 +538,49 @@ async function setProfile() {
 	response_smat_map = map_users;
 	console.log(map_users);
 }
+/*async function setProfilesLinks(){
+	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+	response.connections.forEach(function(d){
+		if (d.is_trust != null){
+			var reverse_is_trust = d.is_trust;
+			response.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
+					reverse_is_trust = dd.is_trust;
+				}
+			});
+			links.push({
+				source: d.source,
+				target: d.target,
+				is_trust: d.is_trust,
+				reverse_is_trust: reverse_is_trust
+			});
+		}
+	});
+}*/
 
 
 
 
-
-
-
+/*
+async function add_gen(){
+		const response = await fetch(`${settings.api}api/profile`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Token ${getCookie("auth_token")}`
+		},
+		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "first_name": "123"})
+	}).then(data => data.json());
+}
+if(window.location.href.includes('gen')){
+	add_gen();
+}
+*/
 
 
 
@@ -589,6 +648,13 @@ if (invite && !isAuth) {
 var userIdFrom = url.searchParams.get("id");
 var userIdTo = url.searchParams.get("userIdTo");
 var fromApp = url.searchParams.get("from_app");
+let my_family_profiles = document.querySelector('#my_family_profiles');
+my_family_profiles.addEventListener('click', function(){
+	window.location.href = url.origin + '/profiles?id=' + getCookie('user_uuid');
+})
+
+
+
 
 
 let get_position = document.querySelector('#get_position');
@@ -714,7 +780,7 @@ function show_smart_map(lati, long){
 
 
 document.querySelector(".mapid_send").addEventListener("click", async () => {
-			const response = await fetch(`${settings.api}api/updateprofileinfo`, {
+			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -740,7 +806,7 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 
 
 document.querySelector(".mapid_clean").addEventListener("click", async () => {
-			const response = await fetch(`${settings.api}api/updateprofileinfo`, {
+			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -756,7 +822,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 	window.location.reload()
 });
 
-
+if(!window.location.href.includes('gen')){
 var link = window.location.href;
 var url = new URL(link);
 
@@ -808,12 +874,21 @@ var url = new URL(link);
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
                 //console.log(apiUrl);
+				//
             } else if (localStorage.getItem('filter') != null && isAuth) {
                 apiUrl = `${settings.api}api/profile_graph?uuid=${getCookie('user_uuid')}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
 				
                 //console.log(apiUrl);
             }
 		console.log(apiUrl);
+}else{
+	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}`;
+}
+
+
+//контекстное меню
+
+
 
 
 
@@ -832,7 +907,6 @@ let map_longitude;
 let new_map = document.querySelector('#new_map');
 d3.json(apiUrl)
 	.then(async function(data) {
-
 
 	if (isAuth) {
 		await setProfile();
@@ -868,7 +942,7 @@ d3.json(apiUrl)
 		}
 	});
 		
-	
+	if(!window.location.href.includes('gen')){
 	let selected_val_num = +url.searchParams.get('q');
 	let but_next = document.querySelector('#btn_next');
 	if(data.users.length == selected_val_num){
@@ -881,7 +955,7 @@ d3.json(apiUrl)
 		but_next.style.cursor = 'context-menu';
 		but_next.style.pointerEvents = 'none';
 	}
-
+	}
 
 	/*maps*/
 	
@@ -900,7 +974,7 @@ d3.json(apiUrl)
 	}	
 	});
 	
-	console.log(data.users.latitude);
+	console.log(data);
 	console.log(map_users);
 	
 	if (data.wishes != null){
@@ -947,7 +1021,7 @@ d3.json(apiUrl)
 		isConnection = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
 		
 		//data.connections.some(link => PROFILE.count=link.thanks_count && link.source == PROFILE.id && link.target == userIdFrom);
-		//console.log(PROFILE.count);
+		console.log(data);
 		var activeTrust = `${settings.url}images/trust_active.png`;
 		var activeMistrust = `${settings.url}images/mistrust_active.png`;
 		var inactiveTrust = `${settings.url}images/trust_inactive.png`;
@@ -1033,13 +1107,28 @@ d3.json(apiUrl)
 	});
 
 	//Добавить вершину home
+	if(!window.location.href.includes('gen')){
 	nodes.push({
 		id: HOME_ID,
 		text: "Домой",
 		image: `${settings.url}images/home.png`,
 		nodeType: NODE_TYPES.HOME
 	});
+	nodes.push({
+		id: GENESIS_ID,
+		text: "Род",
+		image: `${settings.url}images/genesis.png`,
+		nodeType: NODE_TYPES.GENESIS
+	});
 	
+	}else{
+		nodes.push({
+		id: HOME_ID,
+		text: "Граф",
+		image: `${settings.url}images/home.png`,
+		nodeType: NODE_TYPES.HOME
+	});
+	}
 	//Добавляем вершину карт
 	nodes.push({
 		id: MAPS_ID,
@@ -1100,8 +1189,33 @@ d3.json(apiUrl)
 			nodeType: NODE_TYPES.AUTH
 		});
 	}
-
-	//добавить связи пользователей в связи
+	if(isAuth && !window.location.href.includes('id') && !window.location.href.includes('gen')){
+		async function setProfilesLinks(){
+	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+	response.connections.forEach(function(d){
+		if (d.is_trust != null){
+			var reverse_is_trust = d.is_trust;
+			response.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
+					reverse_is_trust = dd.is_trust;
+				}
+			});
+			links.push({
+				source: d.source,
+				target: d.target,
+				is_trust: d.is_trust,
+				reverse_is_trust: reverse_is_trust
+			});
+		}
+	});
+		}
+		await setProfilesLinks();
+	}else{
 	data.connections.forEach(function(d){
 		if (d.is_trust != null){
 			var reverse_is_trust = d.is_trust;
@@ -1117,7 +1231,24 @@ d3.json(apiUrl)
 				reverse_is_trust: reverse_is_trust
 			});
 		}
+		/*else if(window.location.href.includes('gen')){
+			var fam_link = d.is_trust;
+			data.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
+					fam_link = dd.is_trust;
+				}
+			});
+			links.push({
+				source: d.source,
+				target: d.target,
+				is_trust: d.is_trust,
+				fam_link: fam_link
+			});
+			console.log(links);
+		}*/
 	});
+	}
+	
 	
 	if (data.wishes != null){
 		//добавить связь пользователя с вершиной желаний
@@ -1208,8 +1339,16 @@ d3.json(apiUrl)
 				d.fy = height / 2 - 300;	
 				break;
 		case HOME_ID:
+
 			d.fx = width<900 ? width/2-81 :width / 2 - 300;
 			d.fy = height / 2 - 300;
+			
+			break;
+		case GENESIS_ID:
+			if(!window.location.href.includes('gen')){
+			d.fx = width<900 ? 20 :width / 2+100;
+			d.fy = height / 2 - 250;
+			}
 			break;
 		
 		case MAPS_ID:
@@ -1250,9 +1389,9 @@ d3.json(apiUrl)
 	if(width<900){
 		simulation = d3.forceSimulation(nodes);
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links)); //distance(150)
-	simulation.force("charge", d3.forceManyBody().strength(0.5));
+	simulation.force("charge", d3.forceManyBody().strength(-400)); //0.5
 	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("collide", d3.forceCollide().strength(0.4).radius(55).iterations(1));//radius 80  strength(0.6)
+	simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
 	simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
 	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))
 	}	
@@ -1362,7 +1501,9 @@ if(window.location.href.includes('map_visible')){
 
 
 
-
+function newFF(){
+	return this.__data__
+}
 
 
 
@@ -1423,14 +1564,18 @@ function initializeDisplay() {
 		.attr("y2", calcY2)
 		.selectAll("stop")
 		.data(d => {
-			return [[1,d.reverse_is_trust], [2,d.is_trust]];
+			return [[1,d.reverse_is_trust], [2,d.is_trust]/*, [3, d.fam_link]*/];
 		})
 		.join("stop")
 		.attr("offset", d => (d[0] == 1 ? "0%" : "100%"))
 		.attr("style", d => {
 			if (d[1]){
 				return "stop-color:rgb(0,255,0);stop-opacity:1";
-			} else {
+			}
+		else if(d[3]){
+			return "stop-color:rgb(0,255,0);stop-opacity:1";
+		}
+		else {
 				return "stop-color:rgb(255,0,0);stop-opacity:1";
 			}
 		});
@@ -1445,8 +1590,12 @@ function initializeDisplay() {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
 					if(d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
+						if(!window.location.href.includes('gen')){
 						return "#1c8401";
-					} else {
+						}else{
+							return "#3548db";
+						}
+					} else{
 						return "#ff0000";
 					}
 				} else {
@@ -1459,8 +1608,12 @@ function initializeDisplay() {
 		.attr("marker-end", d => {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
+					if(!window.location.href.includes('gen')){
 					return "url(#arrow-trust)";
-				} else {
+					}else{
+						return "url(#arrow-gen)";
+					}
+				} else{
 					return "url(#arrow-mistrust)";
 				}
 			} else {
@@ -1476,9 +1629,7 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');
 		
-		
-	
-	node.append("image")
+		node.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
@@ -1497,7 +1648,31 @@ function initializeDisplay() {
 			else {
 				return "friendPortrait";
 			}
-		});
+		})
+		.attr("style", "z-index:1;position:relative");
+	
+	node.append("image")
+		.attr("xlink:href", d => `${window.location.origin}?id=${d.id}`)
+		.attr("class", d => {
+			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
+				return "userPortrait";
+			}
+			else if (d.nodeType == NODE_TYPES.FILTERED) {
+				return "filtered";
+			}
+			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FRIEND){
+        			return "friendPortrait friend";
+    			}
+			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FILTER){
+        			return "friendPortrait active_filer_icon";
+    			}
+    			
+			else {
+				return "friendPortrait";
+			}
+		})
+		.attr("style", "opacity:0;z-index:1000;position:relative");
+	
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
 		.attr("font-size", width<900 ? "15" : "20")
@@ -1674,6 +1849,19 @@ function initDefs(){
 		.append("path")
 		.attr("fill", "#1c8401")
 		.attr("d", "M0,-5 L10,0 L0,5");
+	
+	defs.append("marker")
+		.attr("xmlns", "http://www.w3.org/2000/svg")
+		.attr("id", "arrow-gen")
+		.attr("viewBox", "0 -5 10 20")
+		.attr("refX", "10")
+		.attr("refY", "0")
+		.attr("markerWidth", "20")
+		.attr("markerHeight", "20")
+		.attr("orient", "auto")
+		.append("path")
+		.attr("fill", "#3b59d6")
+		.attr("d", "M0,-5 L10,0 L0,5");
 		
 	defs.append("marker")
 		.attr("xmlns", "http://www.w3.org/2000/svg")
@@ -1731,11 +1919,19 @@ async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
+		if(!window.location.href.includes('gen')){
+			url.searchParams.set('f', 0);
+			window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
+		}else{
+			window.location.href = `${settings.url}gen?id=` + uuid;
+		}
 		
-		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
 	} else if (nodeType == NODE_TYPES.PROFILE) {
-		
+		if(!window.location.href.includes('gen')){
 		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
+		}else{
+			window.location.href = `${settings.url}gen?id=` + uuid;
+		}
 	} else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex";
 	
@@ -1746,8 +1942,11 @@ async function onNodeClick(nodeType, uuid, txt){
 
 	}
 	else if (nodeType == NODE_TYPES.FILTERED) {
-		
+		if(!window.location.href.includes('gen')){
 		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
+		}else{
+			window.location.href = `${settings.url}gen?id=` + uuid;
+		}
 	}
 	else if(nodeType == NODE_TYPES.FILTER) {
 		
@@ -1778,6 +1977,9 @@ async function onNodeClick(nodeType, uuid, txt){
 	}
 	else if(nodeType == NODE_TYPES.HOME) {
 		window.location.href = settings.url
+	}
+	else if(nodeType == NODE_TYPES.GENESIS) {
+		window.location.href = url.origin + '/gen';
 	}
 	else if(nodeType == NODE_TYPES.MAPS){
 		
@@ -1851,7 +2053,56 @@ async function onNodeClick(nodeType, uuid, txt){
 		await rootFunctions('keys');
 	}
 }
+//Открытие профиля в новой вкладке
 
+/*window.onload = function(){
+	setTimeout(function(){
+
+	let svg_elem_click = document.querySelectorAll('.svg_elem');
+	
+	for(let i = 0; i<svg_elem_click.length; i++){
+		if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
+		svg_elem_click[i].addEventListener('contextmenu', function(e){
+			
+			console.log(e)
+			e.preventDefault();
+			console.log(this.querySelector('image'))
+			let friendID = svg_elem_click[i].__data__.id;
+			if(url.searchParams.has('id')){
+				url.searchParams.set('id', friendID);
+				window.open(url.href, '_blank');
+			}else{
+				url.searchParams.append('id', friendID);
+				window.open(url.href, '_blank');
+			}
+		})
+		}
+	}
+	
+	let svg_elem_img = document.querySelectorAll('.svg_elem image');
+	
+	for(let i = 0; i<svg_elem_img.length; i++){
+		if(svg_elem_img[i].__data__.nodeType == 'profile_root' || svg_elem_img[i].__data__.nodeType == 'friend'){
+		svg_elem_img[i].addEventListener('contextmenu', function(e){
+			console.log(e)
+			e.preventDefault();
+			let friendID = svg_elem_img[i].__data__.id;
+			if(url.searchParams.has('id')){
+				url.searchParams.set('id', friendID);
+				window.open(url.href, '_blank');
+			}else{
+				url.searchParams.append('id', friendID);
+				window.open(url.href, '_blank');
+			}
+		})
+		}
+	}
+	
+}, 500);
+}*/
+	
+
+//
 async function rootFunctions(category) {
 	var categoryObj;
 	if (category == 'wishes') {
@@ -1953,6 +2204,7 @@ async function updateTrust(operationId, referal = null) {
 		},
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "operation_type_id": operationId})
 	}).then(data => data.json())
+	console.log('add');
 }
 
 
@@ -1960,15 +2212,15 @@ async function updateTrust(operationId, referal = null) {
 
 
 
-
+/*
 async function getProfileInfo(uuid) {
 	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${uuid}`, {
 		method: 'GET',
 	})
-
+	
 	return response
 }
-
+*/
 async function getReferalToken() {
 	const response = await fetch(`${settings.api}api/invite/gettoken`, {
 		method: 'POST',

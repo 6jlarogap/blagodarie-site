@@ -1,7 +1,8 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-	<link rel="shortcut icon" href="/images/ic_launcher.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/ic_launcher.png" type="image/x-icon">
 	<meta name="http-equiv" content="Content-type: text/html;">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
@@ -15,11 +16,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-	<link rel="manifest" href="./manifest.json">
-	<style>
-		
-	</style>
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="gen.css">
 	<!-- Yandex.Metrika counter -->
 	<script type="text/javascript">
 		(function (m, e, t, r, i, k, a) {
@@ -43,35 +40,23 @@
 </head>
 
 <body>
-	<svg id="main">
+<svg id="main">
 	</svg>
 	<button id="install_button" class="btn btn-danger" hidden>Установить БлагоДари</button>
 
 	<dialog id="authDialog">
-		<!--<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<button id="vkAuth" type="button" class="oauthButton btn">
-			<i class="fab fa-vk"></i>
-			<p>Войти с помощью VK</p>
-		</button>
-		<button id="okAuth" type="button" class="oauthButton btn">
-			<i class="fab fa-odnoklassniki"></i>
-			<p>Войти с помощью OK</p>
-		</button>
-		<button id="yandexAuth" type="button" class="oauthButton btn">
-			<i class="fab fa-yandex"></i>
-			<p>Войти с помощью Yandex</p>
-		</button>-->
-		<p class="close_auth_dialog">&#10006;</p>
-
+	<p class="close_auth_dialog">&#10006;</p>
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
+		
 		<div class="form-check">
 			<input class="form-check-input inp" type="checkbox" value="" checked id="agreementCheck">
 			<label class="form-check-label" for="flexCheckDefault">
-				Я принимаю <a href="./agreement/index.html" target="_blank" rel="noopener noreferrer" id="agreementLink">Условия Пользования</a>
+				Я принимаю <a href="../agreement/index.html" target="_blank" rel="noopener noreferrer" id="agreementLink">Условия Пользования</a>
 			</label>
 		</div>
 	</dialog>
-	<div class="pagination_block">
-        	<div style="display: flex;align-items: center"><a href="javascript:prevPage()" id="btn_prev"><</a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a></div>
+	<!--<div class="pagination_block">
+        	<a href="javascript:prevPage()" id="btn_prev"><</a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a>
 		<div style='display:flex;flex-direction:column;align-items:center;justify-content:center;'>
         	<select class='pagination_select' onchange="url.searchParams.set('q', this.value);url.searchParams.set('f', 0);window.location.href = url.href;">
 			<option>Профилей на странице</option>
@@ -83,14 +68,14 @@
 		</select>
 			<p class="pagination_count" style="margin:0;font-weight: 500;"></p>
 			</div>
-    	</div>
+    	</div>-->
 	<div class="map_container">
-	<div id="mapid"></div>
-	<p class="mapid_close">&#215;</p>
-	<div class="mapid_send">Опубликовать</div>
-	<div class="mapid_clean">Очистить</div>
-	<p class="mapid_alert">Ваше местоположение<br>закреплено здесь!</p>
-	<div class="mapid_whereI">Где я?</div>
+		<div id="mapid"></div>
+		<p class="mapid_close">&#215;</p>
+		<div class="mapid_send">Опубликовать</div>
+		<div class="mapid_clean">Очистить</div>
+		<p class="mapid_alert">Ваше местоположение<br>закреплено здесь!</p>
+		<div class="mapid_whereI">Где я?</div>
 	</div>
 	<div class="new_map_container">
 		<div id="new_map"></div>
@@ -108,10 +93,10 @@
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<input class="form-control inp" id="elementAddInput" type="text">
 		<div class="btn-group" role="group" aria-label="First group" id="keyTypesBtns" style="display: flex;">
-			<button type="button" class="keytype btn btn-secondary" id="1"><img src="./images/phone.png" alt="1"></button>
-			<button type="button" class="keytype btn btn-secondary" id="2"><img src="./images/at.png" alt="2"></button>
-			<button type="button" class="keytype btn btn-secondary" id="4"><img src="./images/credit-card.png" alt="4"></button>
-			<button type="button" class="keytype btn btn-secondary" id="5"><img src="./images/link.png" alt="5"></button>
+			<button type="button" class="keytype btn btn-secondary" id="1"><img src="../images/phone.png" alt="1"></button>
+			<button type="button" class="keytype btn btn-secondary" id="2"><img src="../images/at.png" alt="2"></button>
+			<button type="button" class="keytype btn btn-secondary" id="4"><img src="../images/credit-card.png" alt="4"></button>
+			<button type="button" class="keytype btn btn-secondary" id="5"><img src="../images/link.png" alt="5"></button>
 		  </div>
 		<button class="btn btn-success" id="addElement">ОК</button>
 	</dialog>
@@ -123,7 +108,7 @@
 		<button class="btn btn-primary" id="wishes">Желания</button>
 		<button class="btn btn-primary" id="get_position">Местоположение</button>
 		<button class="btn btn-primary" id="my_family_profiles">Мои профили</button>
-		<button class="btn btn-primary" id="optionsAgreement" onclick="window.open('./agreement/index.html', '_blank')">
+		<button class="btn btn-primary" id="optionsAgreement" onclick="window.open('../agreement/index.html', '_blank')">
 			<p>Условия Пользования</p>
 			<i class="far fa-file-alt"></i>
 		</button>
@@ -131,10 +116,6 @@
 			<button class="btn btn-danger" id="logOut"><p>Выйти</p><i class="fas fa-sign-out-alt"></i></button>
 			<button class="btn btn-dark" id="deleteProfile"><p>Обезличить профиль</p><i class="fas fa-user-times"></i></button>
 		</div>
-	</dialog>
-
-	<dialog id="inviteDialog">
-
 	</dialog>
 
 	<dialog id="filterDialog">
@@ -148,15 +129,17 @@
 
 	<dialog id="shareDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<div id="shareGroup" class="ya-share2" data-curtain data-url="https://google.com" data-size="l" data-shape="round" data-services="telegram,viber,whatsapp,vkontakte,odnoklassniki">
+		<div id="shareGroup" class="ya-share2" data-curtain data-size="l" data-shape="round" data-services="telegram,viber,whatsapp,vkontakte,odnoklassniki">
 		</div>
 		<div class="custom-share">
-			<img src="./images/email.png" alt="Loading..." class="share" id="mail-button">
-			<img src="./images/sms.png" alt="Loading..." class="share" id="sms-button">
-			<img src="./images/qr-code.png" alt="Loading..." class="share" id="qrcode-button">
+			<img src="../images/email.png" alt="Loading..." class="share" id="mail-button">
+			<img src="../images/sms.png" alt="Loading..." class="share" id="sms-button">
+			<img src="../images/qr-code.png" alt="Loading..." class="share" id="qrcode-button">
+			<img src="../images/copy.png" alt="Loading..." class="share" id="copy-button" onclick="copyTextf()">
 		</div>
+		<input type="text" id="copier" style="opacity:0">
 	</dialog>
-
+	<p class="copied_alert">Скопировано</p>
 	<dialog id="qrDialog">
 		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
 		<div id="qrcode"></div>
@@ -186,12 +169,11 @@
 
 	<script src="https://d3js.org/d3.v6.min.js"></script>
 
-	<script src="./qrcode.min.js"></script>
+	<script src="../qrcode.min.js"></script>
 
-	<script src="./settings.js"></script>
+	<script src="../settings.js"></script>
 
-	<script src="./code.js" charset="utf-8"></script>
-
+	<script src="../code.js" charset="utf-8"></script>
 </body>
 
 </html>
