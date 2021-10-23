@@ -1647,7 +1647,7 @@ function initializeDisplay() {
 				return "friendPortrait";
 			}
 		})
-		.attr('oncontextmenu', return 'alert("123")');
+		.attr('oncontextmenu', 'alert("123")');
 	
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
