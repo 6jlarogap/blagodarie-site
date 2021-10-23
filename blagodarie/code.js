@@ -867,6 +867,14 @@ var url = new URL(link);
 }
 
 
+//контекстное меню
+
+document.oncontextmenu = function() {
+	alert('правая');
+}
+
+
+
 
 
 
