@@ -2012,8 +2012,7 @@ async function onNodeClick(nodeType, uuid, txt){
 }
 //Открытие профиля в новой вкладке
 
-	window.onload = function(){
-		setTimeout(function(){
+	
 let svg_elem_click = document.querySelectorAll('.svg_elem');
 
 for(let i = 0; i<svg_elem_click.length; i++){
@@ -2028,14 +2027,12 @@ for(let i = 0; i<svg_elem_click.length; i++){
 				url.searchParams.set('id', friendID);
 				window.location.assign = url.href;
 			}
-			console.log('func')
+			console.log(friendID)
 			//}
 		}
 	
 }
 
-	}, 1500);
-	}
 	
 	
 
