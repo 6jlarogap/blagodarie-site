@@ -1502,7 +1502,7 @@ if(window.location.href.includes('map_visible')){
 
 
 function newFF(){
-	return this.__data__.id
+	return this.__data__
 }
 
 
