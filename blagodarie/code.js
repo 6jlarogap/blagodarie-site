@@ -2031,6 +2031,7 @@ async function onNodeClick(nodeType, uuid, txt){
 //Открытие профиля в новой вкладке
 
 window.onload = function(){
+	setTimeout(function(){
 
 	let svg_elem_click = document.querySelectorAll('.svg_elem');
 	
@@ -2072,7 +2073,7 @@ window.onload = function(){
 		}
 	}
 	
-
+}, 1000);
 }
 	
 
