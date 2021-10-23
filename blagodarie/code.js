@@ -1630,6 +1630,27 @@ function initializeDisplay() {
 		
 	
 	node.append("image")
+		.attr("xlink:href", ' ')
+		.attr("class", d => {
+			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
+				return "userPortrait";
+			}
+			else if (d.nodeType == NODE_TYPES.FILTERED) {
+				return "filtered";
+			}
+			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FRIEND){
+        			return "friendPortrait friend";
+    			}
+			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FILTER){
+        			return "friendPortrait active_filer_icon";
+    			}
+    			
+			else {
+				return "friendPortrait";
+			}
+		});
+	
+	node.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
