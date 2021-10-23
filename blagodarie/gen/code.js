@@ -979,12 +979,7 @@ d3.json(apiUrl)
 
 	//Добавить вершину home
 	
-	nodes.push({
-		id: GENESIS_ID,
-		text: "Род",
-		image: `${settings.url}images/genesis.png`,
-		nodeType: NODE_TYPES.GENESIS
-	});
+	
 	
 	
 		nodes.push({
