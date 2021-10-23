@@ -2022,11 +2022,15 @@ window.onload = function(){
 			
 			let friendID = svg_elem_click[i].__data__.id;
 			if(!window.location.href.includes('id')){
+				if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
 				url.searchParams.append('id', friendID);
 				window.open(url.href, '_blank');
+				}
 			}else{
+				if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
 				url.searchParams.set('id', friendID);
 				window.open(url.href, '_blank');
+				}
 			}
 		}
 		//}
