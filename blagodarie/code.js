@@ -869,9 +869,7 @@ var url = new URL(link);
 
 //контекстное меню
 
-document.oncontextmenu = function() {
-	alert('правая');
-}
+
 
 
 
@@ -2013,30 +2011,14 @@ async function onNodeClick(nodeType, uuid, txt){
 	}
 }
 //Открытие профиля в новой вкладке
-var onlongtouch; 
-var timer;
-var touchduration = 500;
 
-if(width<900){
 	window.onload = function(){
 		setTimeout(function(){
 let svg_elem_click = document.querySelectorAll('.svg_elem');
 
 for(let i = 0; i<svg_elem_click.length; i++){
-		svg_elem_click[i].addEventListener('touchstart', ()=>{
-			
-    		timer = setTimeout(onlongtouch, touchduration); 	
-			console.log('start');
-			
-		});
-		svg_elem_click[i].addEventListener('touchend', ()=>{
-			//if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
-	    	if (timer)
-        	clearTimeout(timer);
-			console.log('end');
-			//}
-		});
-		onlongtouch = function() {
+		
+		svg_elem_click[i].oncontextmenu = function(){
 			//if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
 			let friendID = svg_elem_click[i].__data__.id;
 			if(!window.location.href.includes('id')){
@@ -2051,12 +2033,12 @@ for(let i = 0; i<svg_elem_click.length; i++){
 		}
 	
 }
-			console.log(svg_elem_click);
+
 	}, 1500);
 	}
 	
 	
-}
+
 //
 async function rootFunctions(category) {
 	var categoryObj;
