@@ -2011,7 +2011,7 @@ async function onNodeClick(nodeType, uuid, txt){
 	}
 }
 //Открытие профиля в новой вкладке
-
+document.oncontextmenu = false;
 window.onload = function(){
 	let svg_elem_click = document.querySelectorAll('.svg_elem');
 	for(let i = 0; i<svg_elem_click.length; i++){
