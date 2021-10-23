@@ -856,7 +856,7 @@ let map_longitude;
 let new_map = document.querySelector('#new_map');
 d3.json(apiUrl)
 	.then(async function(data) {
-
+	console.log(data);
 
 	if (isAuth) {
 		await setProfile();
