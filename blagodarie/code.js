@@ -1646,8 +1646,7 @@ function initializeDisplay() {
 			else {
 				return "friendPortrait";
 			}
-		})
-		.attr('oncontextmenu', 'alert("123")');
+		});
 	
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
@@ -2041,8 +2040,6 @@ window.onload = function(){
 			
 			console.log(e)
 			e.preventDefault();
-			e.stopPropagation();
-			alert('n')
 			console.log(this.querySelector('image'))
 			let friendID = svg_elem_click[i].__data__.id;
 			if(url.searchParams.has('id')){
@@ -2063,8 +2060,6 @@ window.onload = function(){
 		svg_elem_img[i].addEventListener('contextmenu', function(e){
 			console.log(e)
 			e.preventDefault();
-			e.stopPropagation();
-			alert('n')
 			let friendID = svg_elem_img[i].__data__.id;
 			if(url.searchParams.has('id')){
 				url.searchParams.set('id', friendID);
