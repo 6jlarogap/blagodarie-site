@@ -2012,7 +2012,7 @@ async function onNodeClick(nodeType, uuid, txt){
 }
 //Открытие профиля в новой вкладке
 
-	
+	window.onload = function(){
 let svg_elem_click = document.querySelectorAll('.svg_elem');
 
 for(let i = 0; i<svg_elem_click.length; i++){
@@ -2032,8 +2032,7 @@ for(let i = 0; i<svg_elem_click.length; i++){
 		}
 	
 }
-
-	
+	}
 	
 
 //
