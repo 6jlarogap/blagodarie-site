@@ -2019,7 +2019,20 @@ window.onload = function(){
 	for(let i = 0; i<svg_elem_click.length; i++){
 		if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
 		svg_elem_click[i].oncontextmenu = function(){
-			console.log(this);
+			console.log(this.querySelector('image'))
+			let friendID = svg_elem_click[i].__data__.id;
+			if(!window.location.href.includes('id')){
+				url.searchParams.append('id', friendID);
+				window.open(url.href, '_blank');
+				
+			}else{
+				url.searchParams.set('id', friendID);
+				window.open(url.href, '_blank');
+				
+			}
+		}
+		this.querySelector('image').oncontextmenu = function(){
+			console.log(this.querySelector('image'))
 			let friendID = svg_elem_click[i].__data__.id;
 			if(!window.location.href.includes('id')){
 				url.searchParams.append('id', friendID);
