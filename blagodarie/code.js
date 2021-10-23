@@ -2021,6 +2021,8 @@ window.onload = function(){
 		svg_elem_click[i].addEventListener('contextmenu', function(e){
 			console.log(e)
 			e.preventDefault();
+			e.stopPropagation();
+			alert('n')
 			console.log(this.querySelector('image'))
 			let friendID = svg_elem_click[i].__data__.id;
 			if(url.searchParams.has('id')){
@@ -2041,6 +2043,8 @@ window.onload = function(){
 		svg_elem_img[i].addEventListener('contextmenu', function(e){
 			console.log(e)
 			e.preventDefault();
+			e.stopPropagation();
+			alert('n')
 			let friendID = svg_elem_img[i].__data__.id;
 			if(url.searchParams.has('id')){
 				url.searchParams.set('id', friendID);
