@@ -2034,30 +2034,7 @@ window.onload = function(){
 		})
 		}
 	}
-	
-	let svg_elem_img = document.querySelectorAll('.svg_elem image');
-	
-	for(let i = 0; i<svg_elem_img.length; i++){
-		if(svg_elem_img[i].__data__.nodeType == 'profile_root' || svg_elem_img[i].__data__.nodeType == 'friend'){
-		svg_elem_img[i].addEventListener('contextmenu', function(e){
-			e.preventDefault();
-			let friendID = svg_elem_img[i].__data__.id;
-			if(!window.location.href.includes('id')){
-				url.searchParams.append('id', friendID);
-				window.open(url.href, '_blank');
-				
-			}else{
-				url.searchParams.set('id', friendID);
-				window.open(url.href, '_blank');
-				
-			}
-		})
-		}
-	}
-	
-	
-	
-	
+
 }
 	
 
