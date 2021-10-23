@@ -2022,7 +2022,7 @@ for(let i = 0; i<svg_elem_click.length; i++){
 			let friendID = svg_elem_click[i].__data__.id;
 			if(!window.location.href.includes('id')){
 				url.searchParams.append('id', friendID);
-				window.location.assign = url.href;
+				window.open(url.href, '_blank');
 			}else{
 				url.searchParams.set('id', friendID);
 				window.location.assign = url.href;
