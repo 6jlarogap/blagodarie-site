@@ -98,12 +98,7 @@ var elementAddInput = document.getElementById("elementAddInput");
 
 var keyTypesBtns = document.getElementById("keyTypesBtns");
 
-// Показать глубину рекурсии
 
-if(!url.searchParams.has('rec')){
-	url.searchParams.append('rec', 1);
-	window.location.href = url.href;
-}
 
 
 
@@ -1841,56 +1836,16 @@ async function onNodeClick(nodeType, uuid, txt){
 		await rootFunctions('keys');
 	}
 }
-//Открытие профиля в новой вкладке
 
-/*window.onload = function(){
-	setTimeout(function(){
+// Показать глубину рекурсии
 
-	let svg_elem_click = document.querySelectorAll('.svg_elem');
-	
-	for(let i = 0; i<svg_elem_click.length; i++){
-		if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
-		svg_elem_click[i].addEventListener('contextmenu', function(e){
-			
-			console.log(e)
-			e.preventDefault();
-			console.log(this.querySelector('image'))
-			let friendID = svg_elem_click[i].__data__.id;
-			if(url.searchParams.has('id')){
-				url.searchParams.set('id', friendID);
-				window.open(url.href, '_blank');
-			}else{
-				url.searchParams.append('id', friendID);
-				window.open(url.href, '_blank');
-			}
-		})
-		}
-	}
-	
-	let svg_elem_img = document.querySelectorAll('.svg_elem image');
-	
-	for(let i = 0; i<svg_elem_img.length; i++){
-		if(svg_elem_img[i].__data__.nodeType == 'profile_root' || svg_elem_img[i].__data__.nodeType == 'friend'){
-		svg_elem_img[i].addEventListener('contextmenu', function(e){
-			console.log(e)
-			e.preventDefault();
-			let friendID = svg_elem_img[i].__data__.id;
-			if(url.searchParams.has('id')){
-				url.searchParams.set('id', friendID);
-				window.open(url.href, '_blank');
-			}else{
-				url.searchParams.append('id', friendID);
-				window.open(url.href, '_blank');
-			}
-		})
-		}
-	}
-	
-}, 500);
-}*/
-	
+if(!url.searchParams.has('rec')){
+	url.searchParams.append('rec', 1);
+	window.location.href = url.href;
+}
 
-//
+
+
 async function rootFunctions(category) {
 	var categoryObj;
 	if (category == 'wishes') {
