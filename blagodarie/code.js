@@ -1632,7 +1632,7 @@ function initializeDisplay() {
 		
 	
 	node.append("image")
-		.attr("xlink:href", window.location.origin + newFF())
+		.attr("xlink:href", window.location.origin + d => d.id)
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
 				return "userPortrait";
@@ -1650,8 +1650,7 @@ function initializeDisplay() {
 			else {
 				return "friendPortrait";
 			}
-		})
-	console.log(d);
+		});
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
