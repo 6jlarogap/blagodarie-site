@@ -100,7 +100,7 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 
 
 window.onload = (function(){
-	setTimeout(function(){
+
     document.addEventListener("mouseup", function(evt){
         console.log(evt)
         evt.preventDefault();
@@ -111,7 +111,7 @@ window.onload = (function(){
       evt.preventDefault();
       evt.stopPropagation();
   });
-}, 500);
+
 })();
 
 
@@ -1630,8 +1630,7 @@ function initializeDisplay() {
 		
 	
 	node.append("image")
-		.attr("xlink:href", ' ')
-		.attr("src", d => d.image)
+		.attr("xlink:href", this.__data__.id)
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
 				return "userPortrait";
