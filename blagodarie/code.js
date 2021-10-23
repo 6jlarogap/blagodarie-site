@@ -2031,9 +2031,15 @@ window.onload = function(){
 				
 			}
 		}
-		this.querySelector('image').oncontextmenu = function(){
-			console.log(this.querySelector('image'))
-			let friendID = svg_elem_click[i].__data__.id;
+		}
+	}
+	
+	let svg_elem_img = document.querySelectorAll('.svg_elem image');
+	
+	for(let i = 0; i<svg_elem_img.length; i++){
+		if(svg_elem_img[i].__data__.nodeType == 'profile_root' || svg_elem_img[i].__data__.nodeType == 'friend'){
+		svg_elem_img[i].oncontextmenu = function(){
+			let friendID = svg_elem_img[i].__data__.id;
 			if(!window.location.href.includes('id')){
 				url.searchParams.append('id', friendID);
 				window.open(url.href, '_blank');
@@ -2046,6 +2052,10 @@ window.onload = function(){
 		}
 		}
 	}
+	
+	
+	
+	
 }
 	
 
