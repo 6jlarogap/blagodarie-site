@@ -98,6 +98,23 @@ var elementAddInput = document.getElementById("elementAddInput");
 
 var keyTypesBtns = document.getElementById("keyTypesBtns");
 
+
+window.onload = (function(){
+    document.addEventListener("mouseup", function(evt){
+        console.log(evt)
+        evt.preventDefault();
+        evt.stopPropagation();
+    });
+    document.addEventListener("contextmenu", function(evt){
+      console.log(evt);
+      evt.preventDefault();
+      evt.stopPropagation();
+  });
+})();
+
+
+
+
 //filter stuff
 var filterInput = document.getElementById("filterInput");
 
