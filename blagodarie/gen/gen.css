@@ -619,6 +619,10 @@ text{
 	position: fixed;
 	right: 0;
 	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
 }
 @media(max-width:900px){
 			.pagination_block{
