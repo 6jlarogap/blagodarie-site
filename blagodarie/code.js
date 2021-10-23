@@ -1650,7 +1650,8 @@ function initializeDisplay() {
 			else {
 				return "friendPortrait";
 			}
-		});
+		})
+	console.log(d);
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
