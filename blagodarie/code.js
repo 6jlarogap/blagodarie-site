@@ -2106,13 +2106,13 @@ async function updateTrust(operationId, referal = null) {
 
 
 
-/*async function getProfileInfo(uuid) {
+async function getProfileInfo(uuid) {
 	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${uuid}`, {
 		method: 'GET',
 	})
-
+	
 	return response
-}*/
+}
 
 async function getReferalToken() {
 	const response = await fetch(`${settings.api}api/invite/gettoken`, {
