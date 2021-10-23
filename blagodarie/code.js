@@ -2019,7 +2019,7 @@ window.onload = function(){
 	for(let i = 0; i<svg_elem_click.length; i++){
 		if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
 		svg_elem_click[i].oncontextmenu = function(){
-			
+			console.log(this);
 			let friendID = svg_elem_click[i].__data__.id;
 			if(!window.location.href.includes('id')){
 				url.searchParams.append('id', friendID);
