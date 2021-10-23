@@ -55,13 +55,16 @@
 			</label>
 		</div>
 	</dialog>
-	<select class="recur_select">
+	<div class="recur_select_cont">
+	<select class="recur_select" onchange="url.searchParams.set('rec', this.value);window.location.href = url.href;">
+		<option>Глубина рекурсии:</option>
 		<option value="1">1</option>
 		<option value="3">3</option>
 		<option value="5">5</option>
 		<option value="10">10</option>
 	</select>
-	
+	<p class="recur_select_value" style="margin:0;font-weight: 500;"></p>
+	</div>
 	<div class="map_container">
 		<div id="mapid"></div>
 		<p class="mapid_close">&#215;</p>

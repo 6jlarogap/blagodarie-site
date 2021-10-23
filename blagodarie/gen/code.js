@@ -98,21 +98,12 @@ var elementAddInput = document.getElementById("elementAddInput");
 
 var keyTypesBtns = document.getElementById("keyTypesBtns");
 
+// Показать глубину рекурсии
 
-/*window.onload = (function(){
-
-    document.addEventListener("mouseup", function(evt){
-        console.log(evt)
-        evt.preventDefault();
-        evt.stopPropagation();
-    });
-    document.addEventListener("contextmenu", function(evt){
-      console.log(evt);
-      evt.preventDefault();
-      evt.stopPropagation();
-  });
-
-})();*/
+if(!url.searchParams.has('rec')){
+	url.searchParams.append('rec', 1);
+	window.location.href = url.href;
+}
 
 
 
