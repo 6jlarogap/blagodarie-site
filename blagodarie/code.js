@@ -2022,14 +2022,12 @@ window.onload = function(){
 			e.preventDefault();
 			console.log(this.querySelector('image'))
 			let friendID = svg_elem_click[i].__data__.id;
-			if(!window.location.href.includes('id')){
-				url.searchParams.append('id', friendID);
-				window.open(url.href, '_blank');
-				
-			}else{
+			if(url.searchParams.has('id')){
 				url.searchParams.set('id', friendID);
 				window.open(url.href, '_blank');
-				
+			}else{
+				url.searchParams.append('id', friendID);
+				window.open(url.href, '_blank');
 			}
 		})
 		}
@@ -2043,14 +2041,12 @@ window.onload = function(){
 			e.preventDefault();
 			console.log(this.querySelector('image'))
 			let friendID = svg_elem_img[i].__data__.id;
-			if(!window.location.href.includes('id')){
-				url.searchParams.append('id', friendID);
-				window.open(url.href, '_blank');
-				
-			}else{
+			if(url.searchParams.has('id')){
 				url.searchParams.set('id', friendID);
 				window.open(url.href, '_blank');
-				
+			}else{
+				url.searchParams.append('id', friendID);
+				window.open(url.href, '_blank');
 			}
 		})
 		}
