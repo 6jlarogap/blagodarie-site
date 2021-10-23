@@ -1164,7 +1164,7 @@ d3.json(apiUrl)
 			nodeType: NODE_TYPES.AUTH
 		});
 	}
-	if(isAuth && !window.location.href.includes('id') || !window.location.href.includes('gen')){
+	if(isAuth && !window.location.href.includes('id') && !window.location.href.includes('gen')){
 		async function setProfilesLinks(){
 	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
 		method: "GET",
