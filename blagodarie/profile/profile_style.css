@@ -640,10 +640,10 @@ text{
     			y: -18px;
 			}
 			image.userPortrait{
-				width: 60px;
-    			height: 60px;
-    			x: -31px;
-    			y: -31px;
+				width: 64px;
+    			height: 64px;
+    			x: -32px;
+    			y: -32px;
 			}
 			dialog{
 				left: 50%;
