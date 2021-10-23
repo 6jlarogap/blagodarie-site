@@ -1646,7 +1646,8 @@ function initializeDisplay() {
 			else {
 				return "friendPortrait";
 			}
-		});
+		})
+		.attr('oncontextmenu', 'alert('123')');
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
 		.attr("font-size", width<900 ? "15" : "20")
@@ -2036,6 +2037,7 @@ window.onload = function(){
 	for(let i = 0; i<svg_elem_click.length; i++){
 		if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
 		svg_elem_click[i].addEventListener('contextmenu', function(e){
+			
 			console.log(e)
 			e.preventDefault();
 			e.stopPropagation();
