@@ -223,6 +223,8 @@ table img{
 	}
 	.add_user_profile_bddd_cont{
 		margin-top: 4%;
+		flex-direction: column;
+		align-items: center;
 	}
 	.add_user_profile_bddd_inputs{
 		display: flex;
@@ -234,5 +236,8 @@ table img{
 	.add_user_profile_close_popup{
 		top: 1%;
     	right: 5%;
+	}
+	.add_user_profile_bottom_cont{
+		flex-direction: column;
 	}
 }
