@@ -94,7 +94,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	//Кнопка Сохранить
 	add_user_profile_overbottom.addEventListener('click', function(){
-		
+		let warning1,
+			warning2;
 		
 		
 		
@@ -154,7 +155,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
 		body: formdata
-	}).then(response => response.ok ? response.text() /*&& window.location.reload()*/ : console.log('bad'))
+	}).then(response => response.ok ? response.text() console.log(response) : console.log('bad'))
 	.then(result => console.log(result))
 	.catch(error => console.log('error', error));
 	
