@@ -75,3 +75,34 @@ table img{
 	background-color: #eee4e2;
 	transition: .4s;
 }
+.bd_dd{
+	display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.bd_dd p{
+	margin-bottom: 0;
+}
+.user_changed{
+	display: flex;
+    width: 14%;
+    justify-content: space-between;
+	opacity: 0;
+	transition: .4s;
+}
+.user_changed_link{
+	display: flex;
+}
+.user_changed_info{
+	height: 16px;
+    display: flex;
+}
+.user_changed_info img{
+	width: 16px;
+    height: 16px;
+	border-radius: 0;
+}
+#user_table_body td:hover .user_changed{
+	opacity: 1;
+	transition: .4s;
+}
