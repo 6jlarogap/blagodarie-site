@@ -1093,8 +1093,8 @@ d3.json(apiUrl)
 		//Добавить вершину invite
 		nodes.push({
 			id: INVITE_ID,
-			text: "Пригласить",
-			image: `${settings.url}images/add.png`,
+			text: "Род",
+			image: `${settings.url}images/genesis.png`,
 			nodeType: NODE_TYPES.INVITE
 		})
 	}
@@ -1345,12 +1345,12 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;
 			
 			break;
-		case GENESIS_ID:
+		/*case GENESIS_ID:
 			if(!window.location.href.includes('gen')){
 			d.fx = width<900 ? 20 :width / 2+100;
 			d.fy = height / 2 - 250;
 			}
-			break;
+			break;*/
 		
 		case MAPS_ID:
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
@@ -1965,13 +1965,14 @@ async function onNodeClick(nodeType, uuid, txt){
 		shareDialog.style.display = "flex";
 	}
 	else if(nodeType == NODE_TYPES.INVITE) {
-		shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
+		/*shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
 		share.updateContent({
 			title: document.querySelector(".userName").textContent + ' предлагает Вам своё доверие в системе Благодари.РФ',
 			url: shareLink
 			
 		});
-		shareDialog.style.display = "flex";
+		shareDialog.style.display = "flex";*/
+		window.location.href = url.origin + '/gen';
 	}
 	else if (nodeType == NODE_TYPES.OPTIONS) {
 		optionsDialog.style.display = "flex";
@@ -1979,9 +1980,9 @@ async function onNodeClick(nodeType, uuid, txt){
 	else if(nodeType == NODE_TYPES.HOME) {
 		window.location.href = settings.url
 	}
-	else if(nodeType == NODE_TYPES.GENESIS) {
+	/*else if(nodeType == NODE_TYPES.GENESIS) {
 		window.location.href = url.origin + '/gen';
-	}
+	}*/
 	else if(nodeType == NODE_TYPES.MAPS){
 		
 		url.searchParams.append('map_visible', 'true');
