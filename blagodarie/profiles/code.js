@@ -58,6 +58,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom');
 	let add_user_profile_bd = document.querySelector('.add_user_profile_bd');
 	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
+	let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
 	
 	
 	
@@ -75,8 +76,27 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	console.log(first_name);
 	console.log(middle_name);
 	
-	
+	//Кнопка Сохранить
 	add_user_profile_overbottom.addEventListener('click', function(){
+		
+		async function add_user_parents(operation_type_id){
+		const response = await fetch(`${settings.api}api/addoperation`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Token ${getCookie("auth_token")}`
+		},
+		body: JSON.stringify({"user_id_from": add_user_profile_mother_input.value, "user_id_to": id, "operation_type_id": operation_type_id})
+	}).then(data => data.json());
+}
+		
+		add_user_parents(7);
+		add_user_parents(6);
+		
+		
+		
+		
+		
 		var formdata = new FormData();
 		formdata.append("uuid", id);
 		formdata.append("first_name", user_profile_name_inp.value);
@@ -98,6 +118,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 }
 		add_gen();
+		
+		
+		
 	});
 	
 	
