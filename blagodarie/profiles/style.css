@@ -114,7 +114,31 @@ table img{
     left: 0;
     background: #fff;
 	display: none;
+	padding: 0 17%;
 }
+.add_user_profile_top_cont{
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+	margin-top: 5%;
+}
+.add_user_profile_fio p{
+	margin-top: 10px;
+	margin-bottom: 3px;
+	
+}
+.add_user_profile_fio p:first-child{
+	margin-top: 0;
+}
+.add_user_profile_fio input{
+	border: 0;
+    border-bottom: 1px solid #ccc;
+}
+
+
+
+
+
 
 
 @media(max-width: 900px){
