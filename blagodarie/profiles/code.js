@@ -74,7 +74,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 	
 	add_user_profile_overbottom.addEventListener('click', function(){
 		var formdata = new FormData();
-		//formdata.append("uuid", id);
+		formdata.append("uuid", id);
 		formdata.append("first_name", user_profile_name_inp.value);
 		formdata.append("last_name", user_profile_surname_inp.value);
 		formdata.append("middle_name", user_profile_middlename_inp.value);
@@ -85,7 +85,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
 		body: formdata
-	}).then(response => response.ok ? response.text() : console.log('bad'))
+	}).then(response => response.ok ? response.text();window.location.reload() : console.log('bad'))
 	.then(result => console.log(result))
 	.catch(error => console.log('error', error));
 	
