@@ -47,6 +47,15 @@ window.onload = myProfilesinfo();
 function user_changed_info(id, last_name, first_name, middle_name){
 	let add_user_profile_container = document.querySelector('.add_user_profile_container');
 	let add_user_profile_close_popup = document.querySelector('.add_user_profile_close_popup');
+	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
+	let user_profile_name_inp = document.querySelector('.user_profile_name_inp');
+	let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp');
+	
+	
+	user_profile_surname_inp.value = last_name;
+	user_profile_name_inp.value = first_name;
+	user_profile_middlename_inp.value = middle_name;
+	
 	
 	
 	add_user_profile_container.style.display = "block";
