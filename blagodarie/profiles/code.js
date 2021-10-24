@@ -86,6 +86,10 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 		body: formdata
 	}).then(response => response.text())
 	.then(result => console.log(result));
+	if(response.ok){
+		window.location.reload();
+	}
+	
 }
 		add_gen();
 	});
