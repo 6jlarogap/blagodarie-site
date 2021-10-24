@@ -51,6 +51,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 	let user_profile_name_inp = document.querySelector('.user_profile_name_inp');
 	let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp');
 	let add_user_profile_photo = document.querySelector('.add_user_profile_photo');
+	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom');
+	
 	
 	
 	user_profile_surname_inp.value = last_name;
@@ -65,6 +67,25 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 	console.log(first_name);
 	console.log(middle_name);
 	
+	
+	add_user_profile_overbottom.addEventListener('click', function(){
+		async function add_gen(){
+		const response = await fetch(`${settings.api}api/profile`, {
+		method: "PUT",
+		headers: {
+			"Authorization": `Token ${getCookie("auth_token")}`,
+			"Content-Type": "form-data"
+		},
+		body: JSON.stringify({"uuid": id, "first_name": user_profile_name_inp.value})
+		}).then(data => data.json());
+		console.log(response);
+		
+		}
+		await add_gen();
+		
+		
+		
+	});
 	
 	//закрыть попап
 	add_user_profile_close_popup.addEventListener('click', function(){
