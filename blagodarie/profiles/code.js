@@ -86,7 +86,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 		},
 		body: formdata
 	}).then(response => response.ok ? response.text() : console.log('bad'))
-	.then(result => console.log(result))
+	.then(result => result.ok ? console.log('ok') : console.log('wrong') )
 	.catch(error => console.log('error', error));
 	
 	
