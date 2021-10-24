@@ -66,3 +66,12 @@ table img{
 	margin-bottom: 0;
 	font-weight: 700;
 }
+#user_table_body tr{
+	background-color: #fff;
+	transition: .4s;
+}
+#user_table_body tr:hover{
+	cursor: pointer;
+	background-color: #eee4e2;
+	transition: .4s;
+}

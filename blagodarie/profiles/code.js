@@ -34,6 +34,7 @@ async function myProfilesinfo() {
 		console.log(response[i]);
 		let tr = document.createElement('tr');
 		tr.classList.add(response[i].uuid);
+		
 		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : response[i].photo}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td>Нет данных</td>`;
 		user_table_body.append(tr); 
 	}
