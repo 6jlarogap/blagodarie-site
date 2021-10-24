@@ -200,4 +200,11 @@ table img{
 		margin-top: 7px;
 		margin-bottom: 7px;
 	}
+	.add_user_profile_container{
+		width: fit-content;
+   		height: fit-content;
+		padding: 0 7%;
+   	 	z-index: 10;
+    	min-width: 320px;
+	}
 }
