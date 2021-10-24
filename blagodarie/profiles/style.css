@@ -106,6 +106,17 @@ table img{
 	opacity: 1;
 	transition: .4s;
 }
+.add_user_profile_container{
+	width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff;
+	display: none;
+}
+
+
 @media(max-width: 900px){
 	.user_changed{
 		opacity: 1;
