@@ -106,3 +106,17 @@ table img{
 	opacity: 1;
 	transition: .4s;
 }
+@media(max-width: 900px){
+	.user_changed{
+		opacity: 1;
+	}
+	.bd_dd{
+		flex-direction: column;
+	}
+	.user_changed{
+		width: 100%;
+		justify-content: space-around;
+		margin-top: 7px;
+		margin-bottom: 7px;
+	}
+}
