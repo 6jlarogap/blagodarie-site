@@ -35,17 +35,17 @@ async function myProfilesinfo() {
 		let tr = document.createElement('tr');
 		tr.classList.add(response[i].uuid);
 		
-		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : response[i].photo}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td><div class="bd_dd"><p>Нет данных</p><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/?id=${response[i].uuid}"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info(${response[i].uuid})"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
+		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : response[i].photo}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td><div class="bd_dd"><p>Нет данных</p><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/?id=${response[i].uuid}"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info('${response[i].uuid}')"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
 		user_table_body.append(tr); 
 	}
 }
 
 window.onload = myProfilesinfo();
 
-function user_changed_info(/*id*/){
+function user_changed_info(id){
 	let add_user_profile_container = document.querySelector('.add_user_profile_container');
 	add_user_profile_container.style.display = "block";
-	//console.log(id);
+	console.log(id);
 }
 //Добавить картинку род
 
