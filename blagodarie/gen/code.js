@@ -1037,10 +1037,10 @@ d3.json(apiUrl)
 	}
 	
 	data.connections.forEach(function(d){
-		if (d.is_trust != null){
+		if (d.is_trust == null){
 			var reverse_is_trust = d.is_trust;
 			data.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
+				if (d.source == dd.target && d.target == dd.source && dd.is_trust == null){
 					reverse_is_trust = dd.is_trust;
 				}
 			});
