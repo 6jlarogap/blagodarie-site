@@ -82,6 +82,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		formdata.append("first_name", user_profile_name_inp.value);
 		formdata.append("last_name", user_profile_surname_inp.value);
 		formdata.append("middle_name", user_profile_middlename_inp.value);
+		formdata.append("dob", add_user_profile_bd.value);
+		formdata.append("dod", add_user_profile_dd.value);
 		async function add_gen(){
 		const response = await fetch(`${settings.api}api/profile`, {
 		method: "PUT",
