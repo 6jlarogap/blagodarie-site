@@ -133,11 +133,52 @@ table img{
 .add_user_profile_fio input{
 	border: 0;
     border-bottom: 1px solid #ccc;
+	outline: none;
 }
-
-
-
-
+.add_user_profile_center_bddd_nophoto{
+	margin-top: 6%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.add_user_profile_bddd_cont{
+	display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.add_user_profile_bddd_cont input{
+	border: 0;
+    border-bottom: 1px solid #ccc;
+	outline: none;
+}
+.add_user_profile_bottom_cont{
+	margin-top: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.add_user_profile_bottom_cont input{
+	border: 0;
+    border-bottom: 1px solid #ccc;
+	outline: none;
+}
+.add_user_profile_bottom_cont p{
+	margin-bottom: 2px;
+}
+.add_user_profile_overbottom{
+	margin-top: 5%;
+    width: 18%;
+    margin-left: 41%;
+}
+.add_user_profile_close_popup{
+	cursor: pointer;
+    position: absolute;
+    top: 2%;
+    right: 14%;
+    background-color: #ccc;
+    padding: 5px 10px;
+    border-radius: 7px;
+}
 
 
 
