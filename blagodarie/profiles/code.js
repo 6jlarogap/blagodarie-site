@@ -43,6 +43,21 @@ async function myProfilesinfo() {
 window.onload = myProfilesinfo();
 
 
+async function add_gen(){
+		const response = await fetch(`${settings.api}api/profile`, {
+		method: "PUT",
+		headers: {
+			"Authorization": `Token ${getCookie("auth_token")}`,
+			"Content-Type": "form-data"
+		},
+		body: JSON.stringify({"uuid": id, "first_name": user_profile_name_inp.value})
+		}).then(data => data.json());
+		console.log(response);
+		
+		}
+
+
+
 //редактировать профиль
 function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 	let add_user_profile_container = document.querySelector('.add_user_profile_container');
@@ -85,18 +100,6 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 
 
 
-async function add_gen(){
-		const response = await fetch(`${settings.api}api/profile`, {
-		method: "PUT",
-		headers: {
-			"Authorization": `Token ${getCookie("auth_token")}`,
-			"Content-Type": "form-data"
-		},
-		body: JSON.stringify({"uuid": id, "first_name": user_profile_name_inp.value})
-		}).then(data => data.json());
-		console.log(response);
-		
-		}
 
 
 
