@@ -107,8 +107,8 @@ table img{
 	transition: .4s;
 }
 .add_user_profile_container{
-	width: 100%;
-    height: 100%;
+	width: fit-content;
+    height: fit-content;
     position: absolute;
     top: 0;
     left: 0;
