@@ -207,4 +207,32 @@ table img{
    	 	z-index: 10;
     	min-width: 320px;
 	}
+	.add_user_profile_top_cont{
+		margin-top: 13%;
+    	flex-direction: column;
+    	align-items: flex-start;
+	}
+	.add_user_profile_photo{
+		width: 100%;
+    	height: 100%;
+	}
+	.add_user_profile_center_bddd_nophoto{
+		align-items: center;
+    	justify-content: space-between;
+    	flex-direction: column;
+	}
+	.add_user_profile_bddd_cont{
+		margin-top: 4%;
+	}
+	.add_user_profile_bddd_inputs{
+		display: flex;
+	}
+	.add_user_profile_overbottom{
+		width: 38%;
+    	margin-left: 31%;
+	}
+	.add_user_profile_close_popup{
+		top: 1%;
+    	right: 5%;
+	}
 }
