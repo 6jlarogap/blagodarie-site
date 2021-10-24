@@ -83,14 +83,14 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		
 		
 		
-		async function add_user_parents(operation_type_id){
+		async function add_user_parents(operation_type_id, add_user_profile_mother_input){
 		const response = await fetch(`${settings.api}api/addoperation`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
-		body: JSON.stringify({"user_id_from": add_user_profile_mother_input.value, "user_id_to": id, "operation_type_id": operation_type_id})
+		body: JSON.stringify({"user_id_from": add_user_profile_mother_input, "user_id_to": id, "operation_type_id": operation_type_id})
 	}).then(data => data.json());
 }
 		
@@ -103,6 +103,16 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		}
 }).then(data => data.json());
 			console.log(response);
+			for(let i = 0; i<response.connections.length; i++){
+				if(response.connections[i].target == id){
+					if(response.connections[i].source == add_user_profile_mother_input.value && response.connections[i].target == id){
+					   console.log('То же что и было');
+					}else{
+						add_user_parents(7, response.connections[i].source);
+						add_user_parents(6, add_user_profile_mother_input.value);
+					}
+				}
+			}
 		}
 		myProfilesinfo();
 		
