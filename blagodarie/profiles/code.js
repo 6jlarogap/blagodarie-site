@@ -78,7 +78,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 		formdata.append("last_name", user_profile_surname_inp.value);
 		async function add_gen(){
 		const response = await fetch(`${settings.api}api/profile`, {
-		method: "POST",
+		method: "PUT",
 		headers: {
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
