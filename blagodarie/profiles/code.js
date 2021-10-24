@@ -69,6 +69,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 	
 	
 	add_user_profile_overbottom.addEventListener('click', function(){
+		await add_gen();
 		async function add_gen(){
 		const response = await fetch(`${settings.api}api/profile`, {
 		method: "PUT",
@@ -81,7 +82,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 		console.log(response);
 		
 		}
-		await add_gen();
+		
 		
 		
 		
