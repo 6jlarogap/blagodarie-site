@@ -947,7 +947,7 @@ d3.json(apiUrl)
 	let selected_val_num = +url.searchParams.get('q');
 	let but_next = document.querySelector('#btn_next');
 	if(data.users.length == selected_val_num){
-		but_next.style.background = '#6a2300';
+		but_next.style.background = '#8b0000';
 		but_next.style.cursor = 'pointer';
 		but_next.style.pointerEvents = 'all';
 	}
