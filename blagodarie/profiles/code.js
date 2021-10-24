@@ -35,7 +35,7 @@ async function myProfilesinfo() {
 		let tr = document.createElement('tr');
 		tr.classList.add(response[i].uuid);
 		
-		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : response[i].photo}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td>Нет данных<div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/?id=${response[i].uuid}"><i class="fa fa-link" aria-hidden="true"></i></a><button><i class="fa fa-pencil" aria-hidden="true"></i></button></div></td>`;
+		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : response[i].photo}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td class="bd_dd"><p>Нет данных</p><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/?id=${response[i].uuid}"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info"><i class="fa fa-pencil" aria-hidden="true"></i></div></div></td>`;
 		user_table_body.append(tr); 
 	}
 }
