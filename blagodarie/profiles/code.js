@@ -90,7 +90,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	}).then(data => data.json());
 }
 		
-		add_user_parents(7);
+		//add_user_parents(7);
 		add_user_parents(6);
 		
 		
