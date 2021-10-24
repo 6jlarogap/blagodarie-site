@@ -42,10 +42,10 @@ async function myProfilesinfo() {
 
 window.onload = myProfilesinfo();
 
-function user_changed_info(id){
+function user_changed_info(/*id*/){
 	let add_user_profile_container = document.querySelector('.add_user_profile_container');
 	add_user_profile_container.style.display = "block";
-	console.log(id);
+	//console.log(id);
 }
 //Добавить картинку род
 
