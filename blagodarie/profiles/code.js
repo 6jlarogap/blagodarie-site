@@ -96,7 +96,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		
 		
 		async function myProfilesinfo() {
-		const response = await fetch(`${settings.api}api/profile`, {
+		const response = await fetch(`${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
