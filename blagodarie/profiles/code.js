@@ -35,7 +35,7 @@ async function myProfilesinfo() {
 		let tr = document.createElement('tr');
 		tr.classList.add(response[i].uuid);
 		
-		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : response[i].photo}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td><div class="bd_dd"><p>Нет данных</p><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/?id=${response[i].uuid}"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info('${response[i].uuid}', '${response[i].last_name}', '${response[i].first_name}', '${response[i].middle_name}')"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
+		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : response[i].photo}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td><div class="bd_dd"><p>Нет данных</p><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/?id=${response[i].uuid}"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info('${response[i].uuid}', '${response[i].last_name}', '${response[i].first_name}', '${response[i].middle_name}', '${response[i].photo}')"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
 		user_table_body.append(tr); 
 	}
 }
@@ -44,18 +44,19 @@ window.onload = myProfilesinfo();
 
 
 //редактировать профиль
-function user_changed_info(id, last_name, first_name, middle_name){
+function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 	let add_user_profile_container = document.querySelector('.add_user_profile_container');
 	let add_user_profile_close_popup = document.querySelector('.add_user_profile_close_popup');
 	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
 	let user_profile_name_inp = document.querySelector('.user_profile_name_inp');
 	let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp');
+	let add_user_profile_photo = document.querySelector('.add_user_profile_photo');
 	
 	
 	user_profile_surname_inp.value = last_name;
 	user_profile_name_inp.value = first_name;
 	user_profile_middlename_inp.value = middle_name;
-	
+	add_user_profile_photo.setAttribute('src', `${usr_photo == '' ? settings.url+'images/default_avatar.png' : usr_photo}`);
 	
 	
 	add_user_profile_container.style.display = "block";
