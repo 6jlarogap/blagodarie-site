@@ -1115,12 +1115,12 @@ d3.json(apiUrl)
 		image: `${settings.url}images/home.png`,
 		nodeType: NODE_TYPES.HOME
 	});
-	nodes.push({
+	/*nodes.push({
 		id: GENESIS_ID,
 		text: "Род",
 		image: `${settings.url}images/genesis.png`,
 		nodeType: NODE_TYPES.GENESIS
-	});
+	});*/
 	
 	}else{
 		nodes.push({
