@@ -84,7 +84,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
 		body: formdata
-	}).then(response => response.text())
+	}).then(response => response.text(), console.log(response))
 	.then(result => result.ok ? console.log(result) : console.log('hhh'));
 	
 	
