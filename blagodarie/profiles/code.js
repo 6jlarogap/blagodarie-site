@@ -79,7 +79,6 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo){
 		const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
 		headers: {
-			"Content-Type": "application/json",
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
 		body: formdata
