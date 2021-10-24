@@ -129,11 +129,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				add_gen();
 				
 			}else{
-				add_user_profile_container.style.display = "none";
+				
 				window.location.reload();
 			}
 		}else{
-		add_user_profile_container.style.display = "none";
+		window.location.reload();
 		}
 	})
 	
