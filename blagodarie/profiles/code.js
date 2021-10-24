@@ -106,7 +106,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	//закрыть попап
 	add_user_profile_close_popup.addEventListener('click', function(){
 		if(user_profile_surname_inp.value != last_name || user_profile_name_inp.value != first_name || user_profile_middlename_inp.value != middle_name || add_user_profile_bd.value != dob || add_user_profile_dd.value != dod){
-			let user_profile_not_save = confirm('Есть несохранённые данные. /n Сохранить?');
+			let user_profile_not_save = confirm('Есть несохранённые данные. Сохранить?');
 			if(user_profile_not_save == true){
 						var formdata = new FormData();
 						formdata.append("uuid", id);
@@ -130,6 +130,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				
 			}else{
 				add_user_profile_container.style.display = "none";
+				window.location.reload();
 			}
 		}else{
 		add_user_profile_container.style.display = "none";
