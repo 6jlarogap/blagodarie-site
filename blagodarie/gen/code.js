@@ -774,7 +774,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 });
 
 	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
-
+	console.log(apiUrl)
 
 var isConnection;
 var isTrust;
