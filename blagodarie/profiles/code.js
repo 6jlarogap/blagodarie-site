@@ -112,7 +112,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
             reader.readAsDataURL(blob);
             reader.onloadend = function() {
                 var base64data = reader.result;
-
+		
                 $.ajax({
                     type: "PUT",
                     dataType: "json",
@@ -120,7 +120,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
     				xhr.setRequestHeader ("Authorization", `Token ${getCookie("auth_token")}`);
 					},
                     url: `${settings.api}api/profile`,
-                    data: {image: base64data},
+                    data: {photo: base64data, uuid: id},
                     success: function(data) { 
                         bs_modal.modal('hide');
                         alert("success upload image");
