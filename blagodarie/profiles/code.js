@@ -117,21 +117,21 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
                 var base64data = reader.result;
 				var new_ing = new Image();
 				new_ing.src = base64data;
+				body.append
 				//start
 				
 				var form1 = new FormData();
 				form1.append("uuid", id);
 				form1.append("photo", new_ing);
 				form1.append("photo_content", "binary");
-				console.log(base64data);
+				console.log(new_ing);
 
 				var settings = {
   					"url": "https://api.dev.blagodarie.org/api/profile",
   					"method": "PUT",
   					"timeout": 0,
   					"headers": {
-  					  "Authorization": `Token ${getCookie("auth_token")}`,
-						'Content-Type': 'multipart/form-data'
+  					  "Authorization": `Token ${getCookie("auth_token")}`
   					},
   					"processData": false,
   					"mimeType": "multipart/form-data",
