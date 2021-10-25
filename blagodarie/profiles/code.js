@@ -104,7 +104,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
         canvas = cropper.getCroppedCanvas({
             width: 160,
             height: 160,
-        }).toDataURL("image/png");
+        });//.toDataURL("image/png");
 		
 		console.log(canvas);
         /*canvas.toBlob(function(blob) {
