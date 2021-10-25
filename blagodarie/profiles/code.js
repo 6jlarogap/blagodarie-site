@@ -116,7 +116,34 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
             reader.onloadend = function() {
                 var base64data = reader.result;
 				
-                $.ajax({
+				//start
+				
+				var form1 = new FormData();
+				form1.append("uuid", "4e1c67fb-3190-412d-8fba-204012935e2d");
+				form1.append("photo", base64data, "");
+
+				var settings = {
+  					"url": "https://api.dev.blagodarie.org/api/profile",
+  					"method": "PUT",
+  					"timeout": 0,
+  					"headers": {
+  					  "Authorization": `Token ${getCookie("auth_token")}`
+  					},
+  					"processData": false,
+  					"mimeType": "multipart/form-data",
+  					"contentType": false,
+  					"data": form1
+					};
+
+					$.ajax(settings).done(function (response) {
+  						console.log(response);
+					});
+				
+				
+				
+				
+				
+                /*$.ajax({
                     type: "PUT",
                     //dataType: "json",
 					beforeSend: function (xhr) {
@@ -128,7 +155,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
                         bs_modal.modal('hide');
                         alert("success upload image");
                     }
-                });
+                });*/
             };
         });
     });
