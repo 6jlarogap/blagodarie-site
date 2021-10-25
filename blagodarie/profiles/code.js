@@ -116,6 +116,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
                 $.ajax({
                     type: "PUT",
                     dataType: "json",
+					Authorization: `Token ${getCookie("auth_token")}`,
                     url: `${settings.api}api/profile`,
                     data: {image: base64data},
                     success: function(data) { 
