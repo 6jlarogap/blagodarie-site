@@ -105,29 +105,35 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
             width: 160,
             height: 160,
         });
-
-        canvas.toBlob(function(blob) {
+		
+		var formdata1 = new FormData();
+		formdata1.append("uuid", id);
+		formdata1.append("photo", canvas);
+		
+		
+		
+        /*canvas.toBlob(function(blob) {
             url = URL.createObjectURL(blob);
             var reader = new FileReader();
             reader.readAsDataURL(blob);
             reader.onloadend = function() {
-                var base64data = reader.result;
-		
+                var base64data = reader.result;*/
+				
                 $.ajax({
                     type: "PUT",
-                    dataType: "json",
+                    //dataType: "json",
 					beforeSend: function (xhr) {
     				xhr.setRequestHeader ("Authorization", `Token ${getCookie("auth_token")}`);
 					},
                     url: `${settings.api}api/profile`,
-                    data: {photo: base64data, uuid: id},
+                    data: formdata1,
                     success: function(data) { 
                         bs_modal.modal('hide');
                         alert("success upload image");
                     }
                 });
             };
-        });
+        //});
     });
 	
 	//конец
