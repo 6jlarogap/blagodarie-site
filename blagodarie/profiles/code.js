@@ -117,7 +117,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
                 var base64data = reader.result;
 				var new_ing = new Image();
 				new_ing.src = base64data;
-				body.append
+				
 				//start
 				
 				var form1 = new FormData();
