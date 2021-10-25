@@ -127,7 +127,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   					"method": "PUT",
   					"timeout": 0,
   					"headers": {
-  					  "Authorization": `Token ${getCookie("auth_token")}`
+  					  "Authorization": `Token ${getCookie("auth_token")}`,
+						'Content-Type': 'multipart/form-data'
   					},
   					"processData": false,
   					"mimeType": "multipart/form-data",
