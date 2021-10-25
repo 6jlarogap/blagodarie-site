@@ -746,6 +746,16 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 
 
 
+// Показать глубину рекурсии
+
+if(!url.searchParams.has('d')){
+	url.searchParams.append('d', 1);
+	window.location.href = url.href;
+}
+let recur_select_value = document.querySelector('.recur_select_value');
+recur_select_value.innerHTML = url.searchParams.get('d');
+
+
 document.querySelector(".mapid_clean").addEventListener("click", async () => {
 			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
@@ -763,7 +773,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 	window.location.reload()
 });
 
-	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}`;
+	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 
 
 var isConnection;
@@ -1837,14 +1847,6 @@ async function onNodeClick(nodeType, uuid, txt){
 	}
 }
 
-// Показать глубину рекурсии
-
-if(!url.searchParams.has('rec')){
-	url.searchParams.append('rec', 1);
-	window.location.href = url.href;
-}
-let recur_select_value = document.querySelector('.recur_select_value');
-recur_select_value.innerHTML = url.searchParams.get('rec');
 
 
 
