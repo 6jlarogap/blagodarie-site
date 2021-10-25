@@ -107,20 +107,21 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
         }).toDataURL("image/png");
 		
 		console.log(canvas);
-        canvas.toBlob(function(blob) {
+        /*canvas.toBlob(function(blob) {
             url = URL.createObjectURL(blob);
 			console.log(url);
             var reader = new FileReader();
 			console.log(reader);
             reader.readAsDataURL(blob);
             reader.onloadend = function() {
-                var base64data = reader.result;
+                var base64data = reader.result;*/
 				
 				//start
 				
 				var form1 = new FormData();
-				form1.append("uuid", "4e1c67fb-3190-412d-8fba-204012935e2d");
-				form1.append("photo", base64data, "");
+				form1.append("uuid", id);
+				form1.append("photo", canvas, "");
+				console.log(form1);
 
 				var settings = {
   					"url": "https://api.dev.blagodarie.org/api/profile",
@@ -157,8 +158,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
                         alert("success upload image");
                     }
                 });*/
-            };
-        });
+            //};
+        //});
     });
 	
 	//конец
