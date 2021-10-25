@@ -72,7 +72,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
             image.src = url;
             bs_modal.modal('show');
         };
-
+		
 
         if (files && files.length > 0) {
             file = files[0];
@@ -104,7 +104,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
         canvas = cropper.getCroppedCanvas({
             width: 160,
             height: 160,
-        });
+        }).toDataURL("image/png");
 		
 		console.log(canvas);
         canvas.toBlob(function(blob) {
