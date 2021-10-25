@@ -106,18 +106,15 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
             height: 160,
         });
 		
-		var formdata1 = new FormData();
-		formdata1.append("uuid", id);
-		formdata1.append("photo", canvas);
-		
-		
-		
-        /*canvas.toBlob(function(blob) {
+		console.log(canvas);
+        canvas.toBlob(function(blob) {
             url = URL.createObjectURL(blob);
+			console.log(url);
             var reader = new FileReader();
+			console.log(reader);
             reader.readAsDataURL(blob);
             reader.onloadend = function() {
-                var base64data = reader.result;*/
+                var base64data = reader.result;
 				
                 $.ajax({
                     type: "PUT",
@@ -132,8 +129,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
                         alert("success upload image");
                     }
                 });
-            //};
-        //});
+            };
+        });
     });
 	
 	//конец
