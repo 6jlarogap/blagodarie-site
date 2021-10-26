@@ -229,6 +229,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 }).then(data => data.json());
 			if(add_user_profile_mother_input.value.includes('id')){
 				url = add_user_profile_mother_input.value;
+				console.log(url)
 				add_user_profile_mother_input.value = url.searchParams.get('id');
 			}
 			console.log(response);
