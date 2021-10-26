@@ -78,7 +78,7 @@ table img{
 .bd_dd{
 	display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 }
 .bd_dd p{
 	margin-bottom: 0;
