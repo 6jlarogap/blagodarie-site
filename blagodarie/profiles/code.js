@@ -236,11 +236,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				
 				let str = add_user_profile_mother_input.value;
 					//Обрезаем конец:
-				var from = 0; 
-				var to = str.search('id=');
+				var from = str.search('id='); 
+				var to = str.length;
 				let newstr = str.substr(from,to);
 				console.log(newstr);
-				
+				add_user_profile_mother_input.value = newstr;
 			}
 			console.log(response);
 			for(let i = 0; i<response.connections.length; i++){
@@ -249,7 +249,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					   console.log('То же что и было');
 					}else{
 						add_user_parents(7, response.connections[i].source);
-						add_user_parents(6, /*add_user_profile_mother_input.value*/b);
+						add_user_parents(6, add_user_profile_mother_input.value);
 						console.log(b)
 					}
 				}
