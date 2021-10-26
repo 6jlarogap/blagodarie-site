@@ -231,7 +231,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 }).then(data => data.json());
-			var b;
+			//var b;
 			if(add_user_profile_mother_input.value.includes('id')){
 				let str = add_user_profile_mother_input.value;
 					//Обрезаем конец:
@@ -240,6 +240,16 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				let newstr = str.substr(from,to);
 				console.log(newstr);
 				add_user_profile_mother_input.value = newstr;
+			}
+			//var b;
+			if(add_user_profile_mother_input.value.includes('id')){
+				let str3 = add_user_profile_father_input.value;
+					//Обрезаем конец:
+				var from3 = str3.search('id=') + 3; 
+				var to3 = str3.length;
+				let newstr3 = str3.substr(from3,to3);
+				console.log(newstr3);
+				add_user_profile_father_input.value = newstr3;
 			}
 			console.log(response);
 			for(let i = 0; i<response.connections.length; i++){
@@ -253,8 +263,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					}
 				}
 				else{
-					add_user_parents(8, add_user_profile_mother_input.value);
-					console.log(add_user_profile_mother_input.value)
+					/*add_user_parents(8, add_user_profile_mother_input.value);
+					console.log(add_user_profile_mother_input.value)*/
 				}
 			}
 		}
