@@ -80,6 +80,24 @@ table img{
     align-items: center;
     justify-content: space-around;
 }
+.bd_dd_cont{
+	display: flex;
+}
+.bd_dd_cont p:nth-child(1){
+	width: 76px;
+	display: flex;
+	justify-content: flex-end;
+}
+.bd_dd_cont p:nth-child(1){
+	width: 5px;
+	display: flex;
+	justify-content: center;
+}
+.bd_dd_cont p:nth-child(3){
+	width: 76px;
+	display: flex;
+	justify-content: flex-start;
+}
 .bd_dd p{
 	margin-bottom: 0;
 }
