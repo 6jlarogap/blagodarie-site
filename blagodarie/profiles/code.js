@@ -238,7 +238,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					//Обрезаем конец:
 				var from = str.search('$100'); 
 				var to = str.length;
-				$newstr = str.substring(from,to);
+				let newstr = str.substring(from,to);
+				console.log(newstr);
 				
 			}
 			console.log(response);
