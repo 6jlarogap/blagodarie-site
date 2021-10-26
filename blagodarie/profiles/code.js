@@ -135,8 +135,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				
 				var form1 = new FormData();
 				form1.append("uuid", id);
-				form1.append("photo", str1);
-				console.log(str1);
+				form1.append("photo", newstr1);
+				console.log(newstr1);
 
 				var settings = {
   					"url": "https://api.dev.blagodarie.org/api/profile",
