@@ -227,10 +227,12 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 }).then(data => data.json());
+			let output;
 			if(add_user_profile_mother_input.value.includes('id')){
 				let input = add_user_profile_mother_input.value;
 				let output = input.slice('id=')[1];
-				add_user_profile_mother_input.value = output;
+				console.log(output)
+				
 			}
 			console.log(response);
 			for(let i = 0; i<response.connections.length; i++){
@@ -239,7 +241,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					   console.log('То же что и было');
 					}else{
 						add_user_parents(7, response.connections[i].source);
-						add_user_parents(6, add_user_profile_mother_input.value);
+						add_user_parents(6, /*add_user_profile_mother_input.value*/output);
+						console.log(output)
 					}
 				}
 			}
