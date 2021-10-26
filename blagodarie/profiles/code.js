@@ -148,7 +148,13 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   					"processData": false,
   					"mimeType": "multipart/form-data",
   					"contentType": false,
-  					"data": form1
+  					"data": form1,
+					success: function(){
+						window.location.reload();
+					},
+					error: function(){
+						console.log('ошибка');
+					}
 					};
 
 					$.ajax(settings).done(function (response) {
@@ -159,19 +165,6 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				
 				
 				
-                /*$.ajax({
-                    type: "PUT",
-                    //dataType: "json",
-					beforeSend: function (xhr) {
-    				xhr.setRequestHeader ("Authorization", `Token ${getCookie("auth_token")}`);
-					},
-                    url: `${settings.api}api/profile`,
-                    data: formdata1,
-                    success: function(data) { 
-                        bs_modal.modal('hide');
-                        alert("success upload image");
-                    }
-                });*/
             };
         });
     });
