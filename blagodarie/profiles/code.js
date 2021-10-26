@@ -228,9 +228,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		}
 }).then(data => data.json());
 			if(add_user_profile_mother_input.value.includes('id')){
-				url = add_user_profile_mother_input.value;
-				console.log(url)
-				add_user_profile_mother_input.value = url.searchParams.get('id');
+				let input = add_user_profile_mother_input.value;
+				let output = input.slice('id=')[1];
+				add_user_profile_mother_input.value = output;
 			}
 			console.log(response);
 			for(let i = 0; i<response.connections.length; i++){
