@@ -248,7 +248,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 						console.log(b)
 					}
 				}
-				else(console.log(response.connections[i].target, id))
+				else{
+					add_user_parents(6, add_user_profile_mother_input.value);
+				}
 			}
 		}
 		myProfilesinfo();
