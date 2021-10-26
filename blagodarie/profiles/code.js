@@ -234,11 +234,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				//console.log(str)
 				//console.log(typeof(add_user_profile_mother_input.value))
 				
-				str = "50ml+$100";
+				let str = add_user_profile_mother_input.value;
 					//Обрезаем конец:
-				var from = str.search('$100'); 
-				var to = str.length;
-				let newstr = str.substring(from,to);
+				var from = 0; 
+				var to = str.search('id=');
+				let newstr = str.substr(from,to);
 				console.log(newstr);
 				
 			}
