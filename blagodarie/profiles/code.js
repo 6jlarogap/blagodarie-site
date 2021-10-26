@@ -242,7 +242,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				add_user_profile_mother_input.value = newstr;
 			}
 			//var b;
-			if(add_user_profile_mother_input.value.includes('id')){
+			if(add_user_profile_father_input.value.includes('id')){
 				let str3 = add_user_profile_father_input.value;
 					//Обрезаем конец:
 				var from3 = str3.search('id=') + 3; 
