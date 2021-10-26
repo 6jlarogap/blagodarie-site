@@ -229,11 +229,6 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 }).then(data => data.json());
 			var b;
 			if(add_user_profile_mother_input.value.includes('id')){
-				//var str = add_user_profile_mother_input.value;
-				//var b = str.slice('id=')[1];
-				//console.log(str)
-				//console.log(typeof(add_user_profile_mother_input.value))
-				
 				let str = add_user_profile_mother_input.value;
 					//Обрезаем конец:
 				var from = str.search('id=') + 3; 
@@ -253,6 +248,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 						console.log(b)
 					}
 				}
+				else(console.log('nonon'))
 			}
 		}
 		myProfilesinfo();
