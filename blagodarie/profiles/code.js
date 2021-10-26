@@ -259,12 +259,12 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					}else{
 						add_user_parents(7, response.connections[i].source);
 						add_user_parents(8, add_user_profile_mother_input.value);
-						console.log(b)
+						
 					}
 				}
 				else{
-					/*add_user_parents(8, add_user_profile_mother_input.value);
-					console.log(add_user_profile_mother_input.value)*/
+					add_user_parents(8, add_user_profile_mother_input.value);
+					console.log(add_user_profile_mother_input.value)
 				}
 			}
 		}
