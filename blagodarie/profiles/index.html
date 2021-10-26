@@ -57,7 +57,15 @@
 	<!-- Попап окно "Добавить профиль" -->
 	<div class="add_user_profile_container">
 		<div class="add_user_profile_top_cont">
+		<div class="add_user_photo_cont">
 			<img class="add_user_profile_photo">
+			<!--Закачка файлов-->
+			<div class="container">
+      			<input type="file" name="image" class="image" multiple>
+           	 	<img src="../images/pen.png" class="cropper_edit_but">
+        	</div>
+		<!--Закачка файлов-->
+			</div>
 			<div class="add_user_profile_fio">
 				<p class="add_user_profile_surname">Фамилия</p>
 				<input type="text" class="user_profile_surname_inp">
@@ -68,12 +76,7 @@
 			</div>
 		</div>
 		<div class="add_user_profile_center_cont">
-		<!--Закачка файлов-->
-		<div class="container">
-      		<input type="file" name="image" class="image" multiple>
-            <img src="../images/pen.png" class="cropper_edit_but">
-        </div>
-		<!--Закачка файлов-->
+		
 			<div class="add_user_profile_center_bddd_nophoto">
 				<button class="nophoto_but">Обезличить профиль</button>
 				<div class="add_user_profile_bddd_cont">
