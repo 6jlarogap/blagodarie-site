@@ -128,7 +128,6 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				var form1 = new FormData();
 				form1.append("uuid", id);
 				form1.append("photo", base64data);
-				form1.append("photo_content", "binary");
 				console.log(base64data);
 
 				var settings = {
