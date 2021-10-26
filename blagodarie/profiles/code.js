@@ -232,6 +232,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				var str = add_user_profile_mother_input.value;
 				var b = str.slice('id=')[1];
 				console.log(add_user_profile_mother_input.value)
+				console.log(typeof(add_user_profile_mother_input.value))
 				
 			}
 			console.log(response);
