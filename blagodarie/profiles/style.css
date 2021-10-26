@@ -94,7 +94,7 @@ table img{
     position: absolute!important;
     top: 0!important;
     left: 0!important;
-	background-color: #fff;
+	background-color: #8b0000;
 	cursor: pointer;
 }
 .cropper_edit_but{
@@ -222,9 +222,10 @@ table img{
     position: absolute;
     top: 2%;
     right: 14%;
-    background-color: #ccc;
+    background-color: #8b0000;
     padding: 5px 10px;
     border-radius: 7px;
+	color: #fff;
 }
 .add_user_profile_photo{
 	width: 320px;
