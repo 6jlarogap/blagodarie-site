@@ -83,6 +83,32 @@ table img{
 .bd_dd_cont{
 	display: flex;
 }
+.add_user_photo_cont{
+	position: relative;
+}
+.add_user_photo_cont .container{
+	width: 16px!important;
+    height: 16px!important;
+    padding: 0!important;
+    margin: 0!important;
+    position: absolute!important;
+    top: 0!important;
+    left: 0!important;
+}
+.cropper_edit_but{
+	position: absolute;
+    left: 0;
+    right: 0
+}
+.image{
+	width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+	cursor: pointer;
+}
 .bd_dd_cont p:nth-child(1){
 	width: 76px;
 	display: flex;
