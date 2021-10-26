@@ -125,10 +125,18 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				
 				//start
 				
+				
+				
+				let str1 = base64data;
+					//Обрезаем конец:
+				var from1 = str1.search('base64') + 7; 
+				var to1 = str1.length;
+				let newstr1 = str1.substr(from1,to1);
+				
 				var form1 = new FormData();
 				form1.append("uuid", id);
-				form1.append("photo", base64data);
-				console.log(base64data);
+				form1.append("photo", str1);
+				console.log(str1);
 
 				var settings = {
   					"url": "https://api.dev.blagodarie.org/api/profile",
