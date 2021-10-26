@@ -88,7 +88,7 @@ table img{
 	display: flex;
 	justify-content: flex-end;
 }
-.bd_dd_cont p:nth-child(1){
+.bd_dd_cont p:nth-child(2){
 	width: 5px;
 	display: flex;
 	justify-content: center;
