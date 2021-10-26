@@ -229,10 +229,16 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 }).then(data => data.json());
 			var b;
 			if(add_user_profile_mother_input.value.includes('id')){
-				var str = add_user_profile_mother_input.value;
-				var b = str.slice('id=')[1];
-				console.log(str)
-				console.log(typeof(add_user_profile_mother_input.value))
+				//var str = add_user_profile_mother_input.value;
+				//var b = str.slice('id=')[1];
+				//console.log(str)
+				//console.log(typeof(add_user_profile_mother_input.value))
+				
+				str = "50ml+$100";
+					//Обрезаем конец:
+				var from = str.search('$100'); 
+				var to = str.length;
+				$newstr = str.substring(from,to);
 				
 			}
 			console.log(response);
