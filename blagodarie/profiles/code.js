@@ -231,7 +231,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			if(add_user_profile_mother_input.value.includes('id')){
 				let input = add_user_profile_mother_input.value;
 				var b = input.slice('id=')[1];
-				console.log(output)
+				console.log(b)
 				
 			}
 			console.log(response);
@@ -242,7 +242,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					}else{
 						add_user_parents(7, response.connections[i].source);
 						add_user_parents(6, /*add_user_profile_mother_input.value*/b);
-						console.log(output)
+						console.log(b)
 					}
 				}
 			}
