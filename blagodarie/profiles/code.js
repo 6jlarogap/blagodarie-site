@@ -60,6 +60,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
 	let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
 	
+	
+	
+	
+	
+	
 	//обрезка файлов
 	var bs_modal = $('#modal');
     var image = document.getElementById('image');
@@ -222,6 +227,10 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 }).then(data => data.json());
+			if(add_user_profile_mother_input.value.includes('id')){
+				url = add_user_profile_mother_input.value;
+				console.log(url);
+			}
 			console.log(response);
 			for(let i = 0; i<response.connections.length; i++){
 				if(response.connections[i].target == id){
