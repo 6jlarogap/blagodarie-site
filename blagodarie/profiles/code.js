@@ -280,7 +280,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			if(user_profile_not_save == true){
 				window.location.reload();
 			}else{
-				var formdata = new FormData();
+				/*var formdata = new FormData();
 						formdata.append("uuid", id);
 						formdata.append("first_name", user_profile_name_inp.value);
 						formdata.append("last_name", user_profile_surname_inp.value);
@@ -298,7 +298,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					.then(result => console.log(result))
 					.catch(error => console.log('error', error));
 				}
-				add_gen();
+				add_gen();*/
 			}
 		}else{
 		window.location.reload();
