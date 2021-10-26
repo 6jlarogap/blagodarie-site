@@ -189,8 +189,9 @@ table img{
 }
 .add_user_profile_bddd_cont{
 	display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: space-between;
+    width: 43%;
 }
 .add_user_profile_bddd_cont input{
 	border: 0;
