@@ -215,7 +215,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			"Content-Type": "application/json",
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
-		body: JSON.stringify({"user_id_from": add_user_profile_mother_input, "user_id_to": id, "operation_type_id": operation_type_id})
+		body: JSON.stringify({"user_id_from": add_user_profile_mother_input.value, "user_id_to": id, "operation_type_id": operation_type_id})
 	}).then(data => data.json());
 }
 		
