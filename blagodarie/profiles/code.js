@@ -439,23 +439,25 @@ add_profile_but.addEventListener('click', function(){
 					success: function(response){
 						let str = response;
 						let pars = JSON.parse(str);
+						new_uuid = pars.uuid;
 						console.log(pars)
 						console.log(pars.uuid);
+						console.log(new_uuid);
 						
 					},
 					error: function(response){
-						new_uuid = response.uuid;
-						console.log(new_uuid);
+						//new_uuid = response.uuid;
+						//console.log(new_uuid);
 					}
 					};
 
 					$.ajax(settings).done(function (response) {
 						
-						new_uuid = response.uuid;
-						console.log(new_uuid);
-						console.log(response);
-						console.log(response[0]);
-						console.log(typeof(response));
+						//new_uuid = response.uuid;
+						//console.log(new_uuid);
+						//console.log(response);
+						//console.log(response[0]);
+						//console.log(typeof(response));
 						
 					});
 		
