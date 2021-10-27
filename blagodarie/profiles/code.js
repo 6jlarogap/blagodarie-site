@@ -382,6 +382,18 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 }
 
 
+//Добавить новый профиль
+let add_profile_but = document.querySelector('.add_profile_but');
+let add_user_profile_container = document.querySelector('.add_user_profile_container');
+add_profile_but.addEventListener('click', function(){
+	add_user_profile_container.style.display = 'block';
+})
+
+
+
+
+
+
 
 
 
