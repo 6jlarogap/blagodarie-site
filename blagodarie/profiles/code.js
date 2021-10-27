@@ -478,7 +478,7 @@ add_profile_but.addEventListener('click', function(){
 							"Authorization": `Token ${getCookie("auth_token")}`
 						},
 						body: formdata
-						}).then(response => response.ok ? response.text() /*&& window.location.reload()*/ : /*console.log('bad'));
+						}).then(response => response.ok ? response.text() && window.location.reload() : console.log('bad'));
 	
 	
 						}
