@@ -381,6 +381,20 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 }
 
+window.onload = function(){
+if(localStorage.getItem('npuuid')){
+	let firstName;
+	if(localStorage.getItem('fName')){
+		firstName = localStorage.getItem('fName')
+	}
+	 user_changed_info(localStorage.getItem('npuuid'), localStorage.getItem('lastName'), firstName, '', '', null, null);
+	
+}
+}
+
+
+
+
 
 //Добавить новый профиль
 let new_api_str = settings.api
@@ -454,6 +468,7 @@ add_profile_but.addEventListener('click', function(){
 						if(user_profile_name_inp!=''){
 							localStorage.setItem('fName', fName);
 						}
+						window.location.reload();
 						
 						/*formdata.append("uuid", new_uuid);
 						formdata.append("first_name", user_profile_name_inp.value);
