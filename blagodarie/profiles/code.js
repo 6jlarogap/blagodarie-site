@@ -400,7 +400,7 @@ add_profile_but.addEventListener('click', function(){
 	var formdata = new FormData();*/
 	
 	
-	new_api_str = settings.api;
+	let new_api_str = settings.api;
 	
 	//закрыть попап
 	add_user_profile_close_popup.addEventListener('click', function(){
