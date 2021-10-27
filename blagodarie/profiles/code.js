@@ -401,7 +401,7 @@ add_profile_but.addEventListener('click', function(){
 	form.append("first_name", user_profile_name_inp.value);
 	}
 	if(user_profile_surname_inp.value != ''){
-		form.append("last_name", user_profile_name_inp.value);
+		form.append("last_name", user_profile_surname_inp.value);
 	}
 				var settings = {
   					"url": "https://api.dev.blagodarie.org/api/profile",
