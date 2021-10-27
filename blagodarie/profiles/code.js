@@ -263,27 +263,24 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 						add_user_parents(7, response.connections[i].source);
 						add_user_parents(8, add_user_profile_mother_input.value);
 						}
-						/*else if(add_user_profile_father_input.value!= '' && response.connections[i].is_father == true){
+						if(add_user_profile_mother_input.value!= '' && response.connections[i].is_mother == false){
+							add_user_parents(8, add_user_profile_mother_input.value);
+						}
+						if(add_user_profile_mother_input.value == '' && response.connections[i].is_mother == true){
 							add_user_parents(7, response.connections[i].source);
-							add_user_parents(8, add_user_profile_father_input.value);
-						}*/
-					}
-				}
-				else{
-					/*add_user_parents(8, add_user_profile_mother_input.value);
-					console.log(add_user_profile_mother_input.value)*/
-					users_resp.push('none');
-				}
-			}
-			for(let i = 0; i<response.connections.length; i++){
-				if(response.connections[i].target == id){
-					if(response.connections[i].source == add_user_profile_mother_input.value && response.connections[i].target == id && response.connections[i].source == add_user_profile_father_input.value && response.connections[i].target == id){
-					   console.log('То же что и было');
-					}else{
+						}
+						//father
 						if(add_user_profile_father_input.value!= '' && response.connections[i].is_father == true){
 						add_user_parents(7, response.connections[i].source);
-						add_user_parents(8, add_user_profile_father_input.value);
+						add_user_parents(6, add_user_profile_father_input.value);
 						}
+						if(add_user_profile_father_input.value!= '' && response.connections[i].is_father == false){
+							add_user_parents(6, add_user_profile_father_input.value);
+						}
+						if(add_user_profile_father_input.value == '' && response.connections[i].is_father == true){
+							add_user_parents(7, response.connections[i].source);
+						}
+						
 						/*else if(add_user_profile_father_input.value!= '' && response.connections[i].is_father == true){
 							add_user_parents(7, response.connections[i].source);
 							add_user_parents(8, add_user_profile_father_input.value);
@@ -296,7 +293,6 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					users_resp.push('none');
 				}
 			}
-			
 			
 			if(response.connections.length == users_resp.length){
 				if(add_user_profile_father_input.value!= ''){
