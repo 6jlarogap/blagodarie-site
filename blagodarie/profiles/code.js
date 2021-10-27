@@ -447,29 +447,33 @@ add_profile_but.addEventListener('click', function(){
 
 					$.ajax(settings).done(function (response) {
 						
-  						console.log(response);
+						
+						var formdata = new FormData();
+						formdata.append("uuid", new_uuid);
+						formdata.append("first_name", user_profile_name_inp.value);
+						formdata.append("last_name", user_profile_surname_inp.value);
+						formdata.append("middle_name", user_profile_middlename_inp.value);
+						formdata.append("dob", add_user_profile_bd.value);
+						formdata.append("dod", add_user_profile_dd.value);
+						async function add_detail_profile_info(){
+						const response = await fetch(`${settings.api}api/profile`, {
+						method: "PUT",
+						headers: {
+							"Authorization": `Token ${getCookie("auth_token")}`
+						},
+						body: formdata
+						}).then(response => response.ok ? response.text() /*&& window.location.reload()*/ : console.log('bad'));
+	
+	
+						}
+						add_detail_profile_info()
+						
+						
+  						
 					});
 		
 		
-		var formdata = new FormData();
-		formdata.append("uuid", new_uuid);
-		formdata.append("first_name", user_profile_name_inp.value);
-		formdata.append("last_name", user_profile_surname_inp.value);
-		formdata.append("middle_name", user_profile_middlename_inp.value);
-		formdata.append("dob", add_user_profile_bd.value);
-		formdata.append("dod", add_user_profile_dd.value);
-		async function add_detail_profile_info(){
-		const response = await fetch(`${settings.api}api/profile`, {
-		method: "PUT",
-		headers: {
-			"Authorization": `Token ${getCookie("auth_token")}`
-		},
-		body: formdata
-	}).then(response => response.ok ? response.text() /*&& window.location.reload()*/ : console.log('bad'));
-	
-	
-		}
-		add_detail_profile_info()
+		
 		
 		
 		
