@@ -445,7 +445,7 @@ add_profile_but.addEventListener('click', function(){
 					}
 					};
 
-					$.ajax(settings).done(function (response) {
+					$.ajax(settings).done(function () {
 						
 						
 						var formdata = new FormData();
