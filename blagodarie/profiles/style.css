@@ -251,6 +251,9 @@ table img{
     margin: 0 auto;
     margin-top: 2%;
 }
+.error_in_add{
+	color: red;
+}
 
 
 @media(max-width: 900px){
