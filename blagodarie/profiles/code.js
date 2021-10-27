@@ -446,9 +446,8 @@ add_profile_but.addEventListener('click', function(){
 					};
 
 					$.ajax(settings).done(function () {
-						
-						
-						var formdata = new FormData();
+						setTimeout(function(){
+							var formdata = new FormData();
 						formdata.append("uuid", new_uuid);
 						formdata.append("first_name", user_profile_name_inp.value);
 						formdata.append("last_name", user_profile_surname_inp.value);
@@ -467,6 +466,9 @@ add_profile_but.addEventListener('click', function(){
 	
 						}
 						add_detail_profile_info()
+						})
+						
+						
 						
 						
   						
