@@ -387,6 +387,56 @@ let add_profile_but = document.querySelector('.add_profile_but');
 let add_user_profile_container = document.querySelector('.add_user_profile_container');
 add_profile_but.addEventListener('click', function(){
 	add_user_profile_container.style.display = 'block';
+	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
+	let user_profile_name_inp = document.querySelector('.user_profile_name_inp');
+	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom');
+	//Создание юида
+	add_user_profile_overbottom.addEventListener('click', function(){
+			
+		
+		
+		
+		var form = new FormData();
+	if(user_profile_name_inp.value != ''){
+	form.append("first_name", user_profile_name_inp.value);
+	}
+	if(user_profile_surname_inp.value != ''){
+		form.append("last_name", user_profile_name_inp.value);
+	}
+				var settings = {
+  					"url": "https://api.dev.blagodarie.org/api/profile",
+  					"method": "POST",
+  					"timeout": 0,
+  					"headers": {
+  					  "Authorization": `Token ${getCookie("auth_token")}`
+  					},
+  					"processData": false,
+  					"mimeType": "multipart/form-data",
+  					"contentType": false,
+  					"data": form,
+					success: function(){
+						console.log('ГУД')
+					},
+					error: function(){
+						console.log(error);
+					}
+					};
+
+					$.ajax(settings).done(function (response) {
+						
+  						console.log(response);
+					});
+		
+		
+		
+		
+		
+	});
+	
+	
+	
+	
+	
 })
 
 
