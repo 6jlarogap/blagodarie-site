@@ -444,6 +444,14 @@ add_profile_but.addEventListener('click', function(){
 						console.log(pars.uuid);
 						console.log(new_uuid);
 						
+							var formdata = new FormData();
+						formdata.append("uuid", new_uuid);
+						formdata.append("first_name", user_profile_name_inp.value);
+						formdata.append("last_name", user_profile_surname_inp.value);
+						formdata.append("middle_name", user_profile_middlename_inp.value);
+						formdata.append("dob", add_user_profile_bd.value);
+						formdata.append("dod", add_user_profile_dd.value);
+						add_detail_profile_info()
 					},
 					error: function(response){
 						//new_uuid = response.uuid;
@@ -461,14 +469,7 @@ add_profile_but.addEventListener('click', function(){
 						
 					});
 		
-					console.log(new_uuid);
-							var formdata = new FormData();
-						formdata.append("uuid", new_uuid);
-						formdata.append("first_name", user_profile_name_inp.value);
-						formdata.append("last_name", user_profile_surname_inp.value);
-						formdata.append("middle_name", user_profile_middlename_inp.value);
-						formdata.append("dob", add_user_profile_bd.value);
-						formdata.append("dod", add_user_profile_dd.value);
+					
 						async function add_detail_profile_info(){
 						const response = await fetch(`${new_api_str}api/profile`, {
 						method: "PUT",
@@ -480,7 +481,7 @@ add_profile_but.addEventListener('click', function(){
 	
 	
 						}
-						add_detail_profile_info()
+						
 						
 		
 		
