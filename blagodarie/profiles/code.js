@@ -398,7 +398,7 @@ add_profile_but.addEventListener('click', function(){
 	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
 	
 	
-	console.log(settings.api)
+	new_api_str = settings.api;
 	
 	//закрыть попап
 	add_user_profile_close_popup.addEventListener('click', function(){
@@ -426,7 +426,7 @@ add_profile_but.addEventListener('click', function(){
 		form.append("last_name", user_profile_surname_inp.value);
 	}
 				var settings = {
-  					"url": `${settings.api}api/profile`,
+  					"url": `${new_api_str}api/profile`,
   					"method": "POST",
   					"timeout": 0,
   					"headers": {
@@ -455,7 +455,7 @@ add_profile_but.addEventListener('click', function(){
 						formdata.append("dob", add_user_profile_bd.value);
 						formdata.append("dod", add_user_profile_dd.value);
 						async function add_detail_profile_info(){
-						const response = await fetch(`${settings.api}api/profile`, {
+						const response = await fetch(`${new_api_str}api/profile`, {
 						method: "PUT",
 						headers: {
 							"Authorization": `Token ${getCookie("auth_token")}`
