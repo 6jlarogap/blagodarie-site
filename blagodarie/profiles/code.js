@@ -453,7 +453,7 @@ add_profile_but.addEventListener('click', function(){
 					//Обрезаем конец:
 						var from1 = str1.search('uid":"') + 6; 
 						var to1 = 45;
-						let new_uuid = str1.substr(from1,to1);
+						new_uuid = str1.substr(from1,to1);
 						
 						
 						new_uuid = response.uuid;
