@@ -453,7 +453,7 @@ add_profile_but.addEventListener('click', function(){
 						//let str1 = response;
 						//let pars1 = JSON.parse(str1);
 						//console.log(pars1);
-						console.log(response)
+						console.log(response.responseText)
 					}
 					};
 
