@@ -221,6 +221,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		},
 		body: JSON.stringify({"user_id_from": add_user_profile_mother_input, "user_id_to": id, "operation_type_id": operation_type_id})
 	}).then(data => data.json());
+			console.log(add_user_profile_mother_input, id, operation_type_id);
 }
 		
 		
