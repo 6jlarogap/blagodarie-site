@@ -252,6 +252,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				add_user_profile_father_input.value = newstr3;
 			}
 			console.log(response);
+			let users_resp = [];
 			for(let i = 0; i<response.connections.length; i++){
 				if(response.connections[i].target == id){
 					if(response.connections[i].source == add_user_profile_mother_input.value && response.connections[i].target == id){
@@ -263,9 +264,14 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					}
 				}
 				else{
-					add_user_parents(8, add_user_profile_mother_input.value);
-					console.log(add_user_profile_mother_input.value)
+					/*add_user_parents(8, add_user_profile_mother_input.value);
+					console.log(add_user_profile_mother_input.value)*/
+					users_resp.push('none');
 				}
+			}
+			if(response.connections.length == users_resp.length){
+				console.log(users_resp);
+				add_user_parents(8, add_user_profile_mother_input.value)
 			}
 		}
 		myProfilesinfo();
