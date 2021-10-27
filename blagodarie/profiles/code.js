@@ -388,6 +388,9 @@ if(localStorage.getItem('npuuid')){
 		firstName = localStorage.getItem('fName')
 	}
 	 user_changed_info(localStorage.getItem('npuuid'), localStorage.getItem('lastName'), firstName, '', '', null, null);
+	localStorage.removeItem('npuuid');
+	localStorage.removeItem('fName');
+	localStorage.removeItem('lastName');
 	
 }
 }
