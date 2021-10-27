@@ -436,7 +436,7 @@ add_profile_but.addEventListener('click', function(){
   					"mimeType": "multipart/form-data",
   					"contentType": false,
   					"data": form,
-					success: function(){
+					success: function(response){
 						console.log('ГУД');
 						new_uuid = response.uuid;
 					},
