@@ -418,7 +418,7 @@ add_profile_but.addEventListener('click', function(){
 						console.log('ГУД')
 					},
 					error: function(response){
-						console.log(response);
+						console.log(response.responseText);
 					}
 					};
 
