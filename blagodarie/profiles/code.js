@@ -232,6 +232,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 }).then(data => data.json())
+	.then(result => console.log(result))
 	.catch(error => console.log('error', error));		
 			//var b;
 			if(add_user_profile_mother_input.value.includes('id')){
