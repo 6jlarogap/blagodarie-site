@@ -384,20 +384,20 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 
 //Добавить новый профиль
 let add_profile_but = document.querySelector('.add_profile_but');
-let add_user_profile_container = document.querySelector('.add_user_profile_container');
+let add_user_profile_container_prew = document.querySelector('.add_user_profile_container_prew');
 add_profile_but.addEventListener('click', function(){
-	add_user_profile_container.style.display = 'block';
+	add_user_profile_container_prew.style.display = 'block';
 	let add_user_profile_close_popup = document.querySelector('.add_user_profile_close_popup');	
 	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
 	let user_profile_name_inp = document.querySelector('.user_profile_name_inp');
 	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom');
-	let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp');
+	/*let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp');
 	let add_user_profile_bd = document.querySelector('.add_user_profile_bd');
 	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
 	let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
 	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
 	let new_uuid;
-	var formdata = new FormData();
+	var formdata = new FormData();*/
 	
 	
 	new_api_str = settings.api;
@@ -415,7 +415,7 @@ add_profile_but.addEventListener('click', function(){
 	})
 	
 	//Создание юида
-	add_user_profile_overbottom.addEventListener('click', function(){
+	//add_user_profile_overbottom.addEventListener('click', function(){
 			
 		
 	
@@ -442,22 +442,21 @@ add_profile_but.addEventListener('click', function(){
 						let str = response;
 						let pars = JSON.parse(str);
 						new_uuid = pars.uuid;
-						console.log(pars)
-						console.log(pars.uuid);
-						console.log(new_uuid);
+						
 						
 							
-						formdata.append("uuid", new_uuid);
+						/*formdata.append("uuid", new_uuid);
 						formdata.append("first_name", user_profile_name_inp.value);
 						formdata.append("last_name", user_profile_surname_inp.value);
 						formdata.append("middle_name", user_profile_middlename_inp.value);
 						formdata.append("dob", add_user_profile_bd.value);
 						formdata.append("dod", add_user_profile_dd.value);
-						add_detail_profile_info()
+						add_detail_profile_info()*/
 					},
 					error: function(response){
-						//new_uuid = response.uuid;
-						//console.log(new_uuid);
+						let str1 = response;
+						let pars1 = JSON.parse(str);
+						console.log(pars1);
 					}
 					};
 
@@ -472,19 +471,19 @@ add_profile_but.addEventListener('click', function(){
 					});
 		
 					
-						async function add_detail_profile_info(){
+						/*async function add_detail_profile_info(){
 						const response = await fetch(`${new_api_str}api/profile`, {
 						method: "PUT",
 						headers: {
 							"Authorization": `Token ${getCookie("auth_token")}`
 						},
 						body: formdata
-						}).then(response => response.ok ? response.text() /*&& window.location.reload()*/ : console.log('bad'));
+						}).then(response => response.ok ? response.text() /*&& window.location.reload()*/ : /*console.log('bad'));
 	
 	
 						}
+						*/
 						
-						
 		
 		
 		
@@ -492,7 +491,7 @@ add_profile_but.addEventListener('click', function(){
 		
 		
 		
-	});
+	//});
 	
 	
 	

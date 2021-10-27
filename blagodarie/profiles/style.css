@@ -232,7 +232,10 @@ table img{
     height: 320px;
     background-color: #f5efef;
 }
-
+.add_user_profile_container_prew{
+	position: absolute;
+	display: none;
+}
 
 
 @media(max-width: 900px){
