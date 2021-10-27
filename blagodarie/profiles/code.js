@@ -397,6 +397,8 @@ add_profile_but.addEventListener('click', function(){
 	let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
 	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
 	let new_uuid;
+	var formdata = new FormData();
+	
 	
 	new_api_str = settings.api;
 	
@@ -444,7 +446,7 @@ add_profile_but.addEventListener('click', function(){
 						console.log(pars.uuid);
 						console.log(new_uuid);
 						
-							var formdata = new FormData();
+							
 						formdata.append("uuid", new_uuid);
 						formdata.append("first_name", user_profile_name_inp.value);
 						formdata.append("last_name", user_profile_surname_inp.value);
