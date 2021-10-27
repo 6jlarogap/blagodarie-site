@@ -401,6 +401,8 @@ add_profile_but.addEventListener('click', function(){
 	
 	
 	let new_api_str = settings.api;
+	console.log(settings);
+	
 	
 	//закрыть попап
 	add_user_profile_close_popup.addEventListener('click', function(){
