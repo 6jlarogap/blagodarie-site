@@ -407,9 +407,9 @@ add_profile_but.addEventListener('click', function(){
 	
 	//закрыть попап
 	add_user_profile_container_prew.addEventListener('click', function(){
-		else{
+		
 		window.location.reload();
-		}
+		
 	})
 	
 	//Создание юида
