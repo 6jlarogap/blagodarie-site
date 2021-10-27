@@ -388,7 +388,7 @@ let add_profile_but = document.querySelector('.add_profile_but');
 let add_user_profile_container_prew = document.querySelector('.add_user_profile_container_prew');
 add_profile_but.addEventListener('click', function(){
 	add_user_profile_container_prew.style.display = 'block';
-	let add_user_profile_close_popup = document.querySelector('.add_user_profile_close_popup');	
+	let add_user_profile_close_popup_new = document.querySelector('.add_user_profile_close_popup_new');	
 	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
 	let user_profile_name_inp = document.querySelector('.user_profile_name_inp');
 	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom');
@@ -406,7 +406,7 @@ add_profile_but.addEventListener('click', function(){
 	
 	
 	//закрыть попап
-	add_user_profile_container_prew.addEventListener('click', function(){
+	add_user_profile_close_popup_new.addEventListener('click', function(){
 		
 		window.location.reload();
 		
