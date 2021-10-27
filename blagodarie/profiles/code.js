@@ -406,13 +406,8 @@ add_profile_but.addEventListener('click', function(){
 	
 	
 	//закрыть попап
-	add_user_profile_close_popup.addEventListener('click', function(){
-		if(user_profile_surname_inp.value != '' || user_profile_name_inp.value != '' || user_profile_middlename_inp.value != '' || add_user_profile_bd.value != '' || add_user_profile_dd.value != '' || add_user_profile_mother_input.value != '' || add_user_profile_father_input.value != ''){
-			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
-			if(user_profile_not_save == true){
-				window.location.reload();
-			}
-		}else{
+	add_user_profile_container_prew.addEventListener('click', function(){
+		else{
 		window.location.reload();
 		}
 	})
