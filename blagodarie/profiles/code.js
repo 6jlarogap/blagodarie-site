@@ -447,8 +447,16 @@ add_profile_but.addEventListener('click', function(){
 					}
 					};
 
-					$.ajax(settings).done(function () {
-						setTimeout(function(){
+					$.ajax(settings).done(function (response) {
+						
+						new_uuid = response.uuid;
+						console.log(new_uuid);
+						console.log(response);
+						console.log(response.uuid);
+						
+					});
+		
+					setTimeout(function(){
 							var formdata = new FormData();
 						formdata.append("uuid", new_uuid);
 						formdata.append("first_name", user_profile_name_inp.value);
@@ -468,13 +476,7 @@ add_profile_but.addEventListener('click', function(){
 	
 						}
 						add_detail_profile_info()
-						})
-						
-						
-						
-						
-  						
-					});
+						},1000)
 		
 		
 		
