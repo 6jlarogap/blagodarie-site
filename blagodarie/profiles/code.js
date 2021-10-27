@@ -393,6 +393,7 @@ add_profile_but.addEventListener('click', function(){
 	let user_profile_name_inp = document.querySelector('#user_profile_name_inp');
 	let add_user_profile_overbottom = document.querySelector('#add_user_profile_overbottom');
 	let error_in_add = document.querySelector('.error_in_add');
+	let new_profile_user_uuid;
 	/*let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp');
 	let add_user_profile_bd = document.querySelector('.add_user_profile_bd');
 	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
@@ -439,9 +440,12 @@ add_profile_but.addEventListener('click', function(){
   					"data": form,
 					success: function(response){
 						console.log(response)
+						let str1 = response;
+						let pars1 = JSON.parse(str1);
+						new_profile_user_uuid = pars1.uuid;
+						console.log(new_profile_user_uuid);
+						url.searchParams.append('npuuid', new_profile_user_uuid);
 						
-						
-							
 						/*formdata.append("uuid", new_uuid);
 						formdata.append("first_name", user_profile_name_inp.value);
 						formdata.append("last_name", user_profile_surname_inp.value);
@@ -461,12 +465,7 @@ add_profile_but.addEventListener('click', function(){
 					};
 
 					$.ajax(settings).done(function (response) {
-						
-						//new_uuid = response.uuid;
-						//console.log(new_uuid);
-						//console.log(response);
-						//console.log(response[0]);
-						//console.log(typeof(response));
+						url.searchParams.append('add_new_user', )
 						
 					});
 		})
