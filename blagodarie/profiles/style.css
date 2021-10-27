@@ -217,7 +217,7 @@ table img{
     width: 18%;
     margin-left: 41%;
 }
-.add_user_profile_close_popup{
+.add_user_profile_close_popup, .add_user_profile_close_popup_new{
 	cursor: pointer;
     position: absolute;
     top: 2%;
@@ -241,7 +241,7 @@ table img{
     left: 0;
     background: #fff;
 }
-.add_user_profile_container_prew p:first-child{
+.add_user_profile_container_prew > p:first-child{
 	margin: 0 auto;
     width: fit-content;
     margin-top: 5%;
@@ -299,7 +299,7 @@ table img{
 		width: 38%;
     	margin-left: 31%;
 	}
-	.add_user_profile_close_popup{
+	.add_user_profile_close_popup, .add_user_profile_close_popup_new{
 		top: 1%;
     	right: 5%;
 	}
