@@ -389,9 +389,9 @@ let add_user_profile_container_prew = document.querySelector('.add_user_profile_
 add_profile_but.addEventListener('click', function(){
 	add_user_profile_container_prew.style.display = 'block';
 	let add_user_profile_close_popup_new = document.querySelector('.add_user_profile_close_popup_new');	
-	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
-	let user_profile_name_inp = document.querySelector('.user_profile_name_inp');
-	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom');
+	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp.new');
+	let user_profile_name_inp = document.querySelector('.user_profile_name_inp.new');
+	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom.new');
 	/*let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp');
 	let add_user_profile_bd = document.querySelector('.add_user_profile_bd');
 	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
