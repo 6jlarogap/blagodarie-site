@@ -437,9 +437,7 @@ add_profile_but.addEventListener('click', function(){
   					"contentType": false,
   					"data": form,
 					success: function(response){
-						let str = response;
-						let pars = JSON.parse(str);
-						new_uuid = pars.uuid;
+						console.log(response)
 						
 						
 							
@@ -452,9 +450,10 @@ add_profile_but.addEventListener('click', function(){
 						add_detail_profile_info()*/
 					},
 					error: function(response){
-						let str1 = response;
-						let pars1 = JSON.parse(str1);
-						console.log(pars1);
+						//let str1 = response;
+						//let pars1 = JSON.parse(str1);
+						//console.log(pars1);
+						console.log(response)
 					}
 					};
 
