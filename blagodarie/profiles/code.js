@@ -461,7 +461,7 @@ add_profile_but.addEventListener('click', function(){
 						
 					});
 		
-					setTimeout(function(){
+					console.log(new_uuid);
 							var formdata = new FormData();
 						formdata.append("uuid", new_uuid);
 						formdata.append("first_name", user_profile_name_inp.value);
@@ -481,7 +481,7 @@ add_profile_but.addEventListener('click', function(){
 	
 						}
 						add_detail_profile_info()
-						},1000)
+						
 		
 		
 		
