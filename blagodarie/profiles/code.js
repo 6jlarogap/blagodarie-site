@@ -151,7 +151,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   					"contentType": false,
   					"data": form1,
 					success: function(){
-						window.location.reload();
+						setTimeout(function(){
+							window.location.reload();
+						},1000)
 					},
 					error: function(){
 						console.log('ошибка');
@@ -159,6 +161,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					};
 
 					$.ajax(settings).done(function (response) {
+						
   						console.log(response);
 					});
 				
