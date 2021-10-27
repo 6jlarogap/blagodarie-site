@@ -422,7 +422,7 @@ add_profile_but.addEventListener('click', function(){
 			
 		
 	
-		
+	add_user_profile_overbottom.addEventListener('click', function(){
 		var form = new FormData();
 	if(user_profile_name_inp.value != ''){
 	form.append("first_name", user_profile_name_inp.value);
@@ -458,7 +458,7 @@ add_profile_but.addEventListener('click', function(){
 					},
 					error: function(response){
 						let str1 = response;
-						let pars1 = JSON.parse(str);
+						let pars1 = JSON.parse(str1);
 						console.log(pars1);
 					}
 					};
@@ -472,7 +472,7 @@ add_profile_but.addEventListener('click', function(){
 						//console.log(typeof(response));
 						
 					});
-		
+		})
 					
 						/*async function add_detail_profile_info(){
 						const response = await fetch(`${new_api_str}api/profile`, {
