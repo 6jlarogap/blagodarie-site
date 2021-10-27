@@ -392,6 +392,7 @@ add_profile_but.addEventListener('click', function(){
 	let user_profile_surname_inp = document.querySelector('#user_profile_surname_inp');
 	let user_profile_name_inp = document.querySelector('#user_profile_name_inp');
 	let add_user_profile_overbottom = document.querySelector('#add_user_profile_overbottom');
+	let error_in_add = document.querySelector('.error_in_add');
 	/*let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp');
 	let add_user_profile_bd = document.querySelector('.add_user_profile_bd');
 	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
@@ -455,8 +456,7 @@ add_profile_but.addEventListener('click', function(){
 						//console.log(pars1);
 						let first_resp = response.responseText;
 						let pars1 = JSON.parse(first_resp);
-						console.log(pars1);
-						console.log(pars1.message);
+						error_in_add.innerHTML = pars1.message;
 					}
 					};
 
