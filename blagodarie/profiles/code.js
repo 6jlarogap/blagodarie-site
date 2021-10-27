@@ -387,9 +387,31 @@ let add_profile_but = document.querySelector('.add_profile_but');
 let add_user_profile_container = document.querySelector('.add_user_profile_container');
 add_profile_but.addEventListener('click', function(){
 	add_user_profile_container.style.display = 'block';
+	let add_user_profile_close_popup = document.querySelector('.add_user_profile_close_popup');	
 	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
 	let user_profile_name_inp = document.querySelector('.user_profile_name_inp');
 	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom');
+	let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp');
+	let add_user_profile_bd = document.querySelector('.add_user_profile_bd');
+	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
+	let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
+	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
+	
+	
+	
+	
+	//закрыть попап
+	add_user_profile_close_popup.addEventListener('click', function(){
+		if(user_profile_surname_inp.value != '' || user_profile_name_inp.value != '' || user_profile_middlename_inp.value != '' || add_user_profile_bd.value != '' || add_user_profile_dd.value != '' || add_user_profile_mother_input.value != '' || add_user_profile_father_input.value != ''){
+			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
+			if(user_profile_not_save == true){
+				window.location.reload();
+			}
+		}else{
+		window.location.reload();
+		}
+	})
+	
 	//Создание юида
 	add_user_profile_overbottom.addEventListener('click', function(){
 			
@@ -418,7 +440,7 @@ add_profile_but.addEventListener('click', function(){
 						console.log('ГУД')
 					},
 					error: function(response){
-						console.log(response.responseText.message);
+						console.log(response);
 					}
 					};
 
