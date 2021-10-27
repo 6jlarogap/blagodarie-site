@@ -396,7 +396,7 @@ add_profile_but.addEventListener('click', function(){
 	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
 	let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
 	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
-	
+	let new_uuid;
 	
 	new_api_str = settings.api;
 	
@@ -416,7 +416,7 @@ add_profile_but.addEventListener('click', function(){
 	add_user_profile_overbottom.addEventListener('click', function(){
 			
 		
-	let new_uuid
+	
 		
 		var form = new FormData();
 	if(user_profile_name_inp.value != ''){
@@ -437,7 +437,7 @@ add_profile_but.addEventListener('click', function(){
   					"contentType": false,
   					"data": form,
 					success: function(response){
-						console.log('ГУД');
+						console.log(response);
 						new_uuid = response.uuid;
 						console.log(new_uuid);
 					},
