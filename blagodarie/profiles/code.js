@@ -465,7 +465,7 @@ add_profile_but.addEventListener('click', function(){
 					};
 
 					$.ajax(settings).done(function (response) {
-						url.searchParams.append('add_new_user', )
+						//url.searchParams.append('add_new_user', )
 						
 					});
 		})
