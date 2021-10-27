@@ -399,9 +399,9 @@ add_profile_but.addEventListener('click', function(){
 	let new_uuid;
 	var formdata = new FormData();*/
 	
-	
-	let new_api_str = settings.api;
 	console.log(settings);
+	let new_api_str = settings.api;
+	
 	
 	
 	//закрыть попап
