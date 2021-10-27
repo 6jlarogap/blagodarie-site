@@ -233,8 +233,23 @@ table img{
     background-color: #f5efef;
 }
 .add_user_profile_container_prew{
-	position: absolute;
-	display: none;
+	position: fixed;
+    display: none;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+}
+.add_user_profile_container_prew p:first-child{
+	margin: 0 auto;
+    width: fit-content;
+    margin-top: 5%;
+}
+.add_user_profile_container_prew .add_user_profile_fio{
+	width: fit-content;
+    margin: 0 auto;
+    margin-top: 2%;
 }
 
 
