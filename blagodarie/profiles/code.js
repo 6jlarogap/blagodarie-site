@@ -140,7 +140,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				console.log(newstr1);
 
 				var settings = {
-  					"url": "https://api.dev.blagodarie.org/api/profile",
+  					"url": `${settings.api}api/profile`,
   					"method": "PUT",
   					"timeout": 0,
   					"headers": {
@@ -398,7 +398,7 @@ add_profile_but.addEventListener('click', function(){
 	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
 	
 	
-	
+	console.log(settings.api)
 	
 	//закрыть попап
 	add_user_profile_close_popup.addEventListener('click', function(){
