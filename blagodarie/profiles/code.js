@@ -437,9 +437,11 @@ add_profile_but.addEventListener('click', function(){
   					"contentType": false,
   					"data": form,
 					success: function(response){
-						console.log(response);
-						new_uuid = response.uuid;
-						console.log(new_uuid);
+						let str = response;
+						let pars = JSON.parse(str);
+						console.log(pars)
+						console.log(pars.uuid);
+						
 					},
 					error: function(response){
 						new_uuid = response.uuid;
@@ -448,13 +450,6 @@ add_profile_but.addEventListener('click', function(){
 					};
 
 					$.ajax(settings).done(function (response) {
-						
-						let str1 = response;
-					//Обрезаем конец:
-						var from1 = str1.search('uid":"') + 6; 
-						var to1 = 45;
-						new_uuid = str1.substr(from1,to1);
-						
 						
 						new_uuid = response.uuid;
 						console.log(new_uuid);
