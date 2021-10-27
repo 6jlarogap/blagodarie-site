@@ -256,7 +256,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			let users_resp = [];
 			for(let i = 0; i<response.connections.length; i++){
 				if(response.connections[i].target == id){
-					if(response.connections[i].source == add_user_profile_mother_input.value && response.connections[i].target == id || response.connections[i].source == add_user_profile_father_input.value && response.connections[i].target == id){
+					if(response.connections[i].source == add_user_profile_mother_input.value && response.connections[i].target == id && response.connections[i].source == add_user_profile_father_input.value && response.connections[i].target == id){
 					   console.log('То же что и было');
 					}else{
 						if(add_user_profile_mother_input.value!= '' && response.connections[i].is_mother == true){
