@@ -444,8 +444,8 @@ add_profile_but.addEventListener('click', function(){
 						let pars1 = JSON.parse(str1);
 						new_profile_user_uuid = pars1.uuid;
 						console.log(new_profile_user_uuid);
-						url.searchParams.append('npuuid', new_profile_user_uuid);
-						
+						url.searchParams.append('npuuid');
+						url.searchParams.set('npuuid', new_profile_user_uuid);
 						/*formdata.append("uuid", new_uuid);
 						formdata.append("first_name", user_profile_name_inp.value);
 						formdata.append("last_name", user_profile_surname_inp.value);
