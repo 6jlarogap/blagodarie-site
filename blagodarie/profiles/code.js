@@ -444,8 +444,9 @@ add_profile_but.addEventListener('click', function(){
 						let pars1 = JSON.parse(str1);
 						new_profile_user_uuid = pars1.uuid;
 						let last_name = pars1.last_name;
+						let fName;
 						if(user_profile_name_inp!=''){
-							let fName = pars1.first_name;
+							fName = pars1.first_name;
 						}
 						console.log(new_profile_user_uuid);
 						localStorage.setItem('npuuid', new_profile_user_uuid);
