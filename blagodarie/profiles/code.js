@@ -452,6 +452,7 @@ add_profile_but.addEventListener('click', function(){
 						new_uuid = response.uuid;
 						console.log(new_uuid);
 						console.log(response);
+						console.log(response[0]);
 						console.log(response.uuid);
 						
 					});
