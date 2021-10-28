@@ -475,11 +475,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 
 window.onload = function(){
 if(localStorage.getItem('npuuid')){
-	let firstName;
-	if(localStorage.getItem('fName')){
+	//let firstName;
+	//if(localStorage.getItem('fName')){
 		firstName = localStorage.getItem('fName')
-	}
-	 user_changed_info(localStorage.getItem('npuuid'), localStorage.getItem('lastName'), firstName, '', '', null, null);
+	//}
+	 user_changed_info(localStorage.getItem('npuuid'), localStorage.getItem('lastName'), localStorage.getItem('fName'), '', '', null, null);
 	localStorage.removeItem('npuuid');
 	localStorage.removeItem('fName');
 	localStorage.removeItem('lastName');
