@@ -116,7 +116,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			autoCropArea: 0.5,
           	ready: function () {
             //Should set crop box data first here
-            cropper.setCropBoxData(cropBoxData).setCanvasData(canvasData);
+           // cropper.setCropBoxData(cropBoxData).setCanvasData(canvasData);
           }
         });
     }).on('hidden.bs.modal', function() {
