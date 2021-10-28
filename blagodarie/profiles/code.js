@@ -120,8 +120,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
           }
         });
     }).on('hidden.bs.modal', function() {
+       /* cropper.destroy();
+        cropper = null;*/
+		 cropBoxData = cropper.getCropBoxData();
+        canvasData = cropper.getCanvasData();
         cropper.destroy();
-        cropper = null;
     });
 
     $("#crop").click(function() {
