@@ -110,9 +110,14 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 
     bs_modal.on('shown.bs.modal', function() {
         cropper = new Cropper(image, {
-            aspectRatio: 16/9,
+            /*aspectRatio: 1,
             viewMode: 3,
-            preview: '.preview'
+            preview: '.preview'*/
+			autoCropArea: 0.5,
+          	ready: function () {
+            //Should set crop box data first here
+            cropper.setCropBoxData(cropBoxData).setCanvasData(canvasData);
+          }
         });
     }).on('hidden.bs.modal', function() {
         cropper.destroy();
