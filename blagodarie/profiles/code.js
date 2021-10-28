@@ -63,6 +63,10 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
 	
 	
+	let warning1;
+	let warning2;
+	let warning3;
+	
 	
 	
 	
@@ -333,7 +337,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
 		body: formdata
-	}).then(response => response.ok ? response.text() /*&& window.location.reload()*/ : console.log('bad'))
+	}).then(response => response.ok ? response.text() /*&& window.location.reload()*/ : console.log(response))
 	.then(result => console.log(result))
 	.catch(error => console.log('error', error));
 	
