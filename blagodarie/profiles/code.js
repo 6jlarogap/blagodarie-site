@@ -516,7 +516,9 @@ add_profile_but.addEventListener('click', function(){
 	
 	console.log(settings);
 	//let new_api_str = settings.api;
-	
+	user_profile_name_inp.value = '';
+	user_profile_surname_inp.value = '';
+	user_profile_middlename_inp.value = '';
 	
 	
 	//закрыть попап
