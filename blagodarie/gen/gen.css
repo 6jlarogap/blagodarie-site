@@ -617,13 +617,13 @@ text{
 }
 .recur_select_cont{
 	position: fixed;
-	right: 10px;
 	bottom: 0;
 	display: flex;
 	width: 102px;
 	justify-content: space-between;
 	align-items: center;
-	
+	left: 50%;
+	margin-left: -51px;
 }
 @media(max-width:900px){
 			.pagination_block{
