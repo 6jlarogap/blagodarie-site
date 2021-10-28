@@ -253,7 +253,7 @@ table img{
 .add_user_profile_container_prew > p:first-child{
 	margin: 0 auto;
     width: fit-content;
-    margin-top: 5%;
+    margin-top: 15%;
 }
 .add_user_profile_container_prew .add_user_profile_fio{
 	width: fit-content;

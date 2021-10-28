@@ -479,11 +479,11 @@ if(localStorage.getItem('npuuid')){
 	//if(localStorage.getItem('fName')){
 		//firstName = localStorage.getItem('fName')
 	//}
-	 user_changed_info(localStorage.getItem('npuuid'), localStorage.getItem('lastName'), localStorage.getItem('fName'), '', '', null, null);
+	 user_changed_info(localStorage.getItem('npuuid'), localStorage.getItem('lastName'), localStorage.getItem('fName'), localStorage.getItem('midName'), '', null, null);
 	localStorage.removeItem('npuuid');
 	localStorage.removeItem('fName');
 	localStorage.removeItem('lastName');
-	
+	localStorage.removeItem('midName')
 }
 }
 
@@ -500,6 +500,7 @@ add_profile_but.addEventListener('click', function(){
 	let add_user_profile_close_popup_new = document.querySelector('.add_user_profile_close_popup_new');	
 	let user_profile_surname_inp = document.querySelector('#user_profile_surname_inp');
 	let user_profile_name_inp = document.querySelector('#user_profile_name_inp');
+	let user_profile_middlename_inp = document.querySelector('#user_profile_middlename_inp');
 	let add_user_profile_overbottom = document.querySelector('#add_user_profile_overbottom');
 	let error_in_add = document.querySelector('.error_in_add');
 	let new_profile_user_uuid;
@@ -536,6 +537,10 @@ add_profile_but.addEventListener('click', function(){
 	if(user_profile_surname_inp.value != ''){
 		form.append("last_name", user_profile_surname_inp.value);
 	}
+	if(user_profile_middlename_inp.value != ''){
+		form.append("middle_name", user_profile_surname_inp.value);
+	}
+	
 				var settings = {
   					"url": `${new_api_str}api/profile`,
   					"method": "POST",
@@ -556,12 +561,14 @@ add_profile_but.addEventListener('click', function(){
 						let fName;
 						//if(user_profile_name_inp!=''){
 							fName = pars1.first_name;
+						let midName = pars1.middle_name
 						//}
 						console.log(pars1);
 						localStorage.setItem('npuuid', new_profile_user_uuid);
 						localStorage.setItem('lastName', last_name);
 						//if(user_profile_name_inp!=''){
 							localStorage.setItem('fName', fName);
+						localStorage.setItem('midName', midName);
 						//}
 						
 						
