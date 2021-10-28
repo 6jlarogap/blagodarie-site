@@ -185,7 +185,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	const [year2, month2, day2] = dob.split('-');
 	const [year3, month3, day3] = dod.split('-');
 	add_user_profile_bd.value = `${day2}.${month2}.${year2}`;
-	add_user_profile_bd.value = `${day3}.${month3}.${year3}`;
+	add_user_profile_dd.value = `${day3}.${month3}.${year3}`;
 	/*add_user_profile_bd.value = dob;
 	add_user_profile_dd.value = dod;*/
 	add_user_profile_photo.setAttribute('src', `${usr_photo == '' ? settings.url+'images/default_avatar.png' : usr_photo}`);
