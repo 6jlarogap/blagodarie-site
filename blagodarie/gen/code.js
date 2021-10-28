@@ -1465,6 +1465,81 @@ function initializeDisplay() {
 				return "url(#arrow-to-other)";
 			}
 		});
+	
+	
+	
+	link2 = svg.append("g")
+		.selectAll("g")
+		.data(links_parent)
+		.join("g")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
+		//.attr("id", "lallaal");
+		
+	link2.append("svg:defs")
+		.append("linearGradient")
+		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
+		.attr("gradientUnits", "userSpaceOnUse")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2)
+		.selectAll("stop")
+		.data(d => {
+			return [[1,d.reverse_is_parent], [2,d.is_father], [3, d.is_mother]/*, [3, d.fam_link]*/];
+		})
+		.join("stop")
+		.attr("offset", d => (d[0] == 1 ? "0%" : "100%"))
+		.attr("style", d => {
+			if (d[1]){
+				return "stop-color:rgb(0, 39, 255);stop-opacity:1";
+			}
+		else if(d[2]){
+			return "stop-color:rgb(0, 39, 255);stop-opacity:1";
+		}
+		else {
+				return "stop-color:rgb(0, 39, 255);stop-opacity:1";
+			}
+		});
+		
+	link2.append("svg:line")
+		.attr("class", "link2")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2)
+		.attr("stroke", d => {
+			console.log(d);
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE ||  d.target.nodeType == NODE_TYPES.FILTERED){
+				if (d.is_father == d.reverse_is_parent || d.is_mother == d.reverse_is_parent){
+					if(d.is_father || d.is_mother){
+							return "#003afc";
+					} else{
+						return "#000aff";
+					}
+				} else {
+					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
+				}
+			} else {
+				return "#345334";
+			}
+		})
+		.attr("marker-end", d => {
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.target.nodeType == NODE_TYPES.FILTERED){
+				if (d.is_father || d.is_mother){
+						return "url(#arrow-gen)";
+				} else{
+					return "url(#arrow-gen)";
+				}
+			} else {
+				return "url(#arrow-to-other)";
+			}
+		});
+	
+	
+	
 
 	node = svg.append("g")
 		.selectAll("g")
@@ -1582,6 +1657,26 @@ function ticked() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2);
 	
+	
+	
+	link2.selectAll("g")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
+		
+	
+	link2.selectAll("linearGradient")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
+		
+	link2.selectAll("line")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
 	
 	
 	
