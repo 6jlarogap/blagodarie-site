@@ -463,7 +463,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	//закрыть попап
 	add_user_profile_close_popup.addEventListener('click', function(){
-		if(user_profile_surname_inp.value != last_name || user_profile_name_inp.value != first_name || user_profile_middlename_inp.value != middle_name || add_user_profile_bd.value != dob || add_user_profile_dd.value != dod){
+		if(user_profile_surname_inp.value != last_name || user_profile_name_inp.value != first_name || user_profile_middlename_inp.value != middle_name){
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
 			if(user_profile_not_save == true){
 				window.location.reload();
