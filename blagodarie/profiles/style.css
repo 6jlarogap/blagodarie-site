@@ -260,6 +260,9 @@ table img{
 }
 .warning1{
 	color: red;
+	width: fit-content;
+    margin: 0 auto;
+    margin-top: 3%;
 }
 
 
