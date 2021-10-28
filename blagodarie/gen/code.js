@@ -1647,7 +1647,7 @@ function ticked() {
 			simulation.force("x").x(x);
 			simulation.force("y").y(y);
 		}
-		return `translate(${d.x},${d.y})`;
+		return `translate(${x},${y})`;
 	});
 	
 	link.selectAll("g")
