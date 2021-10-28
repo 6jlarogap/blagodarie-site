@@ -269,14 +269,21 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 }).then(data => data.json());
-		for(let i = 0; i<response.connections.length; i++){
+		/*for(let i = 0; i<response.connections.length; i++){
 				if(response.connections[i].target == id && response.connections[i].is_mother == true){
 					add_user_profile_mother_input.value = response.connections[i].source;
 				}
 				else if(response.connections[i].target == id && response.connections[i].is_father == true){
 					add_user_profile_father_input.value = response.connections[i].source;
 				}
-			}
+			}*/
+		for(let i = 0; i<response.connections.length; i++){
+				if(response.connections[i].source == id && response.connections[i].is_mother == true){
+					add_user_profile_mother_input.value = response.connections[i].target;
+				}
+				else if(response.connections[i].source == id && response.connections[i].is_father == true){
+					add_user_profile_father_input.value = response.connections[i].target;
+		}
 	}
 	getUsparent()
 	
@@ -360,6 +367,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			console.log(response);
 			let users_resp = [];
 			for(let i = 0; i<response.connections.length; i++){
+				/*
 				if(response.connections[i].target == id){
 					if(response.connections[i].source == add_user_profile_mother_input.value && response.connections[i].target == id && response.connections[i].source == add_user_profile_father_input.value && response.connections[i].target == id){
 					   console.log('То же что и было');
@@ -384,19 +392,53 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 						}
 						if(add_user_profile_father_input.value == '' && response.connections[i].is_father == true){
 							add_user_parents(7, response.connections[i].source);
+						}*/
+						
+						
+					/*}
+				}
+				else{
+					
+					/*users_resp.push('none');
+				}*/
+				
+				
+				if(response.connections[i].source == id){
+					if(response.connections[i].target == add_user_profile_mother_input.value && response.connections[i].source == id && response.connections[i].target == add_user_profile_father_input.value && response.connections[i].source == id){
+					   console.log('То же что и было');
+					}else{
+						if(add_user_profile_mother_input.value!= '' && response.connections[i].is_mother == true){
+						add_user_parents(7, response.connections[i].target);
+						add_user_parents(8, add_user_profile_mother_input.value);
+						}
+						if(add_user_profile_mother_input.value!= '' && response.connections[i].is_mother == false){
+							add_user_parents(8, add_user_profile_mother_input.value);
+						}
+						if(add_user_profile_mother_input.value == '' && response.connections[i].is_mother == true){
+							add_user_parents(7, response.connections[i].target);
+						}
+						//father
+						if(add_user_profile_father_input.value!= '' && response.connections[i].is_father == true){
+						add_user_parents(7, response.connections[i].target);
+						add_user_parents(6, add_user_profile_father_input.value);
+						}
+						if(add_user_profile_father_input.value!= '' && response.connections[i].is_father == false){
+							add_user_parents(6, add_user_profile_father_input.value);
+						}
+						if(add_user_profile_father_input.value == '' && response.connections[i].is_father == true){
+							add_user_parents(7, response.connections[i].target);
 						}
 						
-						/*else if(add_user_profile_father_input.value!= '' && response.connections[i].is_father == true){
-							add_user_parents(7, response.connections[i].source);
-							add_user_parents(8, add_user_profile_father_input.value);
-						}*/
+						
 					}
 				}
 				else{
-					/*add_user_parents(8, add_user_profile_mother_input.value);
-					console.log(add_user_profile_mother_input.value)*/
+					
 					users_resp.push('none');
 				}
+				
+				
+				
 			}
 			
 			if(response.connections.length == users_resp.length){
