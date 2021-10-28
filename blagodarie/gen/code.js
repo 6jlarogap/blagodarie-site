@@ -1673,14 +1673,22 @@ function ticked() {
 		.attr("y2", calcY2);
 		
 	link2.selectAll("line")
-		.attr("x1", calcX1)
+		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2);
-	
+		.attr("y2", calcY2);*/
+	.attr("d", linkArc);
 	
 	
 }
+function linkArc(d) {
+  const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
+  return `
+    M${d.source.x},${d.source.y}
+    A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
+  `;
+}
+
 
 function calcX1(d){
 	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
