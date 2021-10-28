@@ -220,7 +220,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		
 		
 		async function add_user_parents(operation_type_id, add_user_profile_mother_input){
-		const response = await fetch(`${settings.api}api/addoperation`, {
+		/*const response = await fetch(`${settings.api}api/addoperation`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -228,7 +228,39 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		},
 		body: JSON.stringify({"user_id_from": add_user_profile_mother_input, "user_id_to": id, "operation_type_id": operation_type_id})
 	}).then(data => data.json());
-			console.log(add_user_profile_mother_input, id, operation_type_id);
+			console.log(add_user_profile_mother_input, id, operation_type_id);*/
+			var formdata = new FormData();
+			formdata.append("user_id_from", add_user_profile_mother_input);
+			formdata.append("user_id_to", id);
+			formdata.append("operation_type_id", operation_type_id);
+			
+			
+			var settings = {
+  					"url": `${new_settapi}api/profile`,
+  					"method": "POST",
+  					"timeout": 0,
+  					"headers": {
+  					  "Authorization": `Token ${getCookie("auth_token")}`
+  					},
+  					"processData": false,
+  					"contentType": "application/json",
+  					"data": formdata,
+					success: function(response){
+						console.log(response)
+					},
+					error: function(response){
+						let first_resp = response.responseText;
+						let pars1 = JSON.parse(first_resp);
+						warning1.innerHTML = pars1.message;
+					}
+					};
+
+					$.ajax(settings).done(function (response) {
+						//url.searchParams.append('add_new_user', )
+						
+					});
+			
+		
 }
 		
 		
