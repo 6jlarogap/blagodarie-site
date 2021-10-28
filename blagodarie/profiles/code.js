@@ -326,16 +326,17 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			}
 			//var b;
 			if(add_user_profile_father_input.value.includes('id')){
-				let str3 = add_user_profile_father_input.value;
+				/*let str3 = add_user_profile_father_input.value;
 					//Обрезаем конец:
 				var from3 = str3.search('id=') + 3; 
 				var to3 = str3.length;
 				let newstr3 = str3.substr(from3,to3);
 				console.log(newstr3);
-				add_user_profile_father_input.value = newstr3;
+				add_user_profile_father_input.value = newstr3;*/
 				//
-				//url.href = add_user_profile_father_input.value;
-				//console.log(url);
+				url.href = add_user_profile_father_input.value;
+				newstr3 = url.href;
+				console.log(url);
 			}
 			console.log(response);
 			let users_resp = [];
