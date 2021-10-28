@@ -276,6 +276,9 @@ table img{
 
 
 @media(max-width: 900px){
+	.cropper-container.cropper-bg{
+		max-width: 100%!important;
+	}
 	.user_changed{
 		opacity: 1;
 	}
