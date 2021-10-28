@@ -1076,13 +1076,13 @@ d3.json(apiUrl)
 					
 				}
 			});
-			links.push({
+			links_parent.push({
 				source: d.source,
 				target: d.target,
 				is_father: d.is_father,
 				reverse_is_parent: reverse_is_parent
 			});
-			console.log(links);
+			console.log(links_parent);
 		}
 		if (d.is_mother == true){
 			var reverse_is_parent = d.is_mother;
@@ -1092,13 +1092,13 @@ d3.json(apiUrl)
 					
 				}
 			});
-			links.push({
+			links_parent.push({
 				source: d.source,
 				target: d.target,
 				is_mother: d.is_mother,
 				reverse_is_parent: reverse_is_parent
 			});
-			console.log(links);
+			console.log(links_parent);
 		}
 		
 	});
@@ -1455,7 +1455,7 @@ function initializeDisplay() {
 		.attr("marker-end", d => {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
-						return "url(#arrow-gen)";
+						return "url(#arrow-trust)";
 				} else{
 					return "url(#arrow-mistrust)";
 				}
@@ -1547,6 +1547,15 @@ function initializeDisplay() {
 
 }
 
+function linkArc(d) {
+  const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
+  return `
+    M${d.source.x},${d.source.y}
+    A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
+  `;
+}
+
+
 function ticked() {
 	node.attr("transform", d => {
 		var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
@@ -1571,11 +1580,12 @@ function ticked() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2);
 		
-	link.selectAll("line")
+	/*link.selectAll("line")
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2);
+		.attr("y2", calcY2);*/
+	link.attr("d", linkArc);
 }
 
 function calcX1(d){
