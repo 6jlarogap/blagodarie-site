@@ -330,19 +330,49 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		formdata.append("middle_name", user_profile_middlename_inp.value);
 		formdata.append("dob", add_user_profile_bd.value);
 		formdata.append("dod", add_user_profile_dd.value);
-		async function add_gen(){
+		/*async function add_gen(){
 		const response = await fetch(`${settings.api}api/profile`, {
 		method: "PUT",
 		headers: {
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
 		body: formdata
-	}).then(response => response.ok ? response.text() /*&& window.location.reload()*/ : console.log(response))
+	}).then(response => response.ok ? response.text() /*&& window.location.reload()*//* : console.log(response))
 	.then(result => console.log(result))
 	.catch(error => console.log('error', error));
 	
 	
-}
+}*/
+	function add_gen(){	
+		var settings = {
+  					"url": `${new_settapi}api/profile`,
+  					"method": "PUT",
+  					"timeout": 0,
+  					"headers": {
+  					  "Authorization": `Token ${getCookie("auth_token")}`
+  					},
+  					"processData": false,
+  					"mimeType": "multipart/form-data",
+  					"contentType": false,
+  					"data": formdata,
+					success: function(response){
+						console.log(response)
+					},
+					error: function(response){
+						console.log(response)
+					}
+					};
+
+					$.ajax(settings).done(function (response) {
+						//url.searchParams.append('add_new_user', )
+						
+					});
+		
+		
+		
+		
+	}
+		
 		add_gen();
 		
 		
