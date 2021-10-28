@@ -1,6 +1,10 @@
 var link = window.location.href;
 var url = new URL(link);
 
+
+var link2 = window.location.href;
+var url2 = new URL(link2);
+
 function getCookie(name) {
   var value = "; " + document.cookie;
   var parts = value.split("; " + name + "=");
@@ -316,13 +320,17 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 }).then(data => data.json());		
 			//var b;
 			if(add_user_profile_mother_input.value.includes('id')){
-				let str = add_user_profile_mother_input.value;
+				/*let str = add_user_profile_mother_input.value;
 					//Обрезаем конец:
 				var from = str.search('id=') + 3; 
 				var to = str.length;
 				let newstr = str.substr(from,to);
 				console.log(newstr);
+				add_user_profile_mother_input.value = newstr;*/
+				url2.href = add_user_profile_mother_input.value;
+				let newstr = url2.searchParams.get('id');
 				add_user_profile_mother_input.value = newstr;
+				console.log(newstr);
 			}
 			//var b;
 			if(add_user_profile_father_input.value.includes('id')){
@@ -335,8 +343,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				add_user_profile_father_input.value = newstr3;*/
 				//
 				url.href = add_user_profile_father_input.value;
-				newstr3 = url.href;
-				console.log(url);
+				let newstr3 = url.searchParams.get('id');
+				add_user_profile_father_input.value = newstr3;
+				console.log(newstr3);
 			}
 			console.log(response);
 			let users_resp = [];
