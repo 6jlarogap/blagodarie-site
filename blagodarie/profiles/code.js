@@ -61,6 +61,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
 	let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
 	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
+	let nophoto_but = document.querySelector('.nophoto_but');
 	
 	
 	let warning1 = document.querySelector('.warning1');
@@ -176,6 +177,52 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
             };
         });
     });
+
+	
+	//обезличивание 
+	
+	
+	function deleteacc(){
+		var form12 = new FormData();
+		form12.append("uuid", id);
+
+		var settings = {
+  		"url": `${new_settapi}api/profile`,
+  		"method": "DELETE",
+  		"timeout": 0,
+  		"headers": {
+    		"Authorization": `Token ${getCookie("auth_token")}`
+  		},
+  		"processData": false,
+  		"mimeType": "multipart/form-data",
+  		"contentType": false,
+  		"data": form12,
+		success: function(){
+			warning1.innerHTML = '';
+			setTimeout(function(){
+				window.location.reload();
+			},1000)
+		},
+			error: function(response){
+				let first_resp = response.responseText;
+				let pars1 = JSON.parse(first_resp);
+				warning1.innerHTML = pars1.message;
+			}
+		};
+
+		$.ajax(settings).done(function (response) {
+  		console.log(response);
+		});		
+	}
+	
+	
+	
+	
+	nophoto_but.addEventListener('click', function(){
+		deleteacc();
+	})
+	
+	
 	
 	//конец
 	
