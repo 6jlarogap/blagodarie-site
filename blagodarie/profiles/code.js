@@ -16,14 +16,15 @@ settingSets.forEach((setting, i) => {
 
 
 
-
+let new_settapi = settings.api;
+let new_setturl = settings.url;
 
 
 
 let user_table_body = document.querySelector('#user_table_body');
 
 async function myProfilesinfo() {
-		const response = await fetch(`${settings.api}api/profile`, {
+		const response = await fetch(`${new_settapi}api/profile`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
@@ -140,7 +141,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				console.log(newstr1);
 
 				var settings = {
-  					"url": `${settings.api}api/profile`,
+  					"url": `${new_settapi}api/profile`,
   					"method": "PUT",
   					"timeout": 0,
   					"headers": {
