@@ -1068,10 +1068,10 @@ d3.json(apiUrl)
 	});
 	// родственные линки 
 	data.connections.forEach(function(d){
-		if (d.is_father != false){
+		if (d.is_father == true){
 			var reverse_is_parent = d.is_father;
 			data.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_father != false){
+				if (d.source == dd.target && d.target == dd.source && dd.is_father == true){
 					reverse_is_parent = dd.is_father;
 					
 				}
@@ -1084,10 +1084,10 @@ d3.json(apiUrl)
 			});
 			console.log(links_parent);
 		}
-		if (d.is_mother != false){
+		if (d.is_mother == true){
 			var reverse_is_parent = d.is_mother;
 			data.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_mother != false){
+				if (d.source == dd.target && d.target == dd.source && dd.is_mother == true){
 					reverse_is_parent = dd.is_mother;
 					
 				}
