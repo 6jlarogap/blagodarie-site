@@ -229,8 +229,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	user_profile_surname_inp.value = last_name;
 	user_profile_name_inp.value = first_name;
 	user_profile_middlename_inp.value = middle_name;
-	add_user_profile_bd.value = dob;
-	add_user_profile_dd.value = dod;
+	add_user_profile_bd.value = dob!=null ? dob : '';
+	add_user_profile_dd.value = dod!=null ? dod : '';
 	/*add_user_profile_bd.value = dob;
 	add_user_profile_dd.value = dod;*/
 	add_user_profile_photo.setAttribute('src', `${usr_photo == '' ? settings.url+'images/default_avatar.png' : usr_photo}`);
