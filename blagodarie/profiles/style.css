@@ -270,6 +270,18 @@ table img{
 	.user_changed{
 		opacity: 1;
 	}
+	.bd_dd_cont p:nth-child(1){
+		width: 86px;
+	}
+	.bd_dd_cont p:nth-child(2){
+		display: none!important;
+	}
+	.bd_dd_cont p:nth-child(3){
+		width: 86px;
+	}
+	.bd_dd_cont{
+		flex-direction: column;
+	}
 	.bd_dd{
 		flex-direction: column;
 	}
