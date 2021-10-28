@@ -281,6 +281,7 @@ table img{
 	}
 	.bd_dd_cont p:nth-child(1){
 		width: 86px;
+		justify-content: flex-start;
 	}
 	.bd_dd_cont p:nth-child(2){
 		display: none!important;
