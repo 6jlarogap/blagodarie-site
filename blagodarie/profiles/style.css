@@ -301,7 +301,7 @@ table img{
 		margin-bottom: 7px;
 	}
 	.add_user_profile_container{
-		width: fit-content;
+		width: 100%;
    		height: fit-content;
 		padding: 0 7%;
    	 	z-index: 10;
