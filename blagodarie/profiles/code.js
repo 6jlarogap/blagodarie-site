@@ -557,13 +557,15 @@ add_profile_but.addEventListener('click', function(){
 						//if(user_profile_name_inp!=''){
 							fName = pars1.first_name;
 						//}
-						console.log(new_profile_user_uuid);
+						console.log(pars1);
 						localStorage.setItem('npuuid', new_profile_user_uuid);
 						localStorage.setItem('lastName', last_name);
 						//if(user_profile_name_inp!=''){
 							localStorage.setItem('fName', fName);
 						//}
-						window.location.reload();
+						
+						
+						//window.location.reload();
 						
 						/*formdata.append("uuid", new_uuid);
 						formdata.append("first_name", user_profile_name_inp.value);
