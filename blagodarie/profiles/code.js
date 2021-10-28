@@ -63,9 +63,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
 	
 	
-	let warning1;
-	let warning2;
-	let warning3;
+	let warning1 = document.querySelector('.warning1');
+
 	
 	
 	
@@ -359,7 +358,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 						console.log(response)
 					},
 					error: function(response){
-						console.log(response)
+						let first_resp = response.responseText;
+						let pars1 = JSON.parse(first_resp);
+						warning1.innerHTML = pars1.message;
 					}
 					};
 
@@ -388,26 +389,6 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
 			if(user_profile_not_save == true){
 				window.location.reload();
-			}else{
-				/*var formdata = new FormData();
-						formdata.append("uuid", id);
-						formdata.append("first_name", user_profile_name_inp.value);
-						formdata.append("last_name", user_profile_surname_inp.value);
-						formdata.append("middle_name", user_profile_middlename_inp.value);
-						formdata.append("dob", add_user_profile_bd.value);
-						formdata.append("dod", add_user_profile_dd.value);
-						async function add_gen(){
-						const response = await fetch(`${settings.api}api/profile`, {
-						method: "PUT",
-						headers: {
-							"Authorization": `Token ${getCookie("auth_token")}`
-						},
-						body: formdata
-					}).then(response => response.ok ? response.text() && window.location.reload() : console.log('bad'))
-					.then(result => console.log(result))
-					.catch(error => console.log('error', error));
-				}
-				add_gen();*/
 			}
 		}else{
 		window.location.reload();

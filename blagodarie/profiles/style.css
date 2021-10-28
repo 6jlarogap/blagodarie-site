@@ -258,6 +258,9 @@ table img{
 .error_in_add{
 	color: red;
 }
+.warning1{
+	color: red;
+}
 
 
 @media(max-width: 900px){
