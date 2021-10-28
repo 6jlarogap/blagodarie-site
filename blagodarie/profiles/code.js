@@ -277,7 +277,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
     					"operation_type_id": operation_type_id
   					}),
 					success: function(response){
-						console.log(response)
+						warning1.innerHTML = '';
 					},
 					error: function(response){
 						let first_resp = response.responseText;
@@ -417,7 +417,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   					"contentType": false,
   					"data": formdata,
 					success: function(response){
-						console.log(response)
+						console.log(response);
+						warning1.innerHTML = '';
 					},
 					error: function(response){
 						let first_resp = response.responseText;
