@@ -1673,10 +1673,10 @@ function ticked() {
 		.attr("y2", calcY2);
 		
 	link2.selectAll("line")
-		.attr("x1", calcX1-5)
-		.attr("y1", calcY1-5)
-		.attr("x2", calcX2-5)
-		.attr("y2", calcY2-5);
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
 	
 	
 	
