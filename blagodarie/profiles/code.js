@@ -463,7 +463,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			if(warning1.innerHTML == ''){
 				window.location.reload();
 			}
-		}, 2500)
+		}, 3500)
 	});
 	
 	
