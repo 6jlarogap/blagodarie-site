@@ -348,4 +348,8 @@ table img{
 	.add_user_profile_bddd_inputs{
 		flex-direction: column;
 	}
+	.modal-backdrop.show{
+		z-index: 0!important;
+		opacity: 0!important;
+	}
 }
