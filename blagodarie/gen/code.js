@@ -1076,13 +1076,13 @@ d3.json(apiUrl)
 					
 				}
 			});
-			links_parent.push({
+			links.push({
 				source: d.source,
 				target: d.target,
 				is_father: d.is_father,
 				reverse_is_parent: reverse_is_parent
 			});
-			console.log(links_parent);
+			console.log(links);
 		}
 		if (d.is_mother == true){
 			var reverse_is_parent = d.is_mother;
@@ -1092,13 +1092,13 @@ d3.json(apiUrl)
 					
 				}
 			});
-			links_parent.push({
+			links.push({
 				source: d.source,
 				target: d.target,
 				is_mother: d.is_mother,
 				reverse_is_parent: reverse_is_parent
 			});
-			console.log(links_parent);
+			console.log(links);
 		}
 		
 	});
