@@ -1061,6 +1061,7 @@ d3.json(apiUrl)
 				is_trust: d.is_trust,
 				reverse_is_trust: reverse_is_trust
 			});
+			console.log(links);
 		}
 		
 	});
