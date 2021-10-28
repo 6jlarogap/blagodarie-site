@@ -538,7 +538,7 @@ add_profile_but.addEventListener('click', function(){
 		form.append("last_name", user_profile_surname_inp.value);
 	}
 	if(user_profile_middlename_inp.value != ''){
-		form.append("middle_name", user_profile_surname_inp.value);
+		form.append("middle_name", user_profile_middlename_inp.value);
 	}
 	
 				var settings = {
