@@ -52,6 +52,7 @@ var link;
 var node;
 var nodes = [];
 var links = [];
+var links_parent = [];
 var simulation;
 
 
@@ -1066,25 +1067,41 @@ d3.json(apiUrl)
 		
 	});
 	// родственные линки 
-	/*data.connections.forEach(function(d){
-		if (d.is_trust != null){
-			var reverse_is_trust = d.is_trust;
+	data.connections.forEach(function(d){
+		if (d.is_father != false){
+			var reverse_is_parent = d.is_father;
 			data.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
-					reverse_is_trust = dd.is_trust;
+				if (d.source == dd.target && d.target == dd.source && dd.is_father != false){
+					reverse_is_parent = dd.is_father;
 					
 				}
 			});
-			links.push({
+			links_parent.push({
 				source: d.source,
 				target: d.target,
-				is_trust: d.is_trust,
-				reverse_is_trust: reverse_is_trust
+				is_father: d.is_father,
+				reverse_is_parent: reverse_is_parent
 			});
-			console.log(links);
+			console.log(links_parent);
+		}
+		if (d.is_mother != false){
+			var reverse_is_parent = d.is_mother;
+			data.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_mother != false){
+					reverse_is_parent = dd.is_mother;
+					
+				}
+			});
+			links_parent.push({
+				source: d.source,
+				target: d.target,
+				is_mother: d.is_mother,
+				reverse_is_parent: reverse_is_parent
+			});
+			console.log(links_parent);
 		}
 		
-	});*/
+	});
 	
 	
 	
