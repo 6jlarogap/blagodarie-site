@@ -477,7 +477,7 @@ window.onload = function(){
 if(localStorage.getItem('npuuid')){
 	//let firstName;
 	//if(localStorage.getItem('fName')){
-		firstName = localStorage.getItem('fName')
+		//firstName = localStorage.getItem('fName')
 	//}
 	 user_changed_info(localStorage.getItem('npuuid'), localStorage.getItem('lastName'), localStorage.getItem('fName'), '', '', null, null);
 	localStorage.removeItem('npuuid');
@@ -565,7 +565,7 @@ add_profile_but.addEventListener('click', function(){
 						//}
 						
 						
-						//window.location.reload();
+						window.location.reload();
 						
 						/*formdata.append("uuid", new_uuid);
 						formdata.append("first_name", user_profile_name_inp.value);
