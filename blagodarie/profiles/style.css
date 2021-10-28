@@ -85,10 +85,11 @@ table img{
 }
 .add_user_photo_cont{
 	position: relative;
+	width: 100%;
 }
 .add_user_photo_cont .container{
-	width: 17px!important;
-    height: 17px!important;
+	width: 24px!important;
+    height: 24px!important;
     padding: 0!important;
     margin: 0!important;
     position: absolute!important;
@@ -100,11 +101,12 @@ table img{
 .cropper_edit_but{
 	position: absolute;
     left: 0;
-    right: 0
+    right: 0;
+	width: 100%;
 }
 .image{
-	width: 16px;
-    height: 16px;
+	width: 100%;
+    height: 100%;
     position: absolute;
     left: 0;
     top: 0;
