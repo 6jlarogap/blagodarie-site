@@ -80,6 +80,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	
 	//обрезка файлов
+	window.addEventListener('DOMContentLoaded', function () {
 	var bs_modal = $('#modal');
     var image = document.getElementById('image');
     var cropper,reader,file;
@@ -194,7 +195,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
             };
         });
     });
-
+});
 	
 	//обезличивание 
 	
