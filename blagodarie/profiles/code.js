@@ -297,8 +297,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
     					"Content-Type": "application/json"
   					},
   					"data": JSON.stringify({
-    					"user_id_from": add_user_profile_mother_input,
-    					"user_id_to": id,
+    					"user_id_from": id,
+    					"user_id_to": add_user_profile_mother_input,
     					"operation_type_id": operation_type_id
   					}),
 					success: function(response){
