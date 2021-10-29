@@ -648,8 +648,21 @@ text{
 			display: flex;
 			background-color: #ffffff;
 		}
-.active_filer_icon{}
+#optionsDialog{
+	display: flex;
+    width: 38%;
+    padding: 8%;
+    left: 50%;
+    margin-left: -23%;
+    top: 8%;
+}
 @media(max-width:900px){
+	#optionsDialog{
+		top: 4em;
+		left: 50%;
+    margin-left: -44%;
+    width: 72%;
+		}
 			.pagination_block{
 				left: 0;
     			margin-left: 0;
