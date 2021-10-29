@@ -50,7 +50,7 @@ const PROFILE = {
 //var height = +svg.node().getBoundingClientRect().height;
 let width = window.innerWidth;
 let height = 600;
-var svg = d3.select("#main").attr("viewBox", [-width / 2, -height / 2, width, height])
+var svg = d3.select("#main").attr("viewBox", [-100, -100, 500, 400])
 
 
 var link;
