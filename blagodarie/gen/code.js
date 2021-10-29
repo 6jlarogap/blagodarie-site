@@ -48,10 +48,14 @@ var svg = d3.select("#main").attr("viewBox", "0 0 " + w + " " + h )
 			.attr("preserveAspectRatio", "xMidYMid meet");
 var width = +svg.node().getBoundingClientRect().width;
 var height = +svg.node().getBoundingClientRect().height;
+
+
+
 var link;
 var node;
 var nodes = [];
 var links = [];
+var links_parent = [];
 var simulation;
 
 
@@ -99,20 +103,6 @@ var elementAddInput = document.getElementById("elementAddInput");
 var keyTypesBtns = document.getElementById("keyTypesBtns");
 
 
-/*window.onload = (function(){
-
-    document.addEventListener("mouseup", function(evt){
-        console.log(evt)
-        evt.preventDefault();
-        evt.stopPropagation();
-    });
-    document.addEventListener("contextmenu", function(evt){
-      console.log(evt);
-      evt.preventDefault();
-      evt.stopPropagation();
-  });
-
-})();*/
 
 
 
@@ -399,10 +389,6 @@ addElement.addEventListener("click", async () => {
 //filter
 document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
-		if(!window.location.href.includes('gen')){
-		url.searchParams.set('f', 0);
-		url.searchParams.set('q', 50);
-		}
 		localStorage.setItem("filter", filterInput.value);
 		window.location.href = url.href;
 		
@@ -539,49 +525,7 @@ async function setProfile() {
 	response_smat_map = map_users;
 	console.log(map_users);
 }
-/*async function setProfilesLinks(){
-	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-	}).then(data => data.json());
-	response.connections.forEach(function(d){
-		if (d.is_trust != null){
-			var reverse_is_trust = d.is_trust;
-			response.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
-					reverse_is_trust = dd.is_trust;
-				}
-			});
-			links.push({
-				source: d.source,
-				target: d.target,
-				is_trust: d.is_trust,
-				reverse_is_trust: reverse_is_trust
-			});
-		}
-	});
-}*/
 
-
-
-
-/*
-async function add_gen(){
-		const response = await fetch(`${settings.api}api/profile`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Token ${getCookie("auth_token")}`
-		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "first_name": "123"})
-	}).then(data => data.json());
-}
-if(window.location.href.includes('gen')){
-	add_gen();
-}
-*/
 
 
 
@@ -806,6 +750,16 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 
 
 
+// Показать глубину рекурсии
+
+if(!url.searchParams.has('d')){
+	url.searchParams.append('d', 5);
+	window.location.href = url.href;
+}
+let recur_select_value = document.querySelector('.recur_select_value');
+recur_select_value.innerHTML = url.searchParams.get('d');
+
+
 document.querySelector(".mapid_clean").addEventListener("click", async () => {
 			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
@@ -823,81 +777,8 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 	window.location.reload()
 });
 
-if(!window.location.href.includes('gen')){
-var link = window.location.href;
-var url = new URL(link);
-
-       if(!url.searchParams.has('q') && !url.searchParams.has('f')){
-		   	url.searchParams.append('q', 50);
-			url.searchParams.append('f', 0);
-		   	window.history.pushState(null, null, url.search);
-		   	window.location.href = url.href;
-	   }
-		else{
-			let selected_val = +url.searchParams.get('q');
-			let head_from = +url.searchParams.get('f');
-			if(head_from/selected_val == 0 || head_from/selected_val == Infinity){
-				document.querySelector('#page').innerHTML = 1;
-				let btn_prev_n = document.querySelector('#btn_prev');
-				btn_prev_n.style.background = '#aaa0a0';
-				btn_prev_n.style.cursor = 'context-menu';
-				btn_prev_n.style.pointerEvents = 'none';
-			}else{
-			document.querySelector('#page').innerHTML = 1 + (head_from / selected_val);
-			}
-		}
-	
-        function nextPage() {
-			let item_plus_int = +url.searchParams.get('f');
-			let selected_val = +url.searchParams.get('q');
-			item_plus_int += selected_val;
-			url.searchParams.set('f', item_plus_int);
-			window.location.href = url.href;
-        }
-
-        function prevPage() {
-			let item_plus_int = +url.searchParams.get('f');
-			let selected_val = +url.searchParams.get('q');
-			item_plus_int -= selected_val;
-			url.searchParams.set('f', item_plus_int);
-			window.location.href = url.href;
-        }
-
-
-		document.querySelector('#btn_prev').style.background = '#6a2300;';
-		document.querySelector('#btn_prev').style.cursor = 'pointer;';
-		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('q');
-            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
-		
-            if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
-                //console.log(apiUrl);
-            } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                //console.log(apiUrl);
-				//
-            } else if (localStorage.getItem('filter') != null && isAuth) {
-                apiUrl = `${settings.api}api/profile_graph?uuid=${getCookie('user_uuid')}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
-				
-                //console.log(apiUrl);
-            }
-		console.log(apiUrl);
-}else{
-	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}`;
-}
-
-
-//контекстное меню
-
-
-
-
-document.addEventListener("popstate",function(e){
-    alert('yeees!');
-},false);
-
-
-
+	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
+	console.log(apiUrl)
 
 var isConnection;
 var isTrust;
@@ -945,20 +826,7 @@ d3.json(apiUrl)
 		}
 	});
 		
-	if(!window.location.href.includes('gen')){
-	let selected_val_num = +url.searchParams.get('q');
-	let but_next = document.querySelector('#btn_next');
-	if(data.users.length == selected_val_num){
-		but_next.style.background = '#8b0000';
-		but_next.style.cursor = 'pointer';
-		but_next.style.pointerEvents = 'all';
-	}
-	else if (data.users.length < selected_val_num){
-		but_next.style.background = '#aaa0a0';
-		but_next.style.cursor = 'context-menu';
-		but_next.style.pointerEvents = 'none';
-	}
-	}
+	
 
 	/*maps*/
 	
@@ -1095,8 +963,8 @@ d3.json(apiUrl)
 		//Добавить вершину invite
 		nodes.push({
 			id: INVITE_ID,
-			text: "Род",
-			image: `${settings.url}images/genesis.png`,
+			text: "Пригласить",
+			image: `${settings.url}images/add.png`,
 			nodeType: NODE_TYPES.INVITE
 		})
 	}
@@ -1110,28 +978,17 @@ d3.json(apiUrl)
 	});
 
 	//Добавить вершину home
-	if(!window.location.href.includes('gen')){
-	nodes.push({
-		id: HOME_ID,
-		text: "Домой",
-		image: `${settings.url}images/home.png`,
-		nodeType: NODE_TYPES.HOME
-	});
-	/*nodes.push({
-		id: GENESIS_ID,
-		text: "Род",
-		image: `${settings.url}images/genesis.png`,
-		nodeType: NODE_TYPES.GENESIS
-	});*/
 	
-	}else{
+	
+	
+	
 		nodes.push({
 		id: HOME_ID,
 		text: "Граф",
 		image: `${settings.url}images/home.png`,
 		nodeType: NODE_TYPES.HOME
 	});
-	}
+	
 	//Добавляем вершину карт
 	nodes.push({
 		id: MAPS_ID,
@@ -1192,39 +1049,14 @@ d3.json(apiUrl)
 			nodeType: NODE_TYPES.AUTH
 		});
 	}
-	if(isAuth && !window.location.href.includes('id') && !window.location.href.includes('gen')){
-		async function setProfilesLinks(){
-	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-	}).then(data => data.json());
-	response.connections.forEach(function(d){
-		if (d.is_trust != null){
-			var reverse_is_trust = d.is_trust;
-			response.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
-					reverse_is_trust = dd.is_trust;
-				}
-			});
-			links.push({
-				source: d.source,
-				target: d.target,
-				is_trust: d.is_trust,
-				reverse_is_trust: reverse_is_trust
-			});
-		}
-	});
-		}
-		await setProfilesLinks();
-	}else{
+	console.log(data);
 	data.connections.forEach(function(d){
 		if (d.is_trust != null){
 			var reverse_is_trust = d.is_trust;
 			data.connections.forEach(function(dd){
 				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
 					reverse_is_trust = dd.is_trust;
+					
 				}
 			});
 			links.push({
@@ -1233,24 +1065,47 @@ d3.json(apiUrl)
 				is_trust: d.is_trust,
 				reverse_is_trust: reverse_is_trust
 			});
+			console.log(links);
 		}
-		/*else if(window.location.href.includes('gen')){
-			var fam_link = d.is_trust;
+		
+	});
+	// родственные линки 
+	data.connections.forEach(function(d){
+		if (d.is_father == true){
+			var reverse_is_parent = d.is_father;
 			data.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
-					fam_link = dd.is_trust;
+				if (d.source == dd.target && d.target == dd.source && dd.is_father == true){
+					reverse_is_parent = dd.is_father;
+					
 				}
 			});
-			links.push({
+			links_parent.push({
 				source: d.source,
 				target: d.target,
-				is_trust: d.is_trust,
-				fam_link: fam_link
+				is_father: d.is_father,
+				reverse_is_parent: reverse_is_parent
 			});
-			console.log(links);
-		}*/
+			console.log(links_parent);
+		}
+		if (d.is_mother == true){
+			var reverse_is_parent = d.is_mother;
+			data.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_mother == true){
+					reverse_is_parent = dd.is_mother;
+					
+				}
+			});
+			links_parent.push({
+				source: d.source,
+				target: d.target,
+				is_mother: d.is_mother,
+				reverse_is_parent: reverse_is_parent
+			});
+			console.log(links_parent);
+		}
+		
 	});
-	}
+	
 	
 	
 	if (data.wishes != null){
@@ -1347,12 +1202,7 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;
 			
 			break;
-		/*case GENESIS_ID:
-			if(!window.location.href.includes('gen')){
-			d.fx = width<900 ? 20 :width / 2+100;
-			d.fy = height / 2 - 250;
-			}
-			break;*/
+		
 		
 		case MAPS_ID:
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
@@ -1391,22 +1241,27 @@ d3.json(apiUrl)
 	
 	if(width<900){
 		simulation = d3.forceSimulation(nodes);
-	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links)); //distance(150)
+	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(140).links(links)); //distance(150)
+	simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(70).links(links_parent)); //distance(150)
 	simulation.force("charge", d3.forceManyBody().strength(-400)); //0.5
-	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
+	/*simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
 	simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
-	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))
+	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))*/
+	simulation.force("x", d3.forceX())
+    simulation.force("y", d3.forceY());
 	}	
 	
 	else{
 	simulation = d3.forceSimulation(nodes);
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links)); //distance(150)
-	simulation.force("charge", d3.forceManyBody().strength(0.5));
+	simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(150).links(links_parent)); //distance(150)
+	simulation.force("charge", d3.forceManyBody().strength(-400));
 	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("collide", d3.forceCollide().strength(0.4).radius(80).iterations(1));//radius 80  strength(0.6)
-	simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
-	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))
+	//simulation.force("collide", d3.forceCollide().strength(0.4).radius(80).iterations(1));//radius 80  strength(0.6)
+	/*simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
+	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))*/
+	simulation.force("x", d3.forceX())
+    simulation.force("y", d3.forceY());
 	}
 
 	initializeDisplay();
@@ -1537,6 +1392,7 @@ drag = simulation => {
 		if (!event.active) simulation.alphaTarget(0);
 		//d.fx = null;
 		//d.fy = null;
+		
 	}
 
 	return d3.drag()
@@ -1590,14 +1446,11 @@ function initializeDisplay() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
 		.attr("stroke", d => {
+			console.log(d);
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
 					if(d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
-						if(!window.location.href.includes('gen')){
-						return "#1c8401";
-						}else{
-							return "#3548db";
-						}
+							return "#02b11d";
 					} else{
 						return "#ff0000";
 					}
@@ -1611,11 +1464,7 @@ function initializeDisplay() {
 		.attr("marker-end", d => {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust || d.source.nodeType == NODE_TYPES.TRUST){
-					if(!window.location.href.includes('gen')){
-					return "url(#arrow-trust)";
-					}else{
-						return "url(#arrow-gen)";
-					}
+						return "url(#arrow-trust)";
 				} else{
 					return "url(#arrow-mistrust)";
 				}
@@ -1623,6 +1472,81 @@ function initializeDisplay() {
 				return "url(#arrow-to-other)";
 			}
 		});
+	
+	
+	
+	link2 = svg.append("g")
+		.selectAll("g")
+		.data(links_parent)
+		.join("g")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
+		//.attr("id", "lallaal");
+		
+	link2.append("svg:defs")
+		.append("linearGradient")
+		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
+		.attr("gradientUnits", "userSpaceOnUse")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2)
+		.selectAll("stop")
+		.data(d => {
+			return [[1,d.reverse_is_parent], [2,d.is_father], [3, d.is_mother]/*, [3, d.fam_link]*/];
+		})
+		.join("stop")
+		.attr("offset", d => (d[0] == 1 ? "0%" : "100%"))
+		.attr("style", d => {
+			if (d[1]){
+				return "stop-color:rgb(0, 39, 255);stop-opacity:1";
+			}
+		else if(d[2]){
+			return "stop-color:rgb(0, 39, 255);stop-opacity:1";
+		}
+		else {
+				return "stop-color:rgb(0, 39, 255);stop-opacity:1";
+			}
+		});
+		
+	link2.append("svg:line")
+		.attr("class", "link2")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2)
+		.attr("stroke", d => {
+			console.log(d);
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE ||  d.target.nodeType == NODE_TYPES.FILTERED){
+				if (d.is_father == d.reverse_is_parent || d.is_mother == d.reverse_is_parent){
+					if(d.is_father || d.is_mother){
+							return "#003afc";
+					} else{
+						return "#000aff";
+					}
+				} else {
+					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
+				}
+			} else {
+				return "#345334";
+			}
+		})
+		.attr("marker-end", d => {
+			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.PROFILE || d.target.nodeType == NODE_TYPES.FILTERED){
+				if (d.is_father || d.is_mother){
+						return "url(#arrow-gen)";
+				} else{
+					return "url(#arrow-gen)";
+				}
+			} else {
+				return "url(#arrow-to-other)";
+			}
+		});
+	
+	
+	
 
 	node = svg.append("g")
 		.selectAll("g")
@@ -1707,8 +1631,19 @@ function initializeDisplay() {
 
 }
 
+
+
+
 function ticked() {
 	node.attr("transform", d => {
+		/*var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
+		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 && width>900 ? height-70 : d.y));
+		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
+			simulation.force("x").x(x);
+			simulation.force("y").y(y);
+		}
+		return `translate(${x},${y})`;
+		*/
 		var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
 		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 && width>900 ? height-70 : d.y));
 		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
@@ -1736,7 +1671,32 @@ function ticked() {
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
 		.attr("y2", calcY2);
+	
+	
+	
+	link2.selectAll("g")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
+		
+	
+	link2.selectAll("linearGradient")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
+		
+	link2.selectAll("line")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
+	
+	
 }
+
+
 
 function calcX1(d){
 	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
@@ -1922,19 +1882,12 @@ async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
-		if(!window.location.href.includes('gen')){
-			url.searchParams.set('f', 0);
-			window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
-		}else{
 			window.location.href = `${settings.url}gen?id=` + uuid;
-		}
+		
 		
 	} else if (nodeType == NODE_TYPES.PROFILE) {
-		if(!window.location.href.includes('gen')){
-		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
-		}else{
 			window.location.href = `${settings.url}gen?id=` + uuid;
-		}
+		
 	} else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex";
 	
@@ -1945,11 +1898,8 @@ async function onNodeClick(nodeType, uuid, txt){
 
 	}
 	else if (nodeType == NODE_TYPES.FILTERED) {
-		if(!window.location.href.includes('gen')){
-		window.location.href = `${settings.url}profile?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f');
-		}else{
 			window.location.href = `${settings.url}gen?id=` + uuid;
-		}
+		
 	}
 	else if(nodeType == NODE_TYPES.FILTER) {
 		
@@ -1967,24 +1917,23 @@ async function onNodeClick(nodeType, uuid, txt){
 		shareDialog.style.display = "flex";
 	}
 	else if(nodeType == NODE_TYPES.INVITE) {
-		/*shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
+		shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
 		share.updateContent({
 			title: document.querySelector(".userName").textContent + ' предлагает Вам своё доверие в системе Благодари.РФ',
 			url: shareLink
 			
 		});
-		shareDialog.style.display = "flex";*/
-		window.location.href = url.origin + '/gen';
+		shareDialog.style.display = "flex";
 	}
 	else if (nodeType == NODE_TYPES.OPTIONS) {
 		optionsDialog.style.display = "flex";
 	}
 	else if(nodeType == NODE_TYPES.HOME) {
-		window.location.href = settings.url
+		window.location.href = settings.url + '?q=50&f=0';
 	}
-	/*else if(nodeType == NODE_TYPES.GENESIS) {
+	else if(nodeType == NODE_TYPES.GENESIS) {
 		window.location.href = url.origin + '/gen';
-	}*/
+	}
 	else if(nodeType == NODE_TYPES.MAPS){
 		
 		url.searchParams.append('map_visible', 'true');
@@ -2057,56 +2006,10 @@ async function onNodeClick(nodeType, uuid, txt){
 		await rootFunctions('keys');
 	}
 }
-//Открытие профиля в новой вкладке
 
-/*window.onload = function(){
-	setTimeout(function(){
 
-	let svg_elem_click = document.querySelectorAll('.svg_elem');
-	
-	for(let i = 0; i<svg_elem_click.length; i++){
-		if(svg_elem_click[i].__data__.nodeType == 'profile_root' || svg_elem_click[i].__data__.nodeType == 'friend'){
-		svg_elem_click[i].addEventListener('contextmenu', function(e){
-			
-			console.log(e)
-			e.preventDefault();
-			console.log(this.querySelector('image'))
-			let friendID = svg_elem_click[i].__data__.id;
-			if(url.searchParams.has('id')){
-				url.searchParams.set('id', friendID);
-				window.open(url.href, '_blank');
-			}else{
-				url.searchParams.append('id', friendID);
-				window.open(url.href, '_blank');
-			}
-		})
-		}
-	}
-	
-	let svg_elem_img = document.querySelectorAll('.svg_elem image');
-	
-	for(let i = 0; i<svg_elem_img.length; i++){
-		if(svg_elem_img[i].__data__.nodeType == 'profile_root' || svg_elem_img[i].__data__.nodeType == 'friend'){
-		svg_elem_img[i].addEventListener('contextmenu', function(e){
-			console.log(e)
-			e.preventDefault();
-			let friendID = svg_elem_img[i].__data__.id;
-			if(url.searchParams.has('id')){
-				url.searchParams.set('id', friendID);
-				window.open(url.href, '_blank');
-			}else{
-				url.searchParams.append('id', friendID);
-				window.open(url.href, '_blank');
-			}
-		})
-		}
-	}
-	
-}, 500);
-}*/
-	
 
-//
+
 async function rootFunctions(category) {
 	var categoryObj;
 	if (category == 'wishes') {

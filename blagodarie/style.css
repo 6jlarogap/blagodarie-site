@@ -84,7 +84,7 @@ text{
 		#btn_prev{
 			text-decoration: none;
     			color: #fff;
-    			background-color: #6a2300;
+    			background-color: #8b0000;
     			padding: 20px 27px;
     			border-radius: 50px;
     			font-weight: 700;
@@ -92,7 +92,7 @@ text{
 		#btn_next{
 			text-decoration: none;
     			color: #fff;
-    			background-color: #6a2300;
+    			background-color: #8b0000;
     			padding: 20px 27px;
     			border-radius: 50px;
     			font-weight: 700;
@@ -674,10 +674,10 @@ text{
     			y: -18px;
 			}
 			image.userPortrait{
-				width: 60px;
-    			height: 60px;
-    			x: -31px;
-    			y: -31px;
+				width: 64px;
+    			height: 64px;
+    			x: -32px;
+    			y: -32px;
 			}
 			dialog{
 				left: 50%;
