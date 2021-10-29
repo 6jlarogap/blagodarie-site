@@ -776,9 +776,14 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 	new_cur_pos_marker_lng = null;
 	window.location.reload()
 });
-
-	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
-	console.log(apiUrl)
+	if(!window.location.href.includes('id')){
+		var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
+		console.log(apiUrl)
+	}else{
+		var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
+		console.log(apiUrl)
+	}
+	 
 
 var isConnection;
 var isTrust;
