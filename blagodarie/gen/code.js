@@ -1930,7 +1930,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		optionsDialog.style.display = "flex";
 	}
 	else if(nodeType == NODE_TYPES.HOME) {
-		window.location.href = settings.url
+		window.location.href = settings.url + '?q=50&f=0';
 	}
 	else if(nodeType == NODE_TYPES.GENESIS) {
 		window.location.href = url.origin + '/gen';
