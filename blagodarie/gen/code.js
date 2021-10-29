@@ -753,7 +753,7 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 // Показать глубину рекурсии
 
 if(!url.searchParams.has('d')){
-	url.searchParams.append('d', 1);
+	url.searchParams.append('d', 5);
 	window.location.href = url.href;
 }
 let recur_select_value = document.querySelector('.recur_select_value');
