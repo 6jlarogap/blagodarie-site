@@ -892,7 +892,7 @@ var url = new URL(link);
 
 
 
-addEventListener("popstate",function(e){
+document.addEventListener("popstate",function(e){
     alert('yeees!');
 },false);
 
