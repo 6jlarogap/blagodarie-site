@@ -42,12 +42,13 @@ const PROFILE = {
 	count: "",
 	nodeType: NODE_TYPES.PROFILE
 }
-let w = window.innerWidth;
+/*let w = window.innerWidth;
 let h = window.innerHeight;
 var svg = d3.select("#main").attr("viewBox", "0 0 " + w + " " + h )
 			.attr("preserveAspectRatio", "xMidYMid meet");
 var width = +svg.node().getBoundingClientRect().width;
-var height = +svg.node().getBoundingClientRect().height;
+var height = +svg.node().getBoundingClientRect().height;*/
+var svg = d3.select("#main").attr("viewBox", [-width / 2, -height / 2, width, height])
 var link;
 var node;
 var nodes = [];
