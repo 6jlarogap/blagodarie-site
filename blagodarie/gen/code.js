@@ -776,7 +776,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 	new_cur_pos_marker_lng = null;
 	window.location.reload()
 });
-	if(!window.location.href.includes('id')){
+	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
 	}else{
