@@ -1231,7 +1231,7 @@ d3.json(apiUrl)
 				d.fy = height / 2;
 			}
 			break;
-		/*case PROFILE.id:
+		case PROFILE.id:
 			if (userIdFrom && userIdFrom != PROFILE.id) {
 				d.fx = width<900 ? width / 2 - 100 : width / 2 - 200;
 				d.fy = height / 2;
@@ -1240,7 +1240,7 @@ d3.json(apiUrl)
 				d.fy = height / 2;
 			}
 			
-			break;*/
+			break;
 		}
 	});
 	
