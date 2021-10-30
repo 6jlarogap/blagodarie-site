@@ -1254,7 +1254,7 @@ d3.json(apiUrl)
 	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))*/
 	simulation.force("x", d3.forceX())
     simulation.force("y", d3.forceY());
-	d3.layout.gravity(1)
+	d3.gravity(1)
 	}	
 	
 	else{
@@ -1268,7 +1268,7 @@ d3.json(apiUrl)
 	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))*/
 	simulation.force("x", d3.forceX())
     simulation.force("y", d3.forceY());
-	d3.layout.gravity(1)
+	d3.gravity(1)
 	}
 
 	initializeDisplay();
