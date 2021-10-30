@@ -1267,8 +1267,8 @@ d3.json(apiUrl)
 	/*simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
 	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))*/
 	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("x", d3.forceX(width / 2).strength(0.5))
-    simulation.force("y", d3.forceY(height/2).strength(0.5));
+	simulation.force("x", d3.forceX(width / 2).strength(0.1))
+    simulation.force("y", d3.forceY(height/2).strength(0.1));
 	}
 
 	initializeDisplay();
