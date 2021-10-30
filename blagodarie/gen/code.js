@@ -1252,8 +1252,8 @@ d3.json(apiUrl)
 	/*simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
 	simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
 	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))*/
-	simulation.force("x", d3.forceX(width / 2).strength(0.015))
-    simulation.force("y", d3.forceY(height / 2).strength(0.015))
+	simulation.force("x", d3.forceX(width / 2).strength(0.4))
+    simulation.force("y", d3.forceY(height / 2).strength(0.4))
 //simulation.force("center", d3.forceCenter(width / 2, height / 2));
 	}	
 	
@@ -1266,8 +1266,8 @@ d3.json(apiUrl)
 	//simulation.force("collide", d3.forceCollide().strength(0.4).radius(80).iterations(1));//radius 80  strength(0.6)
 	/*simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
 	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))*/
-	simulation.force("x", d3.forceX(width / 2).strength(0.015))
-    simulation.force("y", d3.forceY(height / 2).strength(0.015))
+	simulation.force("x", d3.forceX(width / 2).strength(0.4))
+    simulation.force("y", d3.forceY(height / 2).strength(0.4))
 		//simulation.force("center", d3.forceCenter(width / 2, height / 2));
 	}
 
