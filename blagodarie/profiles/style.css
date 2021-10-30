@@ -142,8 +142,6 @@ table img{
 	display: flex;
     width: 14%;
     justify-content: space-between;
-	opacity: 0;
-	transition: .4s;
 }
 .user_changed_link{
 	display: flex;
@@ -157,10 +155,7 @@ table img{
     height: 16px;
 	border-radius: 0;
 }
-#user_table_body tr:hover .user_changed{
-	opacity: 1;
-	transition: .4s;
-}
+
 .add_user_profile_container{
 	width: 100%;
     height: fit-content;
@@ -282,9 +277,21 @@ table img{
 	padding-left: 0!important;
 	padding-right: 0!important;
 }
-
-@media(max-width: 900px){
+#optionsDialog{
 	
+    width: 38%;
+    padding: 8%;
+    left: 50%;
+    margin-left: -23%;
+    top: 8%;
+}
+@media(max-width:900px){
+	#optionsDialog{
+		top: 4em;
+		left: 50%;
+    margin-left: -44%;
+    width: 72%;
+		}
 	.user_changed{
 		opacity: 1;
 	}
