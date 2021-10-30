@@ -1165,10 +1165,10 @@ d3.json(apiUrl)
 	
 	nodes.forEach(function(d) {
 		switch(d.id){
-		case userIdFrom:
+		/*case userIdFrom:
 			d.fx = width / 2;
 			d.fy = height / 2;
-			break;
+			break;*/
 		case WISHES_ROOT_ID:
 			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
 			d.fy = width<900 ? height/2+50 : height / 2 + 200;
