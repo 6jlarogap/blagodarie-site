@@ -1165,10 +1165,10 @@ d3.json(apiUrl)
 	
 	nodes.forEach(function(d) {
 		switch(d.id){
-		/*case userIdFrom:
+		case userIdFrom:
 			d.fx = width / 2;
 			d.fy = height / 2;
-			break;*/
+			break;
 		case WISHES_ROOT_ID:
 			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
 			d.fy = width<900 ? height/2+50 : height / 2 + 200;
@@ -1231,7 +1231,7 @@ d3.json(apiUrl)
 				d.fy = height / 2;
 			}
 			break;
-		/*case PROFILE.id:
+		case PROFILE.id:
 			if (userIdFrom && userIdFrom != PROFILE.id) {
 				d.fx = width<900 ? width / 2 - 100 : width / 2 - 200;
 				d.fy = height / 2;
@@ -1240,7 +1240,7 @@ d3.json(apiUrl)
 				d.fy = height / 2;
 			}
 			
-			break;*/
+			break;
 		}
 	});
 	
@@ -1249,12 +1249,9 @@ d3.json(apiUrl)
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(70).links(links)); //distance(150)
 	simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(70).links(links_parent)); //distance(150)
 	simulation.force("charge", d3.forceManyBody().strength(-400)); //0.5
-	/*simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
-	simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
-	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))*/
-	simulation.force("x", d3.forceX(width / 2).strength(0.4))
-    simulation.force("y", d3.forceY(height / 2).strength(0.4))
-//simulation.force("center", d3.forceCenter(width / 2, height / 2));
+	/*simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)*/
+	simulation.force("x", d3.forceX(width / 2).strength(0.1))
+    	simulation.force("y", d3.forceY(height/2).strength(0.1));
 	}	
 	
 	else{
@@ -1264,11 +1261,8 @@ d3.json(apiUrl)
 	simulation.force("charge", d3.forceManyBody().strength(-400));
 	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
 	//simulation.force("collide", d3.forceCollide().strength(0.4).radius(80).iterations(1));//radius 80  strength(0.6)
-	/*simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
-	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))*/
-	simulation.force("x", d3.forceX(width / 2).strength(0.4))
-    simulation.force("y", d3.forceY(height / 2).strength(0.4))
-		//simulation.force("center", d3.forceCenter(width / 2, height / 2));
+	simulation.force("x", d3.forceX(width / 2).strength(0.1))
+    	simulation.force("y", d3.forceY(height/2).strength(0.1));
 	}
 
 	initializeDisplay();
