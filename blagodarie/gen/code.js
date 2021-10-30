@@ -1272,6 +1272,16 @@ d3.json(apiUrl)
 
 	initializeDisplay();
 	initializeSimulation();
+	
+	
+	
+	function gravity(alpha) {
+  return function(d) {
+    d.y += (d.cy - d.y) * alpha;
+    d.x += (d.cx - d.x) * alpha;
+  };
+}
+	
 });
 
 
