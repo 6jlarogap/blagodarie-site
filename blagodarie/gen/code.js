@@ -1254,7 +1254,7 @@ d3.json(apiUrl)
 	
 	else{
 		simulation = d3.forceSimulation(nodes);
-//		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links)); //distance(150)
+		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links)); //distance(150)
 //		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(150).links(links_parent)); //distance(150)
 		simulation.force("charge", d3.forceManyBody())
 		simulation.force("center", d3.forceCenter(width / 2, height / 2))
