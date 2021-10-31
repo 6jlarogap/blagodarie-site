@@ -518,10 +518,18 @@ async function setProfile() {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
-
+	
+	var str = response.users[0].photo;
+	var extArray = str.split(".");
+	var ext = extArray[extArray.length - 1];
+		
+	var replacement = "media"; 
+	var toReplace = "thumb"; 
+	var str1 = str.replace(replacement, toReplace);
+	
 	PROFILE.text = response.users[0].first_name + " " + response.users[0].last_name;
 	PROFILE.abil = response.users[0].ability;
-	PROFILE.image = response.users[0].photo == '' ? `${settings.url}images/default_avatar.png` : response.users[0].photo;
+	PROFILE.image = response.users[0].photo == '' ? `${settings.url}images/default_avatar.png` : width<900 ? str1+"/64x64~crop~12."+ext : str1+"/128x128~crop~12."+ext;
 	PROFILE.id = getCookie("user_uuid");
 	//PROFILE.tabil = response.trust_count;
 	console.log(response.users.trust_count);
@@ -924,11 +932,19 @@ d3.json(apiUrl)
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
 			
+			var str = d.photo;
+			var extArray = str.split(".");
+			var ext = extArray[extArray.length - 1];
+		
+			var replacement = "media"; 
+			var toReplace = "thumb"; 
+			var str1 = str.replace(replacement, toReplace);
+			
 			if(d.ability === null){
 			nodes.push ({
 				id: d.uuid,
 				text: (d.first_name + " " + d.last_name + " " + " "),
-				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
+				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 ? str1+"/35x35~crop~12."+ext : str1+"/64x64~crop~12."+ext,
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
 			}else{
@@ -936,7 +952,7 @@ d3.json(apiUrl)
 				id: d.uuid,
 				text: (d.first_name + " " + d.last_name),
 				tabil: (d.ability),
-				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
+				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 ? str1+"/35x35~crop~12."+ext : str1+"/64x64~crop~12."+ext,
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
 			}
