@@ -1563,10 +1563,10 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');
 		
-	console.log(d);
+		console.log(nodes);
 	
 		node.append("image")
-		.attr("xlink:href", d => d.image? console.log(d.image) : '')
+		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
 				return "userPortrait";
