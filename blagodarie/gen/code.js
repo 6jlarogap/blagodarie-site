@@ -684,6 +684,7 @@ function show_smart_map(lati, long){
 			if(response_smat_map.user_uuid == userIdFrom){
 				let lati = +response_smat_map.user_latitude;
 				let long = +response_smat_map.user_longitude;
+				console.log(lati, long);
 			}
 		}
 		}
