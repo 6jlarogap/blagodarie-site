@@ -817,6 +817,11 @@ d3.json(apiUrl)
 			var replacement = "media"; 
 			var toReplace = "thumb"; 
 			var str1 = str.replace(replacement, toReplace);
+			if(width<900){
+				str1+"/35x35~crop~12."+ext;
+			}else{
+				str1+"/64x64~crop~12."+ext;
+			}
 			
 			
 			if(d.ability === null){
