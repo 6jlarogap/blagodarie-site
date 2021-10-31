@@ -678,9 +678,17 @@ function show_smart_map(lati, long){
 	if(document.querySelector('#mapid').hasChildNodes()){}
 	else{
 		if(response_smat_map[0].user_latitude != null){
-			let lati = +response_smat_map[0].user_latitude;
-			let long = +response_smat_map[0].user_longitude;
+			/*let lati = +response_smat_map[0].user_latitude;
+			let long = +response_smat_map[0].user_longitude;*/
+			for(let i=0;i<response_smat_map.length;i++){
+			if(response_smat_map.user_uuid == userIdFrom){
+				let lati = +response_smat_map.user_latitude;
+				let long = +response_smat_map.user_longitude;
+			}
 		}
+		}
+		
+	
 		
 	mapid = L.map('mapid').setView([lati, long], 13);
 		
