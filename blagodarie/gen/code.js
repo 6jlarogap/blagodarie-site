@@ -768,7 +768,7 @@ document.querySelector(".mapid_send").addEventListener("click", function(){
 		}, 2500);
 		setTimeout(function(){
 	
-			/*window.location.reload()*/
+			window.location.reload();
 		}, 3500)
 	});
 });
@@ -810,8 +810,36 @@ if(!url.searchParams.has('d')){
 let recur_select_value = document.querySelector('.recur_select_value');
 recur_select_value.innerHTML = url.searchParams.get('d');
 
+document.querySelector(".mapid_clean").addEventListener("click", function(){
+	var form = new FormData();
+	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
+	form.append("latitude", "null");	
+	form.append("longitude", "null");
+	var settings = {
+  		"url": `${new_settapi}api/profile`,
+  		"method": "PUT",
+  		"timeout": 0,
+  		"headers": {
+  		  "Authorization": `Token ${getCookie("auth_token")}`
+  		},
+  		"processData": false,
+  		"mimeType": "multipart/form-data",
+  		"contentType": false,
+  		"data": form
+	};
 
-document.querySelector(".mapid_clean").addEventListener("click", async () => {
+	$.ajax(settings).done(function (response) {
+  		console.log(response);
+		lati = null;
+		long = null;
+		new_cur_pos_marker_lat = null;
+		new_cur_pos_marker_lng = null;
+		window.location.reload()
+	});
+});
+
+
+/*document.querySelector(".mapid_clean").addEventListener("click", async () => {
 			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
 		headers: {
@@ -820,13 +848,13 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 		},
 		body: JSON.stringify({"user_id_from":userIdFrom ? userIdFrom : getCookie("auth_token"), "latitude": null , "longitude": null })
 	}).then(data => data.json());
-	//map_container.style.display = "none";
+	
 	lati = null;
 	long = null;
 	new_cur_pos_marker_lat = null;
 	new_cur_pos_marker_lng = null;
 	window.location.reload()
-});
+});*/
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
