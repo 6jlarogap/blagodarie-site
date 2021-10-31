@@ -740,7 +740,7 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 			"Content-Type": "application/json",
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null , "longitude": new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null })
+		body: JSON.stringify({"user_id_from":userIdFrom ? userIdFrom : getCookie("auth_token")/*getCookie("auth_token")*/, "latitude": new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null , "longitude": new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null })
 	}).then(data => data.json());
 	mapid_alert.style.display = "block";
 	setTimeout(function(){
@@ -776,7 +776,7 @@ document.querySelector(".mapid_clean").addEventListener("click", async () => {
 			"Content-Type": "application/json",
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": null , "longitude": null })
+		body: JSON.stringify({"user_id_from":userIdFrom ? userIdFrom : getCookie("auth_token"), "latitude": null , "longitude": null })
 	}).then(data => data.json());
 	//map_container.style.display = "none";
 	lati = null;
