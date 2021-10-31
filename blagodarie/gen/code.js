@@ -1564,7 +1564,7 @@ function initializeDisplay() {
 		.attr('class', 'svg_elem');
 		
 		node.append("image")
-		.attr("xlink:href", d => d.image)
+		.attr("xlink:href", d => d.image? console.log(d.image) : '')
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
 				return "userPortrait";
