@@ -744,7 +744,7 @@ document.querySelector(".mapid_send").addEventListener("click", function(){
 	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);
 	var settings = {
   		"url": `${new_settapi}api/profile`,
-  		"method": "POST",
+  		"method": "PUT",
   		"timeout": 0,
   		"headers": {
   		  "Authorization": `Token ${getCookie("auth_token")}`
