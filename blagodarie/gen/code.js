@@ -461,6 +461,11 @@ document.getElementById("wishes").addEventListener("click", async () => {
 // })
 //-----------------------------------------------------------------------------------------------
 
+//new settings
+let new_settapi = settings.api;
+let new_setturl = settings.url;
+
+
 
 function uuidv4() {
 	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -738,7 +743,7 @@ document.querySelector(".mapid_send").addEventListener("click", function(){
 	form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null}`);	
 	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);
 	var settings = {
-  		"url": `${settings.api}api/profile`,
+  		"url": `${new_settapi}api/profile`,
   		"method": "POST",
   		"timeout": 0,
   		"headers": {
