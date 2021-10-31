@@ -732,15 +732,52 @@ function show_smart_map(lati, long){
 	
 }
 
+document.querySelector(".mapid_send").addEventListener("click", function(){
+	var form = new FormData();
+	form.append("user_id_from", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
+	form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null}`);	
+	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);
+	var settings = {
+  		"url": `${settings.api}api/profile`,
+  		"method": "POST",
+  		"timeout": 0,
+  		"headers": {
+  		  "Authorization": `Token ${getCookie("auth_token")}`
+  		},
+  		"processData": false,
+  		"mimeType": "multipart/form-data",
+  		"contentType": false,
+  		"data": form
+	};
 
-document.querySelector(".mapid_send").addEventListener("click", async () => {
+	$.ajax(settings).done(function (response) {
+  		console.log(response);
+		mapid_alert.style.display = "block";
+		setTimeout(function(){
+			mapid_alert.style.transition = "1s";
+			mapid_alert.style.opacity = "1";
+		}, 200);
+		setTimeout(function(){
+			mapid_alert.style.transition = "1s";
+			mapid_alert.style.opacity = "0";
+		}, 2500);
+		setTimeout(function(){
+	
+			/*window.location.reload()*/
+		}, 3500)
+	});
+});
+
+
+
+/*document.querySelector(".mapid_send").addEventListener("click", async () => {
 			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
-		body: JSON.stringify({"user_id_from":userIdFrom ? userIdFrom : getCookie("auth_token")/*getCookie("auth_token")*/, "latitude": new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null , "longitude": new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null })
+		body: JSON.stringify({"user_id_from":userIdFrom ? userIdFrom : getCookie("auth_token")/*getCookie("auth_token")*/, /*"latitude": new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null , "longitude": new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null })
 	}).then(data => data.json());
 	mapid_alert.style.display = "block";
 	setTimeout(function(){
@@ -754,9 +791,9 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 	setTimeout(function(){
 
 		/*window.location.reload()*/
-	}, 3500)
+	/*}, 3500)
 });
-
+*/
 
 
 // Показать глубину рекурсии
