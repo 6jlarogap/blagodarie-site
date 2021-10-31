@@ -752,8 +752,8 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 		mapid_alert.style.opacity = "0";
 	}, 2500);
 	setTimeout(function(){
-		//mapid_alert.style.display = "none";
-		window.location.reload()
+
+		/*window.location.reload()*/
 	}, 3500)
 });
 
