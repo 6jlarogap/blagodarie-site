@@ -529,7 +529,7 @@ async function setProfile() {
 	
 	PROFILE.text = response.users[0].first_name + " " + response.users[0].last_name;
 	PROFILE.abil = response.users[0].ability;
-	PROFILE.image = response.users[0].photo == '' ? `${settings.url}images/default_avatar.png` : width<900 ? str1+"/64x64~crop~12."+ext : str1+"/128x128~crop~12."+ext;
+	PROFILE.image = response.users[0].photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && response.users[0].photo.includes('media') ? str1+"/64x64~crop~12."+ext : width>900 && response.users[0].photo.includes('media') ?  str1+"/128x128~crop~12."+ext : response.users[0].photo;
 	PROFILE.id = getCookie("user_uuid");
 	//PROFILE.tabil = response.trust_count;
 	console.log(response.users.trust_count);
