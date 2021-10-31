@@ -1563,6 +1563,10 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');
 		
+	function(){
+		d => console.log(d) 
+	}
+	
 		node.append("image")
 		.attr("xlink:href", d => d.image? console.log(d.image) : '')
 		.attr("class", d => {
