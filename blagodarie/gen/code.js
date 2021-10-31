@@ -817,18 +817,18 @@ d3.json(apiUrl)
 			var replacement = "media"; 
 			var toReplace = "thumb"; 
 			var str1 = str.replace(replacement, toReplace);
-			if(width<900){
+			/*if(width<900){
 				str1+"/35x35~crop~12."+ext;
 			}else{
 				str1+"/64x64~crop~12."+ext;
-			}
+			}*/
 			
 			
 			if(d.ability === null){
 			nodes.push ({
 				id: d.uuid,
 				text: (d.first_name + " " + d.last_name + " " + " "),
-				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : str1,
+				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 ? str1+"/35x35~crop~12."+ext : str1+"/64x64~crop~12."+ext,
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
 			}else{
