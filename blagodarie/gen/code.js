@@ -1253,15 +1253,15 @@ d3.json(apiUrl)
 	simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
 	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))*/
 	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("x", d3.forceX(width / 2).strength(10))
-    simulation.force("y", d3.forceY(height/2).strength(10));
+	simulation.force("x", d3.forceX(width / 2).strength(0.1))
+    simulation.force("y", d3.forceY(height/2).strength(0.1));
 	}	
 	
 	else{
 	simulation = d3.forceSimulation(nodes);
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links)); //distance(150)
 	simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(150).links(links_parent)); //distance(150)
-	simulation.force("charge", d3.forceManyBody().strength(-400));
+	simulation.force("charge", d3.forceManyBody().strength(-400))
 	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
 	//simulation.force("collide", d3.forceCollide().strength(0.4).radius(80).iterations(1));//radius 80  strength(0.6)
 	/*simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
