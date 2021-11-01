@@ -299,7 +299,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	//Кнопка Сохранить
 	add_user_profile_overbottom.addEventListener('click', function(){
 		
-		
+		  
 		
 		
 		
@@ -706,10 +706,31 @@ add_profile_but.addEventListener('click', function(){
 	
 	
 })
-
-
-
-
+//maps
+let map_users = [];
+let response_smat_map;
+if(isAuth){
+	setProfile();
+}
+async function setProfile() {
+	const response = await fetch(`${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+	map_users.push({
+		user_photo: response.users[0].photo,
+		user_name: response.users[0].first_name,
+		user_lastname: response.users[0].last_name,
+		user_latitude: response.users[0].latitude,
+		user_longitude: response.users[0].longitude,
+		user_ability: response.users[0].ability,
+		user_uuid: response.users[0].uuid
+	} );
+	response_smat_map = map_users;
+	console.log(map_users);
+}
 
 
 
