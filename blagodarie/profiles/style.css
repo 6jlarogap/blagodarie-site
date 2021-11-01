@@ -293,6 +293,9 @@ table img{
 	width: 100%;
 	z-index: 100;
 }
+.geolocation_cont{
+	margin-top: 15px;
+}
 #mapid {
     position: relative;
     display: block;
