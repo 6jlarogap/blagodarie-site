@@ -759,13 +759,13 @@ async function setProfile() {
 		let pars2 = JSON.parse(first_resp);
 		console.log(pars2)
 		map_users.push({
-		user_photo: pars2.users[0].photo,
-		user_name: pars2.users[0].first_name,
-		user_lastname: pars2.users[0].last_name,
-		user_latitude: pars2.users[0].latitude,
-		user_longitude: pars2.users[0].longitude,
-		user_ability: pars2.users[0].ability,
-		user_uuid: pars2.users[0].uuid
+		user_photo: pars2[0].photo,
+		user_name: pars2[0].first_name,
+		user_lastname: pars2[0].last_name,
+		user_latitude: pars2[0].latitude,
+		user_longitude: pars2[0].longitude,
+		user_ability: pars2[0].ability,
+		user_uuid: pars2[0].uuid
 	} );
   		response_smat_map = map_users;
 		console.log(map_users);
