@@ -590,16 +590,15 @@ add_profile_but.addEventListener('click', function(){
 	let add_user_profile_overbottom = document.querySelector('#add_user_profile_overbottom');
 	let error_in_add = document.querySelector('.error_in_add');
 	let new_profile_user_uuid;
-	/*let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp');
-	let add_user_profile_bd = document.querySelector('.add_user_profile_bd');
-	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
-	let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
-	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
-	let new_uuid;
-	var formdata = new FormData();*/
 	
-	console.log(settings);
-	//let new_api_str = settings.api;
+	
+	//Выбор пола
+	
+	function setGender(gender_val){
+		console.log(gender_val.value);
+	}
+	
+	//обнуление полей
 	user_profile_name_inp.value = '';
 	user_profile_surname_inp.value = '';
 	user_profile_middlename_inp.value = '';
