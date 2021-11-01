@@ -658,10 +658,8 @@ navigator.geolocation.getCurrentPosition(
 	    long = position.coords.longitude;
 	    }
 	    show_smart_map(lati, long);*/
-		let searchItem = userIdFrom;
-		let cityId = response_smat_map.find(a => a.user_uuid === searchItem).user_latitude;
-		console.log(cityId);
-		console.log(response_smat_map);
+		if (response_smat_map.some(e => e.user_uuid === userIdFrom)) {
+  		console.log(response_smat_map);
 		for(let i=0;i<response_smat_map.length;i++){
 			if(response_smat_map[i].user_uuid == userIdFrom){
 				lati = +response_smat_map[i].user_latitude;
@@ -670,6 +668,12 @@ navigator.geolocation.getCurrentPosition(
 				show_smart_map(lati, long)
 			}
 		}
+		}else{
+			lati = position.coords.latitude;
+	    	long = position.coords.longitude;
+			show_smart_map(lati, long)
+		}
+		
 		
 		//show_smart_map(lati, long)
     },
