@@ -80,6 +80,10 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let warning1 = document.querySelector('.warning1');
 	
 	userIdFrom = id;
+	if(isAuth){
+	setProfile();
+	}
+	
 	user_profile_surname_inp.value = '';
 	user_profile_name_inp.value = '';
 	user_profile_middlename_inp.value = '';
@@ -712,9 +716,7 @@ add_profile_but.addEventListener('click', function(){
 //maps
 let map_users = [];
 let response_smat_map;
-if(isAuth){
-	setProfile();
-}
+
 
 async function setProfile() {
 	/*const response = await fetch(`${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*//*, {
