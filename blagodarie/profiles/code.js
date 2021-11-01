@@ -57,7 +57,7 @@ async function myProfilesinfo() {
 window.onload = myProfilesinfo();
 
 
-
+let userIdFrom; 
 
 
 
@@ -79,6 +79,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	let warning1 = document.querySelector('.warning1');
 	
+	userIdFrom = id;
 	user_profile_surname_inp.value = '';
 	user_profile_name_inp.value = '';
 	user_profile_middlename_inp.value = '';
@@ -735,6 +736,198 @@ async function setProfile() {
 	console.log(map_users);
 }
 
+
+let get_position = document.querySelector('#get_position');
+let mapid = document.querySelector('#mapid');
+let map_container = document.querySelector('.map_container');
+let mapid_close = document.querySelector('.mapid_close');
+let mapid_send = document.querySelector('.mapid_send');
+let mapid_clean = document.querySelector('.mapid_clean');
+//let lati = response_smat_map[0].user_latitude;
+//let long = response_smat_map[0].user_longtitude;
+let new_cur_pos_marker_lat;
+let new_cur_pos_marker_lng;
+let mapid_alert = document.querySelector('.mapid_alert');
+let mapid_whereI = document.querySelector('.mapid_whereI');
+
+//if(response_smat_map[0].user_latitude != null){
+//	let lati = +response_smat_map[0].user_latitude;
+//	let long = +response_smat_map[0].user_longtitude;
+
+	let lati;
+	let long;
+
+
+
+if(get_position){
+get_position.addEventListener('click', ()=>{
+	get_cur_position();
+});
+}
+
+
+function get_cur_position(){
+
+navigator.geolocation.getCurrentPosition(
+    function(position) {/*
+	    console.log(position.coords);
+	    if(response_smat_map[0].user_latitude != null){
+	    	lati = +response_smat_map[0].user_latitude;
+		long = +response_smat_map[0].user_longitude;
+	    }else{
+	    lati = position.coords.latitude;
+	    long = position.coords.longitude;
+	    }
+	    show_smart_map(lati, long);*/
+		if (response_smat_map.some(e => e.user_uuid === userIdFrom)) {
+  		console.log(response_smat_map);
+		for(let i=0;i<response_smat_map.length;i++){
+			if(response_smat_map[i].user_uuid == userIdFrom){
+				lati = +response_smat_map[i].user_latitude;
+				long = +response_smat_map[i].user_longitude;
+				console.log(lati, long);
+				show_smart_map(lati, long)
+			}
+		}
+		}else{
+			lati = position.coords.latitude;
+	    	long = position.coords.longitude;
+			show_smart_map(lati, long)
+		}
+		
+		
+		//show_smart_map(lati, long)
+    },
+    function(error){
+	    /*if(response_smat_map[0].user_latitude != null){
+			lati = +response_smat_map[0].user_latitude;
+			long = +response_smat_map[0].user_longitude;
+		    show_smart_map(lati, long);
+		}*/
+		for(let i=0;i<response_smat_map.length;i++){
+			if(response_smat_map[i].user_uuid == userIdFrom){
+				let lati = +response_smat_map[i].user_latitude;
+				let long = +response_smat_map[i].user_longitude;
+				console.log(lati, long);
+				show_smart_map(lati, long)
+			}
+		}
+	    show_smart_map(53.89948354993688, 27.557659149169925);
+	    mapid_whereI.style.display = 'none';
+    }
+);
+
+}
+
+function show_smart_map(lati, long){
+	
+	map_container.style.display = "block";
+	if(document.querySelector('#mapid').hasChildNodes()){}
+	else{
+		if(response_smat_map[0].user_latitude != null){
+			/*let lati = +response_smat_map[0].user_latitude;
+			let long = +response_smat_map[0].user_longitude;*/
+			for(let i=0;i<response_smat_map.length;i++){
+			if(response_smat_map[i].user_uuid == userIdFrom){
+				let lati = +response_smat_map[i].user_latitude;
+				let long = +response_smat_map[i].user_longitude;
+				console.log(lati, long);
+			}
+		}
+		}
+		
+	
+		
+	mapid = L.map('mapid').setView([lati, long], 13);
+		
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
+    		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    		maxZoom: 18,
+    		id: 'mapbox/streets-v11',
+    		tileSize: 512,
+    		zoomOffset: -1,
+    		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
+	}).addTo(mapid);
+	var marker = L.marker([lati, long]).addTo(mapid);
+	let new_cur_pos_marker;
+	function onMapClick(e) {
+    		marker.setLatLng(e.latlng)
+        	new_cur_pos_marker = marker.getLatLng();
+		new_cur_pos_marker_lat = new_cur_pos_marker.lat;
+		new_cur_pos_marker_lng = new_cur_pos_marker.lng;
+        		
+		
+		
+		
+		mapid_whereI.addEventListener('click', ()=> {
+		navigator.geolocation.getCurrentPosition(
+    			function(position) {
+	    			lati = position.coords.latitude;
+	    			long = position.coords.longitude;
+				marker.setLatLng([lati, long]);
+				new_cur_pos_marker = marker.getLatLng();
+				new_cur_pos_marker_lat = new_cur_pos_marker.lat;
+				new_cur_pos_marker_lng = new_cur_pos_marker.lng;
+	    		},
+    			function(error){
+	    			show_smart_map(53.89948354993688, 27.557659149169925);
+				mapid_whereI.style.display = 'none';
+    			}
+			);
+		});
+		
+		
+		
+	}
+	}
+	console.log('before ' + lati, long);
+	
+	
+	
+	
+	
+	mapid.on('click', onMapClick);
+	mapid_close.addEventListener('click', ()=> {
+		map_container.style.display = "none";
+	});
+	
+}
+
+document.querySelector(".mapid_send").addEventListener("click", function(){
+	var form = new FormData();
+	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
+	form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null}`);	
+	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);
+	var settings = {
+  		"url": `${new_settapi}api/profile`,
+  		"method": "PUT",
+  		"timeout": 0,
+  		"headers": {
+  		  "Authorization": `Token ${getCookie("auth_token")}`
+  		},
+  		"processData": false,
+  		"mimeType": "multipart/form-data",
+  		"contentType": false,
+  		"data": form
+	};
+
+	$.ajax(settings).done(function (response) {
+  		console.log(response);
+		mapid_alert.style.display = "block";
+		setTimeout(function(){
+			mapid_alert.style.transition = "1s";
+			mapid_alert.style.opacity = "1";
+		}, 200);
+		setTimeout(function(){
+			mapid_alert.style.transition = "1s";
+			mapid_alert.style.opacity = "0";
+		}, 2500);
+		setTimeout(function(){
+	
+			window.location.reload();
+		}, 3500)
+	});
+});
 
 
 
