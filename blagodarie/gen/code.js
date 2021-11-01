@@ -660,17 +660,16 @@ navigator.geolocation.getCurrentPosition(
 	    show_smart_map(lati, long);*/
 		console.log(response_smat_map);
 		for(let i=0;i<response_smat_map.length;i++){
-			if(--i == response_smat_map.length){
-				lati = position.coords.latitude;
-	    		long = position.coords.longitude;
-				show_smart_map(lati, long)
-			}else if(response_smat_map[i].user_uuid == userIdFrom){
+			if(response_smat_map[i].user_uuid == userIdFrom){
 				lati = +response_smat_map[i].user_latitude;
 				long = +response_smat_map[i].user_longitude;
 				console.log(lati, long);
 				show_smart_map(lati, long)
 			}
 		}
+		let searchItem = userIdFrom;
+		let cityId = response_smat_map.find(a => a.user_uuid === searchItem).user_latitude;
+		console.log(cityId);
 		//show_smart_map(lati, long)
     },
     function(error){
