@@ -757,6 +757,7 @@ async function setProfile() {
 		console.log(response)
 		let first_resp = response.responseText;
 		let pars2 = JSON.parse(first_resp);
+		console.log(pars2)
 		map_users.push({
 		user_photo: pars2.users[0].photo,
 		user_name: pars2.users[0].first_name,
