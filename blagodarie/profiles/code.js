@@ -761,7 +761,7 @@ async function setProfile() {
 		let pars2 = JSON.parse(first_resp);
 		console.log(pars2);
 		
-		if (pars2.some(e => e.user_uuid === userIdFrom)) {
+		if (pars2.some(e => e.uuid === userIdFrom)) {
 			console.log('good')
 		for(let i=0;i<pars2.length;i++){
 			if(pars2[i].user_uuid == userIdFrom){
