@@ -762,6 +762,7 @@ async function setProfile() {
 		console.log(pars2);
 		
 		if (pars2.some(e => e.user_uuid === userIdFrom)) {
+			console.log('good')
 		for(let i=0;i<pars2.length;i++){
 			if(pars2[i].user_uuid == userIdFrom){
 				map_users.push({
