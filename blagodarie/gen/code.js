@@ -660,14 +660,14 @@ navigator.geolocation.getCurrentPosition(
 	    show_smart_map(lati, long);*/
 		
 		for(let i=0;i<response_smat_map.length;i++){
-			if(response_smat_map.user_uuid == userIdFrom){
-				let lati = +response_smat_map.user_latitude;
-				let long = +response_smat_map.user_longitude;
+			if(response_smat_map[i].user_uuid == userIdFrom){
+				let lati = +response_smat_map[i].user_latitude;
+				let long = +response_smat_map[i].user_longitude;
 				console.log(lati, long);
 				show_smart_map(lati, long)
 			}
 		}
-		show_smart_map(lati, long)
+		//show_smart_map(lati, long)
     },
     function(error){
 	    /*if(response_smat_map[0].user_latitude != null){
@@ -676,9 +676,9 @@ navigator.geolocation.getCurrentPosition(
 		    show_smart_map(lati, long);
 		}*/
 		for(let i=0;i<response_smat_map.length;i++){
-			if(response_smat_map.user_uuid == userIdFrom){
-				let lati = +response_smat_map.user_latitude;
-				let long = +response_smat_map.user_longitude;
+			if(response_smat_map[i].user_uuid == userIdFrom){
+				let lati = +response_smat_map[i].user_latitude;
+				let long = +response_smat_map[i].user_longitude;
 				console.log(lati, long);
 				show_smart_map(lati, long)
 			}
@@ -699,9 +699,9 @@ function show_smart_map(lati, long){
 			/*let lati = +response_smat_map[0].user_latitude;
 			let long = +response_smat_map[0].user_longitude;*/
 			for(let i=0;i<response_smat_map.length;i++){
-			if(response_smat_map.user_uuid == userIdFrom){
-				let lati = +response_smat_map.user_latitude;
-				let long = +response_smat_map.user_longitude;
+			if(response_smat_map[i].user_uuid == userIdFrom){
+				let lati = +response_smat_map[i].user_latitude;
+				let long = +response_smat_map[i].user_longitude;
 				console.log(lati, long);
 			}
 		}
