@@ -1,6 +1,8 @@
 var link = window.location.href;
 var url = new URL(link);
 
+var isAuth = getCookie("auth_token") ? true : false;
+deleteCookie("","set_trust", "set_mistrust");
 
 var link2 = window.location.href;
 var url2 = new URL(link2);
@@ -712,6 +714,7 @@ let response_smat_map;
 if(isAuth){
 	setProfile();
 }
+
 async function setProfile() {
 	const response = await fetch(`${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
 		method: "GET",
