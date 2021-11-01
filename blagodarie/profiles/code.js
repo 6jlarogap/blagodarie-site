@@ -574,7 +574,9 @@ if(localStorage.getItem('npuuid')){
 }
 
 
-
+function setGender(gender_val){
+		console.log(gender_val.value);
+	}
 
 
 //Добавить новый профиль
@@ -594,9 +596,7 @@ add_profile_but.addEventListener('click', function(){
 	
 	//Выбор пола
 	
-	function setGender(gender_val){
-		console.log(gender_val.value);
-	}
+	
 	
 	//обнуление полей
 	user_profile_name_inp.value = '';
