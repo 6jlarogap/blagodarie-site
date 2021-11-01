@@ -253,6 +253,19 @@ table img{
 }
 .add_user_profile_container_n{
 	overflow: scroll;
+	height: 100%;
+}
+.gender_cont{
+	width: max-content;
+    margin: 0 auto;
+    margin-top: 1%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.gender_cont input{
+	margin-left: 10px;
 }
 .add_user_profile_container_prew .add_user_profile_fio{
 	width: fit-content;
