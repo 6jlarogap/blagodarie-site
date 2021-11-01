@@ -573,9 +573,11 @@ if(localStorage.getItem('npuuid')){
 }
 }
 
-
+let gender_value;
 function setGender(gender_val){
+	gender_value = gender_val.value;
 		console.log(gender_val.value);
+		console.log(gender_value);
 	}
 
 
