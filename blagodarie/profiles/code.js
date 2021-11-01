@@ -770,7 +770,9 @@ async function setProfile() {
 					user_ability: pars2[i].ability,
 					user_uuid: pars2[i].uuid
 				} );
-				
+				get_position.style.backgroundColor = 'inherit';
+				get_position.style.color = '#000';
+				get_position.style.borderColor = 'bisque';
 			}
 		}
 		
