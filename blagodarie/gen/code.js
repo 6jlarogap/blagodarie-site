@@ -668,6 +668,7 @@ navigator.geolocation.getCurrentPosition(
 			}else{
 				lati = position.coords.latitude;
 	    		long = position.coords.longitude;
+				show_smart_map(lati, long)
 			}
 		}
 		//show_smart_map(lati, long)
