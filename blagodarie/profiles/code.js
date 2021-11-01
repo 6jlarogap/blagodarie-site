@@ -759,9 +759,10 @@ async function setProfile() {
 		console.log(response)
 		let first_resp = response;
 		let pars2 = JSON.parse(first_resp);
-		console.log(pars2);
+		console.log(pars2.length);
 		
 		for(let i=0;i<pars2.length;i++){
+			console.log(pars2[i].uuid, userIdFrom)
 			if(pars2[i].uuid == userIdFrom){
 				map_users.push({
 					user_photo: pars2[i].photo,
