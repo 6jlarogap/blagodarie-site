@@ -661,11 +661,11 @@ navigator.geolocation.getCurrentPosition(
 		
 		for(let i=0;i<response_smat_map.length;i++){
 			if(response_smat_map[i].user_uuid == userIdFrom){
-				let lati = +response_smat_map[i].user_latitude;
-				let long = +response_smat_map[i].user_longitude;
+				lati = +response_smat_map[i].user_latitude;
+				long = +response_smat_map[i].user_longitude;
 				console.log(lati, long);
 				show_smart_map(lati, long)
-			}else{
+			}else if(response_smat_map[i].user_uuid == userIdFrom && response_smat_map[i].user_latitude == null){
 				lati = position.coords.latitude;
 	    		long = position.coords.longitude;
 				show_smart_map(lati, long)
