@@ -756,15 +756,11 @@ async function setProfile() {
 	};
 
 	$.ajax(settings).done(function (response) {
-		console.log(response)
 		let first_resp = response;
 		let pars2 = JSON.parse(first_resp);
-		console.log(pars2.length);
 		
 		for(let i=0;i<pars2.length;i++){
-			console.log(pars2[i].uuid, userIdFrom)
 			if(pars2[i].uuid == userIdFrom){
-				console.log('lol')
 				map_users.push({
 					user_photo: pars2[i].photo,
 					user_name: pars2[i].first_name,
@@ -780,8 +776,6 @@ async function setProfile() {
 		
 		
   		response_smat_map = map_users;
-		console.log(map_users);
-		console.log(userIdFrom)
 });
 }
 
