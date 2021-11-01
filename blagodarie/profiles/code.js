@@ -755,7 +755,7 @@ async function setProfile() {
 
 	$.ajax(settings).done(function (response) {
 		console.log(response)
-		let first_resp = response.responseText;
+		let first_resp = response;
 		let pars2 = JSON.parse(first_resp);
 		console.log(pars2)
 		map_users.push({
