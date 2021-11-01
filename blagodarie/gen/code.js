@@ -660,7 +660,7 @@ navigator.geolocation.getCurrentPosition(
 	    show_smart_map(lati, long);*/
 		console.log(response_smat_map);
 		for(let i=0;i<response_smat_map.length;i++){
-			if(++i == response_smat_map.length){
+			if(--i == response_smat_map.length){
 				lati = position.coords.latitude;
 	    		long = position.coords.longitude;
 				show_smart_map(lati, long)
