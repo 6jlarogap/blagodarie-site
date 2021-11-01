@@ -245,11 +245,14 @@ table img{
     left: 0;
     background: #fff;
 }
-.add_user_profile_container_prew > p:first-child{
+.add_user_profile_container_n > p:first-child{
 	margin: 0 auto;
     width: max-content;
     margin-top: 15%;
 	font-weight: 700;
+}
+.add_user_profile_container_n{
+	overflow: scroll;
 }
 .add_user_profile_container_prew .add_user_profile_fio{
 	width: fit-content;

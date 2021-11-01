@@ -155,6 +155,7 @@
 		<!-- Попап с обрезкой фото -->
 	</div>
 	<div class="add_user_profile_container_prew">
+	<div class="add_user_profile_container_n">
 	<p>Добавление профиля</p>
 	<p class="add_user_profile_close_popup_new">×</p>
 		<div class="add_user_profile_fio">
@@ -167,12 +168,17 @@
 				<input type="text" id="user_profile_middlename_inp" class="user_profile_middlename_inp new">
 			</div>
 			<form>
+			<div class="male_cont">
 			<label for="male">Мужчина</label>
 			<input type="radio" name="gender" value="male">
+  			</div>
+  			<div class="female_cont">
    			<label for="female">Женщина</label>
     		<input type="radio" name="gender" value="female">
+    		</div>
     		</form>
 		<button id="add_user_profile_overbottom" class="add_user_profile_overbottom new">Сохранить</button>
+		</div>
 	</div>
 	
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
