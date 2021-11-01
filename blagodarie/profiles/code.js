@@ -754,6 +754,7 @@ async function setProfile() {
 	};
 
 	$.ajax(settings).done(function (response) {
+		console.log(response)
 		map_users.push({
 		user_photo: response.users[0].photo,
 		user_name: response.users[0].first_name,
