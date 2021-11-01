@@ -770,6 +770,7 @@ async function setProfile() {
 					user_ability: pars2[i].ability,
 					user_uuid: pars2[i].uuid
 				} );
+				console.log(pars2[i].last_name, pars2[i].first_name)
 				get_position.style.backgroundColor = 'inherit';
 				get_position.style.color = '#000';
 				get_position.style.borderColor = 'bisque';
