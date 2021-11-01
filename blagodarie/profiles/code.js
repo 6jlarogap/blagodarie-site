@@ -717,7 +717,7 @@ if(isAuth){
 }
 
 async function setProfile() {
-	const response = await fetch(`${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+	/*const response = await fetch(`${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, /*{
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
@@ -733,7 +733,40 @@ async function setProfile() {
 		user_uuid: response.users[0].uuid
 	} );
 	response_smat_map = map_users;
-	console.log(map_users);
+	console.log(map_users);*/
+		
+		
+	var form = new FormData();
+	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
+	/*form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null}`);	
+	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);*/
+	var settings = {
+  		"url": `${new_settapi}api/profile`,
+  		"method": "GET",
+  		"timeout": 0,
+  		"headers": {
+  		  "Authorization": `Token ${getCookie("auth_token")}`
+  		},
+  		"processData": false,
+  		"mimeType": "multipart/form-data",
+  		"contentType": false,
+  		"data": form
+	};
+
+	$.ajax(settings).done(function (response) {
+		map_users.push({
+		user_photo: response.users[0].photo,
+		user_name: response.users[0].first_name,
+		user_lastname: response.users[0].last_name,
+		user_latitude: response.users[0].latitude,
+		user_longitude: response.users[0].longitude,
+		user_ability: response.users[0].ability,
+		user_uuid: response.users[0].uuid
+	} );
+  		response_smat_map = map_users;
+		console.log(map_users);
+		console.log(userIdFrom)
+});
 }
 
 
