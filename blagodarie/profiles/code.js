@@ -1031,7 +1031,7 @@ addElement.addEventListener("click", async () => {
 			body:  JSON.stringify(fetchSettings.body)
 		})
 		console.log(fetchSettings);
-		//window.location.reload();
+		window.location.reload();
 	} else {
 		elementAddInput.placeholder = "Введите что-то!"
 	}
