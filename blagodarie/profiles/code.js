@@ -620,6 +620,7 @@ add_profile_but.addEventListener('click', function(){
 		
 	
 	add_user_profile_overbottom.addEventListener('click', function(){
+		error_in_add.innerHTML = "";
 		var form = new FormData();
 	if(user_profile_name_inp.value != ''){
 	form.append("first_name", user_profile_name_inp.value);
