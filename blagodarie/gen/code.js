@@ -1019,7 +1019,7 @@ d3.json(apiUrl)
 
 	if (userIdFrom && !(userIdFrom == PROFILE.id)) {
 		isConnection = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
-		
+		console.log(isConnection)
 		//data.connections.some(link => PROFILE.count=link.thanks_count && link.source == PROFILE.id && link.target == userIdFrom);
 		console.log(data);
 		var activeTrust = `${settings.url}images/trust_active.png`;
@@ -1028,7 +1028,7 @@ d3.json(apiUrl)
 		var inactiveMistrust = `${settings.url}images/mistrust_inactive.png`;
 
 		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
-		
+		console.log(isTrust)
 		async function count_plus() {
 		const response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
 		method: "GET",
