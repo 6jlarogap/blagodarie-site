@@ -1114,7 +1114,7 @@ d3.json(apiUrl)
 		nodes.push({
 		id: HOME_ID,
 		text: "Доверие",
-		image: `${settings.url}images/home.png`,
+		image: `${settings.url}images/hands.png`,
 		nodeType: NODE_TYPES.HOME
 	});
 	
