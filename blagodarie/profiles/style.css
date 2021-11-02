@@ -267,6 +267,23 @@ table img{
 .gender_cont input{
 	margin-left: 10px;
 }
+#rootList {
+	min-width: 300px;
+}
+#rootList li {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin-top: 3px;
+}
+
+#rootList li .editElement{
+	margin-left: auto;
+	margin-right: 2px;
+}
 .add_user_profile_container_prew .add_user_profile_fio{
 	width: fit-content;
     margin: 0 auto;
