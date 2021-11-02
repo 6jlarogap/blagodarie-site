@@ -105,6 +105,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	}
 	
 	
+	
+	
 	//обрезка файлов
 
 	var bs_modal = $('#modal');
@@ -318,8 +320,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	//Кнопка Сохранить
 	add_user_profile_overbottom.addEventListener('click', function(){
 		
+		warning1.innerHTML = "";
 		  
-		
+		if(value_gender==undefined && gender_val==null){
+			warning1.innerHTML = "Выберите пол";
+		}
 		
 		
 		async function add_user_parents(operation_type_id, add_user_profile_mother_input){
@@ -353,6 +358,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			
 		
 }
+		
+		
 		
 		
 		async function myProfilesinfo() {
