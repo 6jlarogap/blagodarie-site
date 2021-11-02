@@ -321,6 +321,15 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	}
 	getUsparent()
 	
+	async function myProfilesinfo() {
+		const response = await fetch(`${new_settapi}api/profile?uuid=${id}`, {
+		method: "GET",
+		headers: {
+			/*"Authorization": 'Token ' + getCookie("auth_token")*/
+		}
+		}).then(data => data.json());
+		console.log(response);
+	}
 	
 	//Кнопка Сохранить
 	add_user_profile_overbottom.addEventListener('click', function(){
