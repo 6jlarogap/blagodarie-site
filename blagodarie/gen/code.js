@@ -1719,6 +1719,8 @@ function initializeDisplay() {
 			return `${window.location.origin}`
 		}else if(d.nodeType == NODE_TYPES.INVITE){
 			return `${window.location.origin}/profiles/?id=${getCookie('user_uuid')}`
+		}else if(d.nodeType == NODE_TYPES.MAPS){
+			return `${window.location.href}&map_visible`
 		}
 		
 		else{
