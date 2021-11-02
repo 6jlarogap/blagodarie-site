@@ -2050,13 +2050,14 @@ async function onNodeClick(nodeType, uuid, txt){
 		shareDialog.style.display = "flex";
 	}
 	else if(nodeType == NODE_TYPES.INVITE) {
-		shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
+		/*shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
 		share.updateContent({
 			title: document.querySelector(".userName").textContent + ' предлагает Вам своё доверие в системе Благодари.РФ',
 			url: shareLink
 			
 		});
-		shareDialog.style.display = "flex";
+		shareDialog.style.display = "flex";*/
+		window.location.href = url.origin + '/profiles?id=' + getCookie('user_uuid');
 	}
 	else if (nodeType == NODE_TYPES.OPTIONS) {
 		optionsDialog.style.display = "flex";
