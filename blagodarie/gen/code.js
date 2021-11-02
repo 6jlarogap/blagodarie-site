@@ -1027,7 +1027,8 @@ d3.json(apiUrl)
 		var inactiveTrust = `${settings.url}images/trust_inactive.png`;
 		var inactiveMistrust = `${settings.url}images/mistrust_inactive.png`;
 
-		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust==true) : null;
+		/*isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust==true) : null;*/
+		isTrust = isConnection ? ata.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust==true) : null;
 		console.log(isTrust)
 		async function count_plus() {
 		const response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
@@ -1037,7 +1038,7 @@ d3.json(apiUrl)
 		}
 		}).then(data => data.json());
 
-	if(isAuth){
+	if(isAuth){ 
 	let ans = response.connections;
 	let ans1 = ans.find(data => {
   
