@@ -1118,11 +1118,21 @@ async function getElements(apiurl) {
 	return response
 }
 
+async function deleteElement(uuid, apiurl) {
+	const response = await fetch(`${settings.api}api/${apiurl}${uuid}`, {
+		method: "GET",
+		headers: {
+			"Authorization": "Token " + getCookie("auth_token")
+		}
+	}).then(data => data.json())
+}
+
 [...document.getElementsByClassName("close")].forEach(button => {
 	button.addEventListener("click", () => {
 		button.parentElement.style.display = "none";
 	});
 });
+
 
 
 
