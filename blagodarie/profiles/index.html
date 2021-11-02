@@ -47,6 +47,24 @@
 		<p class="mapid_alert">Ваше местоположение<br>закреплено здесь!</p>
 		<div class="mapid_whereI">Где я?</div>
 	</div>
+	<dialog id="rootDialog">
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
+		<ul id="rootList">
+
+		</ul>
+		<button class="btn btn-success" id="rootAddElementMenu">Добавить</button>
+	</dialog>
+	<dialog id="addElementDialog">
+		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
+		<input class="form-control inp" id="elementAddInput" type="text">
+		<div class="btn-group" role="group" aria-label="First group" id="keyTypesBtns" style="display: flex;">
+			<button type="button" class="keytype btn btn-secondary" id="1"><img src="../images/phone.png" alt="1"></button>
+			<button type="button" class="keytype btn btn-secondary" id="2"><img src="../images/at.png" alt="2"></button>
+			<button type="button" class="keytype btn btn-secondary" id="4"><img src="../images/credit-card.png" alt="4"></button>
+			<button type="button" class="keytype btn btn-secondary" id="5"><img src="../images/link.png" alt="5"></button>
+		  </div>
+		<button class="btn btn-success" id="addElement">ОК</button>
+	</dialog>
 	<div class="top_page_container">
 		<div class="gen_container">
 			
