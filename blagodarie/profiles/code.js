@@ -294,21 +294,13 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	console.log(first_name);
 	console.log(middle_name);
 	
-	async function getUsparent() {
+	/*async function getUsparent() {
 		const response = await fetch(`${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=100`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 }).then(data => data.json());
-		/*for(let i = 0; i<response.connections.length; i++){
-				if(response.connections[i].target == id && response.connections[i].is_mother == true){
-					add_user_profile_mother_input.value = response.connections[i].source;
-				}
-				else if(response.connections[i].target == id && response.connections[i].is_father == true){
-					add_user_profile_father_input.value = response.connections[i].source;
-				}
-			}*/
 		for(let i = 0; i<response.connections.length; i++){
 				if(response.connections[i].source == id && response.connections[i].is_mother == true){
 					add_user_profile_mother_input.value = response.connections[i].target;
@@ -319,7 +311,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	}
 		console.log(response);
 	}
-	getUsparent()
+	getUsparent()*/
 	
 	async function get_info_about_parents() {
 		const response = await fetch(`${new_settapi}api/profile?uuid=${id}`, {
@@ -328,7 +320,12 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			/*"Authorization": 'Token ' + getCookie("auth_token")*/
 		}
 		}).then(data => data.json());
-		console.log(response);
+		if(response.mother != null){
+			add_user_profile_mother_input.value = `${response.mother.last_name} ${response.mother.first_name} ${response.mother.middle_name}`;
+		}
+		if(response.father != null){
+			add_user_profile_father_input.value = `${response.father.last_name} ${response.father.first_name} ${response.father.middle_name}`;
+		}
 	}
 	get_info_about_parents();
 	//Кнопка Сохранить
