@@ -574,7 +574,7 @@ if(localStorage.getItem('npuuid')){
 }
 
 let gender_value;
-console.log(gender_value);
+
 function setGender(gender_val){
 	gender_value = gender_val.value;
 		console.log(gender_val.value);
@@ -630,6 +630,12 @@ add_profile_but.addEventListener('click', function(){
 	if(user_profile_middlename_inp.value != ''){
 		form.append("middle_name", user_profile_middlename_inp.value);
 	}
+	if(gender_value!=undefined){
+		form.append("gender", gender_value);
+	}
+	if(gender_value==undefined){
+		error_in_add.innerHTML = "Выберите пол"
+	}
 	
 				var settings = {
   					"url": `${new_api_str}api/profile`,
@@ -651,7 +657,8 @@ add_profile_but.addEventListener('click', function(){
 						let fName;
 						//if(user_profile_name_inp!=''){
 							fName = pars1.first_name;
-						let midName = pars1.middle_name
+						let midName = pars1.middle_name;
+						let gender_val = pars1.gender;
 						//}
 						console.log(pars1);
 						localStorage.setItem('npuuid', new_profile_user_uuid);
@@ -659,6 +666,7 @@ add_profile_but.addEventListener('click', function(){
 						//if(user_profile_name_inp!=''){
 							localStorage.setItem('fName', fName);
 						localStorage.setItem('midName', midName);
+						localStorage.setItem('gender', gender_val);
 						//}
 						
 						
