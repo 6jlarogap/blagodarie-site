@@ -1104,6 +1104,12 @@ async function rootFunctions(category) {
 		rootDialog.style.display = "flex";
 }
 
+async function getElements(apiurl) {
+	const response = await fetch(`${settings.api}api/${apiurl}?uuid=${getCookie("user_uuid")}`, {
+		method: "GET"
+	}).then(data => data.json())
+	return response
+}
 
 
 
