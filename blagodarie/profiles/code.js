@@ -317,6 +317,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					add_user_profile_father_input.value = response.connections[i].target;
 		}
 	}
+		console.log(response);
 	}
 	getUsparent()
 	
