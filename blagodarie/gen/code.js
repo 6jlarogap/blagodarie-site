@@ -1113,7 +1113,7 @@ d3.json(apiUrl)
 	
 		nodes.push({
 		id: HOME_ID,
-		text: "Граф",
+		text: "Доверие",
 		image: `${settings.url}images/home.png`,
 		nodeType: NODE_TYPES.HOME
 	});
@@ -2072,7 +2072,6 @@ async function onNodeClick(nodeType, uuid, txt){
 		url.searchParams.append('map_visible', 'true');
 		window.history.pushState(null, null, url.search);
 		window.location.href = url.href;
-		
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
