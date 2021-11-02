@@ -1588,7 +1588,7 @@ function initializeDisplay() {
 						return "#ff0000";
 					}
 				} else {
-					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
+					return "url(#grad_from_" + d.target.id + "_to_" + d.source.id + ")";
 				}
 			} else {
 				return "#345334";
