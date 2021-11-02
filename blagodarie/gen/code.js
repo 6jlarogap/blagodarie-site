@@ -1625,6 +1625,7 @@ function initializeDisplay() {
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
+		.attr("stroke-width", 1.5)
 		.selectAll("stop")
 		.data(d => {
 			return [[1,d.reverse_is_parent], [2,d.is_father], [3, d.is_mother]/*, [3, d.fam_link]*/];
