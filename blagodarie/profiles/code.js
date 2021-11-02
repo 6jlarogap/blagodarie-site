@@ -49,7 +49,7 @@ async function myProfilesinfo() {
 		var toReplace = "thumb"; 
 		var str1 = str.replace(replacement, toReplace);
 		
-		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : str1+"/45x45~crop~12."+ext}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td><div class="bd_dd"><div class="bd_dd_cont"><p>${response[i].dob != null ? response[i].dob : ''}</p><p>|</p><p>${response[i].dod != null ? response[i].dod : ''}</p></div><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/?id=${response[i].uuid}&q=50&f=0"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info('${response[i].uuid}', '${response[i].last_name}', '${response[i].first_name}', '${response[i].middle_name}', '${str1+"/320x320~crop~12."+ext}', '${response[i].dob}', '${response[i].dod}')"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
+		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : str1+"/45x45~crop~12."+ext}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td><div class="bd_dd"><div class="bd_dd_cont"><p>${response[i].dob != null ? response[i].dob : ''}</p><p>|</p><p>${response[i].dod != null ? response[i].dod : ''}</p></div><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/?id=${response[i].uuid}&q=50&f=0"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info('${response[i].uuid}', '${response[i].last_name}', '${response[i].first_name}', '${response[i].middle_name}', '${str1+"/320x320~crop~12."+ext}', '${response[i].dob}', '${response[i].dod}', '${response[i].gender}')"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
 		user_table_body.append(tr); 
 	}
 }
@@ -58,11 +58,13 @@ window.onload = myProfilesinfo();
 
 
 let userIdFrom; 
-
-
+let value_gender;
+function setGenders(item){
+	value_gender = item.value;
+}
 
 //редактировать профиль
-function user_changed_info(id, last_name, first_name, middle_name, usr_photo, dob, dod){
+function user_changed_info(id, last_name, first_name, middle_name, usr_photo, dob, dod, gender_val){
 	let add_user_profile_container = document.querySelector('.add_user_profile_container');
 	let add_user_profile_close_popup = document.querySelector('.add_user_profile_close_popup');
 	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
@@ -75,7 +77,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
 	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
 	let nophoto_but = document.querySelector('.nophoto_but');
-	
+	let cheked_gend = document.getElementsByName('gender');
 	
 	let warning1 = document.querySelector('.warning1');
 	
@@ -90,7 +92,17 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	add_user_profile_mother_input.value = '';
 	add_user_profile_father_input.value = '';
 	
-	
+	if(gender_val!=null || gender_val!=undefined){
+		cheked_gend.forEach( item => {
+      		if( item.value == gender_val){
+        		item.checked = true;
+      		} else{
+        		item.checked = false;
+      		}
+		});
+	}else{
+
+	}
 	
 	
 	//обрезка файлов
@@ -382,42 +394,6 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			console.log(response);
 			let users_resp = [];
 			for(let i = 0; i<response.connections.length; i++){
-				/*
-				if(response.connections[i].target == id){
-					if(response.connections[i].source == add_user_profile_mother_input.value && response.connections[i].target == id && response.connections[i].source == add_user_profile_father_input.value && response.connections[i].target == id){
-					   console.log('То же что и было');
-					}else{
-						if(add_user_profile_mother_input.value!= '' && response.connections[i].is_mother == true){
-						add_user_parents(7, response.connections[i].source);
-						add_user_parents(8, add_user_profile_mother_input.value);
-						}
-						if(add_user_profile_mother_input.value!= '' && response.connections[i].is_mother == false){
-							add_user_parents(8, add_user_profile_mother_input.value);
-						}
-						if(add_user_profile_mother_input.value == '' && response.connections[i].is_mother == true){
-							add_user_parents(7, response.connections[i].source);
-						}
-						//father
-						if(add_user_profile_father_input.value!= '' && response.connections[i].is_father == true){
-						add_user_parents(7, response.connections[i].source);
-						add_user_parents(6, add_user_profile_father_input.value);
-						}
-						if(add_user_profile_father_input.value!= '' && response.connections[i].is_father == false){
-							add_user_parents(6, add_user_profile_father_input.value);
-						}
-						if(add_user_profile_father_input.value == '' && response.connections[i].is_father == true){
-							add_user_parents(7, response.connections[i].source);
-						}*/
-						
-						
-					/*}
-				}
-				else{
-					
-					/*users_resp.push('none');
-				}*/
-				
-				
 				if(response.connections[i].source == id){
 					if(response.connections[i].target == add_user_profile_mother_input.value && response.connections[i].source == id && response.connections[i].target == add_user_profile_father_input.value && response.connections[i].source == id){
 					   console.log('То же что и было');
@@ -486,19 +462,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		formdata.append("middle_name", user_profile_middlename_inp.value);
 		formdata.append("dob", add_user_profile_bd.value);
 		formdata.append("dod", add_user_profile_dd.value);
-		/*async function add_gen(){
-		const response = await fetch(`${settings.api}api/profile`, {
-		method: "PUT",
-		headers: {
-			"Authorization": `Token ${getCookie("auth_token")}`
-		},
-		body: formdata
-	}).then(response => response.ok ? response.text() /*&& window.location.reload()*//* : console.log(response))
-	.then(result => console.log(result))
-	.catch(error => console.log('error', error));
-	
-	
-}*/
+		formdata.append("gender", value_gender? value_gender : gender_val ? gender_val : null);
+		
 	function add_gen(){	
 		var settings = {
   					"url": `${new_settapi}api/profile`,
@@ -561,15 +526,12 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 
 window.onload = function(){
 if(localStorage.getItem('npuuid')){
-	//let firstName;
-	//if(localStorage.getItem('fName')){
-		//firstName = localStorage.getItem('fName')
-	//}
-	 user_changed_info(localStorage.getItem('npuuid'), localStorage.getItem('lastName'), localStorage.getItem('fName'), localStorage.getItem('midName'), '', null, null);
-	localStorage.removeItem('npuuid');
-	localStorage.removeItem('fName');
-	localStorage.removeItem('lastName');
-	localStorage.removeItem('midName')
+	 user_changed_info(localStorage.getItem('npuuid'), localStorage.getItem('lastName'), localStorage.getItem('fName'), localStorage.getItem('midName'), '', null, null, localStorage.getItem('gender'));
+		localStorage.removeItem('npuuid');
+		localStorage.removeItem('fName');
+		localStorage.removeItem('lastName');
+		localStorage.removeItem('midName');
+		localStorage.removeItem('gender');
 }
 }
 
@@ -577,9 +539,9 @@ let gender_value;
 
 function setGender(gender_val){
 	gender_value = gender_val.value;
-		console.log(gender_val.value);
-		console.log(gender_value);
-	}
+	console.log(gender_val.value);
+	console.log(gender_value);
+}
 
 
 //Добавить новый профиль
