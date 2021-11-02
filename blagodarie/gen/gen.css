@@ -240,6 +240,7 @@ text{
 
 		.ya-share2__container_shape_round.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon:not(.ya-share2__icon_messenger-contact):not(.ya-share2__icon_more):not(.ya-share2__icon_copy) {
     		background-size: 100px 100px !important;
+			background-repeat: no-repeat;
 			}
 
 			.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon {

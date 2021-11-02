@@ -1092,8 +1092,8 @@ d3.json(apiUrl)
 		//Добавить вершину invite
 		nodes.push({
 			id: INVITE_ID,
-			text: "Пригласить",
-			image: `${settings.url}images/add.png`,
+			text: "Профили",
+			image: `${settings.url}images/profile_im.png`,
 			nodeType: NODE_TYPES.INVITE
 		})
 	}
