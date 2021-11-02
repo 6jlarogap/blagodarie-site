@@ -469,7 +469,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		formdata.append("middle_name", user_profile_middlename_inp.value);
 		formdata.append("dob", add_user_profile_bd.value);
 		formdata.append("dod", add_user_profile_dd.value);
-		formdata.append("gender", value_gender? value_gender : gender_val ? gender_val : null);
+		formdata.append("gender", value_gender? value_gender : gender_val ? gender_val : '');
 		
 	function add_gen(){	
 		var settings = {
