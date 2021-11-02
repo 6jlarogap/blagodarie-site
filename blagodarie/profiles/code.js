@@ -985,6 +985,7 @@ addElement.addEventListener("click", async () => {
 		fetchSettings = {
 			apiurl: "",
 			body: {
+				user_uuid: dynamic_id,
 				value: elementAddInput.value,
 				type_id: elementAddInput.getAttribute("keytype")
 			}
@@ -1000,6 +1001,7 @@ addElement.addEventListener("click", async () => {
 		fetchSettings = {
 			apiurl: "addorupdatewish",
 			body: {
+				"user_uuid": dynamic_id,
 				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
 				"text": elementAddInput.value,
 				"last_edit": new Date().getTime()
@@ -1010,6 +1012,7 @@ addElement.addEventListener("click", async () => {
 		fetchSettings = {
 			apiurl: "addorupdateability",
 			body: {
+				"user_uuid": dynamic_id,
 				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
 				"text": elementAddInput.value,
 				"last_edit": new Date().getTime()
