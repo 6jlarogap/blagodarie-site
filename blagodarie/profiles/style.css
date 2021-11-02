@@ -289,6 +289,11 @@ dialog {
 	background-color: white;
 	z-index: 1000;
 }
+button.close {
+			margin-bottom: 5px;
+			margin-left: auto;
+			border-radius: 25%;
+}
 #rootList {
 	min-width: 300px;
 }
