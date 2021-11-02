@@ -63,6 +63,8 @@ function setGenders(item){
 	value_gender = item.value;
 }
 
+let dynamic_id;
+
 //редактировать профиль
 function user_changed_info(id, last_name, first_name, middle_name, usr_photo, dob, dod, gender_val){
 	let add_user_profile_container = document.querySelector('.add_user_profile_container');
@@ -80,6 +82,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let cheked_gend = document.getElementsByName('gender');
 	
 	let warning1 = document.querySelector('.warning1');
+	
+	dynamic_id = id;
 	
 	userIdFrom = id;
 	if(isAuth){
@@ -1014,7 +1018,8 @@ addElement.addEventListener("click", async () => {
 			},
 			body:  JSON.stringify(fetchSettings.body)
 		})
-		window.location.reload();
+		//window.location.reload();
+		console.log(response);
 	} else {
 		elementAddInput.placeholder = "Введите что-то!"
 	}
