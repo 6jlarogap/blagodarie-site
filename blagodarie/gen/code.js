@@ -1588,7 +1588,7 @@ function initializeDisplay() {
 						return "#ff0000";
 					}
 				} else {
-					return "url(#grad_from_" + d.target.id + "_to_" + d.source.id + ")";
+					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
 				}
 			} else {
 				return "#345334";
@@ -1712,7 +1712,7 @@ function initializeDisplay() {
 			}
 		})
 		.attr("style", "z-index:1;position:relative");
-	
+	if(d=> d.nodeType != NODE_TYPES.HOME){
 	node.append("image")
 		.attr("xlink:href", d => `${window.location.origin}?id=${d.id}`)
 		.attr("class", d => {
@@ -1734,7 +1734,8 @@ function initializeDisplay() {
 			}
 		})
 		.attr("style", "opacity:0;z-index:1000;position:relative");
-	
+	}
+		
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
 		.attr("font-size", width<900 ? "15" : "20")
