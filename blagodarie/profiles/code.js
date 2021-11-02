@@ -1007,6 +1007,7 @@ addElement.addEventListener("click", async () => {
 				"last_edit": new Date().getTime()
 			}
 		}
+		
 	}
 
 	if (elementAddInput.value != "") {
@@ -1018,8 +1019,8 @@ addElement.addEventListener("click", async () => {
 			},
 			body:  JSON.stringify(fetchSettings.body)
 		})
+		console.log(fetchSettings);
 		//window.location.reload();
-		console.log(response);
 	} else {
 		elementAddInput.placeholder = "Введите что-то!"
 	}
