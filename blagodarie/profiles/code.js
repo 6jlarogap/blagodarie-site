@@ -960,6 +960,13 @@ var addElement = document.getElementById("addElement");
 var elementAddInput = document.getElementById("elementAddInput");
 var keyTypesBtns = document.getElementById("keyTypesBtns");
 
+rootAddElementMenu.addEventListener("click", () => {
+	elementAddInput.value = "";
+	elementAddInput.id = "elementAddInput";
+	addElementDialog.style.display = "flex";
+})
+
+
 addElement.addEventListener("click", async () => {
 	var fetchSettings
 	if (elementAddInput.getAttribute(`category`) == 'keys') {
@@ -1111,6 +1118,11 @@ async function getElements(apiurl) {
 	return response
 }
 
+[...document.getElementsByClassName("close")].forEach(button => {
+	button.addEventListener("click", () => {
+		button.parentElement.style.display = "none";
+	});
+});
 
 
 
