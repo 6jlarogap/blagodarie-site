@@ -1577,7 +1577,7 @@ function initializeDisplay() {
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
-		.attr("stroke-width", 3.5)
+		.attr("stroke-width", 1.5)
 		.attr("stroke", d => {
 			console.log(d);
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
