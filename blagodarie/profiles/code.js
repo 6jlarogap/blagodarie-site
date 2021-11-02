@@ -950,6 +950,159 @@ document.querySelector(".mapid_send").addEventListener("click", function(){
 	});
 });
 
+//ключи, желания, возможности
+
+var rootDialog = document.getElementById("rootDialog");
+var addElementDialog = document.getElementById("addElementDialog");
+var rootList = document.getElementById("rootList");
+var rootAddElementMenu = document.getElementById("rootAddElementMenu");
+var addElement = document.getElementById("addElement");
+var elementAddInput = document.getElementById("elementAddInput");
+var keyTypesBtns = document.getElementById("keyTypesBtns");
+
+addElement.addEventListener("click", async () => {
+	var fetchSettings
+	if (elementAddInput.getAttribute(`category`) == 'keys') {
+		fetchSettings = {
+			apiurl: "",
+			body: {
+				value: elementAddInput.value,
+				type_id: elementAddInput.getAttribute("keytype")
+			}
+		}
+		if (elementAddInput.getAttribute("operation")) {
+			fetchSettings.apiurl = "updatekey"
+			fetchSettings.body['id'] = elementAddInput.id
+		} else {
+			fetchSettings.apiurl = "addkey"
+		}
+	}
+	else if (elementAddInput.getAttribute(`category`) == 'wishes') {
+		fetchSettings = {
+			apiurl: "addorupdatewish",
+			body: {
+				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
+				"text": elementAddInput.value,
+				"last_edit": new Date().getTime()
+			}
+		}
+	}
+	else if (elementAddInput.getAttribute(`category`) == 'abilities') {
+		fetchSettings = {
+			apiurl: "addorupdateability",
+			body: {
+				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
+				"text": elementAddInput.value,
+				"last_edit": new Date().getTime()
+			}
+		}
+	}
+
+	if (elementAddInput.value != "") {
+		const response = await fetch(`${settings.api}api/${fetchSettings.apiurl}`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Token ${getCookie("auth_token")}`
+			},
+			body:  JSON.stringify(fetchSettings.body)
+		})
+		window.location.reload();
+	} else {
+		elementAddInput.placeholder = "Введите что-то!"
+	}
+});
+
+// edit wish buttons
+[...document.getElementsByClassName("keytype")].forEach(button => {
+	button.addEventListener("click", () => {
+		elementAddInput.setAttribute("keytype", button.getAttribute("id"))
+	})
+})
+
+document.getElementById("keys").addEventListener("click", async () => {
+	await rootFunctions('keys')
+})
+
+document.getElementById("abilities").addEventListener("click", async () => {
+	await rootFunctions('abilities')
+})
+
+document.getElementById("wishes").addEventListener("click", async () => {
+	await rootFunctions('wishes')
+})
+
+async function rootFunctions(category) {
+	var categoryObj;
+	if (category == 'wishes') {
+		categoryObj = {
+			apiurl: 'getuserwishes',
+			delete: 'deletewish?uuid=',
+			id: 'uuid',
+			value: 'text',
+			empty: 'желаний'
+		};
+		elementAddInput.setAttribute("placeholder", "Желание...");
+		elementAddInput.setAttribute("category", category);
+	}
+	else if (category == 'keys') {
+		categoryObj = {
+			apiurl: 'getuserkeys',
+			delete: 'deletekey?id=',
+			id: 'id',
+			value: 'value',
+			type: 'type_id',
+			empty: 'ключей'
+		};
+		elementAddInput.setAttribute("placeholder", "Ключ...");
+		elementAddInput.setAttribute("category", category);
+	}
+	else {
+		categoryObj = {
+			apiurl: 'getuserabilities',
+			delete: 'deleteability?uuid=',
+			id: 'uuid',
+			value: 'text',
+			empty: 'возможностей'
+		};
+		elementAddInput.setAttribute("placeholder", "Возможность...");
+		elementAddInput.setAttribute("category", category);
+	}
+
+
+	var root = await getElements(categoryObj.apiurl)
+	root = root[category]
+		if (root.length == 0) {
+			rootList.innerHTML = `<li> У вас пока что нет ${categoryObj.empty} </li>`
+		} else {
+			rootList.innerHTML = ""
+			root.forEach(wish => {
+				rootList.innerHTML += `<li id="${wish[categoryObj.id]}" value="${wish[categoryObj.value]}" typekey="${categoryObj.type ? wish[categoryObj.type] : 0}">${wish[categoryObj.value]}<button class="editElement btn btn-success">Ред.</button> <button class="deleteWish btn btn-danger">Уд.</button> </li>`
+			})
+		};
+
+		[...document.getElementsByClassName("editElement")].forEach(button => {
+			button.addEventListener("click", () => {
+				elementAddInput.id = button.parentElement.id;
+				elementAddInput.setAttribute("keytype", button.parentElement.getAttribute("typekey"));
+				elementAddInput.setAttribute("operation", "edit");
+				elementAddInput.setAttribute("category", category);
+				elementAddInput.value = button.parentElement.getAttribute("value");
+
+				addElementDialog.style.display = "flex";
+			})
+		});
+
+		[...document.getElementsByClassName("deleteWish")].forEach(button => {
+			button.addEventListener("click", async () => {
+				await deleteElement(button.parentElement.id, categoryObj.delete);
+				window.location.reload();
+			})
+		});
+
+		categoryObj.type ? keyTypesBtns.style.display = "flex" : keyTypesBtns.style.display = "none";
+		rootDialog.style.display = "flex";
+}
 
 
 
