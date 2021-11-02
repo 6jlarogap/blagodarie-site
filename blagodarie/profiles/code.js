@@ -321,7 +321,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	}
 	getUsparent()
 	
-	async function myProfilesinfo() {
+	async function get_info_about_parents() {
 		const response = await fetch(`${new_settapi}api/profile?uuid=${id}`, {
 		method: "GET",
 		headers: {
@@ -330,7 +330,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		}).then(data => data.json());
 		console.log(response);
 	}
-	
+	get_info_about_parents();
 	//Кнопка Сохранить
 	add_user_profile_overbottom.addEventListener('click', function(){
 		
