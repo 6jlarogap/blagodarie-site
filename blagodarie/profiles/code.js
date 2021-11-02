@@ -1126,7 +1126,7 @@ async function rootFunctions(category) {
 }
 
 async function getElements(apiurl) {
-	const response = await fetch(`${settings.api}api/${apiurl}?uuid=${getCookie("user_uuid")}`, {
+	const response = await fetch(`${settings.api}api/${apiurl}?uuid=${dynamic_id}`, {
 		method: "GET"
 	}).then(data => data.json())
 	return response
