@@ -1716,9 +1716,9 @@ function initializeDisplay() {
 	node.append("image")
 		.attr("xlink:href", d => {
 		if(d.nodeType == NODE_TYPES.HOME){
-			`${window.location.origin}`
+			return `${window.location.origin}`
 		}else{
-			`${window.location.origin}?id=${d.id}`
+			return `${window.location.origin}?id=${d.id}`
 		}
 		})
 		.attr("class", d => {
