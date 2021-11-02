@@ -1027,7 +1027,7 @@ d3.json(apiUrl)
 		var inactiveTrust = `${settings.url}images/trust_inactive.png`;
 		var inactiveMistrust = `${settings.url}images/mistrust_inactive.png`;
 
-		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust==true) : null;
+		isConnection ? isTrust = data.connections.some(link => link.target == PROFILE.id && link.source == userIdFrom && link.is_trust) : null;
 		/*isTrust = isConnection ? data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust==true) : null;*/
 		console.log(isTrust)
 		async function count_plus() {
