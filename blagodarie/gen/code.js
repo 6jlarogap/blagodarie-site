@@ -1717,7 +1717,11 @@ function initializeDisplay() {
 		.attr("xlink:href", d => {
 		if(d.nodeType == NODE_TYPES.HOME){
 			return `${window.location.origin}`
-		}else{
+		}else if(d.nodeType == NODE_TYPES.INVITE){
+			return `${window.location.origin}/profiles/?id=${getCookie('user_uuid')}`
+		}
+		
+		else{
 			return `${window.location.origin}?id=${d.id}`
 		}
 		})
