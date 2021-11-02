@@ -1671,7 +1671,19 @@ function initializeDisplay() {
 		.attr("style", "z-index:1;position:relative");
 	
 	node.append("image")
-		.attr("xlink:href", d => `${window.location.origin}?id=${d.id}`)
+		.attr("xlink:href", d => {
+		if(d.nodeType == NODE_TYPES.HOME){
+			return `${window.location.origin}`
+		}else if(d.nodeType == NODE_TYPES.INVITE){
+			return `${window.location.origin}/gen/?id=${getCookie('user_uuid')}&d=5`
+		}else if(d.nodeType == NODE_TYPES.MAPS){
+			return `${window.location.href}&map_visible`
+		}
+		
+		else{
+			return `${window.location.origin}?id=${d.id}`
+		}
+		})
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
 				return "userPortrait";
