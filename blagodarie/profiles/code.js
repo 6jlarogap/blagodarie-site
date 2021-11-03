@@ -576,7 +576,7 @@ add_profile_but.addEventListener('click', function(){
 	let add_user_profile_overbottom = document.querySelector('#add_user_profile_overbottom');
 	let error_in_add = document.querySelector('.error_in_add');
 	let new_profile_user_uuid;
-	
+	let cheked_gend = document.getElementsByName('gender');
 	
 	//Выбор пола
 	
@@ -586,6 +586,10 @@ add_profile_but.addEventListener('click', function(){
 	user_profile_name_inp.value = '';
 	user_profile_surname_inp.value = '';
 	user_profile_middlename_inp.value = '';
+	cheked_gend.forEach( item => {
+        item.checked = false;
+	});
+	
 	
 	
 	//закрыть попап
