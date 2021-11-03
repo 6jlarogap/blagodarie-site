@@ -289,6 +289,13 @@ dialog {
 	background-color: white;
 	z-index: 1000;
 }
+.mother_fio, .father_fio{
+	display: flex;
+	align-items: center;
+}
+.mother_fio .user_changed_link, .father_fio .user_changed_link{
+	margin-left: 10px;
+}
 button.close {
 			margin-bottom: 5px;
 			margin-left: auto;
