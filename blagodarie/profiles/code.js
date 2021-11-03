@@ -82,7 +82,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let cheked_gend = document.getElementsByName('gender');
 	
 	let warning1 = document.querySelector('.warning1');
-	
+	warning1.innerHTML = "";
 	dynamic_id = id;
 	
 	userIdFrom = id;
@@ -335,7 +335,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	//Кнопка Сохранить
 	add_user_profile_overbottom.addEventListener('click', function(){
 		
-		warning1.innerHTML = "";
+		//warning1.innerHTML = "";
 		  
 		if(value_gender==undefined && gender_val==null){
 			warning1.innerHTML = "Выберите пол";
