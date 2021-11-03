@@ -294,7 +294,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	console.log(first_name);
 	console.log(middle_name);
 	
-	async function getUsparent() {
+	/*async function getUsparent() {
 		const response = await fetch(`${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=100`, {
 		method: "GET",
 		headers: {
@@ -311,24 +311,27 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	}
 		console.log(response);
 	}
-	getUsparent()
-	
-	/*async function get_info_about_parents() {
+	getUsparent()*/
+	let mother_fio = document.querySelector('.mother_fio');
+	let father_fio = document.querySelector('.father_fio');
+	mother_fio.innerHTML='';
+	father_fio.innerHTML='';
+	async function get_info_about_parents() {
 		const response = await fetch(`${new_settapi}api/profile?uuid=${id}`, {
 		method: "GET",
 		headers: {
 			/*"Authorization": 'Token ' + getCookie("auth_token")*/
-		/*}
+		}
 		}).then(data => data.json());
 		if(response.mother != null){
-			add_user_profile_mother_input.value = `${response.mother.last_name} ${response.mother.first_name} ${response.mother.middle_name}`;
+			mother_fio.innerHTML = `${response.mother.last_name} ${response.mother.first_name} ${response.mother.middle_name}`;
 		}
 		if(response.father != null){
-			add_user_profile_father_input.value = `${response.father.last_name} ${response.father.first_name} ${response.father.middle_name}`;
+			father_fio.innerHTML = `${response.father.last_name} ${response.father.first_name} ${response.father.middle_name}`;
 		}
 		console.log(response);
 	}
-	get_info_about_parents();*/
+	get_info_about_parents();
 	//Кнопка Сохранить
 	add_user_profile_overbottom.addEventListener('click', function(){
 		
