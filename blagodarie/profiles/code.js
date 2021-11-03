@@ -622,6 +622,7 @@ add_profile_but.addEventListener('click', function(){
 	if(gender_value==undefined){
 		error_in_add.innerHTML = "Выберите пол"
 	}
+	if(gender_value!=undefined){
 	
 				var settings = {
   					"url": `${new_api_str}api/profile`,
@@ -635,6 +636,7 @@ add_profile_but.addEventListener('click', function(){
   					"contentType": false,
   					"data": form,
 					success: function(response){
+						
 						console.log(response)
 						let str1 = response;
 						let pars1 = JSON.parse(str1);
@@ -673,6 +675,8 @@ add_profile_but.addEventListener('click', function(){
 							}
 						},2000);
 					});
+		}
+		
 		})
 					
 						/*async function add_detail_profile_info(){
