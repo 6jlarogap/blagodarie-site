@@ -1141,7 +1141,9 @@ async function rootFunctions(category) {
 		[...document.getElementsByClassName("deleteWish")].forEach(button => {
 			button.addEventListener("click", async () => {
 				await deleteElement(button.parentElement.id, categoryObj.delete);
-				window.location.reload();
+				//window.location.reload();
+				rootDialog.style.display = 'none';
+				addElementDialog.style.display = "none";
 			})
 		});
 
