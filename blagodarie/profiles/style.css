@@ -355,6 +355,11 @@ button.close {
 }
 .geolocation_cont{
 	margin-top: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: row;
+	width: 56%;
 }
 #mapid {
     position: relative;
@@ -445,6 +450,22 @@ button.close {
     font-size: 15px;
 }
 @media(max-width:900px){
+	.geolocation_cont{
+		margin-top: 15px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-direction: column;
+		width: 100%;
+		padding: 0 6%;
+	}
+	.geolocation_cont button{
+		margin-top: 10px;
+	}
+	.geolocation_cont button:first-child{
+		margin-top: 0;
+	}
+	
 	#optionsDialog{
 		top: 4em;
 		left: 50%;
