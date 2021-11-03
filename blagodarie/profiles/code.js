@@ -30,7 +30,7 @@ let new_setturl = settings.url;
 let user_table_body = document.querySelector('#user_table_body');
 
 async function myProfilesinfo() {
-		const response = await fetch(`${new_settapi}api/profile`, {
+		const response = await fetch(`${new_settapi}api/profile?number=2000`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
