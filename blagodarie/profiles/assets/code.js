@@ -331,9 +331,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		}).then(data => data.json());
 		if(response.mother != null){
 			mother_fio.innerHTML = `${response.mother.last_name} ${response.mother.first_name} ${response.mother.middle_name}`;
+			console.log(response)
 		}
 		if(response.father != null){
 			father_fio.innerHTML = `${response.father.last_name} ${response.father.first_name} ${response.father.middle_name}`;
+			console.log(response)
 		}
 		
 	}
