@@ -82,6 +82,12 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let cheked_gend = document.getElementsByName('gender');
 	
 	let warning1 = document.querySelector('.warning1');
+	
+	window.history.pushState(null, null, url.search);
+	addEventListener("popstate",function(e){
+    	window.location.reload();
+	},false);
+	
 	warning1.innerHTML = "";
 	dynamic_id = id;
 	
@@ -582,8 +588,9 @@ add_profile_but.addEventListener('click', function(){
 	let cheked_gend = document.getElementsByName('gender');
 	
 	//Выбор пола
+	window.history.pushState(null, null, url.search);
 	addEventListener("popstate",function(e){
-    	alert('yeees!');
+    	window.location.reload();
 	},false);
 	
 	
