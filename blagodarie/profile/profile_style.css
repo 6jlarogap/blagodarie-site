@@ -315,7 +315,10 @@ text{
 		#addElement {
 			margin-top: 3px;
 		}
-
+		.close_auth_icon{
+			color: #8b0000;
+			font-size: 21px;
+		}
 		.oauthButton {
 			margin-top: 3px;
 			width: 90%;

@@ -142,7 +142,10 @@ text{
 			stroke: white;
 			stroke-width: 1px;
 		}
-
+		.close_auth_icon{
+			color: #8b0000;
+			font-size: 21px;
+		}
 		text.filtered {
 			font-size: 10px;
 		}
