@@ -124,7 +124,7 @@ settingSets.forEach((setting, i) => {
 window.addEventListener('load', async () => {
 	if ('serviceWorker' in navigator) {
 		if (url == settings.url) {
-			await navigator.serviceWorker.register('./sw.js')
+			await navigator.serviceWorker.register('/sw.js')
 		}
 	}
 })
