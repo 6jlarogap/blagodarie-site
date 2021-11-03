@@ -1018,7 +1018,7 @@ d3.json(apiUrl)
 	}
 
 	if (userIdFrom && !(userIdFrom == PROFILE.id)) {
-		isConnection = data.connections.some(link => link.target == PROFILE.id && link.source == userIdFrom);
+		isConnection = data.trust_connections.some(link => link.target == PROFILE.id && link.source == userIdFrom);
 		/*isConnection = data.connections.some(link => link.source == PROFILE.id || link.target == PROFILE.id && link.target == userIdFrom || link.source == userIdFrom);*/
 		console.log(isConnection)
 		//data.connections.some(link => PROFILE.count=link.thanks_count && link.source == PROFILE.id && link.target == userIdFrom);
