@@ -461,6 +461,7 @@ button.close {
 	}
 	.geolocation_cont button{
 		margin-top: 10px;
+		width: 100%;
 	}
 	.geolocation_cont button:first-child{
 		margin-top: 0;
