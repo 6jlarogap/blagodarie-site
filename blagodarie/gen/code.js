@@ -1018,7 +1018,7 @@ d3.json(apiUrl)
 	}
 
 	if (userIdFrom && !(userIdFrom == PROFILE.id)) {
-		isConnection = data.trust_connections.some(link => link.target == PROFILE.id && link.source == userIdFrom);
+		isConnection = data.trust_connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
 		/*isConnection = data.connections.some(link => link.source == PROFILE.id || link.target == PROFILE.id && link.target == userIdFrom || link.source == userIdFrom);*/
 		console.log(isConnection)
 		//data.connections.some(link => PROFILE.count=link.thanks_count && link.source == PROFILE.id && link.target == userIdFrom);
@@ -1028,7 +1028,7 @@ d3.json(apiUrl)
 		var inactiveTrust = `${settings.url}images/trust_inactive.png`;
 		var inactiveMistrust = `${settings.url}images/mistrust_inactive.png`;
 
-		isConnection ? isTrust = data.trust_connections.some(link => link.target == PROFILE.id && link.source == userIdFrom && link.is_trust) : null;
+		isConnection ? isTrust = data.trust_connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
 		/*isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id || link.target == PROFILE.id && link.target == userIdFrom || link.source == userIdFrom && link.is_trust) : null;*/
 		console.log(isTrust)
 		async function count_plus() {
