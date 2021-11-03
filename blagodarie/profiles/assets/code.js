@@ -779,9 +779,10 @@ async function setProfile() {
 				
 			}
 			if(pars2[i].uuid == userIdFrom && pars2[i].latitude!=null && pars2[i].longitude!=null){
-				get_position.style.backgroundColor = 'inherit';
-				get_position.style.color = '#000';
-				get_position.style.borderColor = 'bisque';
+				get_position.style.backgroundColor = '#6be86b';
+				get_position.style.color = '#fff';
+				get_position.style.borderColor = '#6be86b';
+				get_position.style.boxShadow = '0px 0px 10px 9px rgba(142, 198, 60, 0.4)';
 			}
 		}
 		
