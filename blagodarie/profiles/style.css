@@ -542,6 +542,7 @@ button.close {
 	}
 	.add_user_profile_bottom_cont{
 		flex-direction: column;
+		align-items: flex-start;
 	}
 	.add_user_profile_bddd_inputs{
 		flex-direction: column;
