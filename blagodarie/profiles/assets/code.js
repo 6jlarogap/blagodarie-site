@@ -330,11 +330,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		}
 		}).then(data => data.json());
 		if(response.mother != null){
-			mother_fio.innerHTML = `${response.mother.last_name} ${response.mother.first_name} ${response.mother.middle_name} <a class="user_changed_link" href="${window.location.origin}/?id=${response.uuid}&q=50&f=0"><i class="fa fa-link" aria-hidden="true"></i></a>`;
+			mother_fio.innerHTML = `${response.mother.last_name} ${response.mother.first_name} ${response.mother.middle_name} <a class="user_changed_link" href="${window.location.origin}/?id=${response.mother.uuid}&q=50&f=0"><i class="fa fa-link" aria-hidden="true"></i></a>`;
 			console.log(response)
 		}
 		if(response.father != null){
-			father_fio.innerHTML = `${response.father.last_name} ${response.father.first_name} ${response.father.middle_name} <a class="user_changed_link" href="${window.location.origin}/?id=${response.uuid}&q=50&f=0"><i class="fa fa-link" aria-hidden="true"></i></a>`;
+			father_fio.innerHTML = `${response.father.last_name} ${response.father.first_name} ${response.father.middle_name} <a class="user_changed_link" href="${window.location.origin}/?id=${response.father.uuid}&q=50&f=0"><i class="fa fa-link" aria-hidden="true"></i></a>`;
 		}
 		
 	}
