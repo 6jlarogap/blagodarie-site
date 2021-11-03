@@ -582,7 +582,9 @@ add_profile_but.addEventListener('click', function(){
 	let cheked_gend = document.getElementsByName('gender');
 	
 	//Выбор пола
-	
+	addEventListener("popstate",function(e){
+    	alert('yeees!');
+	},false);
 	
 	
 	//обнуление полей
