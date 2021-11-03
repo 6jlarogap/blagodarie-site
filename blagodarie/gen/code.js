@@ -1181,7 +1181,7 @@ d3.json(apiUrl)
 		});
 	}
 	console.log(data);
-	data.connections.forEach(function(d){
+	/*data.connections.forEach(function(d){
 		if (d.is_trust != null){
 			var reverse_is_trust = d.is_trust;
 			data.connections.forEach(function(dd){
@@ -1199,7 +1199,7 @@ d3.json(apiUrl)
 			console.log(links);
 		}
 		
-	});
+	});*/
 	data.trust_connections.forEach(function(d){
 		if (d.is_trust != null){
 			var reverse_is_trust = d.is_trust;
