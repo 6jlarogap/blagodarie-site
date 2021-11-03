@@ -268,7 +268,7 @@ table img{
 	margin-left: 10px;
 }
 dialog {
-	position: absolute;
+	position: fixed;
 	padding: 8%;
 	top: 30%;
 	width: 550px;
@@ -466,7 +466,18 @@ button.close {
 	.geolocation_cont button:first-child{
 		margin-top: 0;
 	}
-	
+	dialog{
+		width: 76%;
+		left: 50%;
+		margin-left: -46%;
+	}
+	#keyTypesBtns{
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	#keyTypesBtns img{
+		width: 30px;
+	}
 	#optionsDialog{
 		top: 4em;
 		left: 50%;
