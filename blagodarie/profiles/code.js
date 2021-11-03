@@ -1050,7 +1050,8 @@ addElement.addEventListener("click", async () => {
 			body:  JSON.stringify(fetchSettings.body)
 		})
 		console.log(fetchSettings);
-		window.location.reload();
+		//window.location.reload();
+		addElementDialog.style.display = "none";
 	} else {
 		elementAddInput.placeholder = "Введите что-то!"
 	}
