@@ -1051,6 +1051,7 @@ addElement.addEventListener("click", async () => {
 		})
 		console.log(fetchSettings);
 		//window.location.reload();
+		rootDialog.style.display = 'none';
 		addElementDialog.style.display = "none";
 	} else {
 		elementAddInput.placeholder = "Введите что-то!"
