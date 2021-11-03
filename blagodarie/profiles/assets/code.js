@@ -1184,7 +1184,29 @@ async function deleteElement(uuid, apiurl) {
 	});
 });
 
+setInterval(function(){
+	if(document.querySelector('#addElementDialog').style.display == 'flex'){
+		let buttons_cont = document.querySelector('#addElementDialog #keyTypesBtns');
+		if (buttons_cont.hasChildNodes()) {
+  			var children = buttons_cont.childNodes;
+		
+  			for (var i = 0; i < children.length; ++i) {
+						
+    				let d = document.querySelector('#addElementDialog .form-control').attributes.keytype.nodeValue;
+				if (children[i].id != d){
+							children[i].style = 'background: #6c757d';
+						}
+				else {
+					children[i].style = 'background: #6c757d;box-shadow: 0 0 0 0.25rem rgb(130 138 145 / 50%);'
+				}
+  				}
+			}
+		}
+	else {
+		
+	}
 
+}, 1000);
 
 
 //Добавить картинку род
