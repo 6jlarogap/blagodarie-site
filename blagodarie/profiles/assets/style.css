@@ -270,7 +270,7 @@ table img{
 dialog {
 	position: fixed;
 	padding: 8%;
-	top: 30%;
+	top: 10%;
 	width: 550px;
 	left:50%;
 	margin-left: -275px;
@@ -477,6 +477,7 @@ button.close {
 		width: 76%;
 		left: 50%;
 		margin-left: -46%;
+		top: 30%;
 	}
 	#keyTypesBtns{
 		margin-top: 10px;

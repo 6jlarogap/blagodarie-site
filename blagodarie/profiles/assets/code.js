@@ -1197,7 +1197,7 @@ setInterval(function(){
 							children[i].style = 'background: #6c757d';
 						}
 				else {
-					children[i].style = 'background: #6c757d;box-shadow: 0 0 0 0.25rem rgb(130 138 145 / 50%);'
+					children[i].style = 'background: #6be86b;box-shadow: rgb(142 198 60 / 40%) 0px 0px 10px 9px;'
 				}
   				}
 			}
