@@ -285,7 +285,13 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	
 	nophoto_but.addEventListener('click', function(){
-		deleteacc();
+		let confirm_do = confirm('Обезличивание приведёт к полной очистке данных профиля. Вы уверены?');
+		if(confirm_do == true){
+			deleteacc();	
+		}else{
+			console.log('Не обезличивать');
+		}
+		
 	})
 	
 	
