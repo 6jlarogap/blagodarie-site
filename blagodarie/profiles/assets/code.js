@@ -854,7 +854,7 @@ navigator.geolocation.getCurrentPosition(
 	    long = position.coords.longitude;
 	    }
 	    show_smart_map(lati, long);*/
-		if (response_smat_map.some(e => e.user_uuid === userIdFrom)) {
+		if (response_smat_map.some(e => e.user_uuid === userIdFrom && e.user_latitude!=null)) {
   		console.log(response_smat_map);
 		for(let i=0;i<response_smat_map.length;i++){
 			if(response_smat_map[i].user_uuid == userIdFrom){
