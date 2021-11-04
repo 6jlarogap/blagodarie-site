@@ -694,6 +694,28 @@ button.close:hover{
 	background-color: #8b0000!important;
 	border-color: #8b0000!important;
 }
+#rootDialog{
+	padding: 2%;
+	width: 31%;
+	height: 50%;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+#addElementDialog{
+	padding: 2%;
+	width: 31%;
+	height: 33%;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
 @media(max-width:900px){
 	#shareDialog{
 		width: 81%;
