@@ -662,7 +662,31 @@ text{
 	bottom: 0;
 	right: 0;
 }
+.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon{
+	height: 100px !important;
+	width: 100px !important;
+}
+.ya-share2__container_shape_round.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon:not(.ya-share2__icon_messenger-contact):not(.ya-share2__icon_more):not(.ya-share2__icon_copy) {
+    background-size: 100px 100px !important;
+}
+.share {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
 @media(max-width:900px){
+	.ya-share2__container_shape_round.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon:not(.ya-share2__icon_messenger-contact):not(.ya-share2__icon_more):not(.ya-share2__icon_copy) {
+    background-size: 50px 50px !important;
+	}
+	.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon {
+    width: 50px !important;
+    height: 50px !important;
+	}
+	.share{
+		width: 50px;
+		height: 50px;
+		cursor: pointer;
+	}
 	#shareDialog{
 		width: 81%;
 		height: 26%;
