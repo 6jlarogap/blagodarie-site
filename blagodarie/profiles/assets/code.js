@@ -115,6 +115,16 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	}
 	
 	
+		user_profile_name_inp.addEventListener("input", function() {
+  			this.value = this.value[0].toUpperCase() + this.value.slice(1);
+		});
+		user_profile_surname_inp.addEventListener("input", function() {
+			this.value = this.value[0].toUpperCase() + this.value.slice(1);
+		});
+		user_profile_middlename_inp.addEventListener("input", function() {
+  			this.value = this.value[0].toUpperCase() + this.value.slice(1);
+		});
+	
 	
 	
 	//обрезка файлов
@@ -482,15 +492,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		
 	
 		//alert(`${day}-${month}-${year}`)
-		user_profile_name_inp.addEventListener("input", function() {
-  			this.value = this.value[0].toUpperCase() + this.value.slice(1);
-		});
-		user_profile_surname_inp.addEventListener("input", function() {
-			this.value = this.value[0].toUpperCase() + this.value.slice(1);
-		});
-		user_profile_middlename_inp.addEventListener("input", function() {
-  			this.value = this.value[0].toUpperCase() + this.value.slice(1);
-		});
+		
+		
 		
 		
 		var formdata = new FormData();
