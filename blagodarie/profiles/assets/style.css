@@ -488,6 +488,22 @@ button.close:hover{
 
 
 @media(max-width:900px){
+	.add_user_photo_cont{
+		width: 100%;
+	}
+	.bottom_but_container{
+		flex-direction: column;
+		margin-top: 30px;
+		margin-bottom: 30px;
+		justify-content: center;
+	}
+	.add_user_profile_overbottom{
+		margin-left: 0;
+	}
+	.nophoto_but{
+		margin-left: 0;
+		margin-top: 10px;
+	}
 	.geolocation_cont{
 		margin-top: 15px;
 		display: flex;
