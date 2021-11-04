@@ -488,7 +488,9 @@ button.close:hover{
 	margin-left: unset!important;
 	margin: 0 auto;
 }
-
+.add_user_profile_overbottom.new new_user{
+	display: block;
+}
 
 @media(max-width:900px){
 	.add_user_photo_cont{
