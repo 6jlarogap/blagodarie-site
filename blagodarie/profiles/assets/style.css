@@ -506,7 +506,7 @@ button.close:hover{
 #rootDialog{
 	padding: 4%;
 	width: 24%;
-	height: 28%;
+	height: max-content;
 	margin: auto;
 	position: absolute;
 	top: 0;
