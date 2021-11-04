@@ -484,7 +484,9 @@ button.close:hover{
 	display: flex;
 	align-items: center;
 }
-
+.new_user{
+	margin: 0 auto;
+}
 
 
 @media(max-width:900px){
