@@ -621,25 +621,24 @@ add_profile_but.addEventListener('click', function(){
 	
 	//Создание юида
 	//add_user_profile_overbottom.addEventListener('click', function(){
-			
-	let strnametype1 = user_profile_name_inp.value;
-	let strsurnametype1 = user_profile_surname_inp.value;
-	let strmiddlenametype1 = user_profile_middlename_inp.value;
-		
-	let newStrName = strnametype1[0].toUpperCase() + strnametype1.slice(1);
-	let newStrSurname = strsurnametype1[0].toUpperCase() + strsurnametype1.slice(1);
-	let newStrMidname = strmiddlenametype1[0].toUpperCase() + strmiddlenametype1.slice(1);	
+	
 	
 	add_user_profile_overbottom.addEventListener('click', function(){
 		error_in_add.innerHTML = "";
 		var form = new FormData();
 	if(user_profile_name_inp.value != ''){
-	form.append("first_name", newStrName);
+		let strnametype1 = user_profile_name_inp.value;
+		let newStrName = strnametype1[0].toUpperCase() + strnametype1.slice(1);
+		form.append("first_name", newStrName);
 	}
 	if(user_profile_surname_inp.value != ''){
+		let strsurnametype1 = user_profile_surname_inp.value;
+		let newStrSurname = strsurnametype1[0].toUpperCase() + strsurnametype1.slice(1);
 		form.append("last_name", newStrSurname);
 	}
 	if(user_profile_middlename_inp.value != ''){
+		let strmiddlenametype1 = user_profile_middlename_inp.value;
+		let newStrMidname = strmiddlenametype1[0].toUpperCase() + strmiddlenametype1.slice(1);
 		form.append("middle_name", newStrMidname);
 	}
 	if(gender_value!=undefined){
