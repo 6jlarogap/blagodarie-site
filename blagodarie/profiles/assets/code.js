@@ -482,20 +482,22 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		
 	
 		//alert(`${day}-${month}-${year}`)
-		let strnametype1 = user_profile_name_inp.value;
-		let strsurnametype1 = user_profile_surname_inp.value;
-		let strmiddlenametype1 = user_profile_middlename_inp.value;
-		
-		let newStrName = strnametype1[0].toUpperCase() + strnametype1.slice(1);
-		let newStrSurname = strsurnametype1[0].toUpperCase() + strsurnametype1.slice(1);
-		let newStrMidname = strmiddlenametype1[0].toUpperCase() + strmiddlenametype1.slice(1);
+		user_profile_name_inp.addEventListener("input", function() {
+  			this.value = this.value[0].toUpperCase() + this.value.slice(1);
+		});
+		user_profile_surname_inp.addEventListener("input", function() {
+			this.value = this.value[0].toUpperCase() + this.value.slice(1);
+		});
+		user_profile_middlename_inp.addEventListener("input", function() {
+  			this.value = this.value[0].toUpperCase() + this.value.slice(1);
+		});
 		
 		
 		var formdata = new FormData();
 		formdata.append("uuid", id);
-		formdata.append("first_name", newStrName);
-		formdata.append("last_name", newStrSurname);
-		formdata.append("middle_name", newStrMidname);
+		formdata.append("first_name", user_profile_name_inp.value);
+		formdata.append("last_name", user_profile_surname_inp.value);
+		formdata.append("middle_name", user_profile_middlename_inp.value);
 		formdata.append("dob", add_user_profile_bd.value);
 		formdata.append("dod", add_user_profile_dd.value);
 		formdata.append("gender", value_gender? value_gender : gender_val ? gender_val : '');
@@ -622,24 +624,27 @@ add_profile_but.addEventListener('click', function(){
 	//Создание юида
 	//add_user_profile_overbottom.addEventListener('click', function(){
 	
+	user_profile_name_inp.addEventListener("input", function() {
+  		this.value = this.value[0].toUpperCase() + this.value.slice(1);
+	});
+	user_profile_surname_inp.addEventListener("input", function() {
+  		this.value = this.value[0].toUpperCase() + this.value.slice(1);
+	});
+	user_profile_middlename_inp.addEventListener("input", function() {
+  		this.value = this.value[0].toUpperCase() + this.value.slice(1);
+	});
 	
 	add_user_profile_overbottom.addEventListener('click', function(){
 		error_in_add.innerHTML = "";
 		var form = new FormData();
 	if(user_profile_name_inp.value != ''){
-		let strnametype1 = user_profile_name_inp.value;
-		let newStrName = strnametype1[0].toUpperCase() + strnametype1.slice(1);
-		form.append("first_name", newStrName);
+		form.append("first_name", user_profile_name_inp.value);
 	}
 	if(user_profile_surname_inp.value != ''){
-		let strsurnametype1 = user_profile_surname_inp.value;
-		let newStrSurname = strsurnametype1[0].toUpperCase() + strsurnametype1.slice(1);
-		form.append("last_name", newStrSurname);
+		form.append("last_name", user_profile_surname_inp.value);
 	}
 	if(user_profile_middlename_inp.value != ''){
-		let strmiddlenametype1 = user_profile_middlename_inp.value;
-		let newStrMidname = strmiddlenametype1[0].toUpperCase() + strmiddlenametype1.slice(1);
-		form.append("middle_name", newStrMidname);
+		form.append("middle_name", user_profile_middlename_inp.value);
 	}
 	if(gender_value!=undefined){
 		form.append("gender", gender_value);
