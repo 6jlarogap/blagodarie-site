@@ -1385,8 +1385,8 @@ d3.json(apiUrl)
 				d.fy = height / 2;
 			}
 			
-			break;
-		}*/
+			break;*/
+		}
 	});
 	
 	if(width<900){
