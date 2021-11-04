@@ -652,18 +652,30 @@ text{
 			background-color: #ffffff;
 		}
 #optionsDialog{
-    width: 38%;
+   /* width: 38%;
     padding: 8%;
     left: 50%;
     margin-left: -23%;
-    top: 8%;
+    top: 8%;*/
+	padding: 8%;
+	width: 50%;
+	height: 50%;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 }
 @media(max-width:900px){
 	#optionsDialog{
 		top: 4em;
 		left: 50%;
-    margin-left: -44%;
-    width: 72%;
+		bottom: unset;
+		right: unset;
+		height: unset;
+    	margin-left: -44%;
+    	width: 72%;
 		}
 			.pagination_block{
 				left: 0;
