@@ -880,17 +880,22 @@ navigator.geolocation.getCurrentPosition(
 			long = +response_smat_map[0].user_longitude;
 		    show_smart_map(lati, long);
 		}*/
+		if (response_smat_map.some(e => e.user_uuid === userIdFrom && e.user_latitude!=null)) {
+  		console.log(response_smat_map);
 		for(let i=0;i<response_smat_map.length;i++){
 			if(response_smat_map[i].user_uuid == userIdFrom){
-				let lati = +response_smat_map[i].user_latitude;
-				let long = +response_smat_map[i].user_longitude;
+				lati = +response_smat_map[i].user_latitude;
+				long = +response_smat_map[i].user_longitude;
 				console.log(lati, long);
 				show_smart_map(lati, long)
 			}
 		}
-	    show_smart_map(53.89948354993688, 27.557659149169925);
-	    mapid_whereI.style.display = 'none';
-		console.log(lati, long)
+		}
+		else{
+			show_smart_map(53.89948354993688, 27.557659149169925);
+	    	mapid_whereI.style.display = 'none';
+			console.log(lati, long);
+		}
     }
 );
 
