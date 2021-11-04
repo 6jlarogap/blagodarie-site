@@ -865,8 +865,8 @@ navigator.geolocation.getCurrentPosition(
 			}
 		}
 		}else{
-			lati = position.coords.latitude;
-	    	long = position.coords.longitude;
+			let lati = position.coords.latitude;
+	    	let long = position.coords.longitude;
 			show_smart_map(lati, long)
 		}
 		
