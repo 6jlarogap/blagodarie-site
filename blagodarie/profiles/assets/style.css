@@ -490,7 +490,7 @@ button.close:hover{
 .add_user_profile_overbottom.new.new_user{
 	display: block;
 	margin-left: unset!important;
-	margin: 0!important;
+	margin: 0 auto!important;
 }
 
 @media(max-width:900px){
