@@ -111,6 +111,8 @@ table img{
 	background-color: red;
 	border-color: red;
 	color: #fff;
+	padding: .375rem .75rem;
+	border-radius: 5px;
 }
 .image{
 	width: 100%;
@@ -165,7 +167,8 @@ table img{
     left: 0;
     background: #fff;
 	display: none;
-	padding: 0 17%;
+	padding: 0 20%;
+	padding-bottom: 7%;
 }
 .add_user_profile_top_cont{
 	display: flex;
@@ -223,6 +226,8 @@ table img{
 	background-color: green;
 	border-color: green;
 	color: #fff;
+	padding: .375rem .75rem;
+	border-radius: 5px;
 }
 .add_user_profile_close_popup, .add_user_profile_close_popup_new{
 	cursor: pointer;
@@ -260,7 +265,6 @@ table img{
 }
 .gender_cont{
 	width: max-content;
-    margin: 0 auto;
     margin-top: 1%;
     display: flex;
     flex-direction: column;
