@@ -85,7 +85,7 @@ table img{
 }
 .add_user_photo_cont{
 	position: relative;
-	width: 100%;
+	
 }
 .add_user_photo_cont .container{
 	width: 24px!important;
@@ -168,7 +168,7 @@ table img{
 }
 .add_user_profile_top_cont{
 	display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
 	margin-top: 5%;
 }
@@ -186,7 +186,7 @@ table img{
 	outline: none;
 }
 .add_user_profile_center_bddd_nophoto{
-	margin-top: 6%;
+	
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -195,7 +195,8 @@ table img{
 	display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 43%;
+    width: 100%;
+	flex-direction: column;
 }
 .add_user_profile_bddd_cont input{
 	border: 0;
@@ -207,6 +208,7 @@ table img{
     display: flex;
     align-items: center;
     justify-content: space-between;
+	flex-direction: column;
 }
 .add_user_profile_bottom_cont input{
 	border: 0;
@@ -466,6 +468,14 @@ button.close:hover{
 	background-color: #8b0000!important;
 	border-color: #8b0000!important;
 }
+.right_data_column{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+
 @media(max-width:900px){
 	.geolocation_cont{
 		margin-top: 15px;
