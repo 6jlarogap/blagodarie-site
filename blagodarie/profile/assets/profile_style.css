@@ -315,7 +315,10 @@ text{
 		#addElement {
 			margin-top: 3px;
 		}
-
+		.close_auth_icon{
+			color: #8b0000;
+			font-size: 21px;
+		}
 		.oauthButton {
 			margin-top: 3px;
 			width: 90%;
@@ -552,7 +555,7 @@ text{
     top: 85px;
     left: 10px;
     padding: 4px 10px;
-    background-color: #fff;
+    background-color: green;
     border-radius: 7px;
     cursor: pointer;
     border: 2px solid rgba(0, 0, 0, 0.2);
@@ -560,21 +563,23 @@ text{
     opacity: 0.7;
     transition: .5s;
     z-index: 13;
+	color: #fff;
 }
 .mapid_clean {
     display: block;
     position: absolute;
-    right: 10px;
-    bottom: 20px;
+    left: 10px;
+    top: 135px;
     opacity: 0.7;
     padding: 4px 10px;
-    background-color: #fff;
     border-radius: 7px;
     cursor: pointer;
     border: 2px solid rgba(0, 0, 0, 0.2);
     font-weight: 500;
     transition: .5s;
     z-index: 13;
+	background-color: #8b0000;
+	color: #fff;
 }
 .mapid_alert {
     display: none;
@@ -613,18 +618,117 @@ text{
     font-size: 15px;
 }
 #optionsDialog{
-    width: 38%;
-    padding: 8%;
-    left: 50%;
-    margin-left: -23%;
-    top: 8%;
+	padding: 8%;
+	width: 50%;
+	height: 50%;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+#filterDialog{
+	padding: 3%;
+	width: 24%;
+	height: 18%;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+#shareDialog{
+	padding: 3%;
+	width: 45%;
+	height: 50%;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon{
+	height: 100px !important;
+	width: 100px !important;
+}
+.ya-share2__container_shape_round.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon:not(.ya-share2__icon_messenger-contact):not(.ya-share2__icon_more):not(.ya-share2__icon_copy) {
+    background-size: 100px 100px !important;
+}
+.share {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+button.close{
+	background-color: #8b0000!important;
+	border-color: #8b0000!important;
+	width: unset !important;
+	height: unset !important;
+}
+button.close:hover{
+	background-color: #8b0000!important;
+	border-color: #8b0000!important;
+}
+#rootDialog{
+	padding: 2%;
+	width: 31%;
+	height: max-content;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+#addElementDialog{
+	padding: 2%;
+	width: 31%;
+	height: 33%;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 }
 @media(max-width:900px){
+	#rootDialog{
+		width: 90%;
+	}
+	#addElementDialog{
+		width: 90%;
+	}
+	.ya-share2__container_shape_round.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon:not(.ya-share2__icon_messenger-contact):not(.ya-share2__icon_more):not(.ya-share2__icon_copy) {
+    background-size: 50px 50px !important;
+	}
+	.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon {
+    width: 50px !important;
+    height: 50px !important;
+	}
+	.share{
+		width: 50px;
+		height: 50px;
+		cursor: pointer;
+	}
+	#shareDialog{
+		width: 81%;
+		height: 26%;
+	}
+	#filterDialog{
+		width: 75%;
+		height: 16%;
+	}
 	#optionsDialog{
 		top: 4em;
 		left: 50%;
-    margin-left: -44%;
-    width: 72%;
+		bottom: unset;
+		right: unset;
+		height: unset;
+    	margin-left: -44%;
+    	width: 72%;
 		}
 			.pagination_block{
 				left: 0;

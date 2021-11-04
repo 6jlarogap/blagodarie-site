@@ -124,7 +124,7 @@ settingSets.forEach((setting, i) => {
 window.addEventListener('load', async () => {
 	if ('serviceWorker' in navigator) {
 		if (url == settings.url) {
-			await navigator.serviceWorker.register('./sw.js')
+			await navigator.serviceWorker.register('/sw.js')
 		}
 	}
 })
@@ -461,6 +461,11 @@ document.getElementById("wishes").addEventListener("click", async () => {
 // })
 //-----------------------------------------------------------------------------------------------
 
+//new settings
+let new_settapi = settings.api;
+let new_setturl = settings.url;
+
+
 
 function uuidv4() {
 	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -505,9 +510,18 @@ async function setProfile() {
 		}
 	}).then(data => data.json());
 
+	var str = response.users[0].photo;
+	var extArray = str.split(".");
+	var ext = extArray[extArray.length - 1];
+		
+	var replacement = "media"; 
+	var toReplace = "thumb"; 
+	var str1 = str.replace(replacement, toReplace);
+	
+	
 	PROFILE.text = response.users[0].first_name + " " + response.users[0].last_name;
 	PROFILE.abil = response.users[0].ability;
-	PROFILE.image = response.users[0].photo == '' ? `${settings.url}images/default_avatar.png` : response.users[0].photo;
+	PROFILE.image = response.users[0].photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && response.users[0].photo.includes('media') ? str1+"/64x64~crop~12."+ext : width>900 && response.users[0].photo.includes('media') ?  str1+"/128x128~crop~12."+ext : response.users[0].photo;
 	PROFILE.id = getCookie("user_uuid");
 	//PROFILE.tabil = response.trust_count;
 	console.log(response.users.trust_count);
@@ -634,7 +648,7 @@ get_position.addEventListener('click', ()=>{
 function get_cur_position(){
 
 navigator.geolocation.getCurrentPosition(
-    function(position) {
+    function(position) {/*
 	    console.log(position.coords);
 	    if(response_smat_map[0].user_latitude != null){
 	    	lati = +response_smat_map[0].user_latitude;
@@ -643,13 +657,39 @@ navigator.geolocation.getCurrentPosition(
 	    lati = position.coords.latitude;
 	    long = position.coords.longitude;
 	    }
-	    show_smart_map(lati, long);
+	    show_smart_map(lati, long);*/
+		if (response_smat_map.some(e => e.user_uuid === userIdFrom)) {
+  		console.log(response_smat_map);
+		for(let i=0;i<response_smat_map.length;i++){
+			if(response_smat_map[i].user_uuid == userIdFrom){
+				lati = +response_smat_map[i].user_latitude;
+				long = +response_smat_map[i].user_longitude;
+				console.log(lati, long);
+				show_smart_map(lati, long)
+			}
+		}
+		}else{
+			lati = position.coords.latitude;
+	    	long = position.coords.longitude;
+			show_smart_map(lati, long)
+		}
+		
+		
+		//show_smart_map(lati, long)
     },
     function(error){
-	    if(response_smat_map[0].user_latitude != null){
+	    /*if(response_smat_map[0].user_latitude != null){
 			lati = +response_smat_map[0].user_latitude;
 			long = +response_smat_map[0].user_longitude;
 		    show_smart_map(lati, long);
+		}*/
+		for(let i=0;i<response_smat_map.length;i++){
+			if(response_smat_map[i].user_uuid == userIdFrom){
+				let lati = +response_smat_map[i].user_latitude;
+				let long = +response_smat_map[i].user_longitude;
+				console.log(lati, long);
+				show_smart_map(lati, long)
+			}
 		}
 	    show_smart_map(53.89948354993688, 27.557659149169925);
 	    mapid_whereI.style.display = 'none';
@@ -664,9 +704,18 @@ function show_smart_map(lati, long){
 	if(document.querySelector('#mapid').hasChildNodes()){}
 	else{
 		if(response_smat_map[0].user_latitude != null){
-			let lati = +response_smat_map[0].user_latitude;
-			let long = +response_smat_map[0].user_longitude;
+			/*let lati = +response_smat_map[0].user_latitude;
+			let long = +response_smat_map[0].user_longitude;*/
+			for(let i=0;i<response_smat_map.length;i++){
+			if(response_smat_map[i].user_uuid == userIdFrom){
+				let lati = +response_smat_map[i].user_latitude;
+				let long = +response_smat_map[i].user_longitude;
+				console.log(lati, long);
+			}
 		}
+		}
+		
+	
 		
 	mapid = L.map('mapid').setView([lati, long], 13);
 		
@@ -723,15 +772,52 @@ function show_smart_map(lati, long){
 	
 }
 
+document.querySelector(".mapid_send").addEventListener("click", function(){
+	var form = new FormData();
+	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
+	form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null}`);	
+	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);
+	var settings = {
+  		"url": `${new_settapi}api/profile`,
+  		"method": "PUT",
+  		"timeout": 0,
+  		"headers": {
+  		  "Authorization": `Token ${getCookie("auth_token")}`
+  		},
+  		"processData": false,
+  		"mimeType": "multipart/form-data",
+  		"contentType": false,
+  		"data": form
+	};
 
-document.querySelector(".mapid_send").addEventListener("click", async () => {
+	$.ajax(settings).done(function (response) {
+  		console.log(response);
+		mapid_alert.style.display = "block";
+		setTimeout(function(){
+			mapid_alert.style.transition = "1s";
+			mapid_alert.style.opacity = "1";
+		}, 200);
+		setTimeout(function(){
+			mapid_alert.style.transition = "1s";
+			mapid_alert.style.opacity = "0";
+		}, 2500);
+		setTimeout(function(){
+	
+			window.location.reload();
+		}, 3500)
+	});
+});
+
+
+
+/*document.querySelector(".mapid_send").addEventListener("click", async () => {
 			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null , "longitude": new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null })
+		body: JSON.stringify({"user_id_from":userIdFrom ? userIdFrom : getCookie("auth_token")/*getCookie("auth_token")*//*, *//*"latitude": new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null , "longitude": new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null })
 	}).then(data => data.json());
 	mapid_alert.style.display = "block";
 	setTimeout(function(){
@@ -743,11 +829,11 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 		mapid_alert.style.opacity = "0";
 	}, 2500);
 	setTimeout(function(){
-		//mapid_alert.style.display = "none";
-		window.location.reload()
-	}, 3500)
-});
 
+		/*window.location.reload()*/
+	/*}, 3500)
+});
+*/
 
 
 // Показать глубину рекурсии
@@ -759,23 +845,51 @@ if(!url.searchParams.has('d')){
 let recur_select_value = document.querySelector('.recur_select_value');
 recur_select_value.innerHTML = url.searchParams.get('d');
 
+document.querySelector(".mapid_clean").addEventListener("click", function(){
+	var form = new FormData();
+	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
+	form.append("latitude", "null");	
+	form.append("longitude", "null");
+	var settings = {
+  		"url": `${new_settapi}api/profile`,
+  		"method": "PUT",
+  		"timeout": 0,
+  		"headers": {
+  		  "Authorization": `Token ${getCookie("auth_token")}`
+  		},
+  		"processData": false,
+  		"mimeType": "multipart/form-data",
+  		"contentType": false,
+  		"data": form
+	};
 
-document.querySelector(".mapid_clean").addEventListener("click", async () => {
+	$.ajax(settings).done(function (response) {
+  		console.log(response);
+		lati = null;
+		long = null;
+		new_cur_pos_marker_lat = null;
+		new_cur_pos_marker_lng = null;
+		window.location.reload()
+	});
+});
+
+
+/*document.querySelector(".mapid_clean").addEventListener("click", async () => {
 			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 			"Authorization": `Token ${getCookie("auth_token")}`
 		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": null , "longitude": null })
+		body: JSON.stringify({"user_id_from":userIdFrom ? userIdFrom : getCookie("auth_token"), "latitude": null , "longitude": null })
 	}).then(data => data.json());
-	//map_container.style.display = "none";
+	
 	lati = null;
 	long = null;
 	new_cur_pos_marker_lat = null;
 	new_cur_pos_marker_lng = null;
 	window.location.reload()
-});
+});*/
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
@@ -810,11 +924,21 @@ d3.json(apiUrl)
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
 			
+			var str = d.photo;
+			var extArray = str.split(".");
+			var ext = extArray[extArray.length - 1];
+		
+			var replacement = "media"; 
+			var toReplace = "thumb"; 
+			var str1 = str.replace(replacement, toReplace);
+			
+			
+			
 			if(d.ability === null){
 			nodes.push ({
 				id: d.uuid,
 				text: (d.first_name + " " + d.last_name + " " + " "),
-				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
+				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
 			}else{
@@ -822,7 +946,7 @@ d3.json(apiUrl)
 				id: d.uuid,
 				text: (d.first_name + " " + d.last_name),
 				tabil: (d.ability),
-				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : d.photo,
+				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
 			}
@@ -894,8 +1018,9 @@ d3.json(apiUrl)
 	}
 
 	if (userIdFrom && !(userIdFrom == PROFILE.id)) {
-		isConnection = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
-		
+		isConnection = data.trust_connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
+		/*isConnection = data.connections.some(link => link.source == PROFILE.id || link.target == PROFILE.id && link.target == userIdFrom || link.source == userIdFrom);*/
+		console.log(isConnection)
 		//data.connections.some(link => PROFILE.count=link.thanks_count && link.source == PROFILE.id && link.target == userIdFrom);
 		console.log(data);
 		var activeTrust = `${settings.url}images/trust_active.png`;
@@ -903,8 +1028,9 @@ d3.json(apiUrl)
 		var inactiveTrust = `${settings.url}images/trust_inactive.png`;
 		var inactiveMistrust = `${settings.url}images/mistrust_inactive.png`;
 
-		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
-		
+		isConnection ? isTrust = data.trust_connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
+		/*isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id || link.target == PROFILE.id && link.target == userIdFrom || link.source == userIdFrom && link.is_trust) : null;*/
+		console.log(isTrust)
 		async function count_plus() {
 		const response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
 		method: "GET",
@@ -913,7 +1039,7 @@ d3.json(apiUrl)
 		}
 		}).then(data => data.json());
 
-	if(isAuth){
+	if(isAuth){ 
 	let ans = response.connections;
 	let ans1 = ans.find(data => {
   
@@ -968,8 +1094,8 @@ d3.json(apiUrl)
 		//Добавить вершину invite
 		nodes.push({
 			id: INVITE_ID,
-			text: "Пригласить",
-			image: `${settings.url}images/add.png`,
+			text: "Профили",
+			image: `${settings.url}images/profile_im.png`,
 			nodeType: NODE_TYPES.INVITE
 		})
 	}
@@ -985,8 +1111,8 @@ d3.json(apiUrl)
 	//Добавить вершину home
 		nodes.push({
 		id: HOME_ID,
-		text: "Граф",
-		image: `${settings.url}images/home.png`,
+		text: "Доверие",
+		image: `${settings.url}images/hands.png`,
 		nodeType: NODE_TYPES.HOME
 	});
 	
@@ -1051,7 +1177,26 @@ d3.json(apiUrl)
 		});
 	}
 	console.log(data);
-	data.connections.forEach(function(d){
+	/*data.connections.forEach(function(d){
+		if (d.is_trust != null){
+			var reverse_is_trust = d.is_trust;
+			data.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
+					reverse_is_trust = dd.is_trust;
+					
+				}
+			});
+			links.push({
+				source: d.source,
+				target: d.target,
+				is_trust: d.is_trust,
+				reverse_is_trust: reverse_is_trust
+			});
+			console.log(links);
+		}
+		
+	});*/
+	data.trust_connections.forEach(function(d){
 		if (d.is_trust != null){
 			var reverse_is_trust = d.is_trust;
 			data.connections.forEach(function(dd){
@@ -1229,8 +1374,8 @@ d3.json(apiUrl)
 			break;
 		/*case PROFILE.id:
 			if (userIdFrom && userIdFrom != PROFILE.id) {
-				d.fx = width<900 ? width / 2 - 100 : width / 2 - 200;
-				d.fy = height / 2;
+				/*d.fx = width<900 ? width / 2 - 100 : width / 2 - 200;
+				d.fy = height / 2;*/
 			} else {
 				d.fx = width / 2;
 				d.fy = height / 2;
@@ -1247,9 +1392,6 @@ d3.json(apiUrl)
 	simulation.force("charge", d3.forceManyBody().strength(10)) //0.5
 //	simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
 	simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("collide", d3.forceCollide().strength(0.1).radius(90).iterations(1))
-	simulation.force("x", d3.forceX(width / 2).strength(0.1))
-    	simulation.force("y", d3.forceY(height/2).strength(0.1));
 	}	
 	
 	else{
@@ -1464,6 +1606,7 @@ function initializeDisplay() {
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
+		.attr("stroke-width", 1.5)
 		.attr("stroke", d => {
 			console.log(d);
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
@@ -1575,6 +1718,8 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');
 		
+		console.log(nodes);
+	
 		node.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
@@ -1598,7 +1743,19 @@ function initializeDisplay() {
 		.attr("style", "z-index:1;position:relative");
 	
 	node.append("image")
-		.attr("xlink:href", d => `${window.location.origin}?id=${d.id}`)
+		.attr("xlink:href", d => {
+		if(d.nodeType == NODE_TYPES.HOME){
+			return `${window.location.origin}`
+		}else if(d.nodeType == NODE_TYPES.INVITE){
+			return `${window.location.origin}/profiles/?id=${getCookie('user_uuid')}`
+		}else if(d.nodeType == NODE_TYPES.MAPS){
+			return `${window.location.href}&map_visible`
+		}
+		
+		else{
+			return `${window.location.origin}?id=${d.id}`
+		}
+		})
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
 				return "userPortrait";
@@ -1619,6 +1776,7 @@ function initializeDisplay() {
 		})
 		.attr("style", "opacity:0;z-index:1000;position:relative");
 	
+		
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
 		.attr("font-size", width<900 ? "15" : "20")
@@ -1936,13 +2094,14 @@ async function onNodeClick(nodeType, uuid, txt){
 		shareDialog.style.display = "flex";
 	}
 	else if(nodeType == NODE_TYPES.INVITE) {
-		shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
+		/*shareLink = settings.url + `?invite_token=${await getReferalToken()}`;
 		share.updateContent({
 			title: document.querySelector(".userName").textContent + ' предлагает Вам своё доверие в системе Благодари.РФ',
 			url: shareLink
 			
 		});
-		shareDialog.style.display = "flex";
+		shareDialog.style.display = "flex";*/
+		window.location.href = url.origin + '/profiles?id=' + getCookie('user_uuid');
 	}
 	else if (nodeType == NODE_TYPES.OPTIONS) {
 		optionsDialog.style.display = "flex";
@@ -1958,7 +2117,6 @@ async function onNodeClick(nodeType, uuid, txt){
 		url.searchParams.append('map_visible', 'true');
 		window.history.pushState(null, null, url.search);
 		window.location.href = url.href;
-		
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
