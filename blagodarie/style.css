@@ -697,7 +697,7 @@ button.close:hover{
 #rootDialog{
 	padding: 2%;
 	width: 31%;
-	height: 50%;
+	height: max-content;
 	margin: auto;
 	position: absolute;
 	top: 0;
@@ -717,6 +717,12 @@ button.close:hover{
 	right: 0;
 }
 @media(max-width:900px){
+	#rootDialog{
+		width: 90%;
+	}
+	#addElementDialog{
+		width: 90%;
+	}
 	#shareDialog{
 		width: 81%;
 		height: 26%;
