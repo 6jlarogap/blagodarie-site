@@ -485,6 +485,7 @@ button.close:hover{
 	align-items: center;
 }
 .new_user{
+	margin-left: unset!important;
 	margin: 0 auto;
 }
 
