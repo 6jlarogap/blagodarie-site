@@ -485,11 +485,12 @@ button.close:hover{
 	align-items: center;
 }
 .new_user{
-	margin-left: unset!important;
 	margin: 0 auto;
 }
-.add_user_profile_overbottom.new new_user{
+.add_user_profile_overbottom.new.new_user{
 	display: block;
+	margin-left: unset!important;
+	margin: 0!important;
 }
 
 @media(max-width:900px){
