@@ -673,6 +673,10 @@ text{
 	height: 18%;
 	margin: auto;
 	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 }
 #shareDialog{
 	padding: 3%;
@@ -686,6 +690,14 @@ text{
 	right: 0;
 }
 @media(max-width:900px){
+	#shareDialog{
+		width: 81%;
+		height: 26%;
+	}
+	#filterDialog{
+		width: 75%;
+		height: 16%;
+	}
 	#optionsDialog{
 		top: 4em;
 		left: 50%;
