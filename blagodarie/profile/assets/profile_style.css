@@ -660,6 +660,14 @@ text{
     height: 100px;
     cursor: pointer;
 }
+button.close{
+	background-color: #8b0000!important;
+	border-color: #8b0000!important;
+}
+button.close:hover{
+	background-color: #8b0000!important;
+	border-color: #8b0000!important;
+}
 @media(max-width:900px){
 	.ya-share2__container_shape_round.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon:not(.ya-share2__icon_messenger-contact):not(.ya-share2__icon_more):not(.ya-share2__icon_copy) {
     background-size: 50px 50px !important;

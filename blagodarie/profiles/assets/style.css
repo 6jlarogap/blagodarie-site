@@ -456,6 +456,14 @@ button.close {
     z-index: 13;
     font-size: 15px;
 }
+button.close{
+	background-color: #8b0000!important;
+	border-color: #8b0000!important;
+}
+button.close:hover{
+	background-color: #8b0000!important;
+	border-color: #8b0000!important;
+}
 @media(max-width:900px){
 	.geolocation_cont{
 		margin-top: 15px;

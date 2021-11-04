@@ -684,6 +684,14 @@ text{
 	bottom: 0;
 	right: 0;
 }
+button.close{
+	background-color: #8b0000!important;
+	border-color: #8b0000!important;
+}
+button.close:hover{
+	background-color: #8b0000!important;
+	border-color: #8b0000!important;
+}
 @media(max-width:900px){
 	#shareDialog{
 		width: 81%;
