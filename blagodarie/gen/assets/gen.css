@@ -677,6 +677,8 @@ text{
 button.close{
 	background-color: #8b0000!important;
 	border-color: #8b0000!important;
+	width: unset !important;
+	height: unset !important;
 }
 button.close:hover{
 	background-color: #8b0000!important;
