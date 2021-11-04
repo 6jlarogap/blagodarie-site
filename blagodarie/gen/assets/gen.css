@@ -684,7 +684,35 @@ button.close:hover{
 	background-color: #8b0000!important;
 	border-color: #8b0000!important;
 }
+#rootDialog{
+	padding: 2%;
+	width: 31%;
+	height: max-content;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+#addElementDialog{
+	padding: 2%;
+	width: 31%;
+	height: 33%;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
 @media(max-width:900px){
+	#rootDialog{
+		width: 90%;
+	}
+	#addElementDialog{
+		width: 90%;
+	}
 	.ya-share2__container_shape_round.ya-share2__container_size_l .ya-share2__badge .ya-share2__icon:not(.ya-share2__icon_messenger-contact):not(.ya-share2__icon_more):not(.ya-share2__icon_copy) {
     background-size: 50px 50px !important;
 	}
