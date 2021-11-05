@@ -1306,10 +1306,10 @@ d3.json(apiUrl)
 	
 	nodes.forEach(function(d) {
 		switch(d.id){
-		/*case userIdFrom:
+		case userIdFrom:
 			d.fx = width / 2;
 			d.fy = height / 2;
-			break;*/
+			break;
 		case WISHES_ROOT_ID:
 			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
 			d.fy = width<900 ? height/2+50 : height / 2 + 200;
@@ -1372,15 +1372,15 @@ d3.json(apiUrl)
 				d.fy = height / 2;
 			}
 			break;
-		case PROFILE.id:
+/*		case PROFILE.id:
 			if (userIdFrom && userIdFrom != PROFILE.id) {
-				/*d.fx = width<900 ? width / 2 - 100 : width / 2 - 200;
-				d.fy = height / 2;*/
+				d.fx = width<900 ? width / 2 - 100 : width / 2 - 200;
+				d.fy = height / 2;
 			} else {
 				d.fx = width / 2;
 				d.fy = height / 2;
 			}
-			
+*/			
 			break;
 		}
 	});
