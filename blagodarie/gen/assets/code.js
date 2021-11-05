@@ -1339,17 +1339,13 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;	
 			break;
 		case INVITE_ID:
-				d.fx = width<900 ? width/2-20 : width / 2 - 200;
-				d.fy = height / 2 - 300;	
-				break;
+			d.fx = width<900 ? width/2-20 : width / 2 - 200;
+			d.fy = height / 2 - 300;	
+			break;
 		case HOME_ID:
-
 			d.fx = width<900 ? width/2-81 :width / 2 - 300;
 			d.fy = height / 2 - 300;
-			
 			break;
-		
-		
 		case MAPS_ID:
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
 			d.fy = height / 2 - 300;
@@ -1385,57 +1381,26 @@ d3.json(apiUrl)
 		}
 	});
 	
-	if(width<900){		
-		simulation = d3.forceSimulation(nodes);
-	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(70).links(links)); //distance(150)
-	simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(70).links(links_parent)); //distance(150)
-	simulation.force("charge", d3.forceManyBody().strength(10)) //0.5
-//	simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
-	simulation.force("center", d3.forceCenter(width / 2, height / 2))
+	simulation = d3.forceSimulation(nodes);
+	if(width<900){
+		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(10).links(links));
+		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(15).links(links_parent));
+		simulation.force("charge", d3.forceManyBody().strength(-30))
+		simulation.force("collide", d3.forceCollide().radius(5));
+		simulation.force("center", d3.forceCenter(width / 2, height / 2))
 	}	
 	
 	else{
-		simulation = d3.forceSimulation(nodes);
-//		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links)); //distance(150)
-		simulation.force("link", d3.forceLink(links_parent).id(d => d.id))
+		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links));
+		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(50).links(links_parent));
 		simulation.force("charge", d3.forceManyBody().strength(-100))
-		simulation.force("center", d3.forceCenter(width / 2, height / 2).strength(0.05))
-//		simulation.force("collide", d3.forceCollide().strength(0.1).radius(80).iterations(1))
-		
-/*		
-	simulation = d3.forceSimulation(nodes);
-	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links)); //distance(150)
-	simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(150).links(links_parent)); //distance(150)
-	simulation.force("charge", d3.forceManyBody().strength(-400))
-	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	//simulation.force("collide", d3.forceCollide().strength(0.4).radius(80).iterations(1));//radius 80  strength(0.6)
-	simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("collide", d3.forceCollide().strength(0.1).radius(80).iterations(1))
-	simulation.force("x", d3.forceX(width / 2).strength(0.1))
-    	simulation.force("y", d3.forceY(height/2).strength(0.1));
-*/
+		simulation.force("collide", d3.forceCollide().radius(30));
+		simulation.force("center", d3.forceCenter(width / 2, height / 2))
 	}
-
+	
 	initializeDisplay();
 	initializeSimulation();
-	
-	
-	
-	/*function gravity(alpha) {
-  return function(d) {
-    d.y += (d.cy - d.y) * alpha;
-    d.x += (d.cx - d.x) * alpha;
-  };
-}*/
-	
 });
-
-
-
-
-
-
-
 
 var latlngs = [];
 var myIcon;
