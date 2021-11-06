@@ -1,4 +1,4 @@
-const NODE_TYPES = Object.freeze({
+gen/?d=5const NODE_TYPES = Object.freeze({
 	"USER":"user",
 	"FRIEND":"friend",
 	"WISH_ROOT": "wish_root",
@@ -1385,16 +1385,16 @@ d3.json(apiUrl)
 	if(width<900){
 		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(10).links(links));
 		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(15).links(links_parent));
-		simulation.force("charge", d3.forceManyBody().strength(-30))
-		simulation.force("collide", d3.forceCollide().radius(5));
+//		simulation.force("charge", d3.forceManyBody().strength(-30))
+//		simulation.force("collide", d3.forceCollide().radius(5));
 		simulation.force("center", d3.forceCenter(width / 2, height / 2))
 	}	
 	
 	else{
 		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links));
 		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(50).links(links_parent));
-//		simulation.force("charge", d3.forceManyBody().strength(-100))
-//		simulation.force("collide", d3.forceCollide().radius(30));
+		simulation.force("charge", d3.forceManyBody().strength(-100))
+		simulation.force("collide", d3.forceCollide().radius(30));
 		simulation.force("center", d3.forceCenter(width / 2, height / 2))
 	}
 	
