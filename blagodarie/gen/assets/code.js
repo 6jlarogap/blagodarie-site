@@ -1,4 +1,4 @@
-gen/?d=5const NODE_TYPES = Object.freeze({
+const NODE_TYPES = Object.freeze({
 	"USER":"user",
 	"FRIEND":"friend",
 	"WISH_ROOT": "wish_root",
