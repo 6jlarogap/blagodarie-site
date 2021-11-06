@@ -1389,7 +1389,7 @@ d3.json(apiUrl)
 		simulation = d3.forceSimulation(nodes);
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(20).links(links)); //distance(150)
 	simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(25).links(links_parent)); //distance(150)
-	simulation.force("charge", d3.forceManyBody().strength(-50)) //0.5
+	simulation.force("charge", d3.forceManyBody().strength(-30)) //0.5
 //	simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
 	simulation.force("center", d3.forceCenter(width / 2, height / 2))
 	}	
