@@ -1189,7 +1189,6 @@ d3.json(apiUrl)
 		}
 	});
 	
-	simulation = d3.forceSimulation(nodes);
 	if(width<900){
     // mobile
    		simulation = d3.forceSimulation(nodes);
@@ -1201,6 +1200,7 @@ d3.json(apiUrl)
 	}		
 	else{
     // pc
+   		simulation = d3.forceSimulation(nodes);
 //		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links));
 //		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(50).links(links_parent));
 //		simulation.force("charge", d3.forceManyBody().strength(-50))
