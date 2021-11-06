@@ -1208,6 +1208,7 @@ d3.json(apiUrl)
 		simulation.force("center", d3.forceCenter(width / 2, height / 2));
 		console.log("width", width);
 		console.log("height", height);	
+	}
 	initializeDisplay();
 	initializeSimulation();
 });
