@@ -1181,8 +1181,9 @@ d3.json(apiUrl)
 			break;
 		case PROFILE.id:
 			if (userIdFrom && userIdFrom != PROFILE.id) {
-//  		  d.fx = width<900 ? width / 2 - 100 : width / 2 - 200;
-//				d.fy = height / 2;
+/*  		  d.fx = width<900 ? width / 2 - 100 : width / 2 - 200;
+				d.fy = height / 2;
+*/
 			} else {
 				d.fx = width / 2;
 				d.fy = height / 2;
@@ -1203,11 +1204,12 @@ d3.json(apiUrl)
 	else{
     // pc
    		simulation = d3.forceSimulation(nodes);
+		simulation.force("center", d3.forceCenter(150,));
+
 //		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links));
 //		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(50).links(links_parent));
 //		simulation.force("charge", d3.forceManyBody().strength(-50))
 //		simulation.force("collide", d3.forceCollide().radius(30));
-		simulation.force("center", d3.forceCenter(150,150));
 		console.log("widthsim", width / 2);
 		console.log("heightsim", height / 2);	
 	}
