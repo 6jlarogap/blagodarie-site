@@ -1206,8 +1206,8 @@ d3.json(apiUrl)
 //		simulation.force("charge", d3.forceManyBody().strength(-50))
 //		simulation.force("collide", d3.forceCollide().radius(30));
 		simulation.force("center", d3.forceCenter(width / 2, height / 2));
-		console.log('width', width);
-		console.log('height', height);	
+		console.log("width", width);
+		console.log("height", height);	
 	initializeDisplay();
 	initializeSimulation();
 });
