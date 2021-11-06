@@ -1131,19 +1131,7 @@ d3.json(apiUrl)
 		image: localStorage.getItem('filter') ? `${settings.url}images/filter_act.png` : `${settings.url}images/filter.png`,
 		nodeType: NODE_TYPES.FILTER
 	});
-
-1
-
-const NODE_TYPES = Object.freeze({
-
-2
-
-        "USER":"user",
-
-3
-
-        "FRIEND":"friend",
-
+	
 	if(data.keys != null){
 		//добавить вершину ключей
 		nodes.push({
