@@ -1202,8 +1202,8 @@ d3.json(apiUrl)
 	}		
 	else{
    		simulation = d3.forceSimulation(nodes);
-		simulation.force("center", d3.forceCenter(width, height / 2))
-		simulation.force("charge", d3.forceManyBody().strength(-50))
+//		simulation.force("center", d3.forceCenter(width, height / 2))
+//		simulation.force("charge", d3.forceManyBody().strength(-50))
 
 		console.log("widthsim", width);
 		console.log("heightsim", height);	
