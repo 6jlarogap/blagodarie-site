@@ -1,7 +1,7 @@
 install-readme.txt
 ------------------
 
-Установка Dash проекта project на сервер Apache в Ubuntu Linux
+Установка Dash проекта project на сервер Apache в Ubuntu Linux.
 
     * Полагаем:
 
