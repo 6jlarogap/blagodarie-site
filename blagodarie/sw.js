@@ -3,7 +3,7 @@ const dynamicCacheName = 'bd-dynamic-v3'
 
 const assetsUrls = [
     './index.html',
-    /*'./code.js',
+/*    './code.js',
     './qrcode.min.js',
     './settings.js',*/
     './offline.html',
