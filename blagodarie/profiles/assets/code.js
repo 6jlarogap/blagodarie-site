@@ -984,8 +984,8 @@ function show_smart_map(lati, long){
 document.querySelector(".mapid_send").addEventListener("click", function(){
 	var form = new FormData();
 	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
-	form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati||lati!=null ? lati : null}`);	
-	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long||long!=null ? long : null}`);
+	form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati||lati!=null ? lati : 50.0208504}`);	
+	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long||long!=null ? long : 36.2296937}`);
 	var settings = {
   		"url": `${new_settapi}api/profile`,
   		"method": "PUT",
