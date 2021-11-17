@@ -1012,6 +1012,29 @@ document.querySelector(".mapid_send").addEventListener("click", function(){
 	});
 });
 
+document.querySelector(".mapid_clean").addEventListener("click", function(){
+	var form = new FormData();
+	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
+	form.append("latitude", '');	
+	form.append("longitude", '');
+	var settings = {
+  		"url": `${new_settapi}api/profile`,
+  		"method": "PUT",
+  		"timeout": 0,
+  		"headers": {
+  		  "Authorization": `Token ${getCookie("auth_token")}`
+  		},
+  		"processData": false,
+  		"mimeType": "multipart/form-data",
+  		"contentType": false,
+  		"data": form
+	};
+
+	$.ajax(settings).done(function (response) {
+  		console.log(response);
+	});
+});
+
 //ключи, желания, возможности
 
 var rootDialog = document.getElementById("rootDialog");
