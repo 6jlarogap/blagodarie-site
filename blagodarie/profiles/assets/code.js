@@ -898,7 +898,9 @@ navigator.geolocation.getCurrentPosition(
 		}
 		}
 		else{
-			show_smart_map(53.89948354993688, 27.557659149169925);
+			lati = 53.89948354993688;
+			long = 27.557659149169925;
+			show_smart_map(lati, long);
 	    	mapid_whereI.style.display = 'none';
 			console.log(lati, long);
 		}
