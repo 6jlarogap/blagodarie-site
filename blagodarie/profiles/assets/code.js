@@ -1032,6 +1032,9 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 
 	$.ajax(settings).done(function (response) {
   		console.log(response);
+		setTimeout(function(){
+			window.location.reload();
+		},1000)
 	});
 });
 
