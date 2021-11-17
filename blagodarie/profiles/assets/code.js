@@ -850,16 +850,9 @@ get_position.addEventListener('click', ()=>{
 function get_cur_position(){
 
 navigator.geolocation.getCurrentPosition(
-    function(position) {/*
-	    console.log(position.coords);
-	    if(response_smat_map[0].user_latitude != null){
-	    	lati = +response_smat_map[0].user_latitude;
-		long = +response_smat_map[0].user_longitude;
-	    }else{
-	    lati = position.coords.latitude;
-	    long = position.coords.longitude;
-	    }
-	    show_smart_map(lati, long);*/
+    function(position) {
+	   
+		
 		if (response_smat_map.some(e => e.user_uuid === userIdFrom && e.user_latitude!=null)) {
   		console.log(response_smat_map);
 		for(let i=0;i<response_smat_map.length;i++){
@@ -871,8 +864,8 @@ navigator.geolocation.getCurrentPosition(
 			}
 		}
 		}else{
-			let lati = position.coords.latitude;
-	    	let long = position.coords.longitude;
+			lati = position.coords.latitude;
+	    	long = position.coords.longitude;
 			show_smart_map(lati, long)
 		}
 		
