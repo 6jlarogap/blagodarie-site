@@ -850,16 +850,9 @@ get_position.addEventListener('click', ()=>{
 function get_cur_position(){
 
 navigator.geolocation.getCurrentPosition(
-    function(position) {/*
-	    console.log(position.coords);
-	    if(response_smat_map[0].user_latitude != null){
-	    	lati = +response_smat_map[0].user_latitude;
-		long = +response_smat_map[0].user_longitude;
-	    }else{
-	    lati = position.coords.latitude;
-	    long = position.coords.longitude;
-	    }
-	    show_smart_map(lati, long);*/
+    function(position) {
+	   
+		
 		if (response_smat_map.some(e => e.user_uuid === userIdFrom && e.user_latitude!=null)) {
   		console.log(response_smat_map);
 		for(let i=0;i<response_smat_map.length;i++){
@@ -871,8 +864,8 @@ navigator.geolocation.getCurrentPosition(
 			}
 		}
 		}else{
-			let lati = position.coords.latitude;
-	    	let long = position.coords.longitude;
+			lati = position.coords.latitude;
+	    	long = position.coords.longitude;
 			show_smart_map(lati, long)
 		}
 		
@@ -898,7 +891,9 @@ navigator.geolocation.getCurrentPosition(
 		}
 		}
 		else{
-			show_smart_map(53.89948354993688, 27.557659149169925);
+			lati = 53.89948354993688;
+			long = 27.557659149169925;
+			show_smart_map(lati, long);
 	    	mapid_whereI.style.display = 'none';
 			console.log(lati, long);
 		}
@@ -984,8 +979,8 @@ function show_smart_map(lati, long){
 document.querySelector(".mapid_send").addEventListener("click", function(){
 	var form = new FormData();
 	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
-	form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null}`);	
-	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);
+	form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati||lati!=null ? lati : 50.0208504}`);	
+	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long||long!=null ? long : 36.2296937}`);
 	var settings = {
   		"url": `${new_settapi}api/profile`,
   		"method": "PUT",
@@ -1014,6 +1009,32 @@ document.querySelector(".mapid_send").addEventListener("click", function(){
 	
 			window.location.reload();
 		}, 3500)
+	});
+});
+
+document.querySelector(".mapid_clean").addEventListener("click", function(){
+	var form = new FormData();
+	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
+	form.append("latitude", '');	
+	form.append("longitude", '');
+	var settings = {
+  		"url": `${new_settapi}api/profile`,
+  		"method": "PUT",
+  		"timeout": 0,
+  		"headers": {
+  		  "Authorization": `Token ${getCookie("auth_token")}`
+  		},
+  		"processData": false,
+  		"mimeType": "multipart/form-data",
+  		"contentType": false,
+  		"data": form
+	};
+
+	$.ajax(settings).done(function (response) {
+  		console.log(response);
+		setTimeout(function(){
+			window.location.reload();
+		},1000)
 	});
 });
 
