@@ -1194,7 +1194,6 @@ d3.json(apiUrl)
 	
 	simulation = d3.forceSimulation(nodes);
 	if(width<900){
-   		simulation = d3.forceSimulation(nodes);
     		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(20).links(links)); //distance(150)
 		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(25).links(links_parent)); //distance(150)
 	    	simulation.force("charge", d3.forceManyBody().strength(-30)) //0.5
@@ -1202,11 +1201,10 @@ d3.json(apiUrl)
 	  	simulation.force("center", d3.forceCenter(width / 2, height / 2))
 	}		
 	else{
-//		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links));
-//		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(50).links(links_parent));
-//		simulation.force("charge", d3.forceManyBody().strength(-100))
-//		simulation.force("collide", d3.forceCollide().radius(30));
+		simulation.force("link", d3.forceLink().id(d => d.id).links(links_parent).distance(30));
+		simulation.force("charge", d3.forceManyBody().strength(-50));
 		simulation.force("center", d3.forceCenter(width / 2, height / 2));
+		simulation.force("collide", d3.forceCollide().radius(30));
 		
 /*		
 	//	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links)); //distance(150)
