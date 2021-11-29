@@ -1267,7 +1267,9 @@ setInterval(function(){
 
 let gen_container = document.querySelector('.gen_container');
 let div = document.createElement('div');
+div.style.position = 'relative';
 div.innerHTML = `<img src="${settings.url}images/genesis.png" />`;
+div.innerHTML = `<img src="${settings.url}/gen" />`;
 gen_container.append(div);
 
 //кнопка род

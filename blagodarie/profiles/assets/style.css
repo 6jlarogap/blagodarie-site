@@ -41,6 +41,14 @@ table img{
 	height: 45px;
 	border-radius: 100px;
 }
+.gen_container img:nth-child(2){
+	width: 45px;
+	height: 45px;
+	border-radius: 100px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
 .gen_container p{
 	margin-bottom: 0;
 	font-weight: 700;
