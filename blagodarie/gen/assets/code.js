@@ -1510,7 +1510,7 @@ function initializeDisplay() {
 			return `${window.location.origin}/profiles/?id=${getCookie('user_uuid')}`
 		}else if(d.nodeType == NODE_TYPES.MAPS){
 			return `${window.location.href}&map_visible`
-		}else if(d.nodeType == NODE_TYPES.FRIEND || d.nodeType == NODE_TYPES.PROFILE){
+		}else if(d.nodeType == NODE_TYPES.FRIEND || d.nodeType == NODE_TYPES.PROFILE || d.nodeType == NODE_TYPES.USER){
 			if(url.searchParams.has('id')){
 				return `${window.location.origin}${window.location.pathname}${window.location.search}`
 			}else if(!url.searchParams.has('id') || url.searchParams.get('id')!=getCookie('user_uuid')){
