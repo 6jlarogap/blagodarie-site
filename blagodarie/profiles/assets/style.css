@@ -167,15 +167,22 @@ table img{
     height: 16px;
 	border-radius: 0;
 }
-
+.add_user_profile_cont_fixed{
+	position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    top: 0;
+    left: 0;
+    overflow: scroll;
+	display: none;
+}
 .add_user_profile_container{
 	width: 100%;
     height: fit-content;
-    position: absolute;
     top: 0;
     left: 0;
     background: #fff;
-	display: none;
 	padding: 0 20%;
 	padding-bottom: 7%;
 }
