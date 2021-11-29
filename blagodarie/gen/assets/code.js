@@ -1512,7 +1512,7 @@ function initializeDisplay() {
 			return `${window.location.href}&map_visible`
 		}
 		else{
-			return `${window.location.origin}?id=${d.id}`
+			return `${window.location.origin}?id=${d.id}/${window.location.search}`
 		}
 		})
 		.attr("class", d => {
