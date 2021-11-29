@@ -1511,10 +1511,15 @@ function initializeDisplay() {
 		}else if(d.nodeType == NODE_TYPES.MAPS){
 			return `${window.location.href}&map_visible`
 		}else if(d.nodeType == NODE_TYPES.FRIEND || d.nodeType == NODE_TYPES.PROFILE){
-			return `${window.location.origin}?id=${d.id}/${window.location.search}`
+			if(url.searchParams.has('id')){
+				return `${window.location.origin}${window.location.pathname}${window.location.search}`
+			}else if(!url.searchParams.has('id') || url.searchParams.get('id')!=getCookie('user_uuid')){
+				return `${window.location.origin}${window.location.pathname}?id=${d.id}&${window.location.search}`
+			}
+			
 		}
 		else{
-			return `${window.location.origin}?id=${d.id}}`
+			return `${window.location.origin}?id=${d.id}`
 		}
 		})
 		.attr("class", d => {
