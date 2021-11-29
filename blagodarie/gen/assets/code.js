@@ -1514,7 +1514,7 @@ function initializeDisplay() {
 			if(url.searchParams.has('id')){
 				return `${window.location.origin}${window.location.pathname}${window.location.search}`
 			}else if(!url.searchParams.has('id') || url.searchParams.get('id')!=getCookie('user_uuid')){
-				return `${window.location.origin}${window.location.pathname}?id=${d.id}&${window.location.search}`
+				return `${window.location.origin}${window.location.pathname}?id=${d.id}&d=${url.searchParams.get('d')}`
 			}
 			
 		}
