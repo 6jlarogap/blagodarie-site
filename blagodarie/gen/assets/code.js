@@ -1510,9 +1510,11 @@ function initializeDisplay() {
 			return `${window.location.origin}/profiles/?id=${getCookie('user_uuid')}`
 		}else if(d.nodeType == NODE_TYPES.MAPS){
 			return `${window.location.href}&map_visible`
+		}else if(d.nodeType == NODE_TYPES.FRIEND || d.nodeType == NODE_TYPES.PROFILE){
+			return `${window.location.origin}?id=${d.id}/${window.location.search}`
 		}
 		else{
-			return `${window.location.origin}?id=${d.id}/${window.location.search}`
+			return `${window.location.origin}?id=${d.id}}`
 		}
 		})
 		.attr("class", d => {
