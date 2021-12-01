@@ -790,7 +790,7 @@ async function setProfile() {
 	$.ajax(settings).done(function (response) {
 		let first_resp = response;
 		let pars2 = JSON.parse(first_resp);
-		
+		console.log(pars2)
 		for(let i=0;i<pars2.length;i++){
 			if(pars2[i].uuid == userIdFrom){
 				map_users.push({
