@@ -1505,7 +1505,7 @@ function initializeDisplay() {
 		.attr("style", "z-index:1;position:relative");
 	
 	
-	node.append("image")
+	node.append("div")
 		.attr("xlink:href", d => {
 		if(d.nodeType == NODE_TYPES.HOME){
 			return `${window.location.origin}`
