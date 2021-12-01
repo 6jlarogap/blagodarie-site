@@ -1480,27 +1480,7 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');
 	//	console.log(nodes);
-		node.append("image")
-		.attr("xlink:href", d => d.image)
-		.attr("class", d => {
-			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
-				return "userPortrait";
-			}
-			else if (d.nodeType == NODE_TYPES.FILTERED) {
-				return "filtered";
-			}
-			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FRIEND){
-        			return "friendPortrait friend";
-    			}
-			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FILTER){
-        			return "friendPortrait active_filer_icon";
-    			}
-    			
-			else {
-				return "friendPortrait";
-			}
-		})
-		.attr("style", "z-index:1;position:relative");
+		
 	
 	node.append("image")
 		.attr("xlink:href", d => {
@@ -1541,6 +1521,29 @@ function initializeDisplay() {
 			}
 		})
 		.attr("style", "opacity:0;z-index:1000;position:relative");
+	
+	
+	node.append("image")
+		.attr("xlink:href", d => d.image)
+		.attr("class", d => {
+			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
+				return "userPortrait";
+			}
+			else if (d.nodeType == NODE_TYPES.FILTERED) {
+				return "filtered";
+			}
+			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FRIEND){
+        			return "friendPortrait friend";
+    			}
+			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FILTER){
+        			return "friendPortrait active_filer_icon";
+    			}
+    			
+			else {
+				return "friendPortrait";
+			}
+		})
+		.attr("style", "z-index:1;position:relative");
 
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
