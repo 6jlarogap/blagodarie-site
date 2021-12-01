@@ -76,8 +76,12 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom');
 	let add_user_profile_bd = document.querySelector('.add_user_profile_bd');
 	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
-	let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
-	let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
+	//let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
+	//let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
+	let profile_mother_input = document.querySelector('#profile_mother_input');
+	let profile_father_input = document.querySelector('#profile_father_input');
+	
+	
 	let nophoto_but = document.querySelector('.nophoto_but');
 	let cheked_gend = document.getElementsByName('gender');
 	
