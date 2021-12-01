@@ -338,10 +338,10 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		
 	}
 	getUsparent();
-	let mother_fio = document.querySelector('.mother_fio');
+	/*let mother_fio = document.querySelector('.mother_fio');
 	let father_fio = document.querySelector('.father_fio');
 	mother_fio.innerHTML='';
-	father_fio.innerHTML='';
+	father_fio.innerHTML='';*/
 	async function get_info_about_parents() {
 		const response = await fetch(`${new_settapi}api/profile?uuid=${id}`, {
 		method: "GET",
