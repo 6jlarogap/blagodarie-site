@@ -812,7 +812,7 @@ async function setProfile() {
 			}
 		}
 		
-		
+		console.log(map_users);
   		response_smat_map = map_users;
 });
 }
