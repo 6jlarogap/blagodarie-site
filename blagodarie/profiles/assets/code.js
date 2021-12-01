@@ -775,7 +775,7 @@ async function setProfile() {
 	/*form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null}`);	
 	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);*/
 	var settings = {
-  		"url": `${new_settapi}api/profile`,
+  		"url": `${new_settapi}api/profile?number=2000`,
   		"method": "GET",
   		"timeout": 0,
   		"headers": {
@@ -790,8 +790,6 @@ async function setProfile() {
 	$.ajax(settings).done(function (response) {
 		let first_resp = response;
 		let pars2 = JSON.parse(first_resp);
-		console.log(pars2);
-		console.log(userIdFrom);
 		
 		for(let i=0;i<pars2.length;i++){
 			if(pars2[i].uuid == userIdFrom){
