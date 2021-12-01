@@ -907,6 +907,7 @@ function show_smart_map(lati, long){
 	map_container.style.display = "block";
 	if(document.querySelector('#mapid').hasChildNodes()){}
 	else{
+		console.log(response_smat_map);
 		if(response_smat_map[0].user_latitude != null){
 			/*let lati = +response_smat_map[0].user_latitude;
 			let long = +response_smat_map[0].user_longitude;*/
