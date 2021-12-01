@@ -775,7 +775,7 @@ async function setProfile() {
 	/*form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null}`);	
 	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);*/
 	var settings = {
-  		"url": `${new_settapi}api/profile`,
+  		"url": `${new_settapi}api/profile?number=2000`,
   		"method": "GET",
   		"timeout": 0,
   		"headers": {
