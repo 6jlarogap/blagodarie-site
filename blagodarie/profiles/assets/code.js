@@ -906,9 +906,10 @@ function show_smart_map(lati, long){
 	
 	map_container.style.display = "block";
 	if(document.querySelector('#mapid').hasChildNodes()){}
+	else if(response_smat_map.length==0 ){}
 	else{
 		console.log(response_smat_map);
-		if(response_smat_map.length>=0 && response_smat_map[0].user_latitude != null){
+		if(response_smat_map[0].user_latitude != null){
 			/*let lati = +response_smat_map[0].user_latitude;
 			let long = +response_smat_map[0].user_longitude;*/
 			for(let i=0;i<response_smat_map.length;i++){
