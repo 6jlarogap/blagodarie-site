@@ -119,11 +119,11 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 
 //filter stuff
 var filterInput = document.getElementById("filterInput");
-var settings;
+//var settings;
 //settings
-// var settings = settingSets[1];
-var settings;
-settingSets.forEach((setting, i) => {
+ var settings = settingSets[0];
+//var settings;
+/*settingSets.forEach((setting, i) => {
 	console.log(setting.url.substr(0, setting.url.length - 1));
 	console.log(new URL(window.location.href).origin);
 	console.log(setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin);
@@ -131,7 +131,7 @@ settingSets.forEach((setting, i) => {
 		settings = setting;
 		console.log(settings);
 	}
-})
+})*/
 
 
 // register sw
