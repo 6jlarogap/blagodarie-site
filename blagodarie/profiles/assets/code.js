@@ -114,10 +114,12 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let rootDialog2 = document.querySelector('.rootDialog2');
 	profile_mother_input.addEventListener('click', ()=>{
 		rootDialog1.style.display = "flex";
+		getUsparent();
 		get_info_about_parents();
 	});
 	profile_father_input.addEventListener('click', ()=>{
 		rootDialog2.style.display = "flex";
+		getUsparent();
 		get_info_about_parents();
 	})
 	
@@ -356,7 +358,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	}
 		
 	}
-	getUsparent();
+	//getUsparent();
 	/*let mother_fio = document.querySelector('.mother_fio');
 	let father_fio = document.querySelector('.father_fio');
 	mother_fio.innerHTML='';
