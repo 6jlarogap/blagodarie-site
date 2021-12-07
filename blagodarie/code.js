@@ -126,6 +126,7 @@ var setting;
 settingSets.forEach((setting, i) => {
 	console.log(setting.url.substr(0, setting.url.length - 1));
 	console.log(new URL(window.location.href).origin);
+	console.log(setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin);
 	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
 		settings = setting;
 	}
