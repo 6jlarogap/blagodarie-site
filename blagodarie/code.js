@@ -405,7 +405,7 @@ document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
 		if(!window.location.href.includes('gen')){
 		url.searchParams.set('f', 0);
-		url.searchParams.set('q', 50);
+		url.searchParams.set('q', 25);
 		}
 		localStorage.setItem("filter", filterInput.value);
 		window.location.href = url.href;
@@ -840,7 +840,7 @@ var link = window.location.href;
 var url = new URL(link);
 
        if(!url.searchParams.has('q') && !url.searchParams.has('f')){
-		   	url.searchParams.append('q', 50);
+		   	url.searchParams.append('q', 25);
 			url.searchParams.append('f', 0);
 		   	window.history.pushState(null, null, url.search);
 		   	window.location.href = url.href;
