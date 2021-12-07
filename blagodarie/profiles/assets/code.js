@@ -347,9 +347,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		}
 }).then(data => data.json());
 		for(let i = 0; i<response.connections.length; i++){
+			console.log(response)
 				if(response.connections[i].source == id && response.connections[i].is_mother == true){
 					//add_user_profile_mother_input.value = response.connections[i].target;
 					moth_inp.value = response.connections[i].target;
+					console.log(response.connections[i].target);
 				}
 				else if(response.connections[i].source == id && response.connections[i].is_father == true){
 					//add_user_profile_father_input.value = response.connections[i].target;
