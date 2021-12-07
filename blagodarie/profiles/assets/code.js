@@ -366,7 +366,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let moth_text = document.querySelector('.moth_text');
 	let fath_text = document.querySelector('.fath_text');
 	async function get_info_about_parents() {
-		const response = await fetch(`${new_settapi}api/profile?uuid=${id}`, {
+		const response = await fetch(`${new_settapi}api/profile?uuid=${id}&number=2000`, {
 		method: "GET",
 		headers: {
 			/*"Authorization": 'Token ' + getCookie("auth_token")*/
