@@ -122,7 +122,7 @@ var filterInput = document.getElementById("filterInput");
 var settings;
 //settings
 // var settings = settingSets[1];
-var setting;
+var settings;
 settingSets.forEach((setting, i) => {
 	console.log(setting.url.substr(0, setting.url.length - 1));
 	console.log(new URL(window.location.href).origin);
