@@ -407,12 +407,19 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
     					"operation_type_id": operation_type_id
   					}),
 					success: function(response){
-						warning1.innerHTML = '';
+						//warning1.innerHTML = '';
+						rootDialog1.style.display = 'none';
+						rootDialog2.style.display = 'none';
 					},
 					error: function(response){
 						let first_resp = response.responseText;
 						let pars1 = JSON.parse(first_resp);
-						warning1.innerHTML = pars1.message;
+						//warning1.innerHTML = pars1.message;
+						if(rootDialog1.style.display == 'flex'){
+							moth_text.innerHTML = pars1.message;
+						}else if(rootDialog2.style.display == 'flex'){
+							fath_text.innerHTML = pars1.message;
+						}
 					}
 					};
 
