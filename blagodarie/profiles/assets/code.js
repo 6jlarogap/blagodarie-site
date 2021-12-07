@@ -359,6 +359,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let father_fio = document.querySelector('.father_fio');
 	mother_fio.innerHTML='';
 	father_fio.innerHTML='';*/
+	let moth_text = document.querySelector('.moth_text');
+	let fath_text = document.querySelector('.fath_text');
 	async function get_info_about_parents() {
 		const response = await fetch(`${new_settapi}api/profile?uuid=${id}`, {
 		method: "GET",
@@ -367,11 +369,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		}
 		}).then(data => data.json());
 		if(response.mother != null){
-			mother_fio.innerHTML = `${response.mother.last_name} ${response.mother.first_name} ${response.mother.middle_name} <a class="user_changed_link" href="${window.location.origin}/?id=${response.mother.uuid}&q=50&f=0"><i class="fa fa-link" aria-hidden="true"></i></a>`;
+			moth_text.innerHTML = `${response.mother.last_name} ${response.mother.first_name} ${response.mother.middle_name} <a class="user_changed_link" href="${window.location.origin}/?id=${response.mother.uuid}&q=50&f=0"><i class="fa fa-link" aria-hidden="true"></i></a>`;
 			console.log(response)
 		}
 		if(response.father != null){
-			father_fio.innerHTML = `${response.father.last_name} ${response.father.first_name} ${response.father.middle_name} <a class="user_changed_link" href="${window.location.origin}/?id=${response.father.uuid}&q=50&f=0"><i class="fa fa-link" aria-hidden="true"></i></a>`;
+			fath_text.innerHTML = `${response.father.last_name} ${response.father.first_name} ${response.father.middle_name} <a class="user_changed_link" href="${window.location.origin}/?id=${response.father.uuid}&q=50&f=0"><i class="fa fa-link" aria-hidden="true"></i></a>`;
 		}
 		
 	}
