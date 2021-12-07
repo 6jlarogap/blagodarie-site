@@ -80,6 +80,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	//let add_user_profile_father_input = document.querySelector('.add_user_profile_father_input');
 	let profile_mother_input = document.querySelector('#profile_mother_input');
 	let profile_father_input = document.querySelector('#profile_father_input');
+	let moth_inp = document.querySelector('.moth_inp');
+	let fath_inp = document.querySelector('.fath_inp');
+	
 	
 	
 	let nophoto_but = document.querySelector('.nophoto_but');
@@ -341,10 +344,12 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 }).then(data => data.json());
 		for(let i = 0; i<response.connections.length; i++){
 				if(response.connections[i].source == id && response.connections[i].is_mother == true){
-					add_user_profile_mother_input.value = response.connections[i].target;
+					//add_user_profile_mother_input.value = response.connections[i].target;
+					moth_inp.value = response.connections[i].target;
 				}
 				else if(response.connections[i].source == id && response.connections[i].is_father == true){
-					add_user_profile_father_input.value = response.connections[i].target;
+					//add_user_profile_father_input.value = response.connections[i].target;
+					fath_inp.value = response.connections[i].target;
 		}
 	}
 		
