@@ -114,9 +114,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let rootDialog2 = document.querySelector('.rootDialog2');
 	profile_mother_input.addEventListener('click', ()=>{
 		rootDialog1.style.display = "flex";
+		get_info_about_parents();
 	});
 	profile_father_input.addEventListener('click', ()=>{
 		rootDialog2.style.display = "flex";
+		get_info_about_parents();
 	})
 	
 	
@@ -377,18 +379,17 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		}
 		
 	}
+	
+	
+	
+	
 	get_info_about_parents();
-	//Кнопка Сохранить
-	add_user_profile_overbottom.addEventListener('click', function(){
-		
-		//warning1.innerHTML = "";
-		  
-		if(value_gender==undefined && gender_val==null){
-			warning1.innerHTML = "Выберите пол";
-		}
-		
-		
-		async function add_user_parents(operation_type_id, add_user_profile_mother_input){
+	
+	
+	
+	
+	
+	async function add_user_parents(operation_type_id, add_user_profile_mother_input){
 	
 				var settings = {
   					"url": `${new_settapi}api/addoperation`,
@@ -418,7 +419,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 					});
 			
 		
-}
+		}
+		
 		
 		
 		
@@ -512,6 +514,36 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			}
 		}
 		myProfilesinfo();
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//Кнопка Сохранить
+	add_user_profile_overbottom.addEventListener('click', function(){
+		
+		//warning1.innerHTML = "";
+		  
+		if(value_gender==undefined && gender_val==null){
+			warning1.innerHTML = "Выберите пол";
+		}
+		
+		
+		
+		
+		
+		
 		
 		
 		//add_user_parents(7);
