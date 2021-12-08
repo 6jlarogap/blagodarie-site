@@ -370,6 +370,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let moth_text2 = document.querySelector('.moth_text2');
 	let fath_text = document.querySelector('.fath_text');
 	let fath_text2 = document.querySelector('.fath_text2');
+	let fath_text2_response;
+	let moth_text2_response;
 	async function get_info_about_parents() {
 		const response = await fetch(`${new_settapi}api/profile?uuid=${id}&number=2000`, {
 		method: "GET",
@@ -379,17 +381,21 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		}).then(data => data.json());
 		if(response.mother != null){
 			moth_text.innerHTML = `${response.mother.last_name} ${response.mother.first_name} ${response.mother.middle_name} <a class="user_changed_link" href="${window.location.origin}/gen/?id=${response.mother.uuid}&d=5"><i class="fa fa-link" aria-hidden="true"></i></a>`;
-			moth_text2.innerHTML = `${response.mother.last_name} ${response.mother.first_name} ${response.mother.middle_name} <a class="user_changed_link" href="${window.location.origin}/gen/?id=${response.mother.uuid}&d=5"><i class="fa fa-link" aria-hidden="true"></i></a>`;
+			moth_text2_response = `${response.mother.last_name} ${response.mother.first_name} ${response.mother.middle_name} <a class="user_changed_link" href="${window.location.origin}/gen/?id=${response.mother.uuid}&d=5"><i class="fa fa-link" aria-hidden="true"></i></a>`;
+			moth_text2.innerHTML = moth_text2_response;
 		}else{
 			moth_text.innerHTML = 'Не задана мама';
-			moth_text2.innerHTML = 'Не задана мама';
+			moth_text2_response = 'Не задана мама';
+			moth_text2.innerHTML = moth_text2_response;
 		}
 		if(response.father != null){
 			fath_text.innerHTML = `${response.father.last_name} ${response.father.first_name} ${response.father.middle_name} <a class="user_changed_link" href="${window.location.origin}/gen/?id=${response.father.uuid}&d=5"><i class="fa fa-link" aria-hidden="true"></i></a>`;
-			fath_text2.innerHTML = `${response.father.last_name} ${response.father.first_name} ${response.father.middle_name} <a class="user_changed_link" href="${window.location.origin}/gen/?id=${response.father.uuid}&d=5"><i class="fa fa-link" aria-hidden="true"></i></a>`;
+			fath_text2_response = `${response.father.last_name} ${response.father.first_name} ${response.father.middle_name} <a class="user_changed_link" href="${window.location.origin}/gen/?id=${response.father.uuid}&d=5"><i class="fa fa-link" aria-hidden="true"></i></a>`;
+			fath_text2.innerHTML = fath_text2_response;
 		}else{
 			fath_text.innerHTML = 'Не задан папа';
-			fath_text2.innerHTML = 'Не задан папа';
+			fath_text2_response = 'Не задан папа';
+			fath_text2.innerHTML = fath_text2_response;
 		}
 		
 	}
@@ -422,6 +428,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 						//warning1.innerHTML = '';
 						rootDialog1.style.display = 'none';
 						rootDialog2.style.display = 'none';
+						fath_text2.innerHTML = fath_text2_response;
+						moth_text2.innerHTML = moth_text2_response;
 					},
 					error: function(response){
 						let first_resp = response.responseText;

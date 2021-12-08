@@ -240,6 +240,11 @@ table img{
 #profile_father_input{
 	margin-top: 10px;
 }
+.moth_text, .moth_text2, .fath_text, .fath_text{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
 .add_user_profile_bottom_cont input{
 	border: 0;
     border-bottom: 1px solid #ccc;
