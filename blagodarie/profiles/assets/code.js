@@ -428,6 +428,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 						//warning1.innerHTML = '';
 						rootDialog1.style.display = 'none';
 						rootDialog2.style.display = 'none';
+						get_info_about_parents();
 						fath_text2.innerHTML = fath_text2_response;
 						moth_text2.innerHTML = moth_text2_response;
 					},
