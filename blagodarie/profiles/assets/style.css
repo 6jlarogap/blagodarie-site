@@ -229,6 +229,16 @@ table img{
     align-items: center;
     justify-content: space-between;
 	flex-direction: column;
+	width: 100%;
+}
+.add_user_profile_mother_cont, .add_user_profile_father_cont{
+	width: 100%;
+}
+#profile_mother_input, #profile_father_input{
+	width: 100%;
+}
+#profile_father_input{
+	margin-top: 10px;
 }
 .add_user_profile_bottom_cont input{
 	border: 0;
