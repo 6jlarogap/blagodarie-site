@@ -885,7 +885,7 @@ var url = new URL(link);
                 //console.log(apiUrl);
 				//
             } else if (localStorage.getItem('filter') != null && isAuth) {
-                apiUrl = `${settings.api}api/profile_graph?uuid=${getCookie('user_uuid')}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
+                apiUrl = `${settings.api}api/profile_graph?uuid=${userIdFrom}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
 				
                 //console.log(apiUrl);
             }
