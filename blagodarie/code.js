@@ -119,9 +119,9 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 
 //filter stuff
 var filterInput = document.getElementById("filterInput");
-//var settings;
+var settings;
 //settings
- var settings = settingSets[0];
+ //var settings = settingSets[0];
 //var settings;
 /*settingSets.forEach((setting, i) => {
 	console.log(setting.url.substr(0, setting.url.length - 1));
@@ -132,6 +132,13 @@ var filterInput = document.getElementById("filterInput");
 		console.log(settings);
 	}
 })*/
+settingSets.forEach((setting, i) => {
+	if (setting.url.substr(0, setting.url.length - 1) == window.location.origin) {
+		settings = setting;
+	}
+});
+
+
 
 
 // register sw
