@@ -1476,7 +1476,7 @@ function show_map_style(){
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(new_map);
 	}
-	if(map_users.length > 0 && map_users[0].user_latitude != null){
+	if(map_users.length > 0 && map_users[0].user_latitude != null || map_users[1].user_latitude != null){
 		for(let i = 0; i < map_users.length; i++){
 			
 			myIcon = L.icon({
