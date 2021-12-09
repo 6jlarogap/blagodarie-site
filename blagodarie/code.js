@@ -1479,7 +1479,16 @@ function show_map_style(){
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(new_map);
 	}
-	if(map_users.length > 0 && map_users[0].user_latitude != null){
+	for(let i = 0; i<map_users.length; i++){
+		if(map_users.length > 0 && map_users[i].user_latitude != null){
+			setPoints();
+			break;
+		}else{
+			console.log('Нет пользователей с указаным местоположением');
+		}
+	}
+	function setPoints(){
+	//if(map_users.length > 0 && map_users[0].user_latitude != null){
 		for(let i = 0; i < map_users.length; i++){
 			
 			myIcon = L.icon({
