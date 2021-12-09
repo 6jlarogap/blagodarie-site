@@ -2079,7 +2079,7 @@ async function onNodeClick(nodeType, uuid, txt){
 	}else if(nodeType == NODE_TYPES.PLUS){
 		let trust_plus_dialog = document.querySelector('#trust_plus');
 		trust_plus_dialog.style.display = "flex";
-		modalTrustPlus();
+		await modalTrustPlus();
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
@@ -2193,7 +2193,7 @@ async function onNodeClick(nodeType, uuid, txt){
 	
 }, 500);
 }*/
-	function modalTrustPlus(){
+	async function modalTrustPlus(){
 		const plus_trust_inp = document.querySelector('#plus_trust_inp');
 		const plus_trust_but = document.querySelector('#plus_trust_but');
 		let plus_trust_error_message = document.querySelector('#plus_trust_error_message');
