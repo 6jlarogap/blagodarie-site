@@ -1177,7 +1177,7 @@ d3.json(apiUrl)
 	if(!url.searchParams.has('id') || userIdFrom == getCookie('user_uuid')){
 	nodes.push({
 		id: PLUS_ID,
-		text: "+",
+		plus_text: "+",
 		image: `${settings.url}images/trust_inactive.png`,
 		nodeType: NODE_TYPES.PLUS
 	});
@@ -1758,6 +1758,12 @@ function initializeDisplay() {
 		.attr("font-size", width<900 ? '12' : "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
 		.text(d => (d.text));
+	
+	node.append("text")
+		.attr("y", d => (d.nodeType == NODE_TYPES.PLUS ? 0 : 0))
+		.attr("font-size", width<900 ? '12' : "20")
+		.attr("class", d => (d.nodeType == NODE_TYPES.PLUS ? "friendNameShadow" : "friendNameShadow"))
+		.text(d => (d.plus_text));
 	  
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47))
