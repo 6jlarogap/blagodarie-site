@@ -1401,7 +1401,7 @@ d3.json(apiUrl)
 			d.fy = height / 2 - 300;
 			break;
 		case PLUS_ID:
-			d.fx = width/2+50;
+			d.fx = width/2+80;
 			d.fy = height/2;
 			break;
 		case TRUST_ID:
@@ -1762,7 +1762,7 @@ function initializeDisplay() {
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.PLUS ? 0 : 0))
 		.attr("font-size", width<900 ? '12' : "20")
-		.attr("class", d => (d.nodeType == NODE_TYPES.PLUS ? "friendNameShadow" : "friendNameShadow"))
+		.attr("class", d => (d.nodeType == NODE_TYPES.PLUS ? "friendName" : "friendName"))
 		.text(d => (d.plus_text));
 	  
 	node.append("text")
