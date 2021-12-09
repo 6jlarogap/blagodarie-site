@@ -1596,8 +1596,8 @@ drag = simulation => {
 		//d.fx = null;
 		//d.fy = null;
 		if(d.nodeType == NODE_TYPES.PLUS){
-			d.fx = null;
-			d.fy = null;
+			d.fx = width<900 ? width/2+50 : width/2+80;
+			d.fy = height/2;
 		}
 		
 	}
