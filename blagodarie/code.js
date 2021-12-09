@@ -1489,7 +1489,7 @@ function show_map_style(){
 	}
 	function setPoints(){
 	//if(map_users.length > 0 && map_users[0].user_latitude != null){
-		for(let i = 0; i < map_users.length; i++){
+		for(let i = 1; i < map_users.length; i++){
 			
 			myIcon = L.icon({
     				iconUrl: map_users[i].user_photo != '' ? map_users[i].user_photo : `${settings.url}images/default_avatar.png`,
