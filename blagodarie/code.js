@@ -1761,8 +1761,10 @@ function initializeDisplay() {
 	
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.PLUS ? 0 : 0))
-		.attr("font-size", width<900 ? '12' : "20")
+		.attr("font-size", width<900 ? '15' : "23")
 		.attr("class", d => (d.nodeType == NODE_TYPES.PLUS ? "friendName" : "friendName"))
+		.attr('dominant-baseline', "central")
+		.attr("font-weight", 900)
 		.text(d => (d.plus_text));
 	  
 	node.append("text")
