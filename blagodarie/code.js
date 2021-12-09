@@ -1595,6 +1595,10 @@ drag = simulation => {
 		if (!event.active) simulation.alphaTarget(0);
 		//d.fx = null;
 		//d.fy = null;
+		if(d.nodeType == NODE_TYPES.PLUS){
+			d.fx = null;
+			d.fy = null;
+		}
 		
 	}
 
