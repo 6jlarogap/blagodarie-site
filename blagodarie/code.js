@@ -2194,9 +2194,7 @@ async function onNodeClick(nodeType, uuid, txt){
 }, 500);
 }*/
 	 function modalTrustPlus(){
-		let plus_trust_inp = document.querySelector('#plus_trust_inp');
 		let plus_trust_but = document.querySelector('#plus_trust_but');
-		let plus_trust_error_message = document.querySelector('#plus_trust_error_message');
 		
 		plus_trust_but.addEventListener('click', ()=>{
 			upd_plus_trust();
@@ -2204,6 +2202,8 @@ async function onNodeClick(nodeType, uuid, txt){
 		
 	}
 async function upd_plus_trust(){
+	let plus_trust_inp = document.querySelector('#plus_trust_inp');
+	let plus_trust_error_message = document.querySelector('#plus_trust_error_message');
 	if(plus_trust_inp.value==''){
 				plus_trust_error_message.innerHTML = 'Введите id пользователя или ссылку';
 			}else{
