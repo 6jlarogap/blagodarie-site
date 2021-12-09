@@ -1389,6 +1389,7 @@ d3.json(apiUrl)
 		case PLUS_ID:
 			d.fx = width/2+50;
 			d.fy = height/2;
+			break;
 		case TRUST_ID:
 			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
