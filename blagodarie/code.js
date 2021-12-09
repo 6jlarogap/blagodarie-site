@@ -714,13 +714,13 @@ function get_cur_position(){
 navigator.geolocation.getCurrentPosition(
     function(position) {
 	    console.log(position.coords);
-	    if(response_smat_map[0].user_latitude != null){
+	   /* if(response_smat_map[0].user_latitude != null){
 	    	lati = +response_smat_map[0].user_latitude;
-		long = +response_smat_map[0].user_longitude;
-	    }else{
+		long = +response_smat_map[0].user_longitude;*/
+	   // }else{
 	    lati = position.coords.latitude;
 	    long = position.coords.longitude;
-	    }
+	    //}
 	    show_smart_map(lati, long);
     },
     function(error){
@@ -741,10 +741,10 @@ function show_smart_map(lati, long){
 	map_container.style.display = "block";
 	if(document.querySelector('#mapid').hasChildNodes()){}
 	else{
-		if(response_smat_map[0].user_latitude != null){
+		/*if(response_smat_map[0].user_latitude != null){
 			let lati = +response_smat_map[0].user_latitude;
 			let long = +response_smat_map[0].user_longitude;
-		}
+		}*/
 		
 	mapid = L.map('mapid').setView([lati, long], 13);
 		
