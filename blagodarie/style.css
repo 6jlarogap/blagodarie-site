@@ -571,7 +571,7 @@ text{
     			border: 2px solid rgba(0,0,0,0.2);
 			z-index: 13;
 		}
-		.mapid_send{
+		/*.mapid_send{
 			display:block;
 			position: absolute;
 			top: 85px;
@@ -600,7 +600,7 @@ text{
     			font-weight: 500;
 			transition: .5s;
 			z-index: 13;
-		}
+		}*/
 		.mapid_alert{
 			display: none;
 			opacity: 0;
