@@ -18,7 +18,8 @@ const NODE_TYPES = Object.freeze({
 	"FILTER": "filter",
 	"FILTERED": "filtered",
 	"INVITE": "invite",
-	"MAPS": "maps"
+	"MAPS": "maps",
+	"PLUS": "plus"
 });
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const KEYS_ROOT_ID = "KEYS_ROOT";
@@ -34,6 +35,7 @@ const HOME_ID = "HOME_ROOT";
 const GENESIS_ID = "GENESIS_ROOT";
 const MAPS_ID = "MAPS_ROOT";
 const INVITE_ID = "INVITE_ROOT";
+const PLUS_ID = "PLUS_ROOT";
 const PROFILE = {
 	id: "",
 	text: "",
@@ -1158,7 +1160,14 @@ d3.json(apiUrl)
 		image: `${settings.url}images/map_button.png`,
 		nodeType: NODE_TYPES.MAPS
 	});
-
+	if(!url.searchParams.has('id') || userIdFrom == getCookie('user_uuid')){
+	nodes.push({
+		id: PLUS_ID,
+		text: "+",
+		image: `${settings.url}images/trust_inactive.png`,
+		nodeType: NODE_TYPES.PLUS
+	});
+	}
 	//добавить вершину filter
 	nodes.push({
 		id: FILTER_ID,
@@ -1377,6 +1386,9 @@ d3.json(apiUrl)
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
 			d.fy = height / 2 - 300;
 			break;
+		case PLUS_ID:
+			d.fx = width/2+50;
+			d.fy = height/2;
 		case TRUST_ID:
 			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
