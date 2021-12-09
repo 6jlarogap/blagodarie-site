@@ -121,15 +121,26 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 
 //filter stuff
 var filterInput = document.getElementById("filterInput");
-
+var settings;
 //settings
-// var settings = settingSets[1];
-var setting;
-settingSets.forEach((setting, i) => {
+ //var settings = settingSets[0];
+//var settings;
+/*settingSets.forEach((setting, i) => {
+	console.log(setting.url.substr(0, setting.url.length - 1));
+	console.log(new URL(window.location.href).origin);
+	console.log(setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin);
 	if (setting.url.substr(0, setting.url.length - 1) == new URL(window.location.href).origin) {
 		settings = setting;
+		console.log(settings);
 	}
-})
+})*/
+settingSets.forEach((setting, i) => {
+	if (setting.url.substr(0, setting.url.length - 1) == window.location.origin) {
+		settings = setting;
+	}
+});
+
+
 
 
 // register sw
@@ -403,7 +414,7 @@ document.getElementById("filterSearch").addEventListener("click", () => {
 	if (filterInput.value != "") {
 		if(!window.location.href.includes('gen')){
 		url.searchParams.set('f', 0);
-		url.searchParams.set('q', 50);
+		url.searchParams.set('q', 25);
 		}
 		localStorage.setItem("filter", filterInput.value);
 		window.location.href = url.href;
@@ -537,7 +548,8 @@ async function setProfile() {
 	console.log(response.users.trust_count);
 	console.log(response.users);
 	console.log(response.users.ability);
-	map_users.push({
+	if(response.users[0].latitude!=null){
+		map_users.push({
 		user_photo: response.users[0].photo,
 		user_name: response.users[0].first_name,
 		user_lastname: response.users[0].last_name,
@@ -546,6 +558,8 @@ async function setProfile() {
 		user_ability: response.users[0].ability,
 		user_uuid: response.users[0].uuid
 	} );
+	}
+	
 	response_smat_map = map_users;
 	console.log(map_users);
 }
@@ -702,13 +716,13 @@ function get_cur_position(){
 navigator.geolocation.getCurrentPosition(
     function(position) {
 	    console.log(position.coords);
-	    if(response_smat_map[0].user_latitude != null){
+	   /* if(response_smat_map[0].user_latitude != null){
 	    	lati = +response_smat_map[0].user_latitude;
-		long = +response_smat_map[0].user_longitude;
-	    }else{
+		long = +response_smat_map[0].user_longitude;*/
+	   // }else{
 	    lati = position.coords.latitude;
 	    long = position.coords.longitude;
-	    }
+	    //}
 	    show_smart_map(lati, long);
     },
     function(error){
@@ -729,10 +743,10 @@ function show_smart_map(lati, long){
 	map_container.style.display = "block";
 	if(document.querySelector('#mapid').hasChildNodes()){}
 	else{
-		if(response_smat_map[0].user_latitude != null){
+		/*if(response_smat_map[0].user_latitude != null){
 			let lati = +response_smat_map[0].user_latitude;
 			let long = +response_smat_map[0].user_longitude;
-		}
+		}*/
 		
 	mapid = L.map('mapid').setView([lati, long], 13);
 		
@@ -838,7 +852,7 @@ var link = window.location.href;
 var url = new URL(link);
 
        if(!url.searchParams.has('q') && !url.searchParams.has('f')){
-		   	url.searchParams.append('q', 50);
+		   	url.searchParams.append('q', 25);
 			url.searchParams.append('f', 0);
 		   	window.history.pushState(null, null, url.search);
 		   	window.location.href = url.href;
@@ -1457,14 +1471,17 @@ var latlngs = [];
 var myIcon;
 
 function show_map_style(){
-	
-	if(map_users.length > 0 && map_users[0].user_latitude != null ){
-		map_latitude = map_users[0].user_latitude;
-		map_longitude = map_users[0].user_longitude;
-	}else{
-		map_latitude = 49.019638199999996;
-		map_longitude = 35.226296399999995;
+	for(let i = 0; i<map_users.length; i++){
+		if(map_users.length > 0 && map_users[i].user_latitude != null){
+			map_latitude = map_users[i].user_latitude;
+			map_longitude = map_users[i].user_longitude;
+			break;
+		}else{
+			map_latitude = 49.019638199999996;
+			map_longitude = 35.226296399999995;
+		}
 	}
+	
 	if(document.querySelector('#new_map').hasChildNodes()){}
 	else{
 	new_map = L.map('new_map').setView([map_latitude, map_longitude], 13);
@@ -1478,7 +1495,16 @@ function show_map_style(){
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(new_map);
 	}
-	if(map_users.length > 0 && map_users[0].user_latitude != null){
+	for(let i = 0; i<map_users.length; i++){
+		if(map_users.length > 0 && map_users[i].user_latitude != null){
+			setPoints();
+			break;
+		}else{
+			console.log('Нет пользователей с указаным местоположением');
+		}
+	}
+	function setPoints(){
+	//if(map_users.length > 0 && map_users[0].user_latitude != null){
 		for(let i = 0; i < map_users.length; i++){
 			
 			myIcon = L.icon({

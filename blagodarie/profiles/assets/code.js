@@ -49,7 +49,7 @@ async function myProfilesinfo() {
 		var toReplace = "thumb"; 
 		var str1 = str.replace(replacement, toReplace);
 		
-		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : str1+"/45x45~crop~12."+ext}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td><div class="bd_dd"><div class="bd_dd_cont"><p>${response[i].dob != null ? response[i].dob : ''}</p><p>|</p><p>${response[i].dod != null ? response[i].dod : ''}</p></div><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/?id=${response[i].uuid}&q=50&f=0"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info('${response[i].uuid}', '${response[i].last_name}', '${response[i].first_name}', '${response[i].middle_name}', '${str1+"/320x320~crop~12."+ext}', '${response[i].dob}', '${response[i].dod}', '${response[i].gender}')"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
+		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : str1+"/45x45~crop~12."+ext}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td><div class="bd_dd"><div class="bd_dd_cont"><p>${response[i].dob != null ? response[i].dob : ''}</p><p>|</p><p>${response[i].dod != null ? response[i].dod : ''}</p></div><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/gen/?id=${response[i].uuid}&d=5"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info('${response[i].uuid}', '${response[i].last_name}', '${response[i].first_name}', '${response[i].middle_name}', '${str1+"/320x320~crop~12."+ext}', '${response[i].dob}', '${response[i].dod}', '${response[i].gender}')"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
 		user_table_body.append(tr); 
 	}
 }
@@ -894,7 +894,7 @@ async function setProfile() {
 					user_ability: pars2[i].ability,
 					user_uuid: pars2[i].uuid
 				} );
-				
+				console.log(map_users);
 			}
 			if(pars2[i].uuid == userIdFrom && pars2[i].latitude!=null && pars2[i].longitude!=null){
 				get_position.style.backgroundColor = '#6be86b';
@@ -904,7 +904,7 @@ async function setProfile() {
 			}
 		}
 		
-		
+		console.log(map_users);
   		response_smat_map = map_users;
 });
 }
@@ -999,6 +999,7 @@ function show_smart_map(lati, long){
 	map_container.style.display = "block";
 	if(document.querySelector('#mapid').hasChildNodes()){}
 	else{
+		console.log(response_smat_map);
 		if(response_smat_map[0].user_latitude != null){
 			/*let lati = +response_smat_map[0].user_latitude;
 			let long = +response_smat_map[0].user_longitude;*/
