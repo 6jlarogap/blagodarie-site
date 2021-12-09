@@ -734,6 +734,11 @@ button.close:hover{
 	bottom: 0;
 	right: 0;
 }
+@media(max-width:700){
+	#qrDialog{
+		width: 25%!important;
+	}
+}
 @media(max-width:900px){
 	#rootDialog{
 		width: 90%;
