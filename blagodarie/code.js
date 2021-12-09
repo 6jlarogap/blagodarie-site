@@ -546,7 +546,8 @@ async function setProfile() {
 	console.log(response.users.trust_count);
 	console.log(response.users);
 	console.log(response.users.ability);
-	map_users.push({
+	if(response.users[0].latitude!=null){
+		map_users.push({
 		user_photo: response.users[0].photo,
 		user_name: response.users[0].first_name,
 		user_lastname: response.users[0].last_name,
@@ -555,6 +556,8 @@ async function setProfile() {
 		user_ability: response.users[0].ability,
 		user_uuid: response.users[0].uuid
 	} );
+	}
+	
 	response_smat_map = map_users;
 	console.log(map_users);
 }
@@ -1489,7 +1492,7 @@ function show_map_style(){
 	}
 	function setPoints(){
 	//if(map_users.length > 0 && map_users[0].user_latitude != null){
-		for(let i = 1; i < map_users.length; i++){
+		for(let i = 0; i < map_users.length; i++){
 			
 			myIcon = L.icon({
     				iconUrl: map_users[i].user_photo != '' ? map_users[i].user_photo : `${settings.url}images/default_avatar.png`,
