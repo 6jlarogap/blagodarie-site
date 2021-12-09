@@ -2216,13 +2216,13 @@ async function upd_plus_trust(){
 				}
 				else {
 					
-					updateTrust(4, plus_trust_inp.value);
-					updateTrust(5, plus_trust_inp.value);
+					await updateTrust(4, plus_trust_inp.value);
+					await updateTrust(5, plus_trust_inp.value);
 				}
 			}
 			else {
 				
-				updateTrust(5, plus_trust_inp.value);
+				await updateTrust(5, plus_trust_inp.value);
 				
 			}
 			
