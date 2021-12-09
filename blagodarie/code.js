@@ -822,7 +822,7 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 	}, 2500);
 	setTimeout(function(){
 		//mapid_alert.style.display = "none";
-		window.location.reload()
+		//window.location.reload()
 	}, 3500)
 });
 
