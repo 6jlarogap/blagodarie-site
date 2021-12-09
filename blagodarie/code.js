@@ -1455,14 +1455,17 @@ var latlngs = [];
 var myIcon;
 
 function show_map_style(){
-	
-	if(map_users.length > 0 && map_users[0].user_latitude != null ){
-		map_latitude = map_users[0].user_latitude;
-		map_longitude = map_users[0].user_longitude;
-	}else{
-		map_latitude = 49.019638199999996;
-		map_longitude = 35.226296399999995;
+	for(let i = 0; i<map_users.length; i++){
+		if(map_users.length > 0 && map_users[i].user_latitude != null){
+			map_latitude = map_users[i].user_latitude;
+			map_longitude = map_users[i].user_longitude;
+			break;
+		}else{
+			map_latitude = 49.019638199999996;
+			map_longitude = 35.226296399999995;
+		}
 	}
+	
 	if(document.querySelector('#new_map').hasChildNodes()){}
 	else{
 	new_map = L.map('new_map').setView([map_latitude, map_longitude], 13);
@@ -1476,7 +1479,7 @@ function show_map_style(){
     		accessToken: 'pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw'
 	}).addTo(new_map);
 	}
-	if(map_users.length > 0 && map_users[0].user_latitude != null || map_users[1].user_latitude != null){
+	if(map_users.length > 0 && map_users[0].user_latitude != null){
 		for(let i = 0; i < map_users.length; i++){
 			
 			myIcon = L.icon({
