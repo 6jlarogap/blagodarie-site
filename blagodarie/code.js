@@ -2079,6 +2079,7 @@ async function onNodeClick(nodeType, uuid, txt){
 	}else if(nodeType == NODE_TYPES.PLUS){
 		let trust_plus_dialog = document.querySelector('#trust_plus');
 		trust_plus_dialog.style.display = "flex";
+		modalTrustPlus();
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
@@ -2192,7 +2193,45 @@ async function onNodeClick(nodeType, uuid, txt){
 	
 }, 500);
 }*/
-	
+	function modalTrustPlus(){
+		const plus_trust_inp = document.querySelector('#plus_trust_inp');
+		const plus_trust_but = document.querySelector('#plus_trust_but');
+		let plus_trust_error_message = document.querySelector('#plus_trust_error_message');
+		
+		plus_trust_but.addEventListener('click', function(){
+			if(plus_trust_inp.value==''){
+				plus_trust_error_message.innerHTML = 'Введите id пользователя или ссылку';
+			}else{
+				if (isAuth) {
+			if (isConnection) {
+				if (isTrust) {
+					await updateTrust(5, plus_trust_inp.value);
+					
+					
+				}
+				else {
+					
+					await updateTrust(4, plus_trust_inp.value);
+					await updateTrust(5, plus_trust_inp.value);
+				}
+			}
+			else {
+				
+				await updateTrust(5, plus_trust_inp.value);
+				
+			}
+			
+			
+			window.location.reload();
+		}
+		else {
+			deleteCookie("","set_mistrust");
+			document.cookie = `set_trust=${userIdFrom}; path=/;`;
+			authDialog.style.display = "flex";
+		}
+			}
+		})
+	}
 
 //
 async function rootFunctions(category) {
