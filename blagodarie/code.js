@@ -2205,7 +2205,7 @@ async function onNodeClick(nodeType, uuid, txt){
 				if (isAuth) {
 			if (isConnection) {
 				if (isTrust) {
-					updateTrust(5, plus_trust_inp.value);
+					await updateTrust(5, plus_trust_inp.value);
 					
 					
 				}
@@ -2333,7 +2333,7 @@ async function updateTrust(operationId, referal = null) {
 			"Authorization": "Token " + getCookie("auth_token"),
 			"Content-Type": "application/json"
 		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "operation_type_id": operationId})
+		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "operation_type_id": operationId}),
 	}).then(data => data.json())
 	console.log(operationId);
 }
