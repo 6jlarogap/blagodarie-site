@@ -1693,8 +1693,9 @@ function initializeDisplay() {
 		.join("g")
 		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
 		.call(drag(simulation))
-		.attr('class', 'svg_elem');
-		
+		.attr('class', 'svg_elem')
+		.attr('style', "cursor:'pointer' ");
+	
 		node.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
