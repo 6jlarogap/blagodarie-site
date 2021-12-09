@@ -2198,8 +2198,13 @@ async function onNodeClick(nodeType, uuid, txt){
 		let plus_trust_but = document.querySelector('#plus_trust_but');
 		let plus_trust_error_message = document.querySelector('#plus_trust_error_message');
 		
-		plus_trust_but.addEventListener('click', function(){
-			if(plus_trust_inp.value==''){
+		plus_trust_but.addEventListener('click', ()=>{
+			upd_plus_trust();
+		})
+		
+	}
+async function upd_plus_trust(){
+	if(plus_trust_inp.value==''){
 				plus_trust_error_message.innerHTML = 'Введите id пользователя или ссылку';
 			}else{
 				if (isAuth) {
@@ -2222,7 +2227,7 @@ async function onNodeClick(nodeType, uuid, txt){
 			}
 			
 			
-			//window.location.reload();
+			window.location.reload();
 		}
 		else {
 			deleteCookie("","set_mistrust");
@@ -2230,8 +2235,7 @@ async function onNodeClick(nodeType, uuid, txt){
 			authDialog.style.display = "flex";
 		}
 			}
-		})
-	}
+}
 
 //
 async function rootFunctions(category) {
