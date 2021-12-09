@@ -1178,7 +1178,7 @@ d3.json(apiUrl)
 	nodes.push({
 		id: PLUS_ID,
 		plus_text: "+",
-		image: `${settings.url}images/trust_inactive.png`,
+		image: `${settings.url}images/plused_icon.png`,
 		nodeType: NODE_TYPES.PLUS
 	});
 	}
