@@ -2222,7 +2222,7 @@ async function onNodeClick(nodeType, uuid, txt){
 			}
 			
 			
-			window.location.reload();
+			//window.location.reload();
 		}
 		else {
 			deleteCookie("","set_mistrust");
@@ -2335,7 +2335,7 @@ async function updateTrust(operationId, referal = null) {
 		},
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "operation_type_id": operationId})
 	}).then(data => data.json())
-	console.log('add');
+	console.log(operationId);
 }
 
 
