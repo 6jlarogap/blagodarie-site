@@ -791,7 +791,7 @@ apiUrl = response;
 		console.log(apiUrl);
 		
 	}
-}
+}();
 var isConnection;
 var isTrust;
 
