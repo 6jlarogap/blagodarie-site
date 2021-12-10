@@ -760,38 +760,15 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		window.location.reload()
 	});
 });
-async function(){
+
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
 	}else{
-		/*var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
-		console.log(apiUrl);*/
-		
-		/*var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}, {
-		headers: {
-			"Authorization": ${'Token ' + getCookie("auth_token")}
-		}
-}`;
-		console.log(apiUrl)
-		
-		*/
-		var apiUrl;
-		
-		async function setProfile1() {
-	const response = await fetch(`${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-	}).then(data => data.json());
-apiUrl = response;
-}
-		await setProfile1()
+		var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl);
-		
 	}
-}();
+
 var isConnection;
 var isTrust;
 
