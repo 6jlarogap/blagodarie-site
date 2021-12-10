@@ -779,7 +779,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		var apiUrl;
 		
 		async function setProfile1() {
-	const response = await fetch(`${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+	const response = await fetch(`${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
@@ -787,7 +787,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 	}).then(data => data.json());
 apiUrl = response;
 }
-		setProfile1()
+		await setProfile1()
 		console.log(apiUrl);
 		
 	}
