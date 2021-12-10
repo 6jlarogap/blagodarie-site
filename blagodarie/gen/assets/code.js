@@ -768,7 +768,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		/*var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl);*/
 		
-		var apiUrl = function () {
+		var apiUrl = async function () {
 		const response = await fetch(`${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`, {
 		method: "GET",
 		headers: {
