@@ -760,7 +760,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		window.location.reload()
 	});
 });
-
+var apiUrl;
 async function setProfile1() {
 	const response = await fetch(`${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`, {
 		method: "GET",
@@ -770,8 +770,8 @@ async function setProfile1() {
 	}).then(data => data.json());
 	return response;
 }
-var apiUrl;
-document.addEventListener("DOMContentLoaded", async function(){
+
+(async function(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
