@@ -765,9 +765,14 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
 	}else{
-		var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
-		console.log(apiUrl);
-		
+		var rl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
+		var options = {
+			headers: {
+				'Authorization': Token + getCookie(auth_token)
+			}
+		}
+		let response = await fetch(rl, options); // завершается с заголовками ответа
+		let apiUrl = await response.json(); // читать тело ответа в формате JSON
 	}
 	
 
