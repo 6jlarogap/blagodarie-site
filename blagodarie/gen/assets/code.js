@@ -790,7 +790,7 @@ var isTrust;
 let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
-d3.json(setProfile1())
+d3.json(apiUrl)
 	.then(async function(data) {
 
 	if (isAuth) {
