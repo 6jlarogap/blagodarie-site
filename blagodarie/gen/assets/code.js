@@ -768,11 +768,12 @@ async function lala(){
 		var rl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		var options = {
 			headers: {
-				'Authorization': Token + getCookie(auth_token)
+				"Authorization": 'Token' + getCookie("auth_token")
 			}
 		}
 		let response = await fetch(rl, options); // завершается с заголовками ответа
 		let apiUrl = await response.json(); // читать тело ответа в формате JSON
+		await d3view();
 	}
 }
 lala();
@@ -783,7 +784,7 @@ let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
 
-
+async function d3view(){
 d3.json(apiUrl)
 	.then(async function(data) {
 
@@ -1232,8 +1233,11 @@ d3.json(apiUrl)
 	initializeDisplay();
 	initializeSimulation();
 });
+}
 
-
+	
+	
+	
 var latlngs = [];
 var myIcon;
 
