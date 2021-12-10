@@ -769,7 +769,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		console.log(apiUrl);*/
 		
 		let protectedUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
-		var apiUrl = `protectedUrl, {
+		var apiUrl = `${protectedUrl}, {
   			headers: {
     			"Authorization": ${'Token ' + getCookie("auth_token")}
   			}
