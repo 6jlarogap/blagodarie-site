@@ -778,7 +778,7 @@ async function setProfile1() {
 	}else{
 		/*var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl);*/
-		var apiUrl = await setProfile1();
+		var apiUrl = setProfile1();
 	}
 
 var isConnection;
