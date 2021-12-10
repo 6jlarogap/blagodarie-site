@@ -760,6 +760,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		window.location.reload()
 	});
 });
+var apiUrl;
 async function lala(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
@@ -772,7 +773,7 @@ async function lala(){
 			}
 		}
 		let response = await fetch(rl, options); // завершается с заголовками ответа
-		let apiUrl = await response.json(); // читать тело ответа в формате JSON
+		apiUrl = await response.json(); // читать тело ответа в формате JSON
 		await d3view();
 	}
 }
