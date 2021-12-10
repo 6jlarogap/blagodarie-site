@@ -773,7 +773,8 @@ async function lala(){
 			}
 		}
 		let response = await fetch(rl, options); // завершается с заголовками ответа
-		apiUrl = await response;
+		apiUrl = JSON.stringify(await response);
+		
 		console.log(apiUrl);
 		await d3view();
 		
