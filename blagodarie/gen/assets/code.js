@@ -765,18 +765,8 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
 	}else{
-		/*var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
-		console.log(apiUrl);*/
-		
-		let protectedUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
-		var apiUrl = `${protectedUrl}, {
-  			headers: {
-    			"Authorization": ${'Token ' + getCookie("auth_token")}
-  			}
-		})`;
-		
+		var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl);
-		console.log(typeof(apiUrl))
 		
 	}
 	
