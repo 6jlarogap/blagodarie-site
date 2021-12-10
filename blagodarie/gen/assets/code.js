@@ -771,15 +771,17 @@ async function setProfile1() {
 	return response;
 }
 
-
+document.addEventListener("DOMContentLoaded", async function(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
 	}else{
 		/*var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl);*/
-		var apiUrl = setProfile1();
+		var apiUrl = await setProfile1();
 	}
+});
+	
 
 var isConnection;
 var isTrust;
