@@ -768,15 +768,26 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		/*var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl);*/
 		
-		var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}, {
+		/*var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}, {
 		headers: {
 			"Authorization": ${'Token ' + getCookie("auth_token")}
 		}
 }`;
 		console.log(apiUrl)
 		
+		*/
+		var apiUrl;
 		
-		
+		async function setProfile() {
+	const response = await fetch(`${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+apiUrl = response;
+}
+		console.log(apiUrl);
 		
 	}
 	 
