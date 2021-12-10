@@ -780,6 +780,7 @@ document.addEventListener('DOMContentLoaded', async function(){
 		console.log(apiUrl);*/
 		apiUrl = await setProfile1();
 		console.log(apiUrl);
+		await getD3();
 	}
 });
 	
@@ -790,6 +791,8 @@ var isTrust;
 let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
+
+async function getD3(){
 d3.json(apiUrl)
 	.then(async function(data) {
 
@@ -1238,6 +1241,7 @@ d3.json(apiUrl)
 	initializeDisplay();
 	initializeSimulation();
 });
+}
 
 var latlngs = [];
 var myIcon;
