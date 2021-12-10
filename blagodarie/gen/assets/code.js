@@ -778,7 +778,9 @@ document.addEventListener('DOMContentLoaded', async function(){
 	}else{
 		/*var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl);*/
-		apiUrl = await setProfile1();
+		
+		var obj = await setProfile1();
+		apiUrl = JSON.stringify(obj);
 		console.log(apiUrl);
 		await getD3();
 	}
