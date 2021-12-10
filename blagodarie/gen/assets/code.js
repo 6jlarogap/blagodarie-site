@@ -760,7 +760,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		window.location.reload()
 	});
 });
-
+async function lala(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
@@ -774,8 +774,8 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		let response = await fetch(rl, options); // завершается с заголовками ответа
 		let apiUrl = await response.json(); // читать тело ответа в формате JSON
 	}
-	
-
+}
+lala();
 var isConnection;
 var isTrust;
 
