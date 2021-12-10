@@ -775,7 +775,8 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
   			}
 		})`;
 		
-		
+		console.log(apiUrl);
+		console.log(typeof(apiUrl))
 		
 	}
 	
