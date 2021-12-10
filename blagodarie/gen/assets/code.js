@@ -770,15 +770,15 @@ async function setProfile1() {
 	}).then(data => data.json());
 	return response;
 }
-
+var apiUrl;
 document.addEventListener("DOMContentLoaded", async function(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
-		var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
+		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
 	}else{
 		/*var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl);*/
-		var apiUrl = await setProfile1();
+		apiUrl = await setProfile1();
 		console.log(apiUrl);
 	}
 });
