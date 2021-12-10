@@ -760,18 +760,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		window.location.reload()
 	});
 });
-var apiUrl;
-async function setProfile1() {
-	const response = await fetch(`${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-	}).then(data => data.json());
-	return response;
-}
 
-document.addEventListener('DOMContentLoaded', async function(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
@@ -779,12 +768,16 @@ document.addEventListener('DOMContentLoaded', async function(){
 		/*var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl);*/
 		
-		var obj = await setProfile1();
-		apiUrl = JSON.stringify(obj);
-		console.log(apiUrl);
-		await getD3();
+		let protectedUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
+		var apiUrl = fetch(protectedUrl, {
+  			headers: {
+    			"Authorization": 'Token ' + getCookie("auth_token")
+  			}
+		});
+		
+		
+		
 	}
-});
 	
 
 var isConnection;
@@ -794,7 +787,7 @@ let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
 
-async function getD3(){
+
 d3.json(apiUrl)
 	.then(async function(data) {
 
@@ -1243,7 +1236,7 @@ d3.json(apiUrl)
 	initializeDisplay();
 	initializeSimulation();
 });
-}
+
 
 var latlngs = [];
 var myIcon;
