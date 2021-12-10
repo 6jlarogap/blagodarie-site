@@ -760,7 +760,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		window.location.reload()
 	});
 });
-
+async function(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
@@ -791,7 +791,7 @@ apiUrl = response;
 		console.log(apiUrl);
 		
 	}
-	 
+}
 var isConnection;
 var isTrust;
 
