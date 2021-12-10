@@ -771,7 +771,7 @@ async function setProfile1() {
 	return response;
 }
 
-(async function(){
+document.addEventListener('DOMContentLoaded', async function(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
@@ -790,7 +790,7 @@ var isTrust;
 let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
-d3.json(apiUrl)
+d3.json(setProfile1())
 	.then(async function(data) {
 
 	if (isAuth) {
