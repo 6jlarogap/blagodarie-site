@@ -802,7 +802,8 @@ const response = await fetch(`${apiUrl}`/*`${settings.api}api/getprofileinfo?uui
 	data => data.json()
 	console.log(data);
 	data = JSON.stringify(data)*/
-	data = JSON.parse(`${response}`)
+	let resp = response;
+	data = JSON.parse(resp)
 	console.log(data);
 	if (isAuth) {
 		await setProfile();
