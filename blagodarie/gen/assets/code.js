@@ -775,7 +775,7 @@ async function lala(){
 		}
 		let response = await fetch(rl, options); // завершается с заголовками ответа
 		let resp = await response.json();
-		apiUrl = JSON.parse(apiUrl)
+		apiUrl = JSON.parse(resp)
 		console.log(apiUrl);
 		/*apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;*/
 		await d3view();
