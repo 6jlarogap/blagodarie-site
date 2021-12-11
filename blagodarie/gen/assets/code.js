@@ -798,10 +798,11 @@ const response = await fetch(`${apiUrl}`/*`${settings.api}api/getprofileinfo?uui
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(async function(data) {
-	console.log(data);
+	/*console.log(data);
 	data => data.json()
 	console.log(data);
-	data = JSON.stringify(data)
+	data = JSON.stringify(data)*/
+	data = JSON.parse(`${response}`)
 	console.log(data);
 	if (isAuth) {
 		await setProfile();
