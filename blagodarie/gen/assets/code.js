@@ -792,16 +792,13 @@ let new_map = document.querySelector('#new_map');
 
 async function d3view(){
 //d3.json(apiUrl)
-const response = await fetch(`${apiUrl}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+const response = await fetch(`${apiUrl}`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
-	}).then(async function(data) {
-	/*console.log(data);
-	data => data.json()
-	console.log(data);
-	data = JSON.stringify(data)*/
+	}).then(data => data.json());
+	
 	let resp = response;
 	data = JSON.parse(resp)
 	console.log(data);
@@ -1249,7 +1246,7 @@ const response = await fetch(`${apiUrl}`/*`${settings.api}api/getprofileinfo?uui
 	
 	initializeDisplay();
 	initializeSimulation();
-});
+
 }
 
 	
