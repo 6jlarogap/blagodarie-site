@@ -799,6 +799,7 @@ const response = await fetch(`${apiUrl}`/*`${settings.api}api/getprofileinfo?uui
 		}
 	}).then(async function(data) {
 
+	data = JSON.parse(data)
 	if (isAuth) {
 		await setProfile();
 		nodes.push(PROFILE);
