@@ -765,18 +765,19 @@ async function lala(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
+		await d3view();
 	}else{
-		/*var rl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
+		var rl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		var options = {
 			headers: {
 				"Authorization": 'Token' + getCookie("auth_token")
 			}
 		}
 		let response = await fetch(rl, options); // завершается с заголовками ответа
-		apiUrl = await response.json();
-		JSON.stringify(apiUrl)
-		console.log(apiUrl);*/
-		apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
+		let resp = await response.json();
+		apiUrl = JSON.parse(apiUrl)
+		console.log(apiUrl);
+		/*apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;*/
 		await d3view();
 		
 	}
