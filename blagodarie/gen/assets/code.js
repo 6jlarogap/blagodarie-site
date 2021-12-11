@@ -767,7 +767,7 @@ async function lala(){
 		console.log(apiUrl)
 		await d3view();
 	}else{
-		var rl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
+		/*var rl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		var options = {
 			headers: {
 				"Authorization": 'Token' + getCookie("auth_token")
@@ -776,8 +776,8 @@ async function lala(){
 		let response = await fetch(rl, options); // завершается с заголовками ответа
 		let resp = await response.json();
 		apiUrl = JSON.stringify(resp)
-		console.log(apiUrl);
-		/*apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;*/
+		console.log(apiUrl);*/
+		apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		await d3view();
 		
 	}
@@ -791,8 +791,13 @@ let map_longitude;
 let new_map = document.querySelector('#new_map');
 
 async function d3view(){
-d3.json(apiUrl)
-	.then(async function(data) {
+//d3.json(apiUrl)
+const response = await fetch(`${apiUrl}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(async function(data) {
 
 	if (isAuth) {
 		await setProfile();
