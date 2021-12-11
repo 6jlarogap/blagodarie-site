@@ -799,8 +799,7 @@ const response = await fetch(`${apiUrl}`, {
 		}
 	}).then(data => data.json());
 	
-	let resp = response;
-	data = JSON.parse(resp)
+	data = response;
 	console.log(data);
 	if (isAuth) {
 		await setProfile();
