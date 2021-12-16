@@ -760,24 +760,47 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		window.location.reload()
 	});
 });
-
+var apiUrl;
+async function lala(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
-		var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
+		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
+		await d3view();
 	}else{
-		var apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
-		console.log(apiUrl)
+		/*var rl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
+		var options = {
+			headers: {
+				"Authorization": 'Token' + getCookie("auth_token")
+			}
+		}
+		let response = await fetch(rl, options); // завершается с заголовками ответа
+		let resp = await response.json();
+		apiUrl = JSON.stringify(resp)
+		console.log(apiUrl);*/
+		apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
+		await d3view();
+		
 	}
-	 
+}
+lala();
 var isConnection;
 var isTrust;
 
 let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
-d3.json(apiUrl)
-	.then(async function(data) {
 
+async function d3view(){
+//d3.json(apiUrl)
+const response = await fetch(`${apiUrl}`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+	
+	data = response;
+	console.log(data);
 	if (isAuth) {
 		await setProfile();
 		nodes.push(PROFILE);
@@ -1222,8 +1245,12 @@ d3.json(apiUrl)
 	
 	initializeDisplay();
 	initializeSimulation();
-});
 
+}
+
+	
+	
+	
 var latlngs = [];
 var myIcon;
 
