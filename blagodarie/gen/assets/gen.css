@@ -717,6 +717,11 @@ button.close:hover{
     padding: 10px;
     width: 25%;
 }
+#clickOnUser p{
+	width: 100%;
+    cursor: pointer;
+    text-align: center;
+}
 @media(max-width:900px){
 	#rootDialog{
 		width: 90%;

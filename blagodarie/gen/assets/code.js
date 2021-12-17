@@ -1804,7 +1804,7 @@ async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
-			OnfriendClickFunc();/*window.location.href = `${settings.url}gen?id=` + uuid;*/
+			OnfriendClickFunc(uuid);/*window.location.href = `${settings.url}gen?id=` + uuid;*/
 	} else if (nodeType == NODE_TYPES.PROFILE) {
 			/*window.location.href = `${settings.url}gen?id=` + uuid;*/
 	} else if (nodeType == NODE_TYPES.AUTH) {
@@ -1906,9 +1906,21 @@ async function onNodeClick(nodeType, uuid, txt){
 		await rootFunctions('keys');
 	}
 }
-function OnfriendClickFunc(){
+function OnfriendClickFunc(uid){
 	let clickOnUser = document.querySelector('#clickOnUser');
+	let href_onUser = document.querySelector('#href_onUser'); 
+	let copyUserLink = document.querySelector('#copyUserLink');
+	let UserTrust = document.querySelector('#UserTrust');
+	let UserMistrust = document.querySelector('#UserMistrust');
 	clickOnUser.style.display = "flex";
+	href_onUser.addEventListener("click", ()=>{
+		window.location.href = `${settings.url}gen?id=` + uid;
+	});
+	copyUserLink.addEventListener("click", ()=>{
+		let txt = `${settings.url}gen?id=` + uid;
+		copyToClipboard(txt);
+	});
+	
 }
 
 
