@@ -1914,7 +1914,7 @@ function OnfriendClickFunc(uid){
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	clickOnUser.style.display = "flex";
-	clickOnUser.style.display = "none";
+	OwnerSettings.style.display = "none";
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
