@@ -722,6 +722,145 @@ button.close:hover{
     cursor: pointer;
     text-align: center;
 }
+.add_user_profile_cont_fixed{
+	position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    top: 0;
+    left: 0;
+    overflow: scroll;
+	display: none;
+}
+.add_user_profile_container{
+	width: 100%;
+    height: fit-content;
+    top: 0;
+    left: 0;
+    background: #fff;
+	padding: 0 20%;
+	padding-bottom: 7%;
+}
+.add_user_profile_top_cont{
+	display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+	margin-top: 5%;
+}
+.add_user_profile_fio p{
+	margin-top: 10px;
+	margin-bottom: 3px;
+	
+}
+.add_user_profile_fio p:first-child{
+	margin-top: 0;
+}
+.add_user_profile_fio input{
+	border: 0;
+    border-bottom: 1px solid #ccc;
+	outline: none;
+}
+.add_user_profile_center_bddd_nophoto{
+	
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.add_user_profile_bddd_cont{
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+	flex-direction: column;
+}
+.add_user_profile_bddd_cont input{
+	border: 0;
+    border-bottom: 1px solid #ccc;
+	outline: none;
+}
+.add_user_profile_bottom_cont{
+	margin-top: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+	flex-direction: column;
+	width: 100%;
+}
+.add_user_profile_mother_cont, .add_user_profile_father_cont{
+	width: 100%;
+}
+#profile_mother_input, #profile_father_input{
+	width: 100%;
+}
+#profile_father_input{
+	margin-top: 10px;
+}
+.moth_text, .moth_text2, .fath_text, .fath_text2{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.add_user_profile_bottom_cont input{
+	border: 0;
+    border-bottom: 1px solid #ccc;
+	outline: none;
+}
+.add_user_profile_bottom_cont p{
+	margin-bottom: 2px;
+}
+.add_user_profile_overbottom{
+	background-color: green;
+	border-color: green;
+	color: #fff;
+	padding: .375rem .75rem;
+	border-radius: 5px;
+}
+.add_user_profile_close_popup, .add_user_profile_close_popup_new{
+	cursor: pointer;
+    position: absolute;
+    top: 2%;
+    right: 14%;
+    background-color: #8b0000;
+    padding: 5px 10px;
+    border-radius: 7px;
+	color: #fff;
+}
+.add_user_profile_photo{
+	width: 320px;
+    height: 320px;
+    background-color: #f5efef;
+}
+.add_user_profile_container_prew{
+	position: fixed;
+    display: none;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+}
+.add_user_profile_container_n > p:first-child{
+	margin: 0 auto;
+    width: max-content;
+    margin-top: 15%;
+	font-weight: 700;
+}
+.add_user_profile_container_n{
+	overflow: scroll;
+	height: 100%;
+}
+.gender_cont{
+	width: max-content;
+    margin-top: 1%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+	margin-top: 16px;
+}
+.gender_cont input{
+	margin-left: 10px;
+}
 @media(max-width:900px){
 	#rootDialog{
 		width: 90%;
