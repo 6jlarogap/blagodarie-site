@@ -1929,7 +1929,7 @@ function OnfriendClickFunc(uid, nodeType){
 		let txt = `${settings.url}gen?id=` + uid;
 		copyToClipboard(txt);
 	});
-	if(nodeType == NODE_TYPES.USER){
+	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
 	UserTrust.addEventListener("click", async function () {
 		if (isAuth) {
 			if (isConnection) {
