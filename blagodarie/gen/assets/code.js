@@ -1930,6 +1930,8 @@ function OnfriendClickFunc(uid, nodeType){
 		copyToClipboard(txt);
 	});
 	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
+	UserTrust.style.display = "block";
+	UserMistrust.style.display = "block";
 	UserTrust.addEventListener("click", async function () {
 		if (isAuth) {
 			if (isConnection) {
