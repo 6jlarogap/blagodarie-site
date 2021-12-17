@@ -761,28 +761,18 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 	});
 });
 var apiUrl;
-async function lala(){
+async function getApiUrl(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
 		await d3view();
 	}else{
-		/*var rl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
-		var options = {
-			headers: {
-				"Authorization": 'Token' + getCookie("auth_token")
-			}
-		}
-		let response = await fetch(rl, options); // завершается с заголовками ответа
-		let resp = await response.json();
-		apiUrl = JSON.stringify(resp)
-		console.log(apiUrl);*/
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		await d3view();
 		
 	}
 }
-lala();
+getApiUrl();
 var isConnection;
 var isTrust;
 
