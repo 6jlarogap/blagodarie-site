@@ -1926,14 +1926,17 @@ function OnfriendClickFunc(uid, nodeType){
 		if (isAuth) {
 			if (isConnection) {
 				if (isTrust) {
+					UserTrust.innerHTML = "Благодарить";
 					await updateTrust(5, uid);
 				}
 				else {
+					UserTrust.innerHTML = "Доверие";
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
 				}
 			}
 			else {
+				UserTrust.innerHTML = "Доверие";
 				await updateTrust(5, uid);
 			}
 			//window.location.reload();
