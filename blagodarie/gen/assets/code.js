@@ -1917,7 +1917,7 @@ function OnfriendClickFunc(uid, nodeType){
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	clickOnUser.style.display = "flex";
-	if(nodeType == NODE_TYPES.FRIEND){
+	if(nodeType == NODE_TYPES.PROFILE){
 		OwnerSettings.style.display = "block";
 	}else{
 	OwnerSettings.style.display = "none";
