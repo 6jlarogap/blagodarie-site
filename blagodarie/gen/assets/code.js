@@ -1804,9 +1804,9 @@ async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
-			window.location.href = `${settings.url}gen?id=` + uuid;
+			OnfriendClickFunc();/*window.location.href = `${settings.url}gen?id=` + uuid;*/
 	} else if (nodeType == NODE_TYPES.PROFILE) {
-			window.location.href = `${settings.url}gen?id=` + uuid;
+			/*window.location.href = `${settings.url}gen?id=` + uuid;*/
 	} else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex";
     tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
@@ -1906,6 +1906,11 @@ async function onNodeClick(nodeType, uuid, txt){
 		await rootFunctions('keys');
 	}
 }
+function OnfriendClickFunc(){
+	let clickOnUser = document.querySelector('#clickOnUser');
+	clickOnUser.style.display = "flex";
+}
+
 
 async function rootFunctions(category) {
 	var categoryObj;

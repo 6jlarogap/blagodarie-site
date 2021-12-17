@@ -708,9 +708,21 @@ button.close:hover{
 	bottom: 0;
 	right: 0;
 }
+#clickOnUser{
+	left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    padding: 10px;
+    width: 25%;
+}
 @media(max-width:900px){
 	#rootDialog{
 		width: 90%;
+	}
+	#clickOnUser{
+		width: 50%;
 	}
 	#addElementDialog{
 		width: 90%;
@@ -807,3 +819,8 @@ button.close:hover{
 		margin-top: 6px!important;
 	}
 		}
+@media(max-width:450px){
+	#clickOnUser{
+		width: 75%;
+	}
+}
