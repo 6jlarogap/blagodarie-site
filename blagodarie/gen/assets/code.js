@@ -1806,8 +1806,11 @@ async function onNodeClick(nodeType, uuid, txt){
 	} else if (nodeType == NODE_TYPES.FRIEND) {
 			OnfriendClickFunc(uuid, nodeType);/*window.location.href = `${settings.url}gen?id=` + uuid;*/
 	} else if (nodeType == NODE_TYPES.PROFILE) {
-			/*window.location.href = `${settings.url}gen?id=` + uuid;*/
-	} else if (nodeType == NODE_TYPES.AUTH) {
+			OnfriendClickFunc(uuid, nodeType);/*window.location.href = `${settings.url}gen?id=` + uuid;*/
+	}else if (nodeType == NODE_TYPES.USER){
+		
+	}
+	else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex";
     tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
     tgIframe.style.marginTop = '80px';
@@ -1914,7 +1917,11 @@ function OnfriendClickFunc(uid, nodeType){
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	clickOnUser.style.display = "flex";
+	if(nodeType == NODE_TYPES.FRIEND){
+		OwnerSettings.style.display = "block";
+	}else{
 	OwnerSettings.style.display = "none";
+	}
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
@@ -1922,6 +1929,7 @@ function OnfriendClickFunc(uid, nodeType){
 		let txt = `${settings.url}gen?id=` + uid;
 		copyToClipboard(txt);
 	});
+	
 	UserTrust.addEventListener("click", async function () {
 		if (isAuth) {
 			if (isConnection) {
