@@ -1922,7 +1922,7 @@ function OnfriendClickFunc(uid, nodeType){
 		let txt = `${settings.url}gen?id=` + uid;
 		copyToClipboard(txt);
 	});
-	UserTrust.addEventListener("click", ()=>{
+	UserTrust.addEventListener("click", async function () {
 		if (isAuth) {
 			if (isConnection) {
 				if (isTrust) {
@@ -1944,7 +1944,7 @@ function OnfriendClickFunc(uid, nodeType){
 			authDialog.style.display = "flex";
 		}
 	});
-	UserMistrust.addEventListener("click", ()=>{
+	UserMistrust.addEventListener("click", async function () {
 		if (isAuth) {
 			if (isConnection) {
 				if (!isTrust) {
