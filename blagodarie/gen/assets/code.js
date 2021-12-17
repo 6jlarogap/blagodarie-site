@@ -1922,21 +1922,29 @@ function OnfriendClickFunc(uid, nodeType){
 		let txt = `${settings.url}gen?id=` + uid;
 		copyToClipboard(txt);
 	});
+	if(isAuth){
+		if (isConnection) {
+			if (isTrust) {
+				UserTrust.innerHTML = "Благодарить";
+			}else{
+				UserTrust.innerHTML = "Доверие";
+			}
+		}else{
+			UserTrust.innerHTML = "Доверие";
+		}
+	}
 	UserTrust.addEventListener("click", async function () {
 		if (isAuth) {
 			if (isConnection) {
 				if (isTrust) {
-					UserTrust.innerHTML = "Благодарить";
 					await updateTrust(5, uid);
 				}
 				else {
-					UserTrust.innerHTML = "Доверие";
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
 				}
 			}
 			else {
-				UserTrust.innerHTML = "Доверие";
 				await updateTrust(5, uid);
 			}
 			//window.location.reload();
