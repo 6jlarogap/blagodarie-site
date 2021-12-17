@@ -1910,9 +1910,11 @@ function OnfriendClickFunc(uid){
 	let clickOnUser = document.querySelector('#clickOnUser');
 	let href_onUser = document.querySelector('#href_onUser'); 
 	let copyUserLink = document.querySelector('#copyUserLink');
+	let OwnerSettings = document.querySelector('#OwnerSettings');
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	clickOnUser.style.display = "flex";
+	clickOnUser.style.display = "none";
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
