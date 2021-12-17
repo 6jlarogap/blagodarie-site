@@ -1808,7 +1808,7 @@ async function onNodeClick(nodeType, uuid, txt){
 	} else if (nodeType == NODE_TYPES.PROFILE) {
 			OnfriendClickFunc(uuid, nodeType);/*window.location.href = `${settings.url}gen?id=` + uuid;*/
 	}else if (nodeType == NODE_TYPES.USER){
-		
+		OnfriendClickFunc(uuid, nodeType);
 	}
 	else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex";
@@ -1929,7 +1929,7 @@ function OnfriendClickFunc(uid, nodeType){
 		let txt = `${settings.url}gen?id=` + uid;
 		copyToClipboard(txt);
 	});
-	
+	if(nodeType == NODE_TYPES.USER){
 	UserTrust.addEventListener("click", async function () {
 		if (isAuth) {
 			if (isConnection) {
@@ -1974,6 +1974,10 @@ function OnfriendClickFunc(uid, nodeType){
 			authDialog.style.display = "flex";
 		}
 	});
+}else{
+	UserTrust.style.display = "none";
+	UserMistrust.style.display = "none";
+}
 }
 
 
