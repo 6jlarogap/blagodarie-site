@@ -1909,6 +1909,16 @@ async function onNodeClick(nodeType, uuid, txt){
 		await rootFunctions('keys');
 	}
 }
+
+function myProfilesinfo() {
+		const response = await fetch(`${new_settapi}api/profile?number=2000`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+}).then(data => data.json());
+	return response;
+};
 async function OnfriendClickFunc(uid, nodeType){
 	let clickOnUser = document.querySelector('#clickOnUser');
 	let href_onUser = document.querySelector('#href_onUser'); 
@@ -1917,7 +1927,8 @@ async function OnfriendClickFunc(uid, nodeType){
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	clickOnUser.style.display = "flex";
-	
+	let resp_owned_users = await myProfilesinfo();
+	console.log(resp_owned_users);
 	/*(d=>{
 		if(nodeType == NODE_TYPES.PROFILE){
 			OwnerSettings.style.display = "block";
