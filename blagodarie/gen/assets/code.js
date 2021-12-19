@@ -1917,7 +1917,20 @@ function OnfriendClickFunc(uid, nodeType){
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	clickOnUser.style.display = "flex";
-	if(nodeType == NODE_TYPES.PROFILE){
+	(d=>{
+		if(nodeType == NODE_TYPES.PROFILE){
+			OwnerSettings.style.display = "block";
+			OwnerSettings.addEventListener("click", d=>{
+				console.log(d);
+				console.log(d.source);
+				console.log(d.target);
+				user_changed_info(uid);
+			});
+		}else{
+			OwnerSettings.style.display = "none";
+		}
+	})();
+	/*if(nodeType == NODE_TYPES.PROFILE){
 		OwnerSettings.style.display = "block";
 		OwnerSettings.addEventListener("click", d=>{
 			console.log(d);
@@ -1925,7 +1938,7 @@ function OnfriendClickFunc(uid, nodeType){
 		});
 	}else{
 	OwnerSettings.style.display = "none";
-	}
+	}*/
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
