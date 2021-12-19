@@ -1909,7 +1909,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		await rootFunctions('keys');
 	}
 }
-function OnfriendClickFunc(uid, nodeType){
+async function OnfriendClickFunc(uid, nodeType){
 	let clickOnUser = document.querySelector('#clickOnUser');
 	let href_onUser = document.querySelector('#href_onUser'); 
 	let copyUserLink = document.querySelector('#copyUserLink');
@@ -1917,7 +1917,8 @@ function OnfriendClickFunc(uid, nodeType){
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	clickOnUser.style.display = "flex";
-	(d=>{
+	
+	/*(d=>{
 		if(nodeType == NODE_TYPES.PROFILE){
 			OwnerSettings.style.display = "block";
 			OwnerSettings.addEventListener("click", d=>{
@@ -1929,7 +1930,7 @@ function OnfriendClickFunc(uid, nodeType){
 		}else{
 			OwnerSettings.style.display = "none";
 		}
-	})();
+	})();*/
 	/*if(nodeType == NODE_TYPES.PROFILE){
 		OwnerSettings.style.display = "block";
 		OwnerSettings.addEventListener("click", d=>{
