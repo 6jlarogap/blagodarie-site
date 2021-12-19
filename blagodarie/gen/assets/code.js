@@ -1922,7 +1922,7 @@ function OnfriendClickFunc(uid, nodeType){
 			OwnerSettings.style.display = "block";
 			OwnerSettings.addEventListener("click", d=>{
 				console.log(d);
-				console.log(d.source);
+				console.log(data);
 				console.log(d.target);
 				user_changed_info(uid);
 			});
