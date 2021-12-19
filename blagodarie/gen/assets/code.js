@@ -1930,7 +1930,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	let resp_owned_users = await myProfilesinfo();
 	for(let user in resp_owned_users){
 		if(nodeType == NODE_TYPES.PROFILE || uid == user.uuid){
-			console.log('d');
+			console.log(user);
 		}
 	}
 	//if(nodeType == NODE_TYPES.PROFILE || uid == resp_owned_users.uuid)
