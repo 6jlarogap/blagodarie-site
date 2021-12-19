@@ -1919,7 +1919,7 @@ function OnfriendClickFunc(uid, nodeType){
 	clickOnUser.style.display = "flex";
 	if(nodeType == NODE_TYPES.PROFILE){
 		OwnerSettings.style.display = "block";
-		OwnerSettings.addEventListener("click", function(){
+		OwnerSettings.addEventListener("click", d=>{
 			console.log(d);
 			user_changed_info(uid);
 		});
