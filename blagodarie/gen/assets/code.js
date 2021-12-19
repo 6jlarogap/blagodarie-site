@@ -1932,6 +1932,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		if(nodeType == NODE_TYPES.PROFILE || uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
 			OwnerSettings.addEventListener("click", function(){
+				console.log(resp_owned_users[i]);
 				user_changed_info(uid);
 			});
 			break;
