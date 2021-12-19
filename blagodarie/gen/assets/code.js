@@ -1928,7 +1928,12 @@ async function OnfriendClickFunc(uid, nodeType){
 	let UserMistrust = document.querySelector('#UserMistrust');
 	clickOnUser.style.display = "flex";
 	let resp_owned_users = await myProfilesinfo();
-	console.log(resp_owned_users);
+	for(let user in resp_owned_users){
+		if(nodeType == NODE_TYPES.PROFILE || uid == user.uuid){
+			console.log('d');
+		}
+	}
+	//if(nodeType == NODE_TYPES.PROFILE || uid == resp_owned_users.uuid)
 	/*(d=>{
 		if(nodeType == NODE_TYPES.PROFILE){
 			OwnerSettings.style.display = "block";
