@@ -1928,35 +1928,17 @@ async function OnfriendClickFunc(uid, nodeType){
 	let UserMistrust = document.querySelector('#UserMistrust');
 	clickOnUser.style.display = "flex";
 	let resp_owned_users = await myProfilesinfo();
-	for(let user in resp_owned_users){
-		if(nodeType == NODE_TYPES.PROFILE || uid == user.uuid){
-			console.log(user.uuid);
-			user_changed_info(uid);
-		}
-	}
-	//if(nodeType == NODE_TYPES.PROFILE || uid == resp_owned_users.uuid)
-	/*(d=>{
-		if(nodeType == NODE_TYPES.PROFILE){
+	for(let i=0; i<resp_owned_users.length; i++){
+		if(nodeType == NODE_TYPES.PROFILE || uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
-			OwnerSettings.addEventListener("click", d=>{
-				console.log(d);
-				console.log(data);
-				console.log(d.target);
+			OwnerSettings.addEventListener("click", function(){
 				user_changed_info(uid);
 			});
+			break;
 		}else{
 			OwnerSettings.style.display = "none";
 		}
-	})();*/
-	/*if(nodeType == NODE_TYPES.PROFILE){
-		OwnerSettings.style.display = "block";
-		OwnerSettings.addEventListener("click", d=>{
-			console.log(d);
-			user_changed_info(uid);
-		});
-	}else{
-	OwnerSettings.style.display = "none";
-	}*/
+	}
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
