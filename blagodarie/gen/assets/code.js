@@ -1910,7 +1910,7 @@ async function onNodeClick(nodeType, uuid, txt){
 	}
 }
 
-function myProfilesinfo() {
+async function myProfilesinfo() {
 		const response = await fetch(`${new_settapi}api/profile?number=2000`, {
 		method: "GET",
 		headers: {
