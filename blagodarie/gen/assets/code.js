@@ -2030,10 +2030,10 @@ function setGenders(item){
 
 let dynamic_id;
 
-
+let add_user_profile_container = document.querySelector('.add_user_profile_cont_fixed');
 //редактировать профиль
 function user_changed_info(id, last_name, first_name, middle_name, usr_photo, dob, dod, gender_val){
-	let add_user_profile_container = document.querySelector('.add_user_profile_cont_fixed');
+	
 	let add_user_profile_close_popup = document.querySelector('.add_user_profile_close_popup');
 	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
 	let user_profile_name_inp = document.querySelector('.user_profile_name_inp');
