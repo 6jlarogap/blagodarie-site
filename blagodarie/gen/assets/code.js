@@ -439,6 +439,19 @@ document.getElementById("wishes").addEventListener("click", async () => {
 	await rootFunctions('wishes')
 })
 
+document.getElementById("keys1").addEventListener("click", async () => {
+	await rootFunctions('keys')
+})
+
+document.getElementById("abilities1").addEventListener("click", async () => {
+	await rootFunctions('abilities')
+})
+
+document.getElementById("wishes1").addEventListener("click", async () => {
+	await rootFunctions('wishes')
+})
+
+
 // document.getElementById("invite").addEventListener("click", () => {
 // 	copyToClipboard(`${settings.url}?ref_uuid=${PROFILE.id}`)
 // })
