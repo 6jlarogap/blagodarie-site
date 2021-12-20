@@ -987,10 +987,9 @@ button.close:hover{
     width: 38%;
     
 }
-	.modal-backdrop.show {
-    z-index: 0!important;
-    opacity: 0!important;
-}
+	.modal-backdrop.fade.show{
+		display: none!important;
+	}
 	.nophoto_but {
     margin-left: 0;
     margin-top: 10px;

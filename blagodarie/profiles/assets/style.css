@@ -340,6 +340,9 @@ button.close {
 			margin-left: auto;
 			border-radius: 25%;
 }
+.modal-backdrop.fade.show{
+		display: none!important;
+	}
 #rootList {
 	min-width: 300px;
 }
