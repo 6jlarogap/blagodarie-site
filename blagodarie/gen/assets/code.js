@@ -599,6 +599,7 @@ my_family_profiles.addEventListener('click', function(){
 })
 
 let get_position = document.querySelector('#get_position');
+let get_position1 = document.querySelector('#get_position1');
 let mapid = document.querySelector('#mapid');
 let map_container = document.querySelector('.map_container');
 let mapid_close = document.querySelector('.mapid_close');
@@ -613,6 +614,9 @@ let long;
 
 //if(get_position){
 get_position.addEventListener('click', ()=>{
+	get_cur_position();
+});
+get_position1.addEventListener('click', ()=>{
 	get_cur_position();
 });
 //}
