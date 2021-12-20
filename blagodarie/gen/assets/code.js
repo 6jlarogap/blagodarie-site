@@ -539,12 +539,7 @@ async function setProfile() {
 	response_smat_map = map_users;
 	console.log(map_users);
 
-	if(response.users[0].uuid == userIdFrom && response.users[0].latitude!=null && response.users[0].longitude!=null){
-				get_position1.style.backgroundColor = '#6be86b';
-				get_position1.style.color = '#fff';
-				get_position1.style.borderColor = '#6be86b';
-				get_position1.style.boxShadow = '0px 0px 10px 9px rgba(142, 198, 60, 0.4)';
-	}
+	
 	
 	
 	
@@ -1968,7 +1963,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			OwnerSettings.addEventListener("click", function(){
 				console.log(resp_owned_users[i]);
 				clickOnUser.style.display = "none";
-				user_changed_info(uid, resp_owned_users[i].last_name, resp_owned_users[i].first_name, resp_owned_users[i].middle_name, resp_owned_users[i].photo, resp_owned_users[i].dob, resp_owned_users[i].dod, resp_owned_users[i].gender);
+				user_changed_info(uid, resp_owned_users[i].last_name, resp_owned_users[i].first_name, resp_owned_users[i].middle_name, resp_owned_users[i].photo, resp_owned_users[i].dob, resp_owned_users[i].dod, resp_owned_users[i].gender, resp_owned_users[i].latitude, resp_owned_users[i].longtitude);
 			
 			});
 			break;
@@ -2047,7 +2042,7 @@ let dynamic_id;
 
 let add_user_profile_container = document.querySelector('.add_user_profile_cont_fixed');
 //редактировать профиль
-function user_changed_info(id, last_name, first_name, middle_name, usr_photo, dob, dod, gender_val){
+function user_changed_info(id, last_name, first_name, middle_name, usr_photo, dob, dod, gender_val, user_latitude, user_longtitude){
 	
 	let add_user_profile_close_popup = document.querySelector('.add_user_profile_close_popup');
 	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
@@ -2129,7 +2124,15 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   			this.value = this.value[0].toUpperCase() + this.value.slice(1);
 		});
 	
+	//Проверка на установленое местоположение
 	
+	
+	if(user_latitude!=null && user_longtitude!=null){
+				get_position1.style.backgroundColor = '#6be86b';
+				get_position1.style.color = '#fff';
+				get_position1.style.borderColor = '#6be86b';
+				get_position1.style.boxShadow = '0px 0px 10px 9px rgba(142, 198, 60, 0.4)';
+	}
 	
 	//обрезка файлов
 
