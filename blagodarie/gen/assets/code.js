@@ -611,11 +611,11 @@ let mapid_whereI = document.querySelector('.mapid_whereI');
 let lati;
 let long;
 
-if(get_position){
+//if(get_position){
 get_position.addEventListener('click', ()=>{
 	get_cur_position();
 });
-}
+//}
 
 function get_cur_position(){
   navigator.geolocation.getCurrentPosition(
