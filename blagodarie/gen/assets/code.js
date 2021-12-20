@@ -2720,7 +2720,7 @@ async function deleteElement(uuid, apiurl) {
 }
 
 async function getElements(apiurl) {
-	const response = await fetch(`${settings.api}api/${apiurl}?uuid=${add_user_profile_cont_fixed.style.display == "block" ? dynamic_id : getCookie("user_uuid")/*getCookie("user_uuid")*/}`, {
+	const response = await fetch(`${settings.api}api/${apiurl}?uuid=${add_user_profile_container.style.display == "block" ? dynamic_id : getCookie("user_uuid")/*getCookie("user_uuid")*/}`, {
 		method: "GET"
 	}).then(data => data.json())
 	return response
