@@ -1934,6 +1934,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			OwnerSettings.addEventListener("click", function(){
 				console.log(resp_owned_users[i]);
 				user_changed_info(uid, resp_owned_users[i].last_name, resp_owned_users[i].first_name, resp_owned_users[i].middle_name, resp_owned_users[i].photo, resp_owned_users[i].dob, resp_owned_users[i].dod, resp_owned_users[i].gender);
+				clickOnUser.style.display = "none";
 			});
 			break;
 		}else{
