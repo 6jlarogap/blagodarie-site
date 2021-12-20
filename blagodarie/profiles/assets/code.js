@@ -63,7 +63,7 @@ function setGenders(item){
 	value_gender = item.value;
 }
 
-let dynamic_id;
+let dynamic_id; 
 
 //редактировать профиль
 function user_changed_info(id, last_name, first_name, middle_name, usr_photo, dob, dod, gender_val){
