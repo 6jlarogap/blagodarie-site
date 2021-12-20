@@ -321,6 +321,7 @@ addElement.addEventListener("click", async () => {
 		fetchSettings = {
 			apiurl: "",
 			body: {
+				user_uuid: dynamic_id,
 				value: elementAddInput.value,
 				type_id: elementAddInput.getAttribute("keytype")
 			}
@@ -336,6 +337,7 @@ addElement.addEventListener("click", async () => {
 		fetchSettings = {
 			apiurl: "addorupdatewish",
 			body: {
+				"user_uuid": dynamic_id,
 				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
 				"text": elementAddInput.value,
 				"last_edit": new Date().getTime()
@@ -346,6 +348,7 @@ addElement.addEventListener("click", async () => {
 		fetchSettings = {
 			apiurl: "addorupdateability",
 			body: {
+				"user_uuid": dynamic_id,
 				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
 				"text": elementAddInput.value,
 				"last_edit": new Date().getTime()
@@ -362,7 +365,10 @@ addElement.addEventListener("click", async () => {
 			},
 			body:  JSON.stringify(fetchSettings.body)
 		})
-		window.location.reload();
+		console.log(fetchSettings);
+		//window.location.reload();
+		rootDialog.style.display = 'none';
+		addElementDialog.style.display = "none";
 	} else {
 		elementAddInput.placeholder = "Введите что-то!"
 	}
@@ -2694,7 +2700,9 @@ async function rootFunctions(category) {
 		[...document.getElementsByClassName("deleteWish")].forEach(button => {
 			button.addEventListener("click", async () => {
 				await deleteElement(button.parentElement.id, categoryObj.delete);
-				window.location.reload();
+				//window.location.reload();
+				rootDialog.style.display = 'none';
+				addElementDialog.style.display = "none";
 			})
 		});
 
@@ -2712,7 +2720,7 @@ async function deleteElement(uuid, apiurl) {
 }
 
 async function getElements(apiurl) {
-	const response = await fetch(`${settings.api}api/${apiurl}?uuid=${getCookie("user_uuid")}`, {
+	const response = await fetch(`${settings.api}api/${apiurl}?uuid=${add_user_profile_cont_fixed.style.display == "block" ? dynamic_id : getCookie("user_uuid")/*getCookie("user_uuid")*/}`, {
 		method: "GET"
 	}).then(data => data.json())
 	return response
