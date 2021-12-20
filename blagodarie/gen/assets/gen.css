@@ -310,7 +310,9 @@ text{
 		#keyTypesBtns {
 			margin-bottom: 3px;
 		}
-
+		.modal-backdrop.show{
+			display: none!important;
+		}
 		.keytype img {
 			width: 25px;
 			height: 25px;
@@ -987,7 +989,7 @@ button.close:hover{
     width: 38%;
     
 }
-	.modal-backdrop.fade.show{
+	.modal-backdrop.show{
 		display: none!important;
 	}
 	.nophoto_but {
