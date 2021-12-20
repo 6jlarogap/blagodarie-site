@@ -2003,7 +2003,7 @@ async function OnfriendClickFunc(uid, nodeType){
 }
 
 
-let userIdFrom; 
+
 let value_gender;
 function setGenders(item){
 	value_gender = item.value;
