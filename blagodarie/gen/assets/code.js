@@ -2042,7 +2042,7 @@ let dynamic_id;
 
 let add_user_profile_container = document.querySelector('.add_user_profile_cont_fixed');
 //редактировать профиль
-function user_changed_info(id, last_name, first_name, middle_name, usr_photo, dob, dod, gender_val, user_latitude, user_longtitude){
+function user_changed_info(id, last_name, first_name, middle_name, usr_photo, dob, dod, gender_val, us_latitude, us_longtitude){
 	
 	let add_user_profile_close_popup = document.querySelector('.add_user_profile_close_popup');
 	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
@@ -2127,7 +2127,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	//Проверка на установленое местоположение
 	
 	
-	if(user_latitude!=null && user_longtitude!=null){
+	if(us_latitude!=null && us_longtitude!=null){
 				get_position1.style.backgroundColor = '#6be86b';
 				get_position1.style.color = '#fff';
 				get_position1.style.borderColor = '#6be86b';
