@@ -503,7 +503,7 @@ function deleteCookie(subdomain,...Cookies) {
 let map_users = [];
 let response_smat_map;
 async function setProfile() {
-	const response = await fetch(`${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+	/*const response = await fetch(`${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}`*//*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*//*, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
@@ -537,7 +537,54 @@ async function setProfile() {
 		user_uuid: response.users[0].uuid
 	} );
 	response_smat_map = map_users;
-	console.log(map_users);
+	console.log(map_users);*/
+	var form = new FormData();
+	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
+	/*form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null}`);	
+	form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);*/
+	var settings = {
+  		"url": `${new_settapi}api/profile?number=2000`,
+  		"method": "GET",
+  		"timeout": 0,
+  		"headers": {
+  		  "Authorization": `Token ${getCookie("auth_token")}`
+  		},
+  		"processData": false,
+  		"mimeType": "multipart/form-data",
+  		"contentType": false,
+  		"data": form
+	};
+
+	$.ajax(settings).done(function (response) {
+		let first_resp = response;
+		let pars2 = JSON.parse(first_resp);
+		
+		for(let i=0;i<pars2.length;i++){
+			if(pars2[i].uuid == userIdFrom){
+				map_users.push({
+					user_photo: pars2[i].photo,
+					user_name: pars2[i].first_name,
+					user_lastname: pars2[i].last_name,
+					user_latitude: pars2[i].latitude,
+					user_longitude: pars2[i].longitude,
+					user_ability: pars2[i].ability,
+					user_uuid: pars2[i].uuid
+				} );
+				console.log(map_users);
+			}
+			if(pars2[i].uuid == userIdFrom && pars2[i].latitude!=null && pars2[i].longitude!=null){
+				get_position.style.backgroundColor = '#6be86b';
+				get_position.style.color = '#fff';
+				get_position.style.borderColor = '#6be86b';
+				get_position.style.boxShadow = '0px 0px 10px 9px rgba(142, 198, 60, 0.4)';
+			}
+		}
+		
+		console.log(map_users);
+  		response_smat_map = map_users;
+});
+	
+	
 }
 
 //telegram auth
