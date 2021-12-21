@@ -1987,19 +1987,31 @@ async function OnfriendClickFunc(uid, nodeType){
 				if (isTrust) {
 					await updateTrust(5, uid);
 					d3.select("svg").remove();
+					var svg = d3.select("#main").attr("viewBox", "0 0 " + w + " " + h )
+						.attr("preserveAspectRatio", "xMidYMid meet");
+					var width = +svg.node().getBoundingClientRect().width;
+					var height = +svg.node().getBoundingClientRect().height;
 					await getApiUrl()
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
 					d3.select("svg").remove();
+					var svg = d3.select("#main").attr("viewBox", "0 0 " + w + " " + h )
+						.attr("preserveAspectRatio", "xMidYMid meet");
+					var width = +svg.node().getBoundingClientRect().width;
+					var height = +svg.node().getBoundingClientRect().height;
 					await getApiUrl()
 				}
 			}
 			else {
 				await updateTrust(5, uid);
 				d3.select("svg").remove();
-				await getApiUrl()
+				var svg = d3.select("#main").attr("viewBox", "0 0 " + w + " " + h )
+						.attr("preserveAspectRatio", "xMidYMid meet");
+					var width = +svg.node().getBoundingClientRect().width;
+					var height = +svg.node().getBoundingClientRect().height;
+					await getApiUrl()
 			}
 			//window.location.reload();
 		}
