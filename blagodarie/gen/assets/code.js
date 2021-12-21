@@ -917,7 +917,7 @@ const response = await fetch(`${apiUrl}`, {
 		});
 	}
 
-	if (userIdFrom && !(userIdFrom == PROFILE.id) && !window.location.href.includes(',')) {
+	if (userIdFrom && !(userIdFrom == PROFILE.id) && !window.location.href.includes('%2C')) {
 		isConnection = data.trust_connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
 //		console.log(isConnection)
 //		console.log(data);
