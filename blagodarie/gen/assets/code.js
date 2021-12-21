@@ -1955,7 +1955,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	let OwnerSettings = document.querySelector('#OwnerSettings');
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
-	//let dataResponse = d3view();
+	let ShortRoad = document.querySelector('#ShortRoad');
 	let isConn;
 	let isDataTrust;
 	let isDataMistrust;
@@ -1990,6 +1990,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
 	UserTrust.style.display = "block";
 	UserMistrust.style.display = "block";
+	ShortRoad.style.display = "block";
 	if (isAuth) {
 			if (isConn) {
 				if (isDataTrust) {
@@ -2073,9 +2074,15 @@ async function OnfriendClickFunc(uid, nodeType){
 			authDialog.style.display = "flex";
 		}
 	});
+		
+	ShortRoad.addEventListener('click', function(){
+		window.location.href = `${window.location.origin}${window.location.pathname}?id=${url.searchParams.has('id') ? url.searchParams.get('id') : getCookie('user_uuid') + ', ' + uid}`;
+	});
+		
 }else{
 	UserTrust.style.display = "none";
 	UserMistrust.style.display = "none";
+	ShortRoad.style.display = "none";
 }
 }
 
