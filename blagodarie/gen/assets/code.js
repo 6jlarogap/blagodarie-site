@@ -808,7 +808,7 @@ var isTrust;
 let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
-
+let dataResponse;
 async function d3view(){
 //d3.json(apiUrl)
 const response = await fetch(`${apiUrl}`, {
@@ -817,7 +817,7 @@ const response = await fetch(`${apiUrl}`, {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
-	
+	dataResponse = response;
 	data = response;
 	console.log(data);
 	if (isAuth) {
@@ -1264,7 +1264,7 @@ const response = await fetch(`${apiUrl}`, {
 	
 	initializeDisplay();
 	initializeSimulation();
-	return data;
+	
 }
 
 	
@@ -1955,7 +1955,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	let OwnerSettings = document.querySelector('#OwnerSettings');
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
-	let dataResponse = d3view();
+	//let dataResponse = d3view();
 	let isConn;
 	let isDataTrust;
 	if(uid != getCookie('user_uuid')){
