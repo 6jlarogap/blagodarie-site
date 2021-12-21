@@ -1987,19 +1987,19 @@ async function OnfriendClickFunc(uid, nodeType){
 				if (isTrust) {
 					await updateTrust(5, uid);
 					d3.select("svg").remove();
-					await d3view();
+					await getApiUrl()
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
 					d3.select("svg").remove();
-					await d3view();
+					await getApiUrl()
 				}
 			}
 			else {
 				await updateTrust(5, uid);
 				d3.select("svg").remove();
-				await d3view();
+				await getApiUrl()
 			}
 			//window.location.reload();
 		}
