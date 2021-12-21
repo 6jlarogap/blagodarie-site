@@ -1845,19 +1845,19 @@ async function onNodeClick(nodeType, uuid, txt){
 		if (isAuth) {
 			if (isConnection) {
 				if (isTrust) {
-					await updateTrust(5, uid);
+					await updateTrust(5, uuid);
 					alert('Благодарность установлена');
 					window.location.reload();
 				}
 				else {
-					await updateTrust(4, uid);
-					await updateTrust(5, uid);
+					await updateTrust(4, uuid);
+					await updateTrust(5, uuid);
 					alert('Доверие установлено');
 					window.location.reload();
 				}
 			}
 			else {
-				await updateTrust(5, uid);
+				await updateTrust(5, uuid);
 				alert('Доверие установлено');
 				window.location.reload();
 			}
@@ -1873,15 +1873,15 @@ async function onNodeClick(nodeType, uuid, txt){
 		if (isAuth) {
 			if (isConnection) {
 				if (!isTrust) {
-					await updateTrust(4, uid);		
+					await updateTrust(4, uuid);		
 				}
 				else {
-					await updateTrust(4, uid);
-					await updateTrust(2, uid);
+					await updateTrust(4, uuid);
+					await updateTrust(2, uuid);
 				}
 			}
 			else {
-				await updateTrust(2, uid);
+				await updateTrust(2, uuid);
 			}
 			//window.location.reload();
 		}
