@@ -1971,7 +1971,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	clickOnUser.style.display = "flex";
 	let resp_owned_users = await myProfilesinfo();
 	for(let i=0; i<resp_owned_users.length; i++){
-		if(nodeType == NODE_TYPES.PROFILE || uid == resp_owned_users[i].uuid){
+		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
 			OwnerSettings.addEventListener("click", function(){
 				console.log(resp_owned_users[i]);
@@ -2713,7 +2713,7 @@ dialog_father_save.addEventListener('click', ()=>{
 				add_user_profile_cont_fixed.style.display = "none";
 			}
 		}
-	})
+	});
 }
 
 
