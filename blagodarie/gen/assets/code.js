@@ -1986,14 +1986,17 @@ async function OnfriendClickFunc(uid, nodeType){
 			if (isConnection) {
 				if (isTrust) {
 					await updateTrust(5, uid);
+					d3.select("svg").remove();
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
+					d3.select("svg").remove();
 				}
 			}
 			else {
 				await updateTrust(5, uid);
+				d3.select("svg").remove();
 			}
 			//window.location.reload();
 		}
