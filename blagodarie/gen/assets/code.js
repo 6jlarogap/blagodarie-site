@@ -1977,8 +1977,9 @@ async function OnfriendClickFunc(uid, nodeType){
 				console.log(resp_owned_users[i]);
 				clickOnUser.style.display = "none";
 				user_changed_info(uid, resp_owned_users[i].last_name, resp_owned_users[i].first_name, resp_owned_users[i].middle_name, resp_owned_users[i].photo, resp_owned_users[i].dob, resp_owned_users[i].dod, resp_owned_users[i].gender, resp_owned_users[i].latitude, resp_owned_users[i].longitude);
-			return
+			
 			});
+			return;
 			break;
 		}else{
 			OwnerSettings.style.display = "none";
