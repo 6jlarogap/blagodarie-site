@@ -1986,23 +1986,17 @@ async function OnfriendClickFunc(uid, nodeType){
 			if (isConnection) {
 				if (isTrust) {
 					await updateTrust(5, uid);
-					svg.selectAll("*").remove();
-					await initDefs();
-					await getApiUrl()
+					alert('Благодарность установлена');
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
-					svg.selectAll("*").remove();
-					await initDefs();
-					await getApiUrl()
+					alert('Доверие установлено');
 				}
 			}
 			else {
 				await updateTrust(5, uid);
-				svg.selectAll("*").remove();
-				await initDefs();
-				await getApiUrl()
+				alert('Доверие установлено');
 			}
 			//window.location.reload();
 		}
