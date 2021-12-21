@@ -2051,16 +2051,19 @@ async function OnfriendClickFunc(uid, nodeType){
 				if (!isDataTrust) {
 					await updateTrust(4, uid);		
 					alert('Недоверие установлено');
+					window.location.reload();
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(2, uid);
 					alert('Недоверие установлено');
+					window.location.reload();
 				}
 			}
 			else {
 				await updateTrust(2, uid);
 				alert('Недоверие установлено');
+				window.location.reload();
 			}
 			//window.location.reload();
 		}
