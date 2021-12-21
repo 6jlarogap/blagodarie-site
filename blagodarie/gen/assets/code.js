@@ -795,6 +795,10 @@ async function getApiUrl(){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
 		await d3view();
+	}else if(url.searchParams.has('sl')){
+			apiUrl = `${settings.api}api/profile_genesis?id=${url.searchParams.get('id')}`;
+			console.log(apiUrl)
+			await d3view(); 
 	}else{
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
 		await d3view();
@@ -2076,7 +2080,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	});
 		
 	ShortRoad.addEventListener('click', function(){
-		window.location.href = `${window.location.origin}${window.location.pathname}?id=${url.searchParams.has('id') ? url.searchParams.get('id') : getCookie('user_uuid') + ', ' + uid}`;
+		window.location.href = `${window.location.origin}${window.location.pathname}?id=${url.searchParams.has('id') ? url.searchParams.get('id') : getCookie('user_uuid') + ',' + uid}&sl=true`;
 	});
 		
 }else{
