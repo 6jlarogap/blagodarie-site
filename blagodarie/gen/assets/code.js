@@ -1981,22 +1981,33 @@ async function OnfriendClickFunc(uid, nodeType){
 	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
 	UserTrust.style.display = "block";
 	UserMistrust.style.display = "block";
+		
+	if (isAuth) {
+			if (isConnection) {
+				if (isTrust) {
+				}
+			}
+	}
+		
 	UserTrust.addEventListener("click", async function () {
 		if (isAuth) {
 			if (isConnection) {
 				if (isTrust) {
 					await updateTrust(5, uid);
 					alert('Благодарность установлена');
+					window.location.reload();
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
 					alert('Доверие установлено');
+					window.location.reload();
 				}
 			}
 			else {
 				await updateTrust(5, uid);
 				alert('Доверие установлено');
+				window.location.reload();
 			}
 			//window.location.reload();
 		}
