@@ -1958,9 +1958,11 @@ async function OnfriendClickFunc(uid, nodeType){
 	//let dataResponse = d3view();
 	let isConn;
 	let isDataTrust;
+	let isDataMistrust;
 	if(uid != getCookie('user_uuid')){
 	isConn = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid);
-	isConn ? isDataTrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust) : null;
+	isConn ? isDataTrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==true) : null;
+	isConn ? isDataMistrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==false) : null;
 	}
 	clickOnUser.style.display = "flex";
 	let resp_owned_users = await myProfilesinfo();
@@ -1988,7 +1990,32 @@ async function OnfriendClickFunc(uid, nodeType){
 	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
 	UserTrust.style.display = "block";
 	UserMistrust.style.display = "block";
-		
+	if (isAuth) {
+			if (isConn) {
+				if (isDataTrust) {
+					UserTrust.style.display = "block";
+					UserTrust.innerHTML = "Благодарить";
+					UserMistrust.style.display = "block";
+					UserMistrust.innerHTML = "Недоверие";
+				}else if(isDataMistrust){
+					UserTrust.style.display = "block";
+					UserTrust.innerHTML = "Доверие";
+					UserMistrust.style.display = "none";
+				}
+				else {
+					UserTrust.style.display = "block";
+					UserTrust.innerHTML = "Доверие";
+					UserMistrust.style.display = "block";
+					UserMistrust.innerHTML = "Недоверие";
+				}
+			}
+			else {
+				UserTrust.style.display = "block";
+					UserTrust.innerHTML = "Доверие";
+					UserMistrust.style.display = "block";
+					UserMistrust.innerHTML = "Недоверие";
+			}
+		}	
 		
 	UserTrust.addEventListener("click", async function () {
 		if (isAuth) {
@@ -2023,14 +2050,17 @@ async function OnfriendClickFunc(uid, nodeType){
 			if (isConn) {
 				if (!isDataTrust) {
 					await updateTrust(4, uid);		
+					alert('Недоверие установлено');
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(2, uid);
+					alert('Недоверие установлено');
 				}
 			}
 			else {
 				await updateTrust(2, uid);
+				alert('Недоверие установлено');
 			}
 			//window.location.reload();
 		}
