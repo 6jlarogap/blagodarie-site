@@ -2088,6 +2088,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	UserMistrust.style.display = "none";
 	ShortRoad.style.display = "none";
 }
+	return
 }
 
 
