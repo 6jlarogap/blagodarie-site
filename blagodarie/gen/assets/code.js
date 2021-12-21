@@ -796,7 +796,7 @@ async function getApiUrl(){
 		console.log(apiUrl)
 		await d3view();
 	}else if(url.searchParams.has('sl')){
-			apiUrl = `${settings.api}api/profile_genesis?id=${url.searchParams.get('id')}`;
+			apiUrl = `${settings.api}api/profile?id=${url.searchParams.get('id')}`;
 			console.log(apiUrl)
 			await d3view(); 
 	}else{
