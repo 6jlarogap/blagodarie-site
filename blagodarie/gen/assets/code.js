@@ -1834,6 +1834,67 @@ async function onNodeClick(nodeType, uuid, txt){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.FRIEND) {
 			OnfriendClickFunc(uuid, nodeType);/*window.location.href = `${settings.url}gen?id=` + uuid;*/
+		let UserTrust = document.querySelector('#UserTrust');
+		let UserMistrust = document.querySelector('#UserMistrust');
+		if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
+	UserTrust.style.display = "block";
+	UserMistrust.style.display = "block";
+		
+		
+	UserTrust.addEventListener("click", async function () {
+		if (isAuth) {
+			if (isConnection) {
+				if (isTrust) {
+					await updateTrust(5, uid);
+					alert('Благодарность установлена');
+					window.location.reload();
+				}
+				else {
+					await updateTrust(4, uid);
+					await updateTrust(5, uid);
+					alert('Доверие установлено');
+					window.location.reload();
+				}
+			}
+			else {
+				await updateTrust(5, uid);
+				alert('Доверие установлено');
+				window.location.reload();
+			}
+			//window.location.reload();
+		}
+		else {
+			deleteCookie("","set_mistrust");
+			document.cookie = `set_trust=${userIdFrom}; path=/;`;
+			authDialog.style.display = "flex";
+		}
+	});
+	UserMistrust.addEventListener("click", async function () {
+		if (isAuth) {
+			if (isConnection) {
+				if (!isTrust) {
+					await updateTrust(4, uid);		
+				}
+				else {
+					await updateTrust(4, uid);
+					await updateTrust(2, uid);
+				}
+			}
+			else {
+				await updateTrust(2, uid);
+			}
+			//window.location.reload();
+		}
+		else {
+			deleteCookie("","set_trust");
+			document.cookie = `set_mistrust=${userIdFrom}; path=/;`;
+			authDialog.style.display = "flex";
+		}
+	});
+}else{
+	UserTrust.style.display = "none";
+	UserMistrust.style.display = "none";
+}
 	} else if (nodeType == NODE_TYPES.PROFILE) {
 			OnfriendClickFunc(uuid, nodeType);/*window.location.href = `${settings.url}gen?id=` + uuid;*/
 	}else if (nodeType == NODE_TYPES.USER){
@@ -1953,8 +2014,8 @@ async function OnfriendClickFunc(uid, nodeType){
 	let href_onUser = document.querySelector('#href_onUser'); 
 	let copyUserLink = document.querySelector('#copyUserLink');
 	let OwnerSettings = document.querySelector('#OwnerSettings');
-	let UserTrust = document.querySelector('#UserTrust');
-	let UserMistrust = document.querySelector('#UserMistrust');
+	//let UserTrust = document.querySelector('#UserTrust');
+	//let UserMistrust = document.querySelector('#UserMistrust');
 	clickOnUser.style.display = "flex";
 	let resp_owned_users = await myProfilesinfo();
 	for(let i=0; i<resp_owned_users.length; i++){
@@ -1982,14 +2043,8 @@ async function OnfriendClickFunc(uid, nodeType){
 	UserTrust.style.display = "block";
 	UserMistrust.style.display = "block";
 		
-	if (isAuth) {
-			if (isConnection) {
-				if (isTrust) {
-				}
-			}
-	}
 		
-	UserTrust.addEventListener("click", async function () {
+/*	UserTrust.addEventListener("click", async function () {
 		if (isAuth) {
 			if (isConnection) {
 				if (isTrust) {
@@ -2038,7 +2093,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			document.cookie = `set_mistrust=${userIdFrom}; path=/;`;
 			authDialog.style.display = "flex";
 		}
-	});
+	});*/
 }else{
 	UserTrust.style.display = "none";
 	UserMistrust.style.display = "none";
