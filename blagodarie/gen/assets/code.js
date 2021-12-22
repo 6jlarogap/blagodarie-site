@@ -1979,7 +1979,6 @@ async function OnfriendClickFunc(uid, nodeType){
 				user_changed_info(uid, resp_owned_users[i].last_name, resp_owned_users[i].first_name, resp_owned_users[i].middle_name, resp_owned_users[i].photo, resp_owned_users[i].dob, resp_owned_users[i].dod, resp_owned_users[i].gender, resp_owned_users[i].latitude, resp_owned_users[i].longitude);
 			
 			});
-			return;
 			break;
 		}else{
 			OwnerSettings.style.display = "none";
@@ -2706,13 +2705,15 @@ dialog_father_save.addEventListener('click', ()=>{
 		}
 	})*/
 	add_user_profile_close_popup.addEventListener('click', function(){
-		let add_user_profile_cont_fixed = document.querySelector('.add_user_profile_cont_fixed');
+		//let add_user_profile_cont_fixed = document.querySelector('.add_user_profile_cont_fixed');
 		if(user_profile_surname_inp.value == last_name && user_profile_name_inp.value == first_name && user_profile_middlename_inp.value == middle_name){
-			add_user_profile_cont_fixed.style.display = "none";
+			//add_user_profile_cont_fixed.style.display = "none";
+			window.location.reload();
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
 			if(user_profile_not_save == true){
-				add_user_profile_cont_fixed.style.display = "none";
+				//add_user_profile_cont_fixed.style.display = "none";
+				window.location.reload();
 			}
 		}
 	});
