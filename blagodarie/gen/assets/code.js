@@ -2094,7 +2094,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	
 	await RenderSettings();
 	clickOnUser.style.display = "flex";
-	
+	return false
 	
 }
 
