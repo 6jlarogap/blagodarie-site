@@ -1968,8 +1968,9 @@ async function OnfriendClickFunc(uid, nodeType){
 	isConn ? isDataTrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==true) : null;
 	isConn ? isDataMistrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==false) : null;
 	}
-	clickOnUser.style.display = "flex";
-	let resp_owned_users = await myProfilesinfo();
+	//clickOnUser.style.display = "flex";
+	function RenderSettings(){
+		let resp_owned_users = await myProfilesinfo();
 	for(let i=0; i<resp_owned_users.length; i++){
 		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
@@ -2088,6 +2089,12 @@ async function OnfriendClickFunc(uid, nodeType){
 	UserMistrust.style.display = "none";
 	ShortRoad.style.display = "none";
 }
+	}
+	
+	
+	await RenderSettings();
+	clickOnUser.style.display = "flex";
+	
 	
 }
 
