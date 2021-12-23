@@ -1539,15 +1539,7 @@ function initializeDisplay() {
 		.attr('class', 'svg_elem');
 		
 	
-	/*
-	else if (nodeType == NODE_TYPES.FRIEND) {
-			OnfriendClickFunc(uuid, nodeType);
-	} else if (nodeType == NODE_TYPES.PROFILE) {
-			OnfriendClickFunc(uuid, nodeType);
-	}else if (nodeType == NODE_TYPES.USER){
-		OnfriendClickFunc(uuid, nodeType);
-	}
-	*/
+	
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
@@ -1853,13 +1845,13 @@ var tgIframe;
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
 		copyToClipboard(txt);
-	} else if (nodeType == NODE_TYPES.FRIEND) {
-			OnfriendClickFunc(uuid, nodeType);/*window.location.href = `${settings.url}gen?id=` + uuid;*/
+	} /*else if (nodeType == NODE_TYPES.FRIEND) {
+			OnfriendClickFunc(uuid, nodeType);
 	} else if (nodeType == NODE_TYPES.PROFILE) {
-			OnfriendClickFunc(uuid, nodeType);/*window.location.href = `${settings.url}gen?id=` + uuid;*/
+			OnfriendClickFunc(uuid, nodeType);
 	}else if (nodeType == NODE_TYPES.USER){
 		OnfriendClickFunc(uuid, nodeType);
-	}
+	}*/
 	else if (nodeType == NODE_TYPES.AUTH) {
 		authDialog.style.display = "flex";
     tgIframe = document.getElementById("telegram-login-BlagodarieAuthBot");
