@@ -1969,7 +1969,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	isConn ? isDataMistrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==false) : null;
 	}
 	//clickOnUser.style.display = "flex";
-	function RenderSettings(){
+	async function RenderSettings(){
 		let resp_owned_users = await myProfilesinfo();
 	for(let i=0; i<resp_owned_users.length; i++){
 		if(uid == resp_owned_users[i].uuid){
