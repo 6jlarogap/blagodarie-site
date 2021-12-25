@@ -2011,41 +2011,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		
 	}
 	
-	
 		
-	
-	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
-	UserTrust.style.display = "block";
-	UserMistrust.style.display = "block";
-	ShortRoad.style.display = "block";
-	if (isAuth) {
-			if (isConn) {
-				if (isDataTrust) {
-					UserTrust.style.display = "block";
-					UserTrust.innerHTML = "Благодарить";
-					UserMistrust.style.display = "block";
-					UserMistrust.innerHTML = "Недоверие";
-				}else if(isDataMistrust){
-					UserTrust.style.display = "block";
-					UserTrust.innerHTML = "Доверие";
-					UserMistrust.style.display = "none";
-				}
-				else {
-					UserTrust.style.display = "block";
-					UserTrust.innerHTML = "Доверие";
-					UserMistrust.style.display = "block";
-					UserMistrust.innerHTML = "Недоверие";
-				}
-			}
-			else {
-				UserTrust.style.display = "block";
-					UserTrust.innerHTML = "Доверие";
-					UserMistrust.style.display = "block";
-					UserMistrust.innerHTML = "Недоверие";
-			}
-		}	
-	UserTrust.addEventListener("click", UserTrustClick);
-	UserMistrust.addEventListener("click", UserMistrustClick);
 	async function UserTrustClick(){
 		if (isAuth) {
 			if (isConn) {
@@ -2102,13 +2068,44 @@ async function OnfriendClickFunc(uid, nodeType){
 			authDialog.style.display = "flex";
 		}
 	}
+	
 		
-	context_menu_close.addEventListener("click", function(){
-		copyUserLink.removeEventListener('click', UserLink);
-		UserTrust.removeEventListener("click", UserTrustClick);
-		UserMistrust.removeEventListener("click", UserMistrustClick);
-		clickOnUser.style.display = "none";
-	})
+	
+	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
+	UserTrust.style.display = "block";
+	UserMistrust.style.display = "block";
+	ShortRoad.style.display = "block";
+	if (isAuth) {
+			if (isConn) {
+				if (isDataTrust) {
+					UserTrust.style.display = "block";
+					UserTrust.innerHTML = "Благодарить";
+					UserMistrust.style.display = "block";
+					UserMistrust.innerHTML = "Недоверие";
+				}else if(isDataMistrust){
+					UserTrust.style.display = "block";
+					UserTrust.innerHTML = "Доверие";
+					UserMistrust.style.display = "none";
+				}
+				else {
+					UserTrust.style.display = "block";
+					UserTrust.innerHTML = "Доверие";
+					UserMistrust.style.display = "block";
+					UserMistrust.innerHTML = "Недоверие";
+				}
+			}
+			else {
+				UserTrust.style.display = "block";
+					UserTrust.innerHTML = "Доверие";
+					UserMistrust.style.display = "block";
+					UserMistrust.innerHTML = "Недоверие";
+			}
+		}	
+	UserTrust.addEventListener("click", UserTrustClick);
+	UserMistrust.addEventListener("click", UserMistrustClick);
+	
+		
+	
 		
 	ShortRoad.addEventListener('click', function(){
 		window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
@@ -2120,6 +2117,13 @@ async function OnfriendClickFunc(uid, nodeType){
 	ShortRoad.style.display = "none";
 }
 	}
+	
+	context_menu_close.addEventListener("click", function(){
+		copyUserLink.removeEventListener('click', UserLink);
+		UserTrust.removeEventListener("click", UserTrustClick);
+		UserMistrust.removeEventListener("click", UserMistrustClick);
+		clickOnUser.style.display = "none";
+	})
 	
 	
 	await RenderSettings();
