@@ -18,8 +18,8 @@ const NODE_TYPES = Object.freeze({
 	"FILTER": "filter",
 	"FILTERED": "filtered",
 	"INVITE": "invite",
-	"MAPS": "maps",
-	"PLUS": "plus"
+	"MAPS": "maps"
+	//"PLUS": "plus"
 });
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const KEYS_ROOT_ID = "KEYS_ROOT";
@@ -35,7 +35,7 @@ const HOME_ID = "HOME_ROOT";
 const GENESIS_ID = "GENESIS_ROOT";
 const MAPS_ID = "MAPS_ROOT";
 const INVITE_ID = "INVITE_ROOT";
-const PLUS_ID = "PLUS_ROOT";
+//const PLUS_ID = "PLUS_ROOT";
 const PROFILE = {
 	id: "",
 	text: "",
@@ -1174,14 +1174,14 @@ d3.json(apiUrl)
 		image: `${settings.url}images/map_button.png`,
 		nodeType: NODE_TYPES.MAPS
 	});
-	if(!url.searchParams.has('id') || userIdFrom == getCookie('user_uuid')){
+	/*if(!url.searchParams.has('id') || userIdFrom == getCookie('user_uuid')){
 	nodes.push({
 		id: PLUS_ID,
 		plus_text: "+",
 		image: `${settings.url}images/plused_icon.png`,
 		nodeType: NODE_TYPES.PLUS
 	});
-	}
+	}*/
 	//добавить вершину filter
 	nodes.push({
 		id: FILTER_ID,
@@ -1400,10 +1400,10 @@ d3.json(apiUrl)
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
 			d.fy = height / 2 - 300;
 			break;
-		case PLUS_ID:
+		/*case PLUS_ID:
 			d.fx = width<900 ? width/2+50 : width/2+80;
 			d.fy = height/2;
-			break;
+			break;*/
 		case TRUST_ID:
 			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
@@ -1595,10 +1595,10 @@ drag = simulation => {
 		if (!event.active) simulation.alphaTarget(0);
 		//d.fx = null;
 		//d.fy = null;
-		if(d.nodeType == NODE_TYPES.PLUS){
+		/*if(d.nodeType == NODE_TYPES.PLUS){
 			d.fx = width<900 ? width/2+50 : width/2+80;
 			d.fy = height/2;
-		}
+		}*/
 		
 	}
 
@@ -1764,14 +1764,14 @@ function initializeDisplay() {
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
 		.text(d => (d.text));
 	
-	node.append("text")
+	/*node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.PLUS ? 0 : 0))
 		.attr("font-size", width<900 ? '15' : "23")
 		.attr("class", d => (d.nodeType == NODE_TYPES.PLUS ? "friendName" : "friendName"))
 		.attr('dominant-baseline', "central")
 		.attr("font-weight", 900)
 		.attr("fill", "#fff")
-		.text(d => (d.plus_text));
+		.text(d => (d.plus_text));*/
 	  
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47))
@@ -2076,11 +2076,11 @@ async function onNodeClick(nodeType, uuid, txt){
 		window.history.pushState(null, null, url.search);
 		window.location.href = url.href;
 		
-	}else if(nodeType == NODE_TYPES.PLUS){
+	/*}else if(nodeType == NODE_TYPES.PLUS){
 		let trust_plus_dialog = document.querySelector('#trust_plus');
 		trust_plus_dialog.style.display = "flex";
 		modalTrustPlus();
-	}
+	}*/
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
 			if (isConnection) {
@@ -2193,14 +2193,14 @@ async function onNodeClick(nodeType, uuid, txt){
 	
 }, 500);
 }*/
-	 function modalTrustPlus(){
+	/* function modalTrustPlus(){
 		let plus_trust_but = document.querySelector('#plus_trust_but');
 		
 		plus_trust_but.addEventListener('click', ()=>{
 			upd_plus_trust();
 		})
 		
-	}
+	}*/
 async function upd_plus_trust(){
 	let plus_trust_inp = document.querySelector('#plus_trust_inp');
 	let plus_trust_error_message = document.querySelector('#plus_trust_error_message');
