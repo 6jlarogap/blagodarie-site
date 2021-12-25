@@ -1386,19 +1386,19 @@ function initializeDisplay() {
 		.selectAll("g")
 		.data(links)
 		.join("g")
-		.attr("x1", calcX1)
+		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2);
+		.attr("y2", calcY2);*/
 		
 	link.append("svg:defs")
 		.append("linearGradient")
 		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
 		.attr("gradientUnits", "userSpaceOnUse")
-		.attr("x1", calcX1)
+		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2)
+		.attr("y2", calcY2)*/
 		.selectAll("stop")
 		.data(d => {
 			return [[1,d.reverse_is_trust], [2,d.is_trust]/*, [3, d.fam_link]*/];
@@ -1419,10 +1419,10 @@ function initializeDisplay() {
 		
 	link.append("svg:line")
 		.attr("class", "link")
-		.attr("x1", calcX1)
+		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2)
+		.attr("y2", calcY2)*/
 		.attr("stroke-width", 1.5)
 		.attr("stroke", d => {
 			console.log(d);
@@ -1456,20 +1456,20 @@ function initializeDisplay() {
 		.selectAll("g")
 		.data(links_parent)
 		.join("g")
-		.attr("x1", calcX1)
+		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2);
+		.attr("y2", calcY2);*/
 		//.attr("id", "lallaal");
 		
 	link2.append("svg:defs")
 		.append("linearGradient")
 		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
 		.attr("gradientUnits", "userSpaceOnUse")
-		.attr("x1", calcX1)
+		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2)
+		.attr("y2", calcY2)*/
 		.selectAll("stop")
 		.data(d => {
 			return [[1,d.reverse_is_parent], [2,d.is_father], [3, d.is_mother]/*, [3, d.fam_link]*/];
@@ -1490,10 +1490,10 @@ function initializeDisplay() {
 		
 	link2.append("svg:line")
 		.attr("class", "link2")
-		.attr("x1", calcX1)
+		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2)
+		.attr("y2", calcY2)*/
 		.attr("stroke", d => {
 			console.log(d);
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE ||  d.target.nodeType == NODE_TYPES.FILTERED){
