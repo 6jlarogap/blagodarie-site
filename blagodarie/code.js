@@ -2076,7 +2076,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		window.history.pushState(null, null, url.search);
 		window.location.href = url.href;
 		
-	/*}else if(nodeType == NODE_TYPES.PLUS){
+	}/*else if(nodeType == NODE_TYPES.PLUS){
 		let trust_plus_dialog = document.querySelector('#trust_plus');
 		trust_plus_dialog.style.display = "flex";
 		modalTrustPlus();
