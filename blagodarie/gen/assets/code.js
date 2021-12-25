@@ -2013,6 +2013,8 @@ async function OnfriendClickFunc(uid, nodeType){
 	
 	context_menu_close.addEventListener("click", function(){
 		copyUserLink.removeEventListener('click', UserLink);
+		UserTrust.removeEventListener("click", UserTrustClick);
+		UserMistrust.removeEventListener("click", UserMistrustClick);
 		clickOnUser.style.display = "none";
 	})
 		
@@ -2047,8 +2049,9 @@ async function OnfriendClickFunc(uid, nodeType){
 					UserMistrust.innerHTML = "Недоверие";
 			}
 		}	
-		
-	UserTrust.addEventListener("click", async function () {
+	UserTrust.addEventListener("click", UserTrustClick);
+	UserMistrust.addEventListener("click", UserMistrustClick);
+	function UserTrustClick(){
 		if (isAuth) {
 			if (isConn) {
 				if (isDataTrust) {
@@ -2075,8 +2078,8 @@ async function OnfriendClickFunc(uid, nodeType){
 			document.cookie = `set_trust=${userIdFrom}; path=/;`;
 			authDialog.style.display = "flex";
 		}
-	});
-	UserMistrust.addEventListener("click", async function () {
+	}
+	function UserMistrustClick(){
 		if (isAuth) {
 			if (isConn) {
 				if (!isDataTrust) {
@@ -2103,7 +2106,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			document.cookie = `set_mistrust=${userIdFrom}; path=/;`;
 			authDialog.style.display = "flex";
 		}
-	});
+	}
 		
 	ShortRoad.addEventListener('click', function(){
 		window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
