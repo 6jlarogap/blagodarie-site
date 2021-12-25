@@ -1673,7 +1673,19 @@ function ticked() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2);*/
 	
-	link.attr("d", linkArc);
+	/*link.attr("d", linkArc);*/
+	link.selectAll("g")
+		.attr("d", linkArc);
+	link.selectAll("linearGradient")
+		.attr("d", linkArc);
+	link.selectAll("line")
+		.attr("d", linkArc);
+	link2.selectAll("g")
+		.attr("d", linkArc);
+	link2.selectAll("linearGradient")
+		.attr("d", linkArc);
+	link2.selectAll("line")
+		.attr("d", linkArc)
     node.attr("transform", d => `translate(${d.x},${d.y})`);
 }
 
