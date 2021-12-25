@@ -1998,7 +1998,9 @@ async function OnfriendClickFunc(uid, nodeType){
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
 	
-	copyUserLink.addEventListener("click", copyLink(uid));
+	copyUserLink.addEventListener("click", function(){
+		copyLink(uid);
+	});
 	
 	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
 	UserTrust.style.display = "block";
