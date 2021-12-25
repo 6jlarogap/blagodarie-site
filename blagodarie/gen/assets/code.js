@@ -1969,6 +1969,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	let ShortRoad = document.querySelector('#ShortRoad');
+	let context_menu_close = document.querySelector('.context_menu_close');
 	let isConn;
 	let isDataTrust;
 	let isDataMistrust;
@@ -2007,9 +2008,14 @@ async function OnfriendClickFunc(uid, nodeType){
 			.catch(err => {
 				console.log('Something went wrong', err);
 			});
-		copyUserLink.removeEventListener('click', UserLink)
+		
 	}
 	
+	context_menu_close.addEventListener("click", function(){
+		copyUserLink.removeEventListener('click', UserLink);
+		clickOnUser.style.display = "none";
+	})
+		
 	
 	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
 	UserTrust.style.display = "block";
