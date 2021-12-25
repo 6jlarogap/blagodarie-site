@@ -1997,8 +1997,8 @@ async function OnfriendClickFunc(uid, nodeType){
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
-	
-	copyUserLink.addEventListener("click", function(){
+	copyUserLink.addEventListener("click", UserLink);
+	function UserLink(){
 		let txt = `${settings.url}gen?id=` + uid;
 		navigator.clipboard.writeText(txt)
 			.then(() => {
@@ -2007,7 +2007,9 @@ async function OnfriendClickFunc(uid, nodeType){
 			.catch(err => {
 				console.log('Something went wrong', err);
 			});
-	});
+		copyUserLink.removeEventListener('click', UserLink)
+	}
+	
 	
 	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
 	UserTrust.style.display = "block";
