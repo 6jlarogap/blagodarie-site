@@ -1386,6 +1386,7 @@ function initializeDisplay() {
 		.selectAll("g")
 		.data(links)
 		.join("g")
+		.attr("d", linkArc);
 		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
@@ -1395,6 +1396,7 @@ function initializeDisplay() {
 		.append("linearGradient")
 		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
 		.attr("gradientUnits", "userSpaceOnUse")
+		.attr("d", linkArc)
 		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
@@ -1419,6 +1421,7 @@ function initializeDisplay() {
 		
 	link.append("svg:line")
 		.attr("class", "link")
+		.attr("d", linkArc)
 		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
@@ -1456,6 +1459,7 @@ function initializeDisplay() {
 		.selectAll("g")
 		.data(links_parent)
 		.join("g")
+		.attr("d", linkArc);
 		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
@@ -1466,6 +1470,7 @@ function initializeDisplay() {
 		.append("linearGradient")
 		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
 		.attr("gradientUnits", "userSpaceOnUse")
+		.attr("d", linkArc)
 		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
@@ -1490,6 +1495,7 @@ function initializeDisplay() {
 		
 	link2.append("svg:line")
 		.attr("class", "link2")
+		.attr("d", linkArc)
 		/*.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
