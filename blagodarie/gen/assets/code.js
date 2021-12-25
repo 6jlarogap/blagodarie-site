@@ -1999,7 +1999,14 @@ async function OnfriendClickFunc(uid, nodeType){
 	});
 	
 	copyUserLink.addEventListener("click", function(){
-		copyLink(uid);
+		let txt = `${settings.url}gen?id=` + uid;
+		navigator.clipboard.writeText(txt)
+			.then(() => {
+				alert('Скопировано в буффер обмена');
+			})
+			.catch(err => {
+				console.log('Something went wrong', err);
+			});
 	});
 	
 	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
@@ -2109,7 +2116,7 @@ async function OnfriendClickFunc(uid, nodeType){
 }
 
 
-function copyLink(uid){
+/*function copyLink(uid){
 		let txt = `${settings.url}gen?id=` + uid;
 		navigator.clipboard.writeText(txt)
 			.then(() => {
@@ -2120,7 +2127,7 @@ function copyLink(uid){
 			});
 
 		//copyUserLink.removeEventListener('click', copyLink());
-}
+}*/
 
 
 let value_gender;
