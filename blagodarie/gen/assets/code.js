@@ -1998,12 +1998,8 @@ async function OnfriendClickFunc(uid, nodeType){
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
 	
-	copyUserLink.addEventListener("click", copyLink());
-	function copyLink(){
-		let txt = `${settings.url}gen?id=` + uid;
-		copyToClipboard(txt);
-		//copyUserLink.removeEventListener('click', copyLink());
-	}
+	copyUserLink.addEventListener("click", copyLink(uid));
+	
 	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
 	UserTrust.style.display = "block";
 	UserMistrust.style.display = "block";
@@ -2110,6 +2106,12 @@ async function OnfriendClickFunc(uid, nodeType){
 	
 }
 
+
+function copyLink(uid){
+		let txt = `${settings.url}gen?id=` + uid;
+		copyToClipboard(txt);
+		//copyUserLink.removeEventListener('click', copyLink());
+}
 
 
 let value_gender;
