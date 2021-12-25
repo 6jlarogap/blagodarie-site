@@ -2103,6 +2103,13 @@ async function OnfriendClickFunc(uid, nodeType){
 		}
 	}
 		
+	context_menu_close.addEventListener("click", function(){
+		copyUserLink.removeEventListener('click', UserLink);
+		UserTrust.removeEventListener("click", UserTrustClick);
+		UserMistrust.removeEventListener("click", UserMistrustClick);
+		clickOnUser.style.display = "none";
+	})
+		
 	ShortRoad.addEventListener('click', function(){
 		window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
 	});
@@ -2113,12 +2120,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	ShortRoad.style.display = "none";
 }
 	}
-	context_menu_close.addEventListener("click", function(){
-		copyUserLink.removeEventListener('click', UserLink);
-		UserTrust.removeEventListener("click", UserTrustClick);
-		UserMistrust.removeEventListener("click", UserMistrustClick);
-		clickOnUser.style.display = "none";
-	})
+	
 	
 	await RenderSettings();
 	clickOnUser.style.display = "flex";
