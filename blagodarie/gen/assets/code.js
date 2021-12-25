@@ -2116,15 +2116,15 @@ async function OnfriendClickFunc(uid, nodeType){
 	UserMistrust.style.display = "none";
 	ShortRoad.style.display = "none";
 }
-	}
-	
+
 	context_menu_close.addEventListener("click", function(){
 		copyUserLink.removeEventListener('click', UserLink);
 		UserTrust.removeEventListener("click", UserTrustClick);
 		UserMistrust.removeEventListener("click", UserMistrustClick);
 		clickOnUser.style.display = "none";
-	})
-	
+	});
+
+	}
 	
 	await RenderSettings();
 	clickOnUser.style.display = "flex";
