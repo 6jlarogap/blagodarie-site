@@ -126,7 +126,7 @@ text{
 			width: 64px;
 			height: 64px;
 			x: -32px;
-			y: -32px;
+			/*y: -32px;*/
 			clip-path: circle(50%);
 			-moz-user-select: none;
     			-webkit-user-select: none;
@@ -1049,7 +1049,7 @@ button.close:hover, .context_menu_close:hover{
 				width: 35px;
     			height: 35px;
     			x: -18px;
-    			y: -18px;
+    			/*y: -18px;*/
 			}
 			image.userPortrait{
 				width: 64px;
