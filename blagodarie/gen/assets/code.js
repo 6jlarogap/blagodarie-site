@@ -1997,12 +1997,13 @@ async function OnfriendClickFunc(uid, nodeType){
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
-	copyUserLink.removeEventListener('click', copyLink())
+	
 	copyUserLink.addEventListener("click", copyLink());
 	function copyLink(){
 		let txt = `${settings.url}gen?id=` + uid;
 		copyToClipboard(txt);
 	}
+	copyUserLink.removeEventListener('click', copyLink())
 	if(nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.FRIEND){
 	UserTrust.style.display = "block";
 	UserMistrust.style.display = "block";
