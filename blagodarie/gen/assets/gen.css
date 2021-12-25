@@ -278,7 +278,7 @@ text{
 			color: #8b0000;
 			font-size: 21px;
 		}
-		button.close {
+		button.close, .context_menu_close {
 			margin-bottom: 5px;
 			margin-left: auto;
 			border-radius: 25%;
@@ -310,7 +310,9 @@ text{
 		#keyTypesBtns {
 			margin-bottom: 3px;
 		}
-
+		.modal-backdrop.show{
+			display: none!important;
+		}
 		.keytype img {
 			width: 25px;
 			height: 25px;
@@ -621,6 +623,58 @@ text{
 .active_filer_icon{
 	
 }
+.add_user_photo_cont{
+	position: relative;
+	
+}
+.add_user_photo_cont .container{
+	width: 24px!important;
+    height: 24px!important;
+    padding: 0!important;
+    margin: 0!important;
+    position: absolute!important;
+    top: 0!important;
+    left: 0!important;
+	background-color: #8b0000;
+	cursor: pointer;
+} 
+.nophoto_but{
+	width: fit-content;
+    display: block;
+   	margin-left: 40px;
+	background-color: red;
+	border-color: red;
+	color: #fff;
+	padding: .375rem .75rem;
+	border-radius: 5px;
+}
+.bottom_but_container {
+    display: flex;
+    align-items: center;
+}
+.geolocation_cont {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 58%;
+}
+.cropper_edit_but {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+}
+.image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
 .recur_select_cont{
 	position: fixed;
 	bottom: 0;
@@ -676,13 +730,13 @@ text{
     height: 100px;
     cursor: pointer;
 }
-button.close{
+button.close, .context_menu_close{
 	background-color: #8b0000!important;
 	border-color: #8b0000!important;
 	width: unset !important;
 	height: unset !important;
 }
-button.close:hover{
+button.close:hover, .context_menu_close:hover{
 	background-color: #8b0000!important;
 	border-color: #8b0000!important;
 }
@@ -708,10 +762,240 @@ button.close:hover{
 	bottom: 0;
 	right: 0;
 }
+#clickOnUser{
+	left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    padding: 10px;
+    width: 25%;
+}
+#clickOnUser p{
+	width: 100%;
+    cursor: pointer;
+    text-align: center;
+}
+.add_user_profile_cont_fixed{
+	position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    top: 0;
+    left: 0;
+    overflow: scroll;
+	display: none;
+}
+.add_user_profile_container{
+	width: 100%;
+    height: fit-content;
+    top: 0;
+    left: 0;
+    background: #fff;
+	padding: 0 20%;
+	padding-bottom: 7%;
+}
+.add_user_profile_top_cont{
+	display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+	margin-top: 5%;
+}
+.add_user_profile_fio p{
+	margin-top: 10px;
+	margin-bottom: 3px;
+	
+}
+.add_user_profile_fio p:first-child{
+	margin-top: 0;
+}
+.add_user_profile_fio input{
+	border: 0;
+    border-bottom: 1px solid #ccc;
+	outline: none;
+}
+.add_user_profile_center_bddd_nophoto{
+	
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.add_user_profile_bddd_cont{
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+	flex-direction: column;
+}
+.add_user_profile_bddd_cont input{
+	border: 0;
+    border-bottom: 1px solid #ccc;
+	outline: none;
+}
+.add_user_profile_bottom_cont{
+	margin-top: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+	flex-direction: column;
+	width: 100%;
+}
+.add_user_profile_mother_cont, .add_user_profile_father_cont{
+	width: 100%;
+}
+#profile_mother_input, #profile_father_input{
+	width: 100%;
+}
+#profile_father_input{
+	margin-top: 10px;
+}
+.moth_text, .moth_text2, .fath_text, .fath_text2{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.add_user_profile_bottom_cont input{
+	border: 0;
+    border-bottom: 1px solid #ccc;
+	outline: none;
+}
+.add_user_profile_bottom_cont p{
+	margin-bottom: 2px;
+}
+.add_user_profile_overbottom{
+	background-color: green;
+	border-color: green;
+	color: #fff;
+	padding: .375rem .75rem;
+	border-radius: 5px;
+}
+.add_user_profile_close_popup, .add_user_profile_close_popup_new{
+	cursor: pointer;
+    position: absolute;
+    top: 2%;
+    right: 14%;
+    background-color: #8b0000;
+    padding: 5px 10px;
+    border-radius: 7px;
+	color: #fff;
+}
+.add_user_profile_photo{
+	width: 320px;
+    height: 320px;
+    background-color: #f5efef;
+}
+.add_user_profile_container_prew{
+	position: fixed;
+    display: none;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+}
+.add_user_profile_container_n > p:first-child{
+	margin: 0 auto;
+    width: max-content;
+    margin-top: 15%;
+	font-weight: 700;
+}
+.add_user_profile_container_n{
+	overflow: scroll;
+	height: 100%;
+}
+.gender_cont{
+	width: max-content;
+    margin-top: 1%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+	margin-top: 16px;
+}
+.gender_cont input{
+	margin-left: 10px;
+}
 @media(max-width:900px){
 	#rootDialog{
 		width: 90%;
 	}
+	#clickOnUser{
+		width: 50%;
+	}
+	.add_user_profile_container {
+    width: 100%;
+    height: fit-content;
+    padding: 0 7%;
+    z-index: 10;
+    min-width: 320px;
+	}
+	.add_user_profile_top_cont {
+    margin-top: 13%;
+    flex-direction: column;
+    align-items: flex-start;
+}
+	.add_user_photo_cont {
+    width: 100%;
+}
+	.add_user_profile_photo {
+    width: 100%;
+    height: 100%;
+}
+	.add_user_profile_center_cont {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+	.add_user_profile_bottom_cont {
+    flex-direction: column;
+    align-items: flex-start;
+}
+	.add_user_profile_center_bddd_nophoto {
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+	.add_user_profile_bddd_cont {
+    margin-top: 4%;
+    flex-direction: column;
+    align-items: center;
+}
+	.add_user_profile_bddd_inputs {
+    flex-direction: column;
+}
+	.geolocation_cont {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 6%;
+}
+	.geolocation_cont button:first-child {
+    margin-top: 0;
+}
+	.geolocation_cont button {
+    margin-top: 10px;
+    width: 100%;
+}
+	.bottom_but_container {
+    flex-direction: column;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+	.add_user_profile_overbottom {
+    width: 38%;
+    
+}
+	.modal-backdrop.show{
+		display: none!important;
+	}
+	.nophoto_but {
+    margin-left: 0;
+    margin-top: 10px;
+}
 	#addElementDialog{
 		width: 90%;
 	}
@@ -807,3 +1091,8 @@ button.close:hover{
 		margin-top: 6px!important;
 	}
 		}
+@media(max-width:450px){
+	#clickOnUser{
+		width: 75%;
+	}
+}

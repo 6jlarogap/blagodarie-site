@@ -106,7 +106,7 @@ table img{
     left: 0!important;
 	background-color: #8b0000;
 	cursor: pointer;
-}
+} 
 .cropper_edit_but{
 	position: absolute;
     left: 0;
@@ -340,6 +340,9 @@ button.close {
 			margin-left: auto;
 			border-radius: 25%;
 }
+.modal-backdrop.show{
+		display: none!important;
+	}
 #rootList {
 	min-width: 300px;
 }
