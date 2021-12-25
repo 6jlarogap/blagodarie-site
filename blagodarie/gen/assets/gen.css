@@ -278,7 +278,7 @@ text{
 			color: #8b0000;
 			font-size: 21px;
 		}
-		button.close {
+		button.close, .context_menu_close {
 			margin-bottom: 5px;
 			margin-left: auto;
 			border-radius: 25%;
@@ -730,13 +730,13 @@ text{
     height: 100px;
     cursor: pointer;
 }
-button.close{
+button.close, .context_menu_close{
 	background-color: #8b0000!important;
 	border-color: #8b0000!important;
 	width: unset !important;
 	height: unset !important;
 }
-button.close:hover{
+button.close:hover, .context_menu_close:hover{
 	background-color: #8b0000!important;
 	border-color: #8b0000!important;
 }
