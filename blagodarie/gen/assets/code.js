@@ -2051,7 +2051,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		}	
 	UserTrust.addEventListener("click", UserTrustClick);
 	UserMistrust.addEventListener("click", UserMistrustClick);
-	function UserTrustClick(){
+	async function UserTrustClick(){
 		if (isAuth) {
 			if (isConn) {
 				if (isDataTrust) {
@@ -2079,7 +2079,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			authDialog.style.display = "flex";
 		}
 	}
-	function UserMistrustClick(){
+	async function UserMistrustClick(){
 		if (isAuth) {
 			if (isConn) {
 				if (!isDataTrust) {
