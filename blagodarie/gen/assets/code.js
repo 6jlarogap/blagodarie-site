@@ -2111,7 +2111,14 @@ async function OnfriendClickFunc(uid, nodeType){
 
 function copyLink(uid){
 		let txt = `${settings.url}gen?id=` + uid;
-		copyToClipboard(txt);
+		navigator.clipboard.writeText(txt)
+			.then(() => {
+				alert('Скопировано в буффер обмена');
+			})
+			.catch(err => {
+				console.log('Something went wrong', err);
+			});
+
 		//copyUserLink.removeEventListener('click', copyLink());
 }
 
