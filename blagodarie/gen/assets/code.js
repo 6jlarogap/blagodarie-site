@@ -1386,6 +1386,7 @@ function initializeDisplay() {
 		.selectAll("g")
 		.data(links)
 		.join("g")
+		//.attr("d", linkArc);
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
@@ -1674,6 +1675,9 @@ function ticked() {
 		.attr("y2", calcY2);
 }
 
+
+
+
 function calcX1(d){
 	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
 	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
@@ -1951,7 +1955,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		await rootFunctions('keys');
 	}
 }
-
+let resp_owned_users;
 async function myProfilesinfo() {
 		const response = await fetch(`${new_settapi}api/profile?number=2000`, {
 		method: "GET",
@@ -1959,8 +1963,9 @@ async function myProfilesinfo() {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 }).then(data => data.json());
-	return response;
+	resp_owned_users = response;
 };
+myProfilesinfo();
 async function OnfriendClickFunc(uid, nodeType){
 	let clickOnUser = document.querySelector('#clickOnUser');
 	let href_onUser = document.querySelector('#href_onUser'); 
@@ -1980,7 +1985,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	}
 	//clickOnUser.style.display = "flex";
 	async function RenderSettings(){
-		let resp_owned_users = myProfilesinfo;
+		//let resp_owned_users = myProfilesinfo;
 	for(let i=0; i<resp_owned_users.length; i++){
 		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
