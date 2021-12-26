@@ -958,21 +958,21 @@ const response = await fetch(`${apiUrl}`, {
 	var resp_empty = ""
 		
 		//добавить вершину доверие/недоверие
-		nodes.push({
+		/*nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
 			image: !isConnection ? inactiveTrust : isTrust ? activeTrust : inactiveTrust,
 			tspan: !isConnection ? resp_empty : isTrust ? resp : resp_empty,
 			nodeType: NODE_TYPES.TRUST
-		});
+		});*/
 		}
 		await count_plus()
-		nodes.push({
+		/*nodes.push({
 			id: MISTRUST_ID,
 			text: "Недоверие",
 			image: !isConnection ? inactiveMistrust : isTrust ? inactiveMistrust : activeMistrust,
 			nodeType: NODE_TYPES.MISTRUST
-		});
+		});*/
 	}
 	
 	if (isAuth) {
@@ -1207,14 +1207,14 @@ const response = await fetch(`${apiUrl}`, {
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
 			d.fy = height / 2 - 300;
 			break;
-		case TRUST_ID:
+		/*case TRUST_ID:
 			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
 			break;
 		case MISTRUST_ID:
 			d.fx = width<900 ? width / 2 - 30 :  width / 2 - 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
-			break;
+			break;*/
 		case AUTH_ID:
 			if (!userIdFrom) {
 				d.fx = width / 2;
