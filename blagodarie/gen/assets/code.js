@@ -1981,7 +1981,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		await rootFunctions('keys');
 	}
 }
-
+let resp_owned_users;
 async function myProfilesinfo() {
 		const response = await fetch(`${new_settapi}api/profile?number=2000`, {
 		method: "GET",
@@ -1989,7 +1989,7 @@ async function myProfilesinfo() {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 }).then(data => data.json());
-	return response;
+	resp_owned_users = response;
 };
 myProfilesinfo();
 async function OnfriendClickFunc(uid, nodeType){
@@ -2011,7 +2011,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	}
 	//clickOnUser.style.display = "flex";
 	async function RenderSettings(){
-		let resp_owned_users = myProfilesinfo;
+		//let resp_owned_users = myProfilesinfo;
 	for(let i=0; i<resp_owned_users.length; i++){
 		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
