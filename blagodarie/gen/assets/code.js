@@ -1491,7 +1491,6 @@ function initializeDisplay() {
 		
 	link2.append("svg:line")
 		.attr("class", "link2")
-		.attr("d", linkArc)
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
