@@ -922,6 +922,10 @@ button.close:hover, .context_menu_close:hover{
 	#clickOnUser{
 		width: 50%;
 	}
+	.add_user_profile_close_popup, .add_user_profile_close_popup_new{
+		top: 1%;
+    	right: 5%;
+	}
 	.add_user_profile_container {
     width: 100%;
     height: fit-content;
