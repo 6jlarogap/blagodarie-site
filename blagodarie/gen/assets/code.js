@@ -1991,6 +1991,7 @@ async function myProfilesinfo() {
 }).then(data => data.json());
 	return response;
 };
+myProfilesinfo();
 async function OnfriendClickFunc(uid, nodeType){
 	let clickOnUser = document.querySelector('#clickOnUser');
 	let href_onUser = document.querySelector('#href_onUser'); 
@@ -2010,7 +2011,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	}
 	//clickOnUser.style.display = "flex";
 	async function RenderSettings(){
-		let resp_owned_users = await myProfilesinfo();
+		let resp_owned_users = myProfilesinfo;
 	for(let i=0; i<resp_owned_users.length; i++){
 		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
