@@ -2010,7 +2010,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	}
 	//clickOnUser.style.display = "flex";
 	async function RenderSettings(){
-		let resp_owned_users = myProfilesinfo;
+		let resp_owned_users = await myProfilesinfo;
 	for(let i=0; i<resp_owned_users.length; i++){
 		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
