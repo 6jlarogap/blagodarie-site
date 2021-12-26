@@ -1386,21 +1386,20 @@ function initializeDisplay() {
 		.selectAll("g")
 		.data(links)
 		.join("g")
-		.attr("d", linkArc);
-		/*.attr("x1", calcX1)
+		//.attr("d", linkArc);
+		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2);*/
+		.attr("y2", calcY2);
 		
 	link.append("svg:defs")
 		.append("linearGradient")
 		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
 		.attr("gradientUnits", "userSpaceOnUse")
-		.attr("d", linkArc)
-		/*.attr("x1", calcX1)
+		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2)*/
+		.attr("y2", calcY2)
 		.selectAll("stop")
 		.data(d => {
 			return [[1,d.reverse_is_trust], [2,d.is_trust]/*, [3, d.fam_link]*/];
@@ -1421,11 +1420,10 @@ function initializeDisplay() {
 		
 	link.append("svg:line")
 		.attr("class", "link")
-		.attr("d", linkArc)
-		/*.attr("x1", calcX1)
+		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2)*/
+		.attr("y2", calcY2)
 		.attr("stroke-width", 1.5)
 		.attr("stroke", d => {
 			console.log(d);
@@ -1459,22 +1457,20 @@ function initializeDisplay() {
 		.selectAll("g")
 		.data(links_parent)
 		.join("g")
-		.attr("d", linkArc);
-		/*.attr("x1", calcX1)
+		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2);*/
+		.attr("y2", calcY2);
 		//.attr("id", "lallaal");
 		
 	link2.append("svg:defs")
 		.append("linearGradient")
 		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
 		.attr("gradientUnits", "userSpaceOnUse")
-		.attr("d", linkArc)
-		/*.attr("x1", calcX1)
+		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2)*/
+		.attr("y2", calcY2)
 		.selectAll("stop")
 		.data(d => {
 			return [[1,d.reverse_is_parent], [2,d.is_father], [3, d.is_mother]/*, [3, d.fam_link]*/];
@@ -1496,10 +1492,10 @@ function initializeDisplay() {
 	link2.append("svg:line")
 		.attr("class", "link2")
 		.attr("d", linkArc)
-		/*.attr("x1", calcX1)
+		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2)*/
+		.attr("y2", calcY2)
 		.attr("stroke", d => {
 			console.log(d);
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE ||  d.target.nodeType == NODE_TYPES.FILTERED){
@@ -1638,7 +1634,7 @@ function initializeDisplay() {
 }
 
 function ticked() {
-	/*node.attr("transform", d => {
+	node.attr("transform", d => {
 		var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
 		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 && width>900 ? height-70 : d.y));
 		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
@@ -1677,33 +1673,12 @@ function ticked() {
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2);*/
-	
-	/*link.attr("d", linkArc);*/
-	link.selectAll("g")
-		.attr("d", linkArc);
-	link.selectAll("linearGradient")
-		.attr("d", linkArc);
-	link.selectAll("line")
-		.attr("d", linkArc);
-	link2.selectAll("g")
-		.attr("d", linkArc);
-	link2.selectAll("linearGradient")
-		.attr("d", linkArc);
-	link2.selectAll("line")
-		.attr("d", linkArc)
-    node.attr("transform", d => `translate(${d.x},${d.y})`);
+		.attr("y2", calcY2);
 }
 
-function linkArc(d) {
-  const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
-  return `
-    M${d.source.x},${d.source.y}
-    A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
-  `;
-}
 
-/*
+
+
 function calcX1(d){
 	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
 	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
@@ -1779,7 +1754,7 @@ function calcY2(d){
 	}	
 	return y;
 }
-*/
+
 d3.select(window).on("resize", function(){
 	width = +svg.node().getBoundingClientRect().width;
 	height = +svg.node().getBoundingClientRect().height;
