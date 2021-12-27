@@ -2134,6 +2134,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		copyUserLink.removeEventListener('click', UserLink);
 		UserTrust.removeEventListener("click", UserTrustClick);
 		UserMistrust.removeEventListener("click", UserMistrustClick);
+		OwnerSettings.removeEventListener("click", UserResponseForEdit);
 		clickOnUser.style.display = "none";
 	});
 
