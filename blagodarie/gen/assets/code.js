@@ -1989,7 +1989,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	for(let i=0; i<resp_owned_users.length; i++){
 		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
-			OwnerSettings.addEventListener("click", UserResponseForEdit(resp_owned_users[i], uid));
+			OwnerSettings.addEventListener("click", UserResponseForEdit);
 
 			break;
 		}else{
@@ -2000,7 +2000,13 @@ async function OnfriendClickFunc(uid, nodeType){
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
 	
-	function UserResponseForEdit(user, uid){
+	function UserResponseForEdit(user){
+		for(let i=0; i<resp_owned_users.length; i++){
+			if(uid == resp_owned_users[i].uuid){
+				user = resp_owned_users[i];
+				break;
+			}
+		}
 		clickOnUser.style.display = "none";
 		user_changed_info(uid, user.last_name, user.first_name, user.middle_name, user.photo, user.dob, user.dod, user.gender, user.latitude, user.longitude);
 	}
