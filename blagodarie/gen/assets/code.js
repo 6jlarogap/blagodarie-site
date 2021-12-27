@@ -2775,12 +2775,12 @@ dialog_father_save.addEventListener('click', ()=>{
 	add_user_profile_close_popup.addEventListener('click', function(){
 		//let add_user_profile_cont_fixed = document.querySelector('.add_user_profile_cont_fixed');
 		if(user_profile_surname_inp.value == last_name && user_profile_name_inp.value == first_name && user_profile_middlename_inp.value == middle_name){
-			add_user_profile_cont_fixed.style.display = "none";
+			add_user_profile_container.style.display = "none";
 			//window.location.reload();
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
 			if(user_profile_not_save == true){
-				add_user_profile_cont_fixed.style.display = "none";
+				add_user_profile_container.style.display = "none";
 				//window.location.reload();
 			}
 		}
