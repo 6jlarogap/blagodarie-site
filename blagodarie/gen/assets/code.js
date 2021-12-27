@@ -1989,12 +1989,8 @@ async function OnfriendClickFunc(uid, nodeType){
 	for(let i=0; i<resp_owned_users.length; i++){
 		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
-			OwnerSettings.addEventListener("click", function(){
-				console.log(resp_owned_users[i]);
-				clickOnUser.style.display = "none";
-				user_changed_info(uid, resp_owned_users[i].last_name, resp_owned_users[i].first_name, resp_owned_users[i].middle_name, resp_owned_users[i].photo, resp_owned_users[i].dob, resp_owned_users[i].dod, resp_owned_users[i].gender, resp_owned_users[i].latitude, resp_owned_users[i].longitude);
-			
-			});
+			OwnerSettings.addEventListener("click", UserResponseForEdit(resp_owned_users[i], uid));
+
 			break;
 		}else{
 			OwnerSettings.style.display = "none";
@@ -2003,6 +1999,12 @@ async function OnfriendClickFunc(uid, nodeType){
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
+	
+	function UserResponseForEdit(user, uid){
+		clickOnUser.style.display = "none";
+		user_changed_info(uid, user.last_name, user.first_name, user.middle_name, user.photo, user.dob, user.dod, user.gender, user.latitude, user.longitude);
+	}
+		
 	copyUserLink.addEventListener("click", UserLink);
 	function UserLink(){
 		let txt = `${settings.url}gen?id=` + uid;
