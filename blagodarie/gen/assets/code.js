@@ -1967,8 +1967,24 @@ async function myProfilesinfo() {
 };
 myProfilesinfo();
 let OwnerSettings;
+let clickOnUser;
+
+
+function UserResponseForEdit(user){
+		for(let i=0; i<resp_owned_users.length; i++){
+			if(uid == resp_owned_users[i].uuid){
+				user = resp_owned_users[i];
+				break;
+			}
+		}
+		clickOnUser.style.display = "none";
+		user_changed_info(uid, user.last_name, user.first_name, user.middle_name, user.photo, user.dob, user.dod, user.gender, user.latitude, user.longitude);
+}
+
+
+
 async function OnfriendClickFunc(uid, nodeType){
-	let clickOnUser = document.querySelector('#clickOnUser');
+	clickOnUser = document.querySelector('#clickOnUser');
 	let href_onUser = document.querySelector('#href_onUser'); 
 	let copyUserLink = document.querySelector('#copyUserLink');
 	OwnerSettings = document.querySelector('#OwnerSettings');
@@ -2001,7 +2017,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
 	
-	function UserResponseForEdit(user){
+	/*function UserResponseForEdit(user){
 		for(let i=0; i<resp_owned_users.length; i++){
 			if(uid == resp_owned_users[i].uuid){
 				user = resp_owned_users[i];
@@ -2010,7 +2026,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		}
 		clickOnUser.style.display = "none";
 		user_changed_info(uid, user.last_name, user.first_name, user.middle_name, user.photo, user.dob, user.dod, user.gender, user.latitude, user.longitude);
-	}
+	}*/
 		
 	copyUserLink.addEventListener("click", UserLink);
 	function UserLink(){
