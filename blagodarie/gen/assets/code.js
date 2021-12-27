@@ -1966,11 +1966,12 @@ async function myProfilesinfo() {
 	resp_owned_users = response;
 };
 myProfilesinfo();
+let OwnerSettings;
 async function OnfriendClickFunc(uid, nodeType){
 	let clickOnUser = document.querySelector('#clickOnUser');
 	let href_onUser = document.querySelector('#href_onUser'); 
 	let copyUserLink = document.querySelector('#copyUserLink');
-	let OwnerSettings = document.querySelector('#OwnerSettings');
+	OwnerSettings = document.querySelector('#OwnerSettings');
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	let ShortRoad = document.querySelector('#ShortRoad');
@@ -2777,11 +2778,13 @@ dialog_father_save.addEventListener('click', ()=>{
 		if(user_profile_surname_inp.value == last_name && user_profile_name_inp.value == first_name && user_profile_middlename_inp.value == middle_name){
 			add_user_profile_container.style.display = "none";
 			add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
+			OwnerSettings.removeEventListener("click", UserResponseForEdit);
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
 			if(user_profile_not_save == true){
 				add_user_profile_container.style.display = "none";
 				add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
+				OwnerSettings.removeEventListener("click", UserResponseForEdit);
 			}
 		}
 	}
