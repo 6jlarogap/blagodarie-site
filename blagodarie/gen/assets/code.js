@@ -1968,11 +1968,11 @@ async function myProfilesinfo() {
 myProfilesinfo();
 let OwnerSettings;
 let clickOnUser;
-
+let us_uid;
 
 function UserResponseForEdit(user){
 		for(let i=0; i<resp_owned_users.length; i++){
-			if(uid == resp_owned_users[i].uuid){
+			if(us_uid == resp_owned_users[i].uuid){
 				user = resp_owned_users[i];
 				break;
 			}
@@ -1984,6 +1984,7 @@ function UserResponseForEdit(user){
 
 
 async function OnfriendClickFunc(uid, nodeType){
+	us_uid = uid;
 	clickOnUser = document.querySelector('#clickOnUser');
 	let href_onUser = document.querySelector('#href_onUser'); 
 	let copyUserLink = document.querySelector('#copyUserLink');
