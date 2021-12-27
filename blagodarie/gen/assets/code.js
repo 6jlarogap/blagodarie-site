@@ -1978,7 +1978,7 @@ function UserResponseForEdit(user){
 			}
 		}
 		clickOnUser.style.display = "none";
-		user_changed_info(uid, user.last_name, user.first_name, user.middle_name, user.photo, user.dob, user.dod, user.gender, user.latitude, user.longitude);
+		user_changed_info(user.uuid, user.last_name, user.first_name, user.middle_name, user.photo, user.dob, user.dod, user.gender, user.latitude, user.longitude);
 }
 
 
