@@ -1361,13 +1361,13 @@ setInterval(function(){
 let gen_container = document.querySelector('.gen_container');
 let div = document.createElement('div');
 div.style.position = 'relative';
-div.innerHTML = `<img src="${settings.url}images/genesis.png" /><img src="${settings.url}gen/${getCookie('user_uuid')}" />`;
+div.innerHTML = `<img src="${settings.url}images/genesis.png" /><img src="${settings.url}gen/?id=${getCookie('user_uuid')}" />`;
 gen_container.append(div);
 
 //кнопка род
 
 gen_container.addEventListener('click', function(){
-	window.location.href = window.location.origin + '/gen/' + getCookie("user_uuid");
+	window.location.href = window.location.origin + '/gen/?id=' + getCookie("user_uuid");
 })
 
 
