@@ -2237,6 +2237,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	get_position1.addEventListener('click', ClickOnGetPosition);
 
 	function ClickOnGetPosition(){
+		let map = document.createElement('div');
+		map.setAttribute('id', 'mapid');
+		map_container.appendChild(map);
 		get_cur_position1();
 	}
 	
@@ -2781,6 +2784,7 @@ dialog_father_save.addEventListener('click', ()=>{
 				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 				get_position1.removeEventListener('click', ClickOnGetPosition);
 				alert("Данные сохранены");
+				document.querySelector('#mapid').remove();
 				add_user_profile_container.style.display = "none";
 			}
 		}, 3500)
@@ -2799,6 +2803,7 @@ dialog_father_save.addEventListener('click', ()=>{
 			OwnerSettings.removeEventListener("click", UserResponseForEdit);
 			add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 			get_position1.removeEventListener('click', ClickOnGetPosition);
+			document.querySelector('#mapid').remove();
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
 			if(user_profile_not_save == true){
@@ -2807,6 +2812,7 @@ dialog_father_save.addEventListener('click', ()=>{
 				OwnerSettings.removeEventListener("click", UserResponseForEdit);
 				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 				get_position1.removeEventListener('click', ClickOnGetPosition);
+				document.querySelector('#mapid').remove();
 			}
 		}
 	}
