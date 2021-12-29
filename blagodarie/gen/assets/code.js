@@ -2237,8 +2237,42 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	get_position1.addEventListener('click', ClickOnGetPosition);
 
 	function ClickOnGetPosition(){
-		get_cur_position();
+		get_cur_position1();
 	}
+	
+	function get_cur_position1(){
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      if (response_smat_map.some(e => e.user_uuid === userIdFrom)) {
+        console.log(response_smat_map);
+      for(let i=0;i<response_smat_map.length;i++){
+        if(response_smat_map[i].user_uuid == userIdFrom){
+          lati = +response_smat_map[i].user_latitude;
+          long = +response_smat_map[i].user_longitude;
+          console.log(lati, long);
+          show_smart_map(lati, long)
+        }
+      }
+      }else{
+        lati = position.coords.latitude;
+          long = position.coords.longitude;
+        show_smart_map(lati, long)
+      }
+    },
+    function(error){
+      for(let i=0;i<response_smat_map.length;i++){
+        if(response_smat_map[i].user_uuid == userIdFrom){
+          let lati = +response_smat_map[i].user_latitude;
+          let long = +response_smat_map[i].user_longitude;
+          console.log(lati, long);
+          show_smart_map(lati, long)
+        }
+      }
+	    show_smart_map(53.89948354993688, 27.557659149169925);
+	    mapid_whereI.style.display = 'none';
+    }
+);
+}
 	
 	user_profile_surname_inp.value = '';
 	user_profile_name_inp.value = '';
