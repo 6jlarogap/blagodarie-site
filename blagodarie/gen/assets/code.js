@@ -2284,6 +2284,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				get_position1.style.color = '#fff';
 				get_position1.style.borderColor = '#6be86b';
 				get_position1.style.boxShadow = '0px 0px 10px 9px rgba(142, 198, 60, 0.4)';
+	}else{
+		get_position1.style.backgroundColor = '#0d6efd';
+		get_position1.style.color = '#fff';
+		get_position1.style.borderColor = '#0d6efd';
+		get_position1.style.boxShadow = 'none';
 	}
 	
 	//обрезка файлов
@@ -2786,16 +2791,7 @@ dialog_father_save.addEventListener('click', ()=>{
 	
 	
 	//закрыть попап
-	/*add_user_profile_close_popup.addEventListener('click', function(){
-		if(user_profile_surname_inp.value != last_name || user_profile_name_inp.value != first_name || user_profile_middlename_inp.value != middle_name){
-			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
-			if(user_profile_not_save == true){
-				window.location.reload();
-			}
-		}else{
-		window.location.reload();
-		}
-	})*/
+	
 	add_user_profile_close_popup.addEventListener('click', CloseUserPopup);
 	function CloseUserPopup(){
 		if(user_profile_surname_inp.value == last_name && user_profile_name_inp.value == first_name && user_profile_middlename_inp.value == middle_name){
