@@ -2250,7 +2250,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
           lati = +response_smat_map[i].user_latitude;
           long = +response_smat_map[i].user_longitude;
           console.log(lati, long);
-          show_smart_map(lati, long)
+          show_smart_map(lati, long);
+		break;
         }
       }
       }else{
