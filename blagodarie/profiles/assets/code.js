@@ -1367,7 +1367,7 @@ gen_container.append(div);
 //кнопка род
 
 gen_container.addEventListener('click', function(){
-	window.location.href = window.location.origin + '/gen';
+	window.location.href = window.location.origin + '/gen/' + getCookie("user_uuid");
 })
 
 
