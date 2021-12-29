@@ -2059,7 +2059,7 @@ async function onNodeClick(nodeType, uuid, txt){
 			
 		});
 		shareDialog.style.display = "flex";*/
-		window.location.href = url.origin + '/gen';
+		window.location.href = url.origin + '/gen/?id=' + getCookie("user_uuid");
 	}
 	else if (nodeType == NODE_TYPES.OPTIONS) {
 		optionsDialog.style.display = "flex";
