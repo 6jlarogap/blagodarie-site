@@ -2603,30 +2603,13 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 }).then(data => data.json());		
-			//var b;
 			if(moth_inp.value.includes('id')){
-				/*let str = add_user_profile_mother_input.value;
-					//Обрезаем конец:
-				var from = str.search('id=') + 3; 
-				var to = str.length;
-				let newstr = str.substr(from,to);
-				console.log(newstr);
-				add_user_profile_mother_input.value = newstr;*/
 				url2.href = moth_inp.value;
 				let newstr = url2.searchParams.get('id');
 				moth_inp.value = newstr;
 				console.log(newstr);
 			}
-			//var b;
 			if(fath_inp.value.includes('id')){
-				/*let str3 = add_user_profile_father_input.value;
-					//Обрезаем конец:
-				var from3 = str3.search('id=') + 3; 
-				var to3 = str3.length;
-				let newstr3 = str3.substr(from3,to3);
-				console.log(newstr3);
-				add_user_profile_father_input.value = newstr3;*/
-				//
 				url.href = fath_inp.value;
 				let newstr3 = url.searchParams.get('id');
 				fath_inp.value = newstr3;
@@ -2693,48 +2676,14 @@ dialog_father_save.addEventListener('click', ()=>{
 		myProfilesinfo1();
 });
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//Кнопка Сохранить
-	add_user_profile_overbottom.addEventListener('click', function(){
-		
-		//warning1.innerHTML = "";
-		  
+	add_user_profile_overbottom.addEventListener('click', SaveUserInfo);
+	
+	async function SaveUserInfo(){
 		if(value_gender==undefined && gender_val==null){
 			warning1.innerHTML = "Выберите пол";
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		//add_user_parents(7);
-		//add_user_parents(6);
-		
-		
-		
-	
-		//alert(`${day}-${month}-${year}`)
-		
-		
-		
-		
+			
 		var formdata = new FormData();
 		formdata.append("uuid", id);
 		formdata.append("first_name", user_profile_name_inp.value);
@@ -2744,7 +2693,7 @@ dialog_father_save.addEventListener('click', ()=>{
 		formdata.append("dod", add_user_profile_dd.value);
 		formdata.append("gender", value_gender? value_gender : gender_val ? gender_val : '');
 		
-	function add_gen(){	
+	async function add_gen(){	
 		var settings = {
   					"url": `${new_settapi}api/profile`,
   					"method": "PUT",
@@ -2777,15 +2726,19 @@ dialog_father_save.addEventListener('click', ()=>{
 		
 	}
 		
-		add_gen();
+		await add_gen();
 		
 		
 		setTimeout(function(){
 			if(warning1.innerHTML == ''){
-				window.location.reload();
+				//window.location.reload();
+				OwnerSettings.removeEventListener("click", UserResponseForEdit);
+				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
+				alert("Данные сохранены")
+				add_user_profile_container.style.display = "none";
 			}
 		}, 3500)
-	});
+	}
 	
 	
 	
