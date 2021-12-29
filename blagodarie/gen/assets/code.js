@@ -605,7 +605,7 @@ my_family_profiles.addEventListener('click', function(){
 })
 
 let get_position = document.querySelector('#get_position');
-let get_position1 = document.querySelector('#get_position1');
+//let get_position1 = document.querySelector('#get_position1');
 let mapid = document.querySelector('#mapid');
 let map_container = document.querySelector('.map_container');
 let mapid_close = document.querySelector('.mapid_close');
@@ -618,14 +618,16 @@ let mapid_whereI = document.querySelector('.mapid_whereI');
 let lati;
 let long;
 
-//if(get_position){
+
 get_position.addEventListener('click', ()=>{
 	get_cur_position();
 });
-get_position1.addEventListener('click', ()=>{
+
+/*get_position1.addEventListener('click', ClickOnGetPosition);
+
+function ClickOnGetPosition(){
 	get_cur_position();
-});
-//}
+}*/
 
 function get_cur_position(){
   navigator.geolocation.getCurrentPosition(
@@ -1966,11 +1968,29 @@ async function myProfilesinfo() {
 	resp_owned_users = response;
 };
 myProfilesinfo();
+let OwnerSettings;
+let clickOnUser;
+let us_uid;
+
+function UserResponseForEdit(user){
+		for(let i=0; i<resp_owned_users.length; i++){
+			if(us_uid == resp_owned_users[i].uuid){
+				user = resp_owned_users[i];
+				break;
+			}
+		}
+		clickOnUser.style.display = "none";
+		user_changed_info(user.uuid, user.last_name, user.first_name, user.middle_name, user.photo, user.dob, user.dod, user.gender, user.latitude, user.longitude);
+}
+
+
+
 async function OnfriendClickFunc(uid, nodeType){
-	let clickOnUser = document.querySelector('#clickOnUser');
+	us_uid = uid;
+	clickOnUser = document.querySelector('#clickOnUser');
 	let href_onUser = document.querySelector('#href_onUser'); 
 	let copyUserLink = document.querySelector('#copyUserLink');
-	let OwnerSettings = document.querySelector('#OwnerSettings');
+	OwnerSettings = document.querySelector('#OwnerSettings');
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	let ShortRoad = document.querySelector('#ShortRoad');
@@ -1989,12 +2009,8 @@ async function OnfriendClickFunc(uid, nodeType){
 	for(let i=0; i<resp_owned_users.length; i++){
 		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
-			OwnerSettings.addEventListener("click", function(){
-				console.log(resp_owned_users[i]);
-				clickOnUser.style.display = "none";
-				user_changed_info(uid, resp_owned_users[i].last_name, resp_owned_users[i].first_name, resp_owned_users[i].middle_name, resp_owned_users[i].photo, resp_owned_users[i].dob, resp_owned_users[i].dod, resp_owned_users[i].gender, resp_owned_users[i].latitude, resp_owned_users[i].longitude);
-			
-			});
+			OwnerSettings.addEventListener("click", UserResponseForEdit);
+
 			break;
 		}else{
 			OwnerSettings.style.display = "none";
@@ -2003,6 +2019,18 @@ async function OnfriendClickFunc(uid, nodeType){
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
+	
+	/*function UserResponseForEdit(user){
+		for(let i=0; i<resp_owned_users.length; i++){
+			if(uid == resp_owned_users[i].uuid){
+				user = resp_owned_users[i];
+				break;
+			}
+		}
+		clickOnUser.style.display = "none";
+		user_changed_info(uid, user.last_name, user.first_name, user.middle_name, user.photo, user.dob, user.dod, user.gender, user.latitude, user.longitude);
+	}*/
+		
 	copyUserLink.addEventListener("click", UserLink);
 	function UserLink(){
 		let txt = `${settings.url}gen?id=` + uid;
@@ -2023,19 +2051,22 @@ async function OnfriendClickFunc(uid, nodeType){
 				if (isDataTrust) {
 					await updateTrust(5, uid);
 					alert('Благодарность установлена');
-					window.location.reload();
+					UserTrust.removeEventListener("click", UserTrustClick);
+					clickOnUser.style.display = "none";
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
 					alert('Доверие установлено');
-					window.location.reload();
+					UserTrust.removeEventListener("click", UserTrustClick);
+					clickOnUser.style.display = "none";
 				}
 			}
 			else {
 				await updateTrust(5, uid);
 				alert('Доверие установлено');
-				window.location.reload();
+				UserTrust.removeEventListener("click", UserTrustClick);
+				clickOnUser.style.display = "none";
 			}
 			//window.location.reload();
 		}
@@ -2051,19 +2082,22 @@ async function OnfriendClickFunc(uid, nodeType){
 				if (!isDataTrust) {
 					await updateTrust(4, uid);		
 					alert('Недоверие установлено');
-					window.location.reload();
+					UserMistrust.removeEventListener("click", UserMistrustClick);
+					clickOnUser.style.display = "none";
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(2, uid);
 					alert('Недоверие установлено');
-					window.location.reload();
+					UserMistrust.removeEventListener("click", UserMistrustClick);
+					clickOnUser.style.display = "none";
 				}
 			}
 			else {
 				await updateTrust(2, uid);
 				alert('Недоверие установлено');
-				window.location.reload();
+				UserMistrust.removeEventListener("click", UserMistrustClick);
+				clickOnUser.style.display = "none";
 			}
 			//window.location.reload();
 		}
@@ -2126,6 +2160,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		copyUserLink.removeEventListener('click', UserLink);
 		UserTrust.removeEventListener("click", UserTrustClick);
 		UserMistrust.removeEventListener("click", UserMistrustClick);
+		OwnerSettings.removeEventListener("click", UserResponseForEdit);
 		clickOnUser.style.display = "none";
 	});
 
@@ -2177,6 +2212,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let profile_father_input = document.querySelector('#profile_father_input');
 	let moth_inp = document.querySelector('.moth_inp');
 	let fath_inp = document.querySelector('.fath_inp');
+	let get_position1 = document.querySelector('#get_position1');
 	
 	
 	
@@ -2197,6 +2233,51 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	if(isAuth){
 	setProfile();
 	}
+	
+	get_position1.addEventListener('click', ClickOnGetPosition);
+
+	function ClickOnGetPosition(){
+		let map = document.createElement('div');
+		map.setAttribute('id', 'mapid');
+		map_container.appendChild(map);
+		get_cur_position1();
+	}
+	
+	function get_cur_position1(){
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      if (response_smat_map.some(e => e.user_uuid === userIdFrom)) {
+        console.log(response_smat_map);
+      for(let i=0;i<response_smat_map.length;i++){
+        if(response_smat_map[i].user_uuid == userIdFrom){
+          lati = +response_smat_map[i].user_latitude;
+          long = +response_smat_map[i].user_longitude;
+          console.log(lati, long);
+          show_smart_map(lati, long);
+		break;
+        }
+      }
+      }else{
+        lati = position.coords.latitude;
+          long = position.coords.longitude;
+        show_smart_map(lati, long)
+      }
+    },
+    function(error){
+      for(let i=0;i<response_smat_map.length;i++){
+        if(response_smat_map[i].user_uuid == userIdFrom){
+          let lati = +response_smat_map[i].user_latitude;
+          let long = +response_smat_map[i].user_longitude;
+          console.log(lati, long);
+          show_smart_map(lati, long);
+		break;
+        }
+      }
+	    show_smart_map(53.89948354993688, 27.557659149169925);
+	    mapid_whereI.style.display = 'none';
+    }
+);
+}
 	
 	user_profile_surname_inp.value = '';
 	user_profile_name_inp.value = '';
@@ -2251,6 +2332,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				get_position1.style.color = '#fff';
 				get_position1.style.borderColor = '#6be86b';
 				get_position1.style.boxShadow = '0px 0px 10px 9px rgba(142, 198, 60, 0.4)';
+	}else{
+		get_position1.style.backgroundColor = '#0d6efd';
+		get_position1.style.color = '#fff';
+		get_position1.style.borderColor = '#0d6efd';
+		get_position1.style.boxShadow = 'none';
 	}
 	
 	//обрезка файлов
@@ -2565,30 +2651,13 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 }).then(data => data.json());		
-			//var b;
 			if(moth_inp.value.includes('id')){
-				/*let str = add_user_profile_mother_input.value;
-					//Обрезаем конец:
-				var from = str.search('id=') + 3; 
-				var to = str.length;
-				let newstr = str.substr(from,to);
-				console.log(newstr);
-				add_user_profile_mother_input.value = newstr;*/
 				url2.href = moth_inp.value;
 				let newstr = url2.searchParams.get('id');
 				moth_inp.value = newstr;
 				console.log(newstr);
 			}
-			//var b;
 			if(fath_inp.value.includes('id')){
-				/*let str3 = add_user_profile_father_input.value;
-					//Обрезаем конец:
-				var from3 = str3.search('id=') + 3; 
-				var to3 = str3.length;
-				let newstr3 = str3.substr(from3,to3);
-				console.log(newstr3);
-				add_user_profile_father_input.value = newstr3;*/
-				//
 				url.href = fath_inp.value;
 				let newstr3 = url.searchParams.get('id');
 				fath_inp.value = newstr3;
@@ -2655,48 +2724,14 @@ dialog_father_save.addEventListener('click', ()=>{
 		myProfilesinfo1();
 });
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//Кнопка Сохранить
-	add_user_profile_overbottom.addEventListener('click', function(){
-		
-		//warning1.innerHTML = "";
-		  
+	add_user_profile_overbottom.addEventListener('click', SaveUserInfo);
+	
+	async function SaveUserInfo(){
 		if(value_gender==undefined && gender_val==null){
 			warning1.innerHTML = "Выберите пол";
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		//add_user_parents(7);
-		//add_user_parents(6);
-		
-		
-		
-	
-		//alert(`${day}-${month}-${year}`)
-		
-		
-		
-		
+			
 		var formdata = new FormData();
 		formdata.append("uuid", id);
 		formdata.append("first_name", user_profile_name_inp.value);
@@ -2706,7 +2741,7 @@ dialog_father_save.addEventListener('click', ()=>{
 		formdata.append("dod", add_user_profile_dd.value);
 		formdata.append("gender", value_gender? value_gender : gender_val ? gender_val : '');
 		
-	function add_gen(){	
+	async function add_gen(){	
 		var settings = {
   					"url": `${new_settapi}api/profile`,
   					"method": "PUT",
@@ -2739,43 +2774,50 @@ dialog_father_save.addEventListener('click', ()=>{
 		
 	}
 		
-		add_gen();
+		await add_gen();
 		
 		
 		setTimeout(function(){
 			if(warning1.innerHTML == ''){
-				window.location.reload();
+				//window.location.reload();
+				OwnerSettings.removeEventListener("click", UserResponseForEdit);
+				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
+				get_position1.removeEventListener('click', ClickOnGetPosition);
+				alert("Данные сохранены");
+				document.querySelector('#mapid').remove();
+				add_user_profile_container.style.display = "none";
 			}
 		}, 3500)
-	});
+	}
 	
 	
 	
 	
 	//закрыть попап
-	/*add_user_profile_close_popup.addEventListener('click', function(){
-		if(user_profile_surname_inp.value != last_name || user_profile_name_inp.value != first_name || user_profile_middlename_inp.value != middle_name){
-			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
-			if(user_profile_not_save == true){
-				window.location.reload();
-			}
-		}else{
-		window.location.reload();
-		}
-	})*/
-	add_user_profile_close_popup.addEventListener('click', function(){
-		//let add_user_profile_cont_fixed = document.querySelector('.add_user_profile_cont_fixed');
+	
+	add_user_profile_close_popup.addEventListener('click', CloseUserPopup);
+	function CloseUserPopup(){
 		if(user_profile_surname_inp.value == last_name && user_profile_name_inp.value == first_name && user_profile_middlename_inp.value == middle_name){
-			//add_user_profile_cont_fixed.style.display = "none";
-			window.location.reload();
+			add_user_profile_container.style.display = "none";
+			add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
+			OwnerSettings.removeEventListener("click", UserResponseForEdit);
+			add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
+			get_position1.removeEventListener('click', ClickOnGetPosition);
+			document.querySelector('#mapid').remove();
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
 			if(user_profile_not_save == true){
-				//add_user_profile_cont_fixed.style.display = "none";
-				window.location.reload();
+				add_user_profile_container.style.display = "none";
+				add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
+				OwnerSettings.removeEventListener("click", UserResponseForEdit);
+				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
+				get_position1.removeEventListener('click', ClickOnGetPosition);
+				document.querySelector('#mapid').remove();
 			}
 		}
-	});
+	}
+	
+	
 }
 
 
