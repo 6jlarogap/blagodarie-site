@@ -2751,12 +2751,14 @@ dialog_father_save.addEventListener('click', ()=>{
 			add_user_profile_container.style.display = "none";
 			add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
 			OwnerSettings.removeEventListener("click", UserResponseForEdit);
+			add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
 			if(user_profile_not_save == true){
 				add_user_profile_container.style.display = "none";
 				add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
 				OwnerSettings.removeEventListener("click", UserResponseForEdit);
+				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 			}
 		}
 	}
