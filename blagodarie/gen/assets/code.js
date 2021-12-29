@@ -2266,7 +2266,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
           let lati = +response_smat_map[i].user_latitude;
           let long = +response_smat_map[i].user_longitude;
           console.log(lati, long);
-          show_smart_map(lati, long)
+          show_smart_map(lati, long);
+		break;
         }
       }
 	    show_smart_map(53.89948354993688, 27.557659149169925);
