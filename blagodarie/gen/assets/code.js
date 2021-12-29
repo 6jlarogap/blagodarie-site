@@ -605,7 +605,7 @@ my_family_profiles.addEventListener('click', function(){
 })
 
 let get_position = document.querySelector('#get_position');
-let get_position1 = document.querySelector('#get_position1');
+//let get_position1 = document.querySelector('#get_position1');
 let mapid = document.querySelector('#mapid');
 let map_container = document.querySelector('.map_container');
 let mapid_close = document.querySelector('.mapid_close');
@@ -618,14 +618,16 @@ let mapid_whereI = document.querySelector('.mapid_whereI');
 let lati;
 let long;
 
-//if(get_position){
+
 get_position.addEventListener('click', ()=>{
 	get_cur_position();
 });
-get_position1.addEventListener('click', ()=>{
+
+/*get_position1.addEventListener('click', ClickOnGetPosition);
+
+function ClickOnGetPosition(){
 	get_cur_position();
-});
-//}
+}*/
 
 function get_cur_position(){
   navigator.geolocation.getCurrentPosition(
@@ -2210,6 +2212,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let profile_father_input = document.querySelector('#profile_father_input');
 	let moth_inp = document.querySelector('.moth_inp');
 	let fath_inp = document.querySelector('.fath_inp');
+	let get_position1 = document.querySelector('#get_position1');
 	
 	
 	
@@ -2229,6 +2232,12 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	userIdFrom = id;
 	if(isAuth){
 	setProfile();
+	}
+	
+	get_position1.addEventListener('click', ClickOnGetPosition);
+
+	function ClickOnGetPosition(){
+		get_cur_position();
 	}
 	
 	user_profile_surname_inp.value = '';
@@ -2734,7 +2743,8 @@ dialog_father_save.addEventListener('click', ()=>{
 				//window.location.reload();
 				OwnerSettings.removeEventListener("click", UserResponseForEdit);
 				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
-				alert("Данные сохранены")
+				get_position1.removeEventListener('click', ClickOnGetPosition);
+				alert("Данные сохранены");
 				add_user_profile_container.style.display = "none";
 			}
 		}, 3500)
@@ -2752,6 +2762,7 @@ dialog_father_save.addEventListener('click', ()=>{
 			add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
 			OwnerSettings.removeEventListener("click", UserResponseForEdit);
 			add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
+			get_position1.removeEventListener('click', ClickOnGetPosition);
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
 			if(user_profile_not_save == true){
@@ -2759,6 +2770,7 @@ dialog_father_save.addEventListener('click', ()=>{
 				add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
 				OwnerSettings.removeEventListener("click", UserResponseForEdit);
 				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
+				get_position1.removeEventListener('click', ClickOnGetPosition);
 			}
 		}
 	}
