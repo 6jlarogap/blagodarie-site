@@ -2049,19 +2049,22 @@ async function OnfriendClickFunc(uid, nodeType){
 				if (isDataTrust) {
 					await updateTrust(5, uid);
 					alert('Благодарность установлена');
-					window.location.reload();
+					UserTrust.removeEventListener("click", UserTrustClick);
+					clickOnUser.style.display = "none";
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
 					alert('Доверие установлено');
-					window.location.reload();
+					UserTrust.removeEventListener("click", UserTrustClick);
+					clickOnUser.style.display = "none";
 				}
 			}
 			else {
 				await updateTrust(5, uid);
 				alert('Доверие установлено');
-				window.location.reload();
+				UserTrust.removeEventListener("click", UserTrustClick);
+				clickOnUser.style.display = "none";
 			}
 			//window.location.reload();
 		}
@@ -2077,19 +2080,22 @@ async function OnfriendClickFunc(uid, nodeType){
 				if (!isDataTrust) {
 					await updateTrust(4, uid);		
 					alert('Недоверие установлено');
-					window.location.reload();
+					UserMistrust.removeEventListener("click", UserMistrustClick);
+					clickOnUser.style.display = "none";
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(2, uid);
 					alert('Недоверие установлено');
-					window.location.reload();
+					UserMistrust.removeEventListener("click", UserMistrustClick);
+					clickOnUser.style.display = "none";
 				}
 			}
 			else {
 				await updateTrust(2, uid);
 				alert('Недоверие установлено');
-				window.location.reload();
+				UserMistrust.removeEventListener("click", UserMistrustClick);
+				clickOnUser.style.display = "none";
 			}
 			//window.location.reload();
 		}
