@@ -808,7 +808,7 @@ async function getApiUrl(){
 	}
 }
 if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
-	window.location.href = window.location.origin;
+	window.location.href = window.location.origin + '/?q=25&f=0';
 }else{
 	getApiUrl();
 }
