@@ -538,6 +538,7 @@ async function setProfile() {
 	} );
 	response_smat_map = map_users;
 	console.log(map_users);
+	return response_smat_map
 
 	
 	
@@ -2243,7 +2244,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	get_position1.addEventListener('click', ClickOnGetPosition);
 
 	async function ClickOnGetPosition(){
-		await setProfile();
+		response_smat_map = await setProfile();
+		console.log(response_smat_map);
 		let map = document.createElement('div');
 		map.setAttribute('id', 'mapid');
 		map_container.appendChild(map);
