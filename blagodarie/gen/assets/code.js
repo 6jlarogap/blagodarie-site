@@ -1006,7 +1006,7 @@ const response = await fetch(`${apiUrl}`, {
 	//Добавить вершину home
 		nodes.push({
 		id: HOME_ID,
-		text: "Доверие",
+		text: "Домой",
 		image: `${settings.url}images/hands.png`,
 		nodeType: NODE_TYPES.HOME
 	});
