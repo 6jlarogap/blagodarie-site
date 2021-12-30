@@ -2244,7 +2244,28 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	get_position1.addEventListener('click', ClickOnGetPosition);
 
 	async function ClickOnGetPosition(){
-		response_smat_map = await setProfile();
+			
+	async function getUserPos() {
+	const response = await fetch(`${settings.api}api/profile_graph?uuid=${userIdFrom}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+	map_users.push({
+		user_photo: response.users[0].photo,
+		user_name: response.users[0].first_name,
+		user_lastname: response.users[0].last_name,
+		user_latitude: response.users[0].latitude,
+		user_longitude: response.users[0].longitude,
+		user_ability: response.users[0].ability,
+		user_uuid: response.users[0].uuid
+	} );
+	response_smat_map = map_users;
+	return response_smat_map	
+}
+		
+		response_smat_map = await getUserPos();
 		console.log(response_smat_map);
 		let map = document.createElement('div');
 		map.setAttribute('id', 'mapid');
