@@ -2252,7 +2252,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
-	response_smat_map = {
+	response_smat_map = [{
 		user_photo: response.users[0].photo,
 		user_name: response.users[0].first_name,
 		user_lastname: response.users[0].last_name,
@@ -2260,7 +2260,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		user_longitude: response.users[0].longitude,
 		user_ability: response.users[0].ability,
 		user_uuid: response.users[0].uuid
-	};
+	}];
 	return response_smat_map	
 }
 		
