@@ -750,7 +750,7 @@ document.querySelector(".mapid_send").addEventListener("click", function(){
 			mapid_alert.style.opacity = "0";
 		}, 2500);
 		setTimeout(function(){	
-			window.location.reload();
+			map_container.style.display = "none";
 		}, 3500)
 	});
 });
@@ -788,7 +788,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		long = null;
 		new_cur_pos_marker_lat = null;
 		new_cur_pos_marker_lng = null;
-		window.location.reload()
+		map_container.style.display = "none";
 	});
 });
 var apiUrl;
