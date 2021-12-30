@@ -2499,16 +2499,15 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	
 	
-	
-	nophoto_but.addEventListener('click', function(){
+	function deleteAccount(){
 		let confirm_do = confirm('Обезличивание приведёт к полной очистке данных профиля. Вы уверены?');
 		if(confirm_do == true){
 			deleteacc();	
 		}else{
 			console.log('Не обезличивать');
 		}
-		
-	})
+	}
+	nophoto_but.addEventListener('click', deleteAccount);
 	
 	
 	
@@ -2787,6 +2786,7 @@ dialog_father_save.addEventListener('click', ()=>{
 				OwnerSettings.removeEventListener("click", UserResponseForEdit);
 				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 				get_position1.removeEventListener('click', ClickOnGetPosition);
+				nophoto_but.removeEventListener('click', deleteAccount);
 				alert("Данные сохранены");
 				document.querySelector('#mapid').remove();
 				add_user_profile_container.style.display = "none";
@@ -2807,6 +2807,7 @@ dialog_father_save.addEventListener('click', ()=>{
 			OwnerSettings.removeEventListener("click", UserResponseForEdit);
 			add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 			get_position1.removeEventListener('click', ClickOnGetPosition);
+			nophoto_but.removeEventListener('click', deleteAccount);
 			document.querySelector('#mapid').remove();
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
@@ -2816,6 +2817,7 @@ dialog_father_save.addEventListener('click', ()=>{
 				OwnerSettings.removeEventListener("click", UserResponseForEdit);
 				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 				get_position1.removeEventListener('click', ClickOnGetPosition);
+				nophoto_but.removeEventListener('click', deleteAccount);
 				document.querySelector('#mapid').remove();
 			}
 		}
