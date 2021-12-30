@@ -2242,7 +2242,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	get_position1.addEventListener('click', ClickOnGetPosition);
 
-	function ClickOnGetPosition(){
+	async function ClickOnGetPosition(){
+		await setProfile();
 		let map = document.createElement('div');
 		map.setAttribute('id', 'mapid');
 		map_container.appendChild(map);
