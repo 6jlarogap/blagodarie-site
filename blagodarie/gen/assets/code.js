@@ -2686,8 +2686,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		}
 }).then(data => data.json());		
 			if(moth_inp.value.includes('id')){
-				url2.href = moth_inp.value;
-				let newstr = url2.searchParams.get('id');
+				url.href = moth_inp.value;
+				let newstr = url.searchParams.get('id');
 				moth_inp.value = newstr;
 				console.log(newstr);
 			}
