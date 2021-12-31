@@ -769,8 +769,8 @@ recur_select_value.innerHTML = url.searchParams.get('d');
 document.querySelector(".mapid_clean").addEventListener("click", function(){
 	var form = new FormData();
 	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
-	form.append("latitude", "0");	
-	form.append("longitude", "0");
+	form.append("latitude", "");	
+	form.append("longitude", "");
 	var settings = {
   		"url": `${new_settapi}api/profile`,
   		"method": "PUT",
