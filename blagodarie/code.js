@@ -1019,7 +1019,7 @@ d3.json(apiUrl)
 		//добавить вершину желаний
 		nodes.push({
 			id: WISHES_ROOT_ID,
-			text: "Желания",
+			text: "Потребности",
 			image: `${settings.url}images/sleep.png`,
 			nodeType: NODE_TYPES.WISH_ROOT
 		});
@@ -1194,7 +1194,7 @@ d3.json(apiUrl)
 		//добавить вершину ключей
 		nodes.push({
 			id: KEYS_ROOT_ID,
-			text: "Ключи",
+			text: "Контакты",
 			image: `${settings.url}images/folder-key.png`,
 			nodeType: NODE_TYPES.KEY_ROOT
 		});
@@ -2248,7 +2248,7 @@ async function rootFunctions(category) {
 			value: 'text',
 			empty: 'желаний'
 		};
-		elementAddInput.setAttribute("placeholder", "Желание...");
+		elementAddInput.setAttribute("placeholder", "Потребность...");
 		elementAddInput.setAttribute("category", category);
 	}
 	else if (category == 'keys') {
@@ -2260,7 +2260,7 @@ async function rootFunctions(category) {
 			type: 'type_id',
 			empty: 'ключей'
 		};
-		elementAddInput.setAttribute("placeholder", "Ключ...");
+		elementAddInput.setAttribute("placeholder", "Контакт...");
 		elementAddInput.setAttribute("category", category);
 	}
 	else {
