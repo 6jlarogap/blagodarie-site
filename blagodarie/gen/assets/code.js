@@ -538,6 +538,7 @@ async function setProfile() {
 	} );
 	response_smat_map = map_users;
 	console.log(map_users);
+	return response_smat_map
 
 	
 	
@@ -750,7 +751,8 @@ document.querySelector(".mapid_send").addEventListener("click", function(){
 			mapid_alert.style.opacity = "0";
 		}, 2500);
 		setTimeout(function(){	
-			window.location.reload();
+			map_container.style.display = "none";
+			document.querySelector('#mapid').remove();
 		}, 3500)
 	});
 });
@@ -767,8 +769,8 @@ recur_select_value.innerHTML = url.searchParams.get('d');
 document.querySelector(".mapid_clean").addEventListener("click", function(){
 	var form = new FormData();
 	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
-	form.append("latitude", "null");	
-	form.append("longitude", "null");
+	form.append("latitude", "0");	
+	form.append("longitude", "0");
 	var settings = {
   		"url": `${new_settapi}api/profile`,
   		"method": "PUT",
@@ -788,7 +790,8 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 		long = null;
 		new_cur_pos_marker_lat = null;
 		new_cur_pos_marker_lng = null;
-		window.location.reload()
+		map_container.style.display = "none";
+		document.querySelector('#mapid').remove();
 	});
 });
 var apiUrl;
@@ -807,7 +810,11 @@ async function getApiUrl(){
 		
 	}
 }
-getApiUrl();
+if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+	window.location.href = window.location.origin + '/?q=25&f=0';
+}else{
+	getApiUrl();
+}
 var isConnection;
 var isTrust;
 
@@ -1006,7 +1013,7 @@ const response = await fetch(`${apiUrl}`, {
 	//Добавить вершину home
 		nodes.push({
 		id: HOME_ID,
-		text: "Доверие",
+		text: "Домой",
 		image: `${settings.url}images/hands.png`,
 		nodeType: NODE_TYPES.HOME
 	});
@@ -2236,7 +2243,29 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	get_position1.addEventListener('click', ClickOnGetPosition);
 
-	function ClickOnGetPosition(){
+	async function ClickOnGetPosition(){
+			
+	async function getUserPos() {
+	const response = await fetch(`${settings.api}api/profile_graph?uuid=${userIdFrom}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+	}).then(data => data.json());
+	response_smat_map = [{
+		user_photo: response.users[0].photo,
+		user_name: response.users[0].first_name,
+		user_lastname: response.users[0].last_name,
+		user_latitude: response.users[0].latitude,
+		user_longitude: response.users[0].longitude,
+		user_ability: response.users[0].ability,
+		user_uuid: response.users[0].uuid
+	}];
+	return response_smat_map	
+}
+		
+		response_smat_map = await getUserPos();
+		console.log(response_smat_map);
 		let map = document.createElement('div');
 		map.setAttribute('id', 'mapid');
 		map_container.appendChild(map);
@@ -2477,9 +2506,15 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   		"data": form12,
 		success: function(){
 			warning1.innerHTML = '';
-			setTimeout(function(){
+			/*setTimeout(function(){
 				window.location.reload();
-			},1000)
+			},1000)*/
+			if(id==getCookie("user_uuid")){
+				deleteCookie("", "auth_token");
+				window.location.href = window.location.origin + "/?q=25&f=0"
+			}else{
+				CloseUserPopup();
+			}
 		},
 			error: function(response){
 				let first_resp = response.responseText;
@@ -2495,16 +2530,15 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	
 	
-	
-	nophoto_but.addEventListener('click', function(){
+	function deleteAccount(){
 		let confirm_do = confirm('Обезличивание приведёт к полной очистке данных профиля. Вы уверены?');
 		if(confirm_do == true){
 			deleteacc();	
 		}else{
 			console.log('Не обезличивать');
 		}
-		
-	})
+	}
+	nophoto_but.addEventListener('click', deleteAccount);
 	
 	
 	
@@ -2783,6 +2817,7 @@ dialog_father_save.addEventListener('click', ()=>{
 				OwnerSettings.removeEventListener("click", UserResponseForEdit);
 				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 				get_position1.removeEventListener('click', ClickOnGetPosition);
+				nophoto_but.removeEventListener('click', deleteAccount);
 				alert("Данные сохранены");
 				document.querySelector('#mapid').remove();
 				add_user_profile_container.style.display = "none";
@@ -2803,6 +2838,7 @@ dialog_father_save.addEventListener('click', ()=>{
 			OwnerSettings.removeEventListener("click", UserResponseForEdit);
 			add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 			get_position1.removeEventListener('click', ClickOnGetPosition);
+			nophoto_but.removeEventListener('click', deleteAccount);
 			document.querySelector('#mapid').remove();
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
@@ -2812,6 +2848,7 @@ dialog_father_save.addEventListener('click', ()=>{
 				OwnerSettings.removeEventListener("click", UserResponseForEdit);
 				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 				get_position1.removeEventListener('click', ClickOnGetPosition);
+				nophoto_but.removeEventListener('click', deleteAccount);
 				document.querySelector('#mapid').remove();
 			}
 		}
