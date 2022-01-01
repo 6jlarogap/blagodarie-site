@@ -769,8 +769,8 @@ recur_select_value.innerHTML = url.searchParams.get('d');
 document.querySelector(".mapid_clean").addEventListener("click", function(){
 	var form = new FormData();
 	form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
-	form.append("latitude", "0");	
-	form.append("longitude", "0");
+	form.append("latitude", "");	
+	form.append("longitude", "");
 	var settings = {
   		"url": `${new_settapi}api/profile`,
   		"method": "PUT",
@@ -890,7 +890,7 @@ const response = await fetch(`${apiUrl}`, {
 		//добавить вершину желаний
 		nodes.push({
 			id: WISHES_ROOT_ID,
-			text: "Желания",
+			text: "Потребности",
 			image: `${settings.url}images/sleep.png`,
 			nodeType: NODE_TYPES.WISH_ROOT
 		});
@@ -926,7 +926,7 @@ const response = await fetch(`${apiUrl}`, {
 		});
 	}
 
-	if (userIdFrom && !(userIdFrom == PROFILE.id) && !window.location.href.includes('%2C')) {
+	if (userIdFrom && !(userIdFrom == PROFILE.id) && !window.location.href.includes('%2C') && !window.location.href.includes(',')) {
 		isConnection = data.trust_connections.some(link => link.source == PROFILE.id && link.target == userIdFrom);
 //		console.log(isConnection)
 //		console.log(data);
@@ -1038,7 +1038,7 @@ const response = await fetch(`${apiUrl}`, {
 		//добавить вершину ключей
 		nodes.push({
 			id: KEYS_ROOT_ID,
-			text: "Ключи",
+			text: "Контакты",
 			image: `${settings.url}images/folder-key.png`,
 			nodeType: NODE_TYPES.KEY_ROOT
 		});
@@ -2686,8 +2686,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		}
 }).then(data => data.json());		
 			if(moth_inp.value.includes('id')){
-				url2.href = moth_inp.value;
-				let newstr = url2.searchParams.get('id');
+				url.href = moth_inp.value;
+				let newstr = url.searchParams.get('id');
 				moth_inp.value = newstr;
 				console.log(newstr);
 			}
@@ -2868,7 +2868,7 @@ async function rootFunctions(category) {
 			value: 'text',
 			empty: 'желаний'
 		};
-		elementAddInput.setAttribute("placeholder", "Желание...");
+		elementAddInput.setAttribute("placeholder", "Потребность...");
 		elementAddInput.setAttribute("category", category);
 	}
 	else if (category == 'keys') {
@@ -2880,7 +2880,7 @@ async function rootFunctions(category) {
 			type: 'type_id',
 			empty: 'ключей'
 		};
-		elementAddInput.setAttribute("placeholder", "Ключ...");
+		elementAddInput.setAttribute("placeholder", "Контакт...");
 		elementAddInput.setAttribute("category", category);
 	}
 	else {
