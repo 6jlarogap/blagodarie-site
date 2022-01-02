@@ -2367,7 +2367,17 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	//открываем окно для родителей
 	let rootDialog1 = document.querySelector('.rootDialog1');
 	let rootDialog2 = document.querySelector('.rootDialog2');
-	profile_mother_input.addEventListener('click', ()=>{
+	function motherOpenFunc(){
+		rootDialog1.style.display = "flex";
+		getUsparent();
+		get_info_about_parents();
+	}
+	function fatherOpenFunc(){
+		rootDialog2.style.display = "flex";
+		getUsparent();
+		get_info_about_parents();
+	}
+	/*profile_mother_input.addEventListener('click', ()=>{
 		rootDialog1.style.display = "flex";
 		getUsparent();
 		get_info_about_parents();
@@ -2376,7 +2386,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 		rootDialog2.style.display = "flex";
 		getUsparent();
 		get_info_about_parents();
-	})
+	})*/
+	profile_mother_input.addEventListener('click', motherOpenFunc);
+	profile_father_input.addEventListener('click', fatherOpenFunc);
 	
 	
 	
@@ -2868,6 +2880,8 @@ dialog_father_save.addEventListener('click', ()=>{
 				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 				get_position1.removeEventListener('click', ClickOnGetPosition);
 				nophoto_but.removeEventListener('click', deleteAccount);
+				profile_mother_input.removeEventListener('click', motherOpenFunc);
+				profile_father_input.removeEventListener('click', fatherOpenFunc);
 				alert("Данные сохранены");
 				document.querySelector('#mapid').remove();
 				add_user_profile_container.style.display = "none";
@@ -2889,6 +2903,8 @@ dialog_father_save.addEventListener('click', ()=>{
 			add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 			get_position1.removeEventListener('click', ClickOnGetPosition);
 			nophoto_but.removeEventListener('click', deleteAccount);
+			profile_mother_input.removeEventListener('click', motherOpenFunc);
+			profile_father_input.removeEventListener('click', fatherOpenFunc);
 			document.querySelector('#mapid').remove();
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
@@ -2899,6 +2915,8 @@ dialog_father_save.addEventListener('click', ()=>{
 				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
 				get_position1.removeEventListener('click', ClickOnGetPosition);
 				nophoto_but.removeEventListener('click', deleteAccount);
+				profile_mother_input.removeEventListener('click', motherOpenFunc);
+				profile_father_input.removeEventListener('click', fatherOpenFunc);
 				document.querySelector('#mapid').remove();
 			}
 		}
