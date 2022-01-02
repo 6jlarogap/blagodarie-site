@@ -824,7 +824,7 @@ let new_map = document.querySelector('#new_map');
 let dataResponse;
 async function d3view(){
 //d3.json(apiUrl)
-const response;
+const response = 0;
 if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 	response = await fetch(`${apiUrl}`, {
 		method: "GET"
