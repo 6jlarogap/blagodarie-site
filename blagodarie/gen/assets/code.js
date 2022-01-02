@@ -1981,7 +1981,7 @@ let resp_owned_users;
 async function myProfilesinfo() {
 	let response;
 	if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
-		response = await fetch(`${new_settapi}api/profile?number=2000`, {
+		response = await fetch(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`, {
 		method: "GET"
 		}).then(data => data.json());
 	resp_owned_users = response;
