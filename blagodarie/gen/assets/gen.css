@@ -187,7 +187,7 @@ text{
 }
 		dialog {
 			position: absolute;
-			padding: 8%;
+			padding: 40px;
 			top: 30%;
 			width: 550px;
 			left:50%;
@@ -209,7 +209,7 @@ text{
 		}
 		#authDialog{
 			box-shadow: 5px 5px 55px 20px rgb(0 0 0 / 31%);
-			 border-radius: 12%; 
+			 border-radius: 61px; 
 			border: solid black 0px;
 		}
 		.close_auth_dialog{
