@@ -1980,7 +1980,14 @@ async function onNodeClick(nodeType, uuid, txt){
 let resp_owned_users;
 async function myProfilesinfo() {
 	let response;
-	if((!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")=="" || (!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")==false){
+	if((userIdFrom.includes('%2C') || userIdFrom.includes(',')) && getCookie("auth_token")=="" || (userIdFrom.includes('%2C') || userIdFrom.includes(',')) && getCookie("auth_token")==false){
+		let shorterUuidstr = userIdFrom.split(',')[0];
+		response = await fetch(`${new_settapi}api/profile?uuid=${shorterUuidstr}&number=2000`, {
+		method: "GET"
+		}).then(data => data.json());
+		resp_owned_users = response;
+	}
+	else if((!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")=="" || (!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")==false){
 		response = await fetch(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`, {
 		method: "GET"
 		}).then(data => data.json());
