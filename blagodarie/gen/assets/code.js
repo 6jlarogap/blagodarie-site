@@ -947,7 +947,7 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 		async function count_plus() {
 		let response;
 		if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
-			const response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
+			response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
 			method: "GET"
 			}).then(data => data.json());
 		}else{
@@ -1979,13 +1979,21 @@ async function onNodeClick(nodeType, uuid, txt){
 }
 let resp_owned_users;
 async function myProfilesinfo() {
-		const response = await fetch(`${new_settapi}api/profile?number=2000`, {
+	let response;
+	if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+		response = await fetch(`${new_settapi}api/profile?number=2000`, {
+		method: "GET"
+		}).then(data => data.json());
+	resp_owned_users = response;
+	}else{
+		response = await fetch(`${new_settapi}api/profile?number=2000`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
-}).then(data => data.json());
-	resp_owned_users = response;
+		}).then(data => data.json());
+		resp_owned_users = response;
+	}
 };
 myProfilesinfo();
 let OwnerSettings;
