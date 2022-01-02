@@ -210,7 +210,7 @@ if (getCookie("auth_data")) {
 		setReferal();
 	}
 
-	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
+	window.location.href = `${settings.url}gen/?id=${getCookie("user_uuid")}`;
 }
 
 
@@ -566,7 +566,7 @@ async function onTelegramAuth(user) {
 		setReferal();
 	}
   
-	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
+	window.location.href = `${settings.url}gen/?id=${getCookie("user_uuid")}`;
 }
 
 initDefs();
@@ -810,11 +810,7 @@ async function getApiUrl(){
 		
 	}
 }
-if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
-	window.location.href = window.location.origin + '/?q=25&f=0';
-}else{
 	getApiUrl();
-}
 var isConnection;
 var isTrust;
 
@@ -824,12 +820,19 @@ let new_map = document.querySelector('#new_map');
 let dataResponse;
 async function d3view(){
 //d3.json(apiUrl)
-const response = await fetch(`${apiUrl}`, {
+let response;
+if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+	response = await fetch(`${apiUrl}`, {
+		method: "GET"
+	}).then(data => data.json());
+}else{
+	response = await fetch(`${apiUrl}`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
+}
 	dataResponse = response;
 	data = response;
 	console.log(data);
@@ -938,13 +941,19 @@ const response = await fetch(`${apiUrl}`, {
 		isConnection ? isTrust = data.trust_connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
 //		console.log(isTrust)
 		async function count_plus() {
-		const response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
+		let response;
+		if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+			response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
+			method: "GET"
+			}).then(data => data.json());
+		}else{
+			response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
+			method: "GET",
+			headers: {
+				"Authorization": 'Token ' + getCookie("auth_token")
+			}
+			}).then(data => data.json());
 		}
-		}).then(data => data.json());
-
 	if(isAuth){ 
 	let ans = response.connections;
 	let ans1 = ans.find(data => {
@@ -1966,13 +1975,28 @@ async function onNodeClick(nodeType, uuid, txt){
 }
 let resp_owned_users;
 async function myProfilesinfo() {
-		const response = await fetch(`${new_settapi}api/profile?number=2000`, {
+	let response;
+	if((userIdFrom.includes('%2C') || userIdFrom.includes(',')) && getCookie("auth_token")=="" || (userIdFrom.includes('%2C') || userIdFrom.includes(',')) && getCookie("auth_token")==false){
+		let shorterUuidstr = userIdFrom.split(',')[0];
+		response = await fetch(`${new_settapi}api/profile?uuid=${shorterUuidstr}&number=2000`, {
+		method: "GET"
+		}).then(data => data.json());
+		resp_owned_users = response;
+	}
+	else if((!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")=="" || (!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")==false){
+		response = await fetch(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`, {
+		method: "GET"
+		}).then(data => data.json());
+	resp_owned_users = response;
+	}else{
+		response = await fetch(`${new_settapi}api/profile?number=2000`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
-}).then(data => data.json());
-	resp_owned_users = response;
+		}).then(data => data.json());
+		resp_owned_users = response;
+	}
 };
 myProfilesinfo();
 let OwnerSettings;
@@ -2154,7 +2178,33 @@ async function OnfriendClickFunc(uid, nodeType){
 	
 		
 	ShortRoad.addEventListener('click', function(){
-		window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+		if(userIdFrom.includes(',') || userIdFrom.includes('%2C')){
+			let newstrFrom = userIdFrom.split(',')[0];
+			if(getCookie('user_uuid') && (getCookie('user_uuid')==newstrFrom)){
+				window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+			}else if(newstrFrom==uid){
+				if(getCookie('user_uuid')){
+					window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+				}else{
+					window.location.href = `${window.location.origin}${window.location.pathname}?id=${uid}`;
+				}
+			}else{
+				window.location.href = `${window.location.origin}${window.location.pathname}?id=${newstrFrom + ',' + uid}&sl=true`;
+			}
+		}else{
+			if(getCookie('user_uuid') && (getCookie('user_uuid')==userIdFrom)){
+				window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+			}else if(userIdFrom==uid){
+				if(getCookie('user_uuid')){
+					window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+				}else{
+					window.location.href = `${window.location.origin}${window.location.pathname}?id=${uid}`;
+				}
+			}else{
+				window.location.href = `${window.location.origin}${window.location.pathname}?id=${userIdFrom + ',' + uid}&sl=true`;
+			}
+		}
+
 	});
 		
 }else{
