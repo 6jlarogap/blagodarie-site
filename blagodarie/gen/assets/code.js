@@ -1980,7 +1980,7 @@ async function onNodeClick(nodeType, uuid, txt){
 let resp_owned_users;
 async function myProfilesinfo() {
 	let response;
-	if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+	if(getCookie("auth_token")=="" || getCookie("auth_token")==false || !userIdFrom.includes('%2C') || !userIdFrom.includes(',')){
 		response = await fetch(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`, {
 		method: "GET"
 		}).then(data => data.json());
