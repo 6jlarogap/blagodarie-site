@@ -566,7 +566,7 @@ async function onTelegramAuth(user) {
 		setReferal();
 	}
   
-	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
+	window.location.href = `${settings.url}gen/?id=${getCookie("user_uuid")}`;
 }
 
 initDefs();
