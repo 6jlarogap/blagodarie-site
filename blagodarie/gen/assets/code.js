@@ -2175,7 +2175,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	
 		
 	ShortRoad.addEventListener('click', function(){
-		window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+		window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid')?getCookie('user_uuid'):userIdFrom + ',' + uid}&sl=true`;
 	});
 		
 }else{
