@@ -25,7 +25,9 @@ settingSets.forEach((setting, i) => {
 let new_settapi = settings.api;
 let new_setturl = settings.url;
 
-
+if(!isAuth){
+	window.location.href = settings.url;
+}
 
 let user_table_body = document.querySelector('#user_table_body');
 
