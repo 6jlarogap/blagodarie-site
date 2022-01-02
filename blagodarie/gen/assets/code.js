@@ -945,13 +945,19 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 		isConnection ? isTrust = data.trust_connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
 //		console.log(isTrust)
 		async function count_plus() {
-		const response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
+		let response;
+		if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+			const response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
+			method: "GET"
+			}).then(data => data.json());
+		}else{
+			response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
+			method: "GET",
+			headers: {
+				"Authorization": 'Token ' + getCookie("auth_token")
+			}
+			}).then(data => data.json());
 		}
-		}).then(data => data.json());
-
 	if(isAuth){ 
 	let ans = response.connections;
 	let ans1 = ans.find(data => {
