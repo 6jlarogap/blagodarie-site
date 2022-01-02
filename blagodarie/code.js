@@ -1126,7 +1126,7 @@ d3.json(apiUrl)
 			image: `${settings.url}images/menu.png`,
 			nodeType: NODE_TYPES.OPTIONS
 		})
-	}
+	
 		//Добавить вершину invite
 		nodes.push({
 			id: INVITE_ID,
@@ -1135,7 +1135,7 @@ d3.json(apiUrl)
 			nodeType: NODE_TYPES.INVITE
 		})
 	
-
+	}
 	//добавить вершину share
 	nodes.push({
 		id: SHARE_ID,
