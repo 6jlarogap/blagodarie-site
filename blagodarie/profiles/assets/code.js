@@ -40,7 +40,7 @@ async function myProfilesinfo() {
 }).then(data => data.json());
 	console.log(response);
 	for(let i = 0; i<response.length; i++){
-		console.log(response[0][i]);
+		console.log(response.0[i]);
 		let tr = document.createElement('tr');
 		tr.classList.add(response[0][i].uuid);
 		var str = response[0][i].photo;
