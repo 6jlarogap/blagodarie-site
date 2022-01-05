@@ -43,7 +43,7 @@ async function myProfilesinfo() {
 		console.log(response[i]);
 		let tr = document.createElement('tr');
 		tr.classList.add(response[i].uuid);
-		var str = response[i].photo ? response[i].photo : settings.url+"/images/default_avatar.png";
+		var str = response[i].photo;
 		var extArray = str.split(".");
 		var ext = extArray[extArray.length - 1];
 		
