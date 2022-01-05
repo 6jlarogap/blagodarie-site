@@ -42,7 +42,7 @@ async function myProfilesinfo() {
 	for(let i = 0; i<response.length; i++){
 		console.log(response[i]);
 		let tr = document.createElement('tr');
-		tr.classList.add(response[0][i].uuid);
+		tr.classList.add(response[i].uuid);
 		var str = response[i].photo;
 		var extArray = str.split(".");
 		var ext = extArray[extArray.length - 1];
