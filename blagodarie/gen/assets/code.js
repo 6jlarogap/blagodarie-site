@@ -1990,8 +1990,8 @@ async function myProfilesinfo() {
 		}).then(data => data.json());
 	resp_owned_users = response;
 		console.log(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`);
-	}else if(url.searchParams.has('id')){
-		response = await fetch(`${new_settapi}api/profile?uuid=${url.searchParams.get('id')}&number=2000`, {
+	}else if(userIdFrom && (!userIdFrom.includes('%2C') && !userIdFrom.includes(','))){
+		response = await fetch(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
