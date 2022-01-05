@@ -1982,12 +1982,14 @@ async function myProfilesinfo() {
 		method: "GET"
 		}).then(data => data.json());
 		resp_owned_users = response;
+		console.log(`${new_settapi}api/profile?uuid=${shorterUuidstr}&number=2000`);
 	}
 	else if((!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")=="" || (!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")==false){
 		response = await fetch(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`, {
 		method: "GET"
 		}).then(data => data.json());
 	resp_owned_users = response;
+		console.log(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`);
 	}else{
 		response = await fetch(`${new_settapi}api/profile?number=2000`, {
 		method: "GET",
@@ -1996,6 +1998,7 @@ async function myProfilesinfo() {
 		}
 		}).then(data => data.json());
 		resp_owned_users = response;
+		console.log(`${new_settapi}api/profile?number=2000`);
 	}
 };
 myProfilesinfo();
