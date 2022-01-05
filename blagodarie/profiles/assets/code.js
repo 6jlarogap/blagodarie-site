@@ -43,7 +43,9 @@ async function myProfilesinfo() {
 		console.log(response[i]);
 		let tr = document.createElement('tr');
 		tr.classList.add(response[i].uuid);
-		if(response[i].photo != "" && response[i].photo != undefined){
+		if(response[i].photo == "" && response[i].photo == undefined){
+			console.log('Без фото')
+		}else{
 		var str = response[i].photo;
 		var extArray = str.split(".");
 		var ext = extArray[extArray.length - 1];
