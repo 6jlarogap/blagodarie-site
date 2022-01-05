@@ -43,7 +43,7 @@ async function myProfilesinfo() {
 		console.log(response[i]);
 		let tr = document.createElement('tr');
 		tr.classList.add(response[i].uuid);
-		if(response[i].photo == "" && response[i].photo == undefined){
+		if(response[i].photo == undefined || response[i].photo == ""){
 			console.log('Без фото')
 		}else{
 		var str = response[i].photo;
