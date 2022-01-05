@@ -39,18 +39,18 @@ async function myProfilesinfo() {
 		}
 }).then(data => data.json());
 	console.log(response);
-	for(let i = 0; i<response[0].length; i++){
-		console.log(response[0][i]);
+	for(let i = 0; i<response.length; i++){
+		console.log(response[i]);
 		let tr = document.createElement('tr');
 		tr.classList.add(response[0][i].uuid);
-		var str = response[0][i].photo;
+		var str = response[i].photo;
 		var extArray = str.split(".");
 		var ext = extArray[extArray.length - 1];
 		
 		var replacement = "media"; 
 		var toReplace = "thumb"; 
 		var str1 = str.replace(replacement, toReplace);
-		tr.innerHTML = `<td><img src='${response[0][i].photo==""||response[0][i].photo==undefined ? settings.url+"/images/default_avatar.png" : str1+"/45x45~crop~12."+ext}'/></td><td>${response[0][i].last_name + ' ' + response[0][i].first_name + ' ' + response[0][i].middle_name}</td><td><div class="bd_dd"><div class="bd_dd_cont"><p>${response[0][i].dob != null ? response[0][i].dob : ''}</p><p>|</p><p>${response[0][i].dod != null ? response[0][i].dod : ''}</p></div><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/gen/?id=${response[0][i].uuid}&d=5"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info('${response[0][i].uuid}', '${response[0][i].last_name}', '${response[0][i].first_name}', '${response[0][i].middle_name}', '${str1+"/320x320~crop~12."+ext}', '${response[0][i].dob}', '${response[0][i].dod}', '${response[0][i].gender}')"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
+		tr.innerHTML = `<td><img src='${response[i].photo==""||response[i].photo==undefined ? settings.url+"/images/default_avatar.png" : str1+"/45x45~crop~12."+ext}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td><div class="bd_dd"><div class="bd_dd_cont"><p>${response[i].dob != null ? response[i].dob : ''}</p><p>|</p><p>${response[i].dod != null ? response[i].dod : ''}</p></div><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/gen/?id=${response[i].uuid}&d=5"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info('${response[i].uuid}', '${response[i].last_name}', '${response[i].first_name}', '${response[i].middle_name}', '${str1+"/320x320~crop~12."+ext}', '${response[i].dob}', '${response[i].dod}', '${response[i].gender}')"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
 		user_table_body.append(tr); 
 	}
 }
