@@ -2067,7 +2067,8 @@ async function OnfriendClickFunc(uid, nodeType){
 	}
 	add_father.style.display = 'block';
 	add_mother.style.display = 'block';
-	for(let i=0; i<user_connections.length; i++){
+	
+	for(let i=0; i<user_connections.connections.length; i++){
 		console.log(user_connections.connections[i]);
 		console.log(user_connections.connections[i].source);
 		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == true){
