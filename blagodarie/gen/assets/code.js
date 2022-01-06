@@ -2085,15 +2085,15 @@ async function OnfriendClickFunc(uid, nodeType){
 		console.log(user_connections.connections[i].source);
 		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == true){
 			add_father.style.display = 'none';
-		}else if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == false){
+		}/*else if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == false){
 			add_father.style.display = 'block';
 			add_father.addEventListener('click', add_context_father);
-		}if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == true){
+		}*/if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == true){
 			add_mother.style.display = 'none';
-		}else if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == false){
+		}/*else if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == false){
 			add_mother.style.display = 'block';
 			add_mother.addEventListener('click', add_context_mother);
-		}
+		}*/
 	}
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
