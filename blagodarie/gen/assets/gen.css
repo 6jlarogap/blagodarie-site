@@ -283,6 +283,14 @@ text{
 			margin-left: auto;
 			border-radius: 25%;
 		}
+.addpupils_form{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	width: max-content;
+	margin: 0 auto;
+}
 
 		.btn-group {
 			margin-top: 3px;
