@@ -814,6 +814,7 @@ async function getApiUrl(){
 var isConnection;
 var isTrust;
 
+let user_connections;
 let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
@@ -836,6 +837,7 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 	dataResponse = response;
 	data = response;
 	console.log(data);
+	user_connections = data;
 	if (isAuth) {
 		await setProfile();
 		nodes.push(PROFILE);
@@ -2014,6 +2016,8 @@ myProfilesinfo();
 let OwnerSettings;
 let clickOnUser;
 let us_uid;
+let add_mother;
+let add_father;
 
 function UserResponseForEdit(user){
 		for(let i=0; i<resp_owned_users.length; i++){
@@ -2034,6 +2038,8 @@ async function OnfriendClickFunc(uid, nodeType){
 	let href_onUser = document.querySelector('#href_onUser'); 
 	let copyUserLink = document.querySelector('#copyUserLink');
 	OwnerSettings = document.querySelector('#OwnerSettings');
+	add_mother = document.querySelector('#add_mother');
+	add_father = document.querySelector('#add_father');
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	let ShortRoad = document.querySelector('#ShortRoad');
@@ -2058,6 +2064,16 @@ async function OnfriendClickFunc(uid, nodeType){
 			break;
 		}else{
 			OwnerSettings.style.display = "none";
+		}
+	}
+	add_father.style.display = 'block';
+	add_mother.style.display = 'block';
+	for(let i=0; i<user_connections; i++){
+		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == true){
+			add_father.style.display = 'none';
+		}
+		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == true){
+			add_mother.style.display = 'none';
 		}
 	}
 	href_onUser.addEventListener("click", ()=>{
