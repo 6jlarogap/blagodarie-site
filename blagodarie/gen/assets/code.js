@@ -2016,8 +2016,7 @@ myProfilesinfo();
 let OwnerSettings;
 let clickOnUser;
 let us_uid;
-let add_mother;
-let add_father;
+
 
 function UserResponseForEdit(user){
 		for(let i=0; i<resp_owned_users.length; i++){
@@ -2038,8 +2037,8 @@ async function OnfriendClickFunc(uid, nodeType){
 	let href_onUser = document.querySelector('#href_onUser'); 
 	let copyUserLink = document.querySelector('#copyUserLink');
 	OwnerSettings = document.querySelector('#OwnerSettings');
-	add_mother = document.querySelector('#add_mother');
-	add_father = document.querySelector('#add_father');
+	let add_mother = document.querySelector('#add_mother');
+	let add_father = document.querySelector('#add_father');
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	let ShortRoad = document.querySelector('#ShortRoad');
