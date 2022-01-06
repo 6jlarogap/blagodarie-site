@@ -1990,7 +1990,7 @@ async function myProfilesinfo() {
 		}).then(data => data.json());
 	resp_owned_users = response;
 		console.log(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`);
-	}else if(userIdFrom && (!userIdFrom.includes('%2C') && !userIdFrom.includes(','))){
+	}/*else if(userIdFrom && (!userIdFrom.includes('%2C') && !userIdFrom.includes(','))){
 		response = await fetch(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`, {
 		method: "GET",
 		headers: {
@@ -1998,8 +1998,8 @@ async function myProfilesinfo() {
 		}
 		}).then(data => data.json());
 		resp_owned_users = response;
-		console.log(`${new_settapi}api/profile?number=2000`);
-	}else{
+		console.log(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`);
+	}*/else{
 		response = await fetch(`${new_settapi}api/profile?number=2000`, {
 		method: "GET",
 		headers: {
