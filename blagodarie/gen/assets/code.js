@@ -2081,22 +2081,17 @@ async function OnfriendClickFunc(uid, nodeType){
 	add_mother.style.display = 'block';
 	
 	for(let i=0; i<user_connections.connections.length; i++){
-		console.log(user_connections.connections[i]);
-		console.log(user_connections.connections[i].source);
 		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == true){
 			add_father.style.display = 'none';
-		}else{
-			add_father.style.display = 'block';
-			add_father.addEventListener('click', add_context_father);
 		}
 		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == true){
 			add_mother.style.display = 'none';
-		}else{
-			add_mother.style.display = 'block';
-			add_mother.addEventListener('click', add_context_mother);
 		}
-
 	}
+		
+	add_mother.addEventListener('click', add_context_mother);
+	add_father.addEventListener('click', add_context_father);
+		
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
