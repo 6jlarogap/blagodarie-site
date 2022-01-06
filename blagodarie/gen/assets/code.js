@@ -2029,6 +2029,18 @@ function UserResponseForEdit(user){
 		user_changed_info(user.uuid, user.last_name, user.first_name, user.middle_name, user.photo, user.dob, user.dod, user.gender, user.latitude, user.longitude);
 }
 
+//контекстное добавление родителей
+
+function add_context_mother(){
+	let addpupils_form = document.querySelector('#addpupils');
+	addpupils_form.style.display = 'block';
+}
+
+function add_context_father(){
+	let addpupils_form = document.querySelector('#addpupils');
+	addpupils_form.style.display = 'block';
+}
+
 
 
 async function OnfriendClickFunc(uid, nodeType){
@@ -2073,9 +2085,14 @@ async function OnfriendClickFunc(uid, nodeType){
 		console.log(user_connections.connections[i].source);
 		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == true){
 			add_father.style.display = 'none';
-		}
-		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == true){
+		}else if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == false){
+			add_father.style.display = 'block';
+			add_father.addEventListener('click', add_context_father);
+		}if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == true){
 			add_mother.style.display = 'none';
+		}else if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == false){
+			add_mother.style.display = 'block';
+			add_mother.addEventListener('click', add_context_mother);
 		}
 	}
 	href_onUser.addEventListener("click", ()=>{
@@ -2249,6 +2266,8 @@ async function OnfriendClickFunc(uid, nodeType){
 		UserTrust.removeEventListener("click", UserTrustClick);
 		UserMistrust.removeEventListener("click", UserMistrustClick);
 		OwnerSettings.removeEventListener("click", UserResponseForEdit);
+		add_mother.removeEventListener('click', add_context_mother);
+		add_father.removeEventListener('click', add_context_father);
 		clickOnUser.style.display = "none";
 	});
 
