@@ -291,6 +291,9 @@ text{
 	width: max-content;
 	margin: 0 auto;
 }
+.pagination_but_add_new_pup{
+	margin-top: 1em;
+}
 
 		.btn-group {
 			margin-top: 3px;
