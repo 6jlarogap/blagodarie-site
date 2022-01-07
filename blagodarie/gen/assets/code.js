@@ -2043,7 +2043,7 @@ function add_context_father(uid){
 	checker(uid);
 }
 
-function checker(){
+function checker(uid){
 	let pagination_but_add_new_pup = document.querySelector('.pagination_but_add_new_pup'),
 		add_new_pup = document.querySelector('#add_new_pup'),
 		add_reserved_pup = document.querySelector('#add_reserved_pup');
