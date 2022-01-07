@@ -2046,7 +2046,8 @@ function add_context_father(uid){
 function checker(){
 	let pagination_but_add_new_pup = document.querySelector('.pagination_but_add_new_pup'),
 		add_new_pup = document.querySelector('#add_new_pup'),
-		add_reserved_pup = document.querySelector('#add_reserved_pup')
+		add_reserved_pup = document.querySelector('#add_reserved_pup');
+	pagination_but_add_new_pup.preventDefault();
 		
 	pagination_but_add_new_pup.onclick = function(){
 		if(add_new_pup.checked){
