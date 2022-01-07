@@ -2047,9 +2047,10 @@ function checker(){
 	let pagination_but_add_new_pup = document.querySelector('.pagination_but_add_new_pup'),
 		add_new_pup = document.querySelector('#add_new_pup'),
 		add_reserved_pup = document.querySelector('#add_reserved_pup');
-	pagination_but_add_new_pup.preventDefault();
+	
 		
-	pagination_but_add_new_pup.onclick = function(){
+	pagination_but_add_new_pup.onclick = function(event){
+		event.preventDefault();
 		if(add_new_pup.checked){
 			console.log('Добавляем нового юзера')
 		}else{
