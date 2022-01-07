@@ -2031,13 +2031,14 @@ function UserResponseForEdit(user){
 
 //контекстное добавление родителей
 
-function add_context_mother(uid){
+function add_context_mother(uid=us_uid){
 	let addpupils_form = document.querySelector('#addpupils');
 	addpupils_form.style.display = 'block';
+	
 	checker(uid);
 }
 
-function add_context_father(uid){
+function add_context_father(uid=us_uid){
 	let addpupils_form = document.querySelector('#addpupils');
 	addpupils_form.style.display = 'block';
 	checker(uid);
@@ -2158,8 +2159,8 @@ async function OnfriendClickFunc(uid, nodeType){
 		}
 	}
 		
-	add_mother.addEventListener('click', function(){add_context_mother(uid) }, true);
-	add_father.addEventListener('click', function(){add_context_father(uid) }, true);
+	add_mother.addEventListener('click', add_context_mother);
+	add_father.addEventListener('click', add_context_father);
 		
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
