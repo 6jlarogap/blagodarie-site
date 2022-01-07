@@ -2031,17 +2031,84 @@ function UserResponseForEdit(user){
 
 //контекстное добавление родителей
 
-function add_context_mother(){
+function add_context_mother(uid){
 	let addpupils_form = document.querySelector('#addpupils');
 	addpupils_form.style.display = 'block';
+	checker(uid);
 }
 
-function add_context_father(){
+function add_context_father(uid){
 	let addpupils_form = document.querySelector('#addpupils');
 	addpupils_form.style.display = 'block';
+	checker(uid);
 }
 
+function checker(){
+	let pagination_but_add_new_pup = document.querySelector('.pagination_but_add_new_pup'),
+		add_new_pup = document.querySelector('#add_new_pup'),
+		add_reserved_pup = document.querySelector('#add_reserved_pup')
+		
+	pagination_but_add_new_pup.onclick = function(){
+		if(add_new_pup.checked){
+			console.log('Добавляем нового юзера')
+		}else{
+			add_context_reserved_parents(uid);
+		}
+	}
+}
 
+//функция добавления существующего пользователя в родители
+
+function add_context_reserved_parents(id, operation_type_id, add_user_profile_mother_input){
+	let add_new_user_form = document.querySelector('#add_new_user_form');
+	add_new_user_form.style.display = "block";
+	
+	/*async function add_user_parents(operation_type_id, add_user_profile_mother_input){
+	
+				var settings = {
+  					"url": `${new_settapi}api/addoperation`,
+  					"method": "POST",
+  					"timeout": 0,
+  					"headers": {
+    					"Authorization": `Token ${getCookie("auth_token")}`,
+    					"Content-Type": "application/json"
+  					},
+  					"data": JSON.stringify({
+    					"user_id_from": id,
+    					"user_id_to": add_user_profile_mother_input,
+    					"operation_type_id": operation_type_id
+  					}),
+					success: function(response){
+						//warning1.innerHTML = '';
+						rootDialog1.style.display = 'none';
+						rootDialog2.style.display = 'none';
+						get_info_about_parents();
+						fath_text2.innerHTML = fath_text2_response;
+						moth_text2.innerHTML = moth_text2_response;
+					},
+					error: function(response){
+						let first_resp = response.responseText;
+						let pars1 = JSON.parse(first_resp);
+						//warning1.innerHTML = pars1.message;
+						if(rootDialog1.style.display == 'flex'){
+							moth_text.innerHTML = pars1.message;
+						}else if(rootDialog2.style.display == 'flex'){
+							fath_text.innerHTML = pars1.message;
+						}
+					}
+					};
+
+					$.ajax(settings).done(function (response) {
+  					console.log(response);
+					});
+			
+		
+		}*/
+	
+	
+	
+	
+}
 
 async function OnfriendClickFunc(uid, nodeType){
 	us_uid = uid;
@@ -2089,8 +2156,8 @@ async function OnfriendClickFunc(uid, nodeType){
 		}
 	}
 		
-	add_mother.addEventListener('click', add_context_mother);
-	add_father.addEventListener('click', add_context_father);
+	add_mother.addEventListener('click', function(){add_context_mother(uid) }, true);
+	add_father.addEventListener('click', function(){add_context_father(uid) }, true);
 		
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
