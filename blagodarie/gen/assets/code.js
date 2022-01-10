@@ -2034,7 +2034,6 @@ function UserResponseForEdit(user){
 function add_context_mother(uid=us_uid){
 	let addpupils_form = document.querySelector('#addpupils');
 	addpupils_form.style.display = 'block';
-	
 	checker(uid);
 }
 
