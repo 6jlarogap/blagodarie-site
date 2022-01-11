@@ -2062,16 +2062,16 @@ function checker(uid){
 //функция проверки элемента
 
 function checkElemByClass(elem){
-	if(document.querySelector(`.'${elem}'`)==true){
+	if(document.querySelector(`.'${elem}'`)){
 		return true
-	}else if(document.querySelector(`.'${elem}'`)==false){
+	}else{
 		return false		 
 	}
 }
 function checkElemById(elem){
-	if(document.querySelector(`#'${elem}'`)==true){
+	if(document.querySelector(`#'${elem}'`)){
 		return true
-	}else if(document.querySelector(`#'${elem}'`)==false){
+	}else{
 		return false		 
 	}
 }
