@@ -2171,6 +2171,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	add_mother.addEventListener('click', closer);
 	
 	add_father.addEventListener('click', add_context_father);
+	add_father.addEventListener('click', closer);
 		
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
@@ -2345,6 +2346,8 @@ async function OnfriendClickFunc(uid, nodeType){
 		OwnerSettings.removeEventListener("click", UserResponseForEdit);
 		add_mother.removeEventListener('click', add_context_mother);
 		add_father.removeEventListener('click', add_context_father);
+		add_mother.removeEventListener('click', closer);
+		add_father.removeEventListener('click', closer);
 		clickOnUser.style.display = "none";
 	});
 		
@@ -2356,6 +2359,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			add_mother.removeEventListener('click', add_context_mother);
 			add_father.removeEventListener('click', add_context_father);
 			add_mother.removeEventListener('click', closer);
+			add_father.removeEventListener('click', closer);
 			clickOnUser.style.display = "none";
 		}
 
