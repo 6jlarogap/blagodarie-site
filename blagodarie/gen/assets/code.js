@@ -2185,8 +2185,10 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 						close_reserved_user_form();
 					},
 					error: function(response){
-						console.log(response)
-						reserved_user_form_error.innerHTML = response.responseText;
+						console.log(response);
+						let first_resp = response.responseText;
+						let pars1 = JSON.parse(first_resp);
+						reserved_user_form_error.innerHTML = pars1.message;
 					}
 					
 					
