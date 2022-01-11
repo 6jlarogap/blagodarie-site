@@ -331,6 +331,7 @@ text{
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin: 0 auto;
 }
 .add_user_profile_overbottom.new.new_user{
 	display: block;
