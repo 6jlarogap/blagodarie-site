@@ -2069,7 +2069,7 @@ function checkElemByClass(elem){
 	}
 }
 function checkElemById(elem){
-	if(document.querySelector(`#'${elem}'`)){
+	if(document.querySelector(`#${elem}`)){
 		return true
 	}else{
 		return false		 
