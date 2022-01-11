@@ -2045,6 +2045,13 @@ function add_context_father(uid){
 	checker(uid, 'father');
 }
 
+function add_context_child(uid){
+	uid=us_uid
+	let addpupils_form = document.querySelector('#addpupils');
+	addpupils_form.style.display = 'block';
+	checker(uid, 'child');
+}
+
 function checker(uid, type_of_user){
 	let pagination_but_add_new_pup = document.querySelector('.pagination_but_add_new_pup'),
 		add_new_pup = document.querySelector('#add_new_pup'),
@@ -2155,6 +2162,16 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 					break;
 				}
 			}
+		}else if(type_of_user == "child"){
+			for(let i=0; i<dataResponse.users.length; i++){
+				if(dataResponse.users.uuid == us_id_from && dataResponse.users.gender == 'm'){
+					await add_user_parents(6, clean_uid, us_id_from);
+				}else if(dataResponse.users.uuid == us_id_from && dataResponse.users.gender == 'f'){
+					await add_user_parents(8, clean_uid, us_id_from);
+				}else if(dataResponse.users.uuid == us_id_from && dataResponse.users.gender == null){
+					await add_user_parents(8, clean_uid, us_id_from);
+				}
+			}
 		}
 		}
 		
@@ -2215,6 +2232,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	OwnerSettings = document.querySelector('#OwnerSettings');
 	let add_mother = document.querySelector('#add_mother');
 	let add_father = document.querySelector('#add_father');
+	let add_child = document.querySelector('#add_child');
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	let ShortRoad = document.querySelector('#ShortRoad');
@@ -2243,6 +2261,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	}
 	add_father.style.display = 'block';
 	add_mother.style.display = 'block';
+	add_child.style.display = 'block';
 	
 	for(let i=0; i<user_connections.connections.length; i++){
 		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == true){
@@ -2258,6 +2277,10 @@ async function OnfriendClickFunc(uid, nodeType){
 	
 	add_father.addEventListener('click', add_context_father);
 	add_father.addEventListener('click', closer);
+		
+	add_child.addEventListener('click', add_context_child);
+	add_child.addEventListener('click', closer);
+		
 		
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
@@ -2432,6 +2455,8 @@ async function OnfriendClickFunc(uid, nodeType){
 		OwnerSettings.removeEventListener("click", UserResponseForEdit);
 		add_mother.removeEventListener('click', add_context_mother);
 		add_father.removeEventListener('click', add_context_father);
+		add_child.removeEventListener('click', add_context_child);
+		add_child.removeEventListener('click', closer);
 		add_mother.removeEventListener('click', closer);
 		add_father.removeEventListener('click', closer);
 		clickOnUser.style.display = "none";
@@ -2444,6 +2469,8 @@ async function OnfriendClickFunc(uid, nodeType){
 			OwnerSettings.removeEventListener("click", UserResponseForEdit);
 			add_mother.removeEventListener('click', add_context_mother);
 			add_father.removeEventListener('click', add_context_father);
+			add_child.removeEventListener('click', add_context_child);
+			add_child.removeEventListener('click', closer);
 			add_mother.removeEventListener('click', closer);
 			add_father.removeEventListener('click', closer);
 			clickOnUser.style.display = "none";
