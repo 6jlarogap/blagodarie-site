@@ -799,18 +799,38 @@ async function getApiUrl(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
-		await d3view();
+		try{
+			await d3view();
+		}catch(err){
+			alert('805' + err);
+		}
+		//await d3view();
 	}else if(url.searchParams.has('sl')){
 			apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}`;
 			console.log(apiUrl)
-			await d3view(); 
+			//await d3view(); 
+		try{
+			await d3view();
+		}catch(err){
+			alert('815' + err);
+		}
 	}else{
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
-		await d3view();
+		//await d3view();
+		try{
+			await d3view();
+		}catch(err){
+			alert('823' + err);
+		}
 		
 	}
 }
+try{
 	getApiUrl();
+}catch(err){
+	alert('831' + err);
+}
+	//getApiUrl();
 var isConnection;
 var isTrust;
 
