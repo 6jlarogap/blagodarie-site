@@ -2093,6 +2093,7 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 		add_new_user_form_but = document.querySelector('.add_new_user_form_but'),
 		add_new_user_form_inp = document.querySelector('.add_new_user_form_inp');
 	add_new_user_form.style.display = "block";
+	add_new_user_form_inp.value = '';
 	
 	//кнопка закрыть
 	context_menu_add_profiles2.addEventListener('click', close_reserved_user_form);
