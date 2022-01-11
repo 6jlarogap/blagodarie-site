@@ -2164,11 +2164,11 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 			}
 		}else if(type_of_user == "child"){
 			for(let i=0; i<dataResponse.users.length; i++){
-				if(dataResponse.users.uuid == us_id_from && dataResponse.users.gender == 'm'){
+				if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'm'){
 					await add_user_parents(6, clean_uid, us_id_from);
-				}else if(dataResponse.users.uuid == us_id_from && dataResponse.users.gender == 'f'){
+				}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'f'){
 					await add_user_parents(8, clean_uid, us_id_from);
-				}else if(dataResponse.users.uuid == us_id_from && dataResponse.users.gender == null){
+				}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == null){
 					await add_user_parents(8, clean_uid, us_id_from);
 				}
 			}
