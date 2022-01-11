@@ -2103,15 +2103,8 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 	//кнопка добавить
 	add_new_user_form_but.addEventListener('click', checkAndAddReservedPeople);
 	
-	async function checkAndAddReservedPeople(){
-		//Проверка на пустоту поля
-		if(add_new_user_form_inp.value == ""){
-			reserved_user_form_error.innerHTML = "Поле не может быть пустым";
-		}else{
-			reserved_user_form_error.innerHTML = "";
-		}
+	function checkAndAddReservedPeople(){
 		
-		//Добавление связей
 		
 		//Проверка на ссылку или юид
 		let clean_uid;
@@ -2123,8 +2116,17 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 			clean_uid = add_new_user_form_inp.value;
 		}
 		
+		//Проверка на пустоту поля
+		if(add_new_user_form_inp.value == ""){
+			reserved_user_form_error.innerHTML = "Поле не может быть пустым";
+		}else{
+			reserved_user_form_error.innerHTML = "";
+			add_reservedAndChecked_user();
+		}
 		
+		//Добавление связей
 		
+		async function add_reservedAndChecked_user(){
 		if(type_of_user == "father"){
 			for(let i=0; i<dataResponse.connections.length; i++){
 				if(dataResponse.connections[i].source == us_id_from && dataResponse.connections[i].target == clean_uid && dataResponse.connections[i].is_father == true){
@@ -2148,6 +2150,11 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 				}
 			}
 		}
+		}
+		
+		
+		
+		
 	}
 	
 	
