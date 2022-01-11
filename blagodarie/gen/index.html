@@ -213,6 +213,36 @@
 	<input type="submit" value="Добавить" class="add_new_user_form_but">
 	</dialog>
 	
+	<!--Новый профиль-->
+	
+	<div class="add_user_profile_container_prew">
+	<div class="add_user_profile_container_n">
+	<p>Добавление профиля</p>
+	<p class="add_user_profile_close_popup_new">×</p>
+		<div class="add_user_profile_fio">
+				<p class="error_in_add"></p>
+				<p class="add_user_profile_surname">Фамилия</p>
+				<input type="text" id="user_profile_surname_inp" class="user_profile_surname_inp new">
+				<p class="add_user_profile_name">Имя</p>
+				<input type="text" id="user_profile_name_inp" class="user_profile_name_inp new">
+				<p class="add_user_profile_middlename">Отчество</p>
+				<input type="text" id="user_profile_middlename_inp" class="user_profile_middlename_inp new">
+			</div>
+			<form class="gender_cont new_user">
+			<div class="male_cont">
+			<label for="male">Мужчина</label>
+			<input type="radio" name="gender" value="m" onclick="setGender(this)">
+  			</div>
+  			<div class="female_cont">
+   			<label for="female">Женщина</label>
+    		<input type="radio" name="gender" value="f" onclick="setGender(this)">
+    		</div>
+    		</form>
+		<button id="add_user_profile_overbottom" class="add_user_profile_overbottom new new_user">Сохранить</button>
+		</div>
+	</div>
+	
+	
 	<div class="add_user_profile_cont_fixed">
 	<div class="add_user_profile_container">
 		<div class="add_user_profile_top_cont">
