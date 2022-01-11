@@ -2056,6 +2056,7 @@ context_menu_add_profiles.addEventListener('click', closePupContextMenu);
 function closePupContextMenu(){
 	addpupils_form.style.display = "none";
 	context_menu_add_profiles.removeEventListener('click', closePupContextMenu);
+	pagination_but_add_new_pup.removeEventListener('click', checkerButton);
 }
 	
 pagination_but_add_new_pup.addEventListener('click', checkerButton);
