@@ -294,6 +294,14 @@ text{
 .pagination_but_add_new_pup{
 	margin-top: 1em;
 }
+.context_menu_add_profiles{
+	margin-bottom: 5px;
+	margin-left: auto;
+	border-radius: 25%;
+	display: block;
+	background-color: #8b0000 !important;
+	border-color: #8b0000 !important;
+}
 
 		.btn-group {
 			margin-top: 3px;

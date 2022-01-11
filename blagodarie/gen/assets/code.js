@@ -2059,6 +2059,17 @@ function checker(uid){
 	}
 }
 
+//функция проверки элемента
+
+function checkElemByClass(elem){
+	if(document.querySelector(`.${elem}`)==true){
+		return true
+	}else if((document.querySelector(`.${elem}`)==false){
+		return false		 
+	}
+}
+
+
 //функция добавления существующего пользователя в родители
 
 function add_context_reserved_parents(id, operation_type_id, add_user_profile_mother_input){
