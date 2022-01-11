@@ -2112,10 +2112,187 @@ function checkerButton (){
 
 //функция добавления нового пользователя в родители
 function add_context_new_parents(us_id_from, type_of_user){
-	let add_user_profile_container_prew = document.querySelector('.add_user_profile_container_prew');
-	
+	let add_user_profile_container_prew = document.querySelector('.add_user_profile_container_prew'),
+		errorInNewContextProfile = document.querySelector('.errorInNewContextProfile'),
+		add_user_profile_close_popup_new = document.querySelector('.add_user_profile_close_popup_new'),
+		user_profile_surname_inp_new = document.querySelector('.user_profile_surname_inp.new'),
+		user_profile_middlename_inp_new = document.querySelector('.user_profile_middlename_inp.new'),
+		user_profile_name_inp_new = document.querySelector('.user_profile_name_inp.new'),
+		male_checked_new_pup = document.querySelector('.male_checked_new_pup'),
+		female_checked_new_pup = document.querySelector('.female_checked_new_pup'),
+		add_user_profile_overbottom_new_new_user = document.querySelector('.add_user_profile_overbottom.new.new_user');
 	
 	add_user_profile_container_prew.style.display = "block";
+	user_profile_surname_inp_new.value = "";
+	user_profile_middlename_inp_new.value = "";
+	user_profile_name_inp_new.value = "";
+	errorInNewContextProfile.innerHTML = "";
+	
+	//закрытие формы
+	add_user_profile_close_popup_new.addEventListener('click', close_new_user_popup);
+	
+	function close_new_user_popup(){
+		add_user_profile_container_prew.style.display = "none";
+		add_user_profile_close_popup_new.removeEventListener('click', close_new_user_popup);
+		add_user_profile_overbottom_new_new_user.removeEventListener('click', addNewUserContextProfile);
+	}
+	
+	//Кнопка отправить
+	
+	add_user_profile_overbottom_new_new_user.addEventListener('click', addNewUserContextProfile);
+	
+	function addNewUserContextProfile(){
+		
+		let gender_value;
+		if(male_checked_new_pup.checked == true){
+			gender_value = 'm';
+		}else if(female_checked_new_pup.checked == true){
+			gender_value = 'f';
+		}
+		
+		var form = new FormData();
+	if(user_profile_name_inp.value != ''){
+		form.append("first_name", user_profile_name_inp_new.value);
+	}
+	if(user_profile_surname_inp.value != ''){
+		form.append("last_name", user_profile_surname_inp_new.value);
+	}
+	if(user_profile_middlename_inp.value != ''){
+		form.append("middle_name", user_profile_middlename_inp_new.value);
+	}
+	if(gender_value!=undefined){
+		form.append("gender", gender_value);
+	}
+	if(gender_value==undefined){
+		errorInNewContextProfile.innerHTML = "Выберите пол";
+	}
+	if(gender_value!=undefined){
+	
+				var settings = {
+  					"url": `${new_settapi}api/profile`,
+  					"method": "POST",
+  					"timeout": 0,
+  					"headers": {
+  					  "Authorization": `Token ${getCookie("auth_token")}`
+  					},
+  					"processData": false,
+  					"mimeType": "multipart/form-data",
+  					"contentType": false,
+  					"data": form,
+					success: async function(response){
+						
+						console.log(response)
+						let str1 = response;
+						let pars1 = JSON.parse(str1);
+						let new_profile_user_uuid = pars1.uuid;
+						let last_name = pars1.last_name;
+						let fName = pars1.first_name;
+						let midName = pars1.middle_name;
+						let gender_val = pars1.gender;
+						if(type_of_user == "father"){
+							try{
+								await add_user_parents(6, us_id_from, new_profile_user_uuid);
+							}catch(err){
+								errorInNewContextProfile.innerHTML = err;
+							}
+							close_new_user_popup();
+						}else if(type_of_user == "mother"){
+							try{
+								await add_user_parents(8, us_id_from, new_profile_user_uuid);
+							}catch(err){
+								errorInNewContextProfile.innerHTML = err;
+							}
+							close_new_user_popup();
+						}else if(type_of_user == "child"){
+							for(let i=0; i<dataResponse.users.length; i++){
+								if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'm'){
+									try{
+									await add_user_parents(6, new_profile_user_uuid, us_id_from);
+									}catch(err){
+										errorInNewContextProfile.innerHTML = err;
+									}
+								}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'f'){
+									try{
+									await add_user_parents(8, new_profile_user_uuid, us_id_from);
+									}catch(err){
+										errorInNewContextProfile.innerHTML = err;
+									}
+								}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == null){
+									try{
+									await add_user_parents(8, new_profile_user_uuid, us_id_from);
+									}catch(err){
+										errorInNewContextProfile.innerHTML = err;
+									}
+								}
+							}
+							close_new_user_popup();
+							
+						}
+						
+						/*localStorage.setItem('npuuid', new_profile_user_uuid);
+						localStorage.setItem('lastName', last_name);
+						
+							localStorage.setItem('fName', fName);
+						localStorage.setItem('midName', midName);
+						localStorage.setItem('gender', gender_val);
+						*/
+						
+					},
+					error: function(response){
+						let first_resp = response.responseText;
+						let pars1 = JSON.parse(first_resp);
+						errorInNewContextProfile.innerHTML = pars1.message;
+					}
+					};
+
+					$.ajax(settings).done(function (response) {
+						console.log(response);
+					});
+		}
+		
+	
+	}
+	
+	
+	
+	
+		async function add_user_parents(operation_type_id, us_id_from, clean_uid){
+	
+				var settings = {
+  					"url": `${new_settapi}api/addoperation`,
+  					"method": "POST",
+  					"timeout": 0,
+  					"headers": {
+    					"Authorization": `Token ${getCookie("auth_token")}`,
+    					"Content-Type": "application/json"
+  					},
+  					"data": JSON.stringify({
+    					"user_id_from": us_id_from,
+    					"user_id_to": clean_uid,
+    					"operation_type_id": operation_type_id
+  					}),
+					success: function(response){
+						console.log(response);
+						close_reserved_user_form();
+					},
+					error: function(response){
+						console.log(response);
+						let first_resp = response.responseText;
+						let pars1 = JSON.parse(first_resp);
+						reserved_user_form_error.innerHTML = pars1.message;
+					}
+					
+					
+					};
+
+					$.ajax(settings).done(function (response) {
+  					console.log(response);
+					});
+			
+		
+		}
+	
+	
 }
 
 
