@@ -316,6 +316,26 @@ text{
 	margin-top: 10px;
 	color: red;
 }
+.add_user_profile_container_prew .add_user_profile_fio{
+	width: fit-content;
+	margin: 0 auto;
+	margin-top: 2%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.gender_cont{
+	width: max-content;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.add_user_profile_overbottom.new.new_user{
+	display: block;
+	margin: 0 auto !important;
+}
 
 		.btn-group {
 			margin-top: 3px;
