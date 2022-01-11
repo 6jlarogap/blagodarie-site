@@ -2126,7 +2126,7 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 		
 		
 		if(type_of_user == "father"){
-			for(let i; i<dataResponse.connections.length; i++){
+			for(let i=0; i<dataResponse.connections.length; i++){
 				if(dataResponse.connections[i].source == us_id_from && dataResponse.connections[i].target == clean_uid && dataResponse.connections[i].is_father == true){
 					await add_user_parents(7, us_id_from, clean_uid);
 					await add_user_parents(6, us_id_from, clean_uid);
@@ -2137,7 +2137,7 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 				}
 			}
 		}else if(type_of_user == "mother"){
-			for(let i; i<dataResponse.connections.length; i++){
+			for(let i=0; i<dataResponse.connections.length; i++){
 				if(dataResponse.connections[i].source == us_id_from && dataResponse.connections[i].target == clean_uid && dataResponse.connections[i].is_mother == true){
 					await add_user_parents(7, us_id_from, clean_uid);
 					await add_user_parents(8, us_id_from, clean_uid);
