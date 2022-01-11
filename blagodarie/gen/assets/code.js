@@ -2058,17 +2058,20 @@ function closePupContextMenu(){
 	context_menu_add_profiles.removeEventListener('click', closePupContextMenu);
 }
 	
-		
-	pagination_but_add_new_pup.onclick = function(event){
+pagination_but_add_new_pup.addEventListener('click', checkerButton);
+function checkerButton (){
 		//event.preventDefault();
 		if(add_new_pup.checked){
 			console.log('Добавляем нового юзера');
+			pagination_but_add_new_pup.removeEventListener('click', checkerButton);
 		}else{
 			console.log(type_of_user);
+			pagination_but_add_new_pup.removeEventListener('click', checkerButton);
 			closePupContextMenu();
 			add_context_reserved_parents(uid);
 		}
 	}
+	
 }
 
 
