@@ -2059,22 +2059,13 @@ function checker(uid){
 	}
 }
 
-//функция проверки элемента
+//функция закрытия и удаления обработчиков 
 
-function checkElemByClass(elem){
-	if(document.querySelector(`.'${elem}'`)){
-		return true
-	}else{
-		return false		 
-	}
+function closePupContextMenu(){
+
 }
-function checkElemById(elem){
-	if(document.querySelector(`#${elem}`)){
-		return true
-	}else{
-		return false		 
-	}
-}
+
+
 
 
 //функция добавления существующего пользователя в родители
@@ -2176,8 +2167,10 @@ async function OnfriendClickFunc(uid, nodeType){
 		}
 	}
 		
-	add_mother.addEventListener('click', add_context_mother);
-	add_father.addEventListener('click', add_context_father);
+	add_mother.addEventListener('click', add_context_mother)
+		.then(()=>{closer()});
+	add_father.addEventListener('click', add_context_father)
+		.then(()=>{closer()});
 		
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
@@ -2354,6 +2347,16 @@ async function OnfriendClickFunc(uid, nodeType){
 		add_father.removeEventListener('click', add_context_father);
 		clickOnUser.style.display = "none";
 	});
+		
+		function closer(){
+			copyUserLink.removeEventListener('click', UserLink);
+			UserTrust.removeEventListener("click", UserTrustClick);
+			UserMistrust.removeEventListener("click", UserMistrustClick);
+			OwnerSettings.removeEventListener("click", UserResponseForEdit);
+			add_mother.removeEventListener('click', add_context_mother);
+			add_father.removeEventListener('click', add_context_father);
+			clickOnUser.style.display = "none";
+		}
 
 	}
 	
