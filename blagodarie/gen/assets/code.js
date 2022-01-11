@@ -2112,8 +2112,8 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 		let clean_uid;
 		
 		if(add_new_user_form_inp.value.includes('id')){
-			url = add_new_user_form_inp.value;
-			clean_uid = url.searchParams.get('id');
+			let url3 = new URL(add_new_user_form_inp.value);
+			clean_uid = url3.searchParams.get('id');
 		}else{
 			clean_uid = add_new_user_form_inp.value;
 		}
