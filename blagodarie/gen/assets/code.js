@@ -2183,7 +2183,7 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 					},
 					error: function(response){
 						console.log(response)
-						reserved_user_form_error.innerHTML = response;
+						reserved_user_form_error.innerHTML = response.responseText;
 					}
 					
 					
