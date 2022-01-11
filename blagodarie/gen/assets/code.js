@@ -2092,8 +2092,9 @@ pagination_but_add_new_pup.addEventListener('click', checkerButton);
 function checkerButton (){
 		//event.preventDefault();
 		if(add_new_pup.checked){
-			console.log('Добавляем нового юзера');
 			pagination_but_add_new_pup.removeEventListener('click', checkerButton);
+			closePupContextMenu();
+			add_context_new_parents();
 		}else{
 			console.log(type_of_user);
 			pagination_but_add_new_pup.removeEventListener('click', checkerButton);
@@ -2109,6 +2110,13 @@ function checkerButton (){
 
 
 
+//функция добавления нового пользователя в родители
+function add_context_new_parents(us_id_from, type_of_user){
+	let add_user_profile_container_prew = document.querySelector('.add_user_profile_container_prew');
+	
+	
+	add_user_profile_container_prew.style.display = "block";
+}
 
 
 //функция добавления существующего пользователя в родители
