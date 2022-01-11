@@ -2068,6 +2068,13 @@ function checkElemByClass(elem){
 		return false		 
 	}
 }
+function checkElemById(elem){
+	if(document.querySelector(`#${elem}`)==true){
+		return true
+	}else if(document.querySelector(`#${elem}`)==false){
+		return false		 
+	}
+}
 
 
 //функция добавления существующего пользователя в родители
