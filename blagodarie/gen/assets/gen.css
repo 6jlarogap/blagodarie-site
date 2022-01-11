@@ -294,7 +294,7 @@ text{
 .pagination_but_add_new_pup{
 	margin-top: 1em;
 }
-.context_menu_add_profiles{
+.context_menu_add_profiles, .context_menu_add_profiles2{
 	margin-bottom: 5px;
 	margin-left: auto;
 	border-radius: 25%;

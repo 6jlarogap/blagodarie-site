@@ -2046,25 +2046,34 @@ function add_context_father(uid=us_uid){
 function checker(uid, type_of_user){
 	let pagination_but_add_new_pup = document.querySelector('.pagination_but_add_new_pup'),
 		add_new_pup = document.querySelector('#add_new_pup'),
-		add_reserved_pup = document.querySelector('#add_reserved_pup');
+		add_reserved_pup = document.querySelector('#add_reserved_pup'),
+		addpupils_form = document.querySelector('#addpupils'),
+		context_menu_add_profiles = document.querySelector('.context_menu_add_profiles');
+	
+context_menu_add_profiles.addEventListener('click', closePupContextMenu);
+	
+//функция закрытия и удаления обработчиков 
+function closePupContextMenu(){
+	addpupils_form.style.display = "none";
+	context_menu_add_profiles.removeEventListener('click', closePupContextMenu);
+}
 	
 		
 	pagination_but_add_new_pup.onclick = function(event){
-		event.preventDefault();
+		//event.preventDefault();
 		if(add_new_pup.checked){
 			console.log('Добавляем нового юзера');
 		}else{
 			console.log(type_of_user);
+			closePupContextMenu();
 			add_context_reserved_parents(uid);
 		}
 	}
 }
 
-//функция закрытия и удаления обработчиков 
 
-function closePupContextMenu(){
 
-}
+
 
 
 
