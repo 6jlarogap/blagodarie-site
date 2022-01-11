@@ -2034,16 +2034,16 @@ function UserResponseForEdit(user){
 function add_context_mother(uid=us_uid){
 	let addpupils_form = document.querySelector('#addpupils');
 	addpupils_form.style.display = 'block';
-	checker(uid);
+	checker(uid, 'mother');
 }
 
 function add_context_father(uid=us_uid){
 	let addpupils_form = document.querySelector('#addpupils');
 	addpupils_form.style.display = 'block';
-	checker(uid);
+	checker(uid, 'father');
 }
 
-function checker(uid){
+function checker(uid, type_of_user){
 	let pagination_but_add_new_pup = document.querySelector('.pagination_but_add_new_pup'),
 		add_new_pup = document.querySelector('#add_new_pup'),
 		add_reserved_pup = document.querySelector('#add_reserved_pup');
@@ -2052,8 +2052,9 @@ function checker(uid){
 	pagination_but_add_new_pup.onclick = function(event){
 		event.preventDefault();
 		if(add_new_pup.checked){
-			console.log('Добавляем нового юзера')
+			console.log('Добавляем нового юзера');
 		}else{
+			console.log(type_of_user);
 			add_context_reserved_parents(uid);
 		}
 	}
@@ -2073,6 +2074,7 @@ function closePupContextMenu(){
 function add_context_reserved_parents(id, operation_type_id, add_user_profile_mother_input){
 	let add_new_user_form = document.querySelector('#add_new_user_form');
 	add_new_user_form.style.display = "block";
+	
 	
 	/*async function add_user_parents(operation_type_id, add_user_profile_mother_input){
 	
