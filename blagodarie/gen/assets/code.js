@@ -2136,6 +2136,7 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 					await add_user_parents(6, us_id_from, clean_uid);
 				}else{
 					await add_user_parents(6, us_id_from, clean_uid);
+					break;
 				}
 			}
 		}else if(type_of_user == "mother"){
@@ -2147,6 +2148,7 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 					await add_user_parents(8, us_id_from, clean_uid);
 				}else{
 					await add_user_parents(8, us_id_from, clean_uid);
+					break;
 				}
 			}
 		}
