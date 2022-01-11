@@ -2168,10 +2168,8 @@ async function OnfriendClickFunc(uid, nodeType){
 	}
 		
 	add_mother.addEventListener('click', add_context_mother);
-	add_mother.onclick = function deleteinfo(){
-		closer();
-		add_mother.removeEventListener('click', deleteinfo);
-	}
+	add_mother.addEventListener('click', closer);
+	
 	add_father.addEventListener('click', add_context_father);
 		
 	href_onUser.addEventListener("click", ()=>{
@@ -2357,6 +2355,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			OwnerSettings.removeEventListener("click", UserResponseForEdit);
 			add_mother.removeEventListener('click', add_context_mother);
 			add_father.removeEventListener('click', add_context_father);
+			add_mother.removeEventListener('click', closer);
 			clickOnUser.style.display = "none";
 		}
 
