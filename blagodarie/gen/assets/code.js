@@ -2167,10 +2167,12 @@ async function OnfriendClickFunc(uid, nodeType){
 		}
 	}
 		
-	add_mother.addEventListener('click', add_context_mother)
-		.then(()=>{closer()});
-	add_father.addEventListener('click', add_context_father)
-		.then(()=>{closer()});
+	add_mother.addEventListener('click', add_context_mother);
+	add_mother.onclick = function deleteinfo(){
+		closer();
+		add_mother.removeEventListener('click', deleteinfo);
+	}
+	add_father.addEventListener('click', add_context_father);
 		
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
