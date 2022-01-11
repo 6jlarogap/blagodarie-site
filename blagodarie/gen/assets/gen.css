@@ -311,6 +311,11 @@ text{
 	display: block;
 	margin: 0 auto;
 }
+.reserved_user_form_error{
+	text-align: center;
+	margin-top: 10px;
+	color: red;
+}
 
 		.btn-group {
 			margin-top: 3px;
