@@ -799,21 +799,42 @@ async function getApiUrl(){
 	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
-		await d3view();
+		try{
+			await d3view();
+		}catch(err){
+			alert('805' + err);
+		}
+		//await d3view();
 	}else if(url.searchParams.has('sl')){
 			apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}`;
 			console.log(apiUrl)
-			await d3view(); 
+			//await d3view(); 
+		try{
+			await d3view();
+		}catch(err){
+			alert('815' + err);
+		}
 	}else{
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
-		await d3view();
+		//await d3view();
+		try{
+			await d3view();
+		}catch(err){
+			alert('823' + err);
+		}
 		
 	}
 }
+try{
 	getApiUrl();
+}catch(err){
+	alert('831' + err);
+}
+	//getApiUrl();
 var isConnection;
 var isTrust;
 
+let user_connections;
 let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
@@ -836,6 +857,7 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 	dataResponse = response;
 	data = response;
 	console.log(data);
+	user_connections = data;
 	if (isAuth) {
 		await setProfile();
 		nodes.push(PROFILE);
@@ -1982,13 +2004,24 @@ async function myProfilesinfo() {
 		method: "GET"
 		}).then(data => data.json());
 		resp_owned_users = response;
+		console.log(`${new_settapi}api/profile?uuid=${shorterUuidstr}&number=2000`);
 	}
 	else if((!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")=="" || (!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")==false){
 		response = await fetch(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`, {
 		method: "GET"
 		}).then(data => data.json());
 	resp_owned_users = response;
-	}else{
+		console.log(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`);
+	}/*else if(userIdFrom && (!userIdFrom.includes('%2C') && !userIdFrom.includes(','))){
+		response = await fetch(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+		}).then(data => data.json());
+		resp_owned_users = response;
+		console.log(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`);
+	}*/else{
 		response = await fetch(`${new_settapi}api/profile?number=2000`, {
 		method: "GET",
 		headers: {
@@ -1996,12 +2029,14 @@ async function myProfilesinfo() {
 		}
 		}).then(data => data.json());
 		resp_owned_users = response;
+		console.log(`${new_settapi}api/profile?number=2000`);
 	}
 };
 myProfilesinfo();
 let OwnerSettings;
 let clickOnUser;
 let us_uid;
+
 
 function UserResponseForEdit(user){
 		for(let i=0; i<resp_owned_users.length; i++){
@@ -2014,7 +2049,385 @@ function UserResponseForEdit(user){
 		user_changed_info(user.uuid, user.last_name, user.first_name, user.middle_name, user.photo, user.dob, user.dod, user.gender, user.latitude, user.longitude);
 }
 
+//контекстное добавление родителей
 
+function add_context_mother(uid){
+	uid=us_uid
+	let addpupils_form = document.querySelector('#addpupils');
+	addpupils_form.style.display = 'block';
+	checker(uid, 'mother');
+}
+
+function add_context_father(uid){
+	uid=us_uid
+	let addpupils_form = document.querySelector('#addpupils');
+	addpupils_form.style.display = 'block';
+	checker(uid, 'father');
+}
+
+function add_context_child(uid){
+	uid=us_uid
+	let addpupils_form = document.querySelector('#addpupils');
+	addpupils_form.style.display = 'block';
+	checker(uid, 'child');
+}
+
+function checker(uid, type_of_user){
+	let pagination_but_add_new_pup = document.querySelector('.pagination_but_add_new_pup'),
+		add_new_pup = document.querySelector('#add_new_pup'),
+		add_reserved_pup = document.querySelector('#add_reserved_pup'),
+		addpupils_form = document.querySelector('#addpupils'),
+		context_menu_add_profiles = document.querySelector('.context_menu_add_profiles');
+	
+context_menu_add_profiles.addEventListener('click', closePupContextMenu);
+	
+//функция закрытия и удаления обработчиков 
+function closePupContextMenu(){
+	addpupils_form.style.display = "none";
+	context_menu_add_profiles.removeEventListener('click', closePupContextMenu);
+	pagination_but_add_new_pup.removeEventListener('click', checkerButton);
+}
+	
+pagination_but_add_new_pup.addEventListener('click', checkerButton);
+function checkerButton (){
+		//event.preventDefault();
+		if(add_new_pup.checked){
+			pagination_but_add_new_pup.removeEventListener('click', checkerButton);
+			closePupContextMenu();
+			add_context_new_parents();
+		}else{
+			console.log(type_of_user);
+			pagination_but_add_new_pup.removeEventListener('click', checkerButton);
+			closePupContextMenu();
+			add_context_reserved_parents(uid, type_of_user);
+		}
+	}
+	
+}
+
+
+
+
+
+
+//функция добавления нового пользователя в родители
+function add_context_new_parents(us_id_from, type_of_user){
+	let add_user_profile_container_prew = document.querySelector('.add_user_profile_container_prew'),
+		errorInNewContextProfile = document.querySelector('.errorInNewContextProfile'),
+		add_user_profile_close_popup_new = document.querySelector('.add_user_profile_close_popup_new'),
+		user_profile_surname_inp_new = document.querySelector('.user_profile_surname_inp.new'),
+		user_profile_middlename_inp_new = document.querySelector('.user_profile_middlename_inp.new'),
+		user_profile_name_inp_new = document.querySelector('.user_profile_name_inp.new'),
+		male_checked_new_pup = document.querySelector('.male_checked_new_pup'),
+		female_checked_new_pup = document.querySelector('.female_checked_new_pup'),
+		add_user_profile_overbottom_new_new_user = document.querySelector('.add_user_profile_overbottom.new.new_user');
+	
+	add_user_profile_container_prew.style.display = "block";
+	user_profile_surname_inp_new.value = "";
+	user_profile_middlename_inp_new.value = "";
+	user_profile_name_inp_new.value = "";
+	errorInNewContextProfile.innerHTML = "";
+	
+	//закрытие формы
+	add_user_profile_close_popup_new.addEventListener('click', close_new_user_popup);
+	
+	function close_new_user_popup(){
+		add_user_profile_container_prew.style.display = "none";
+		add_user_profile_close_popup_new.removeEventListener('click', close_new_user_popup);
+		add_user_profile_overbottom_new_new_user.removeEventListener('click', addNewUserContextProfile);
+	}
+	
+	//Кнопка отправить
+	
+	add_user_profile_overbottom_new_new_user.addEventListener('click', addNewUserContextProfile);
+	
+	function addNewUserContextProfile(){
+		
+		let gender_value;
+		if(male_checked_new_pup.checked == true){
+			gender_value = 'm';
+		}else if(female_checked_new_pup.checked == true){
+			gender_value = 'f';
+		}
+		
+		var form = new FormData();
+	if(user_profile_name_inp.value != ''){
+		form.append("first_name", user_profile_name_inp_new.value);
+	}
+	if(user_profile_surname_inp.value != ''){
+		form.append("last_name", user_profile_surname_inp_new.value);
+	}
+	if(user_profile_middlename_inp.value != ''){
+		form.append("middle_name", user_profile_middlename_inp_new.value);
+	}
+	if(gender_value!=undefined){
+		form.append("gender", gender_value);
+	}
+	if(gender_value==undefined){
+		errorInNewContextProfile.innerHTML = "Выберите пол";
+	}
+	if(gender_value!=undefined){
+	
+				var settings = {
+  					"url": `${new_settapi}api/profile`,
+  					"method": "POST",
+  					"timeout": 0,
+  					"headers": {
+  					  "Authorization": `Token ${getCookie("auth_token")}`
+  					},
+  					"processData": false,
+  					"mimeType": "multipart/form-data",
+  					"contentType": false,
+  					"data": form,
+					success: async function(response){
+						
+						console.log(response)
+						let str1 = response;
+						let pars1 = JSON.parse(str1);
+						let new_profile_user_uuid = pars1.uuid;
+						let last_name = pars1.last_name;
+						let fName = pars1.first_name;
+						let midName = pars1.middle_name;
+						let gender_val = pars1.gender;
+						if(type_of_user == "father"){
+							try{
+								await add_user_parents(6, us_id_from, new_profile_user_uuid);
+							}catch(err){
+								errorInNewContextProfile.innerHTML = err;
+							}
+							close_new_user_popup();
+						}else if(type_of_user == "mother"){
+							try{
+								await add_user_parents(8, us_id_from, new_profile_user_uuid);
+							}catch(err){
+								errorInNewContextProfile.innerHTML = err;
+							}
+							close_new_user_popup();
+						}else if(type_of_user == "child"){
+							for(let i=0; i<dataResponse.users.length; i++){
+								if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'm'){
+									try{
+									await add_user_parents(6, new_profile_user_uuid, us_id_from);
+									}catch(err){
+										errorInNewContextProfile.innerHTML = err;
+									}
+								}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'f'){
+									try{
+									await add_user_parents(8, new_profile_user_uuid, us_id_from);
+									}catch(err){
+										errorInNewContextProfile.innerHTML = err;
+									}
+								}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == null){
+									try{
+									await add_user_parents(8, new_profile_user_uuid, us_id_from);
+									}catch(err){
+										errorInNewContextProfile.innerHTML = err;
+									}
+								}
+							}
+							close_new_user_popup();
+							
+						}
+						
+						/*localStorage.setItem('npuuid', new_profile_user_uuid);
+						localStorage.setItem('lastName', last_name);
+						
+							localStorage.setItem('fName', fName);
+						localStorage.setItem('midName', midName);
+						localStorage.setItem('gender', gender_val);
+						*/
+						
+					},
+					error: function(response){
+						let first_resp = response.responseText;
+						let pars1 = JSON.parse(first_resp);
+						errorInNewContextProfile.innerHTML = pars1.message;
+					}
+					};
+
+					$.ajax(settings).done(function (response) {
+						console.log(response);
+					});
+		}
+		
+	
+	}
+	
+	
+	
+	
+		async function add_user_parents(operation_type_id, us_id_from, clean_uid){
+	
+				var settings = {
+  					"url": `${new_settapi}api/addoperation`,
+  					"method": "POST",
+  					"timeout": 0,
+  					"headers": {
+    					"Authorization": `Token ${getCookie("auth_token")}`,
+    					"Content-Type": "application/json"
+  					},
+  					"data": JSON.stringify({
+    					"user_id_from": us_id_from,
+    					"user_id_to": clean_uid,
+    					"operation_type_id": operation_type_id
+  					}),
+					success: function(response){
+						console.log(response);
+						close_reserved_user_form();
+					},
+					error: function(response){
+						console.log(response);
+						let first_resp = response.responseText;
+						let pars1 = JSON.parse(first_resp);
+						reserved_user_form_error.innerHTML = pars1.message;
+					}
+					
+					
+					};
+
+					$.ajax(settings).done(function (response) {
+  					console.log(response);
+					});
+			
+		
+		}
+	
+	
+}
+
+
+//функция добавления существующего пользователя в родители
+
+function add_context_reserved_parents(us_id_from, type_of_user){
+	let add_new_user_form = document.querySelector('#add_new_user_form'),
+		context_menu_add_profiles2 = document.querySelector('.context_menu_add_profiles2'),
+		reserved_user_form_error = document.querySelector('.reserved_user_form_error'),
+		add_new_user_form_but = document.querySelector('.add_new_user_form_but'),
+		add_new_user_form_inp = document.querySelector('.add_new_user_form_inp');
+	add_new_user_form.style.display = "block";
+	add_new_user_form_inp.value = '';
+	reserved_user_form_error.innerHTML = "";
+	
+	//кнопка закрыть
+	context_menu_add_profiles2.addEventListener('click', close_reserved_user_form);
+	function close_reserved_user_form(){
+		context_menu_add_profiles2.removeEventListener('click', close_reserved_user_form);
+		add_new_user_form_but.removeEventListener('click', checkAndAddReservedPeople);
+		add_new_user_form.style.display = "none";
+	}
+	
+	//кнопка добавить
+	add_new_user_form_but.addEventListener('click', checkAndAddReservedPeople);
+	
+	function checkAndAddReservedPeople(){
+		
+		
+		//Проверка на ссылку или юид
+		let clean_uid;
+		
+		if(add_new_user_form_inp.value.includes('id')){
+			let url3 = new URL(add_new_user_form_inp.value);
+			clean_uid = url3.searchParams.get('id');
+		}else{
+			clean_uid = add_new_user_form_inp.value;
+		}
+		
+		//Проверка на пустоту поля
+		if(add_new_user_form_inp.value == ""){
+			reserved_user_form_error.innerHTML = "Поле не может быть пустым";
+		}else{
+			reserved_user_form_error.innerHTML = "";
+			add_reservedAndChecked_user();
+		}
+		
+		//Добавление связей
+		
+		async function add_reservedAndChecked_user(){
+		if(type_of_user == "father"){
+			for(let i=0; i<dataResponse.connections.length; i++){
+				if(dataResponse.connections[i].source == us_id_from && dataResponse.connections[i].target == clean_uid && dataResponse.connections[i].is_father == true){
+					await add_user_parents(7, us_id_from, clean_uid);
+					await add_user_parents(6, us_id_from, clean_uid);
+				}else if(dataResponse.connections[i].source == us_id_from && dataResponse.connections[i].target == clean_uid && dataResponse.connections[i].is_father == false){
+					await add_user_parents(6, us_id_from, clean_uid);
+				}else{
+					await add_user_parents(6, us_id_from, clean_uid);
+					break;
+				}
+			}
+		}else if(type_of_user == "mother"){
+			for(let i=0; i<dataResponse.connections.length; i++){
+				if(dataResponse.connections[i].source == us_id_from && dataResponse.connections[i].target == clean_uid && dataResponse.connections[i].is_mother == true){
+					await add_user_parents(7, us_id_from, clean_uid);
+					await add_user_parents(8, us_id_from, clean_uid);
+				}else if(dataResponse.connections[i].source == us_id_from && dataResponse.connections[i].target == clean_uid && dataResponse.connections[i].is_mother == false){
+					await add_user_parents(8, us_id_from, clean_uid);
+				}else{
+					await add_user_parents(8, us_id_from, clean_uid);
+					break;
+				}
+			}
+		}else if(type_of_user == "child"){
+			for(let i=0; i<dataResponse.users.length; i++){
+				if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'm'){
+					await add_user_parents(6, clean_uid, us_id_from);
+				}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'f'){
+					await add_user_parents(8, clean_uid, us_id_from);
+				}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == null){
+					await add_user_parents(8, clean_uid, us_id_from);
+				}
+			}
+		}
+		}
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	async function add_user_parents(operation_type_id, us_id_from, clean_uid){
+	
+				var settings = {
+  					"url": `${new_settapi}api/addoperation`,
+  					"method": "POST",
+  					"timeout": 0,
+  					"headers": {
+    					"Authorization": `Token ${getCookie("auth_token")}`,
+    					"Content-Type": "application/json"
+  					},
+  					"data": JSON.stringify({
+    					"user_id_from": us_id_from,
+    					"user_id_to": clean_uid,
+    					"operation_type_id": operation_type_id
+  					}),
+					success: function(response){
+						console.log(response);
+						close_reserved_user_form();
+					},
+					error: function(response){
+						console.log(response);
+						let first_resp = response.responseText;
+						let pars1 = JSON.parse(first_resp);
+						reserved_user_form_error.innerHTML = pars1.message;
+					}
+					
+					
+					};
+
+					$.ajax(settings).done(function (response) {
+  					console.log(response);
+					});
+			
+		
+		}
+	
+	
+	
+	
+}
 
 async function OnfriendClickFunc(uid, nodeType){
 	us_uid = uid;
@@ -2022,6 +2435,9 @@ async function OnfriendClickFunc(uid, nodeType){
 	let href_onUser = document.querySelector('#href_onUser'); 
 	let copyUserLink = document.querySelector('#copyUserLink');
 	OwnerSettings = document.querySelector('#OwnerSettings');
+	let add_mother = document.querySelector('#add_mother');
+	let add_father = document.querySelector('#add_father');
+	let add_child = document.querySelector('#add_child');
 	let UserTrust = document.querySelector('#UserTrust');
 	let UserMistrust = document.querySelector('#UserMistrust');
 	let ShortRoad = document.querySelector('#ShortRoad');
@@ -2037,6 +2453,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	//clickOnUser.style.display = "flex";
 	async function RenderSettings(){
 		//let resp_owned_users = myProfilesinfo;
+	console.log(resp_owned_users);
 	for(let i=0; i<resp_owned_users.length; i++){
 		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
@@ -2047,6 +2464,29 @@ async function OnfriendClickFunc(uid, nodeType){
 			OwnerSettings.style.display = "none";
 		}
 	}
+	add_father.style.display = 'block';
+	add_mother.style.display = 'block';
+	add_child.style.display = 'block';
+	
+	for(let i=0; i<user_connections.connections.length; i++){
+		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == true){
+			add_father.style.display = 'none';
+		}
+		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == true){
+			add_mother.style.display = 'none';
+		}
+	}
+		
+	add_mother.addEventListener('click', add_context_mother);
+	add_mother.addEventListener('click', closer);
+	
+	add_father.addEventListener('click', add_context_father);
+	add_father.addEventListener('click', closer);
+		
+	add_child.addEventListener('click', add_context_child);
+	add_child.addEventListener('click', closer);
+		
+		
 	href_onUser.addEventListener("click", ()=>{
 		window.location.href = `${settings.url}gen?id=` + uid;
 	});
@@ -2218,8 +2658,28 @@ async function OnfriendClickFunc(uid, nodeType){
 		UserTrust.removeEventListener("click", UserTrustClick);
 		UserMistrust.removeEventListener("click", UserMistrustClick);
 		OwnerSettings.removeEventListener("click", UserResponseForEdit);
+		add_mother.removeEventListener('click', add_context_mother);
+		add_father.removeEventListener('click', add_context_father);
+		add_child.removeEventListener('click', add_context_child);
+		add_child.removeEventListener('click', closer);
+		add_mother.removeEventListener('click', closer);
+		add_father.removeEventListener('click', closer);
 		clickOnUser.style.display = "none";
 	});
+		
+		function closer(){
+			copyUserLink.removeEventListener('click', UserLink);
+			UserTrust.removeEventListener("click", UserTrustClick);
+			UserMistrust.removeEventListener("click", UserMistrustClick);
+			OwnerSettings.removeEventListener("click", UserResponseForEdit);
+			add_mother.removeEventListener('click', add_context_mother);
+			add_father.removeEventListener('click', add_context_father);
+			add_child.removeEventListener('click', add_context_child);
+			add_child.removeEventListener('click', closer);
+			add_mother.removeEventListener('click', closer);
+			add_father.removeEventListener('click', closer);
+			clickOnUser.style.display = "none";
+		}
 
 	}
 	

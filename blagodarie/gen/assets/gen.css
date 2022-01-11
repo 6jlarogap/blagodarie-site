@@ -283,6 +283,60 @@ text{
 			margin-left: auto;
 			border-radius: 25%;
 		}
+.addpupils_form{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	width: max-content;
+	margin: 0 auto;
+}
+.pagination_but_add_new_pup{
+	margin: 32px auto 0;
+	display: block;
+}
+.context_menu_add_profiles, .context_menu_add_profiles2{
+	margin-bottom: 5px;
+	margin-left: auto;
+	border-radius: 25%;
+	display: block;
+	background-color: #8b0000 !important;
+	border-color: #8b0000 !important;
+}
+.add_new_user_form_but{
+	margin: 32px auto 0;
+	display: block;
+}
+#add_new_user_form .add_new_user_form_container .add_new_user_form_inp{
+	display: block;
+	margin: 0 auto;
+}
+.reserved_user_form_error{
+	text-align: center;
+	margin-top: 10px;
+	color: red;
+}
+.add_user_profile_container_prew .add_user_profile_fio{
+	width: fit-content;
+	margin: 0 auto;
+	margin-top: 2%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.gender_cont{
+	width: max-content;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+}
+.add_user_profile_overbottom.new.new_user{
+	display: block;
+	margin: 0 auto !important;
+}
 
 		.btn-group {
 			margin-top: 3px;

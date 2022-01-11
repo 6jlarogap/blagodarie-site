@@ -182,9 +182,67 @@
 		<p id="copyUserLink">Копировать ссылку</p>
 		<p id="ShortRoad">Кратчайший путь</p>
 		<p id="OwnerSettings">Редактировать</p>
+		<p id="add_mother">Добавить маму</p>
+		<p id="add_father">Добавить папу</p>
+		<p id="add_child">Добавить ребёнка</p>
 		<p id="UserTrust">Доверие</p>
 		<p id="UserMistrust">Недоверие</p>
 	</dialog>
+	<dialog id="addpupils">
+	<button class="context_menu_add_profiles btn btn-danger"><i class="fas fa-times"></i></button>
+		<form class="addpupils_form">
+		<div class="add_new_pup_container">
+			<label for="add_new_pup">Новый профиль</label>
+			<input type="radio" id="add_new_pup" name="new_pup_radio" value="new_pup_check">
+		</div>
+		<div class="add_reserved_pup_container">
+			<label for="add_reserved_pup">Существующий профиль</label>
+			<input type="radio" id="add_reserved_pup" name="new_pup_radio" value="reserved_pup_check">
+		</div>
+		</form>
+		<input type="submit" value="Далее" class="pagination_but_add_new_pup">
+	</dialog>
+	<dialog id="add_new_user_form">
+	<button class="context_menu_add_profiles2 btn btn-danger"><i class="fas fa-times"></i></button>
+	<form class="add_new_user_form_container">
+	
+		<input type="text" placeholder="Вставьте ссылку или юид" class="add_new_user_form_inp">
+		
+	</form>
+	<p class="reserved_user_form_error"></p>
+	<input type="submit" value="Добавить" class="add_new_user_form_but">
+	</dialog>
+	
+	<!--Новый профиль-->
+	
+	<div class="add_user_profile_container_prew">
+	<div class="add_user_profile_container_n">
+	<p>Добавление профиля</p>
+	<p class="add_user_profile_close_popup_new">×</p>
+		<div class="add_user_profile_fio">
+				<p class="error_in_add"></p>
+				<p class="add_user_profile_surname">Фамилия</p>
+				<input type="text" id="user_profile_surname_inp" class="user_profile_surname_inp new">
+				<p class="add_user_profile_name">Имя</p>
+				<input type="text" id="user_profile_name_inp" class="user_profile_name_inp new">
+				<p class="add_user_profile_middlename">Отчество</p>
+				<input type="text" id="user_profile_middlename_inp" class="user_profile_middlename_inp new">
+			</div>
+			<form class="gender_cont new_user">
+			<div class="male_cont">
+			<label for="male">Мужчина</label>
+			<input type="radio" name="gender" value="m" class="male_checked_new_pup">
+  			</div>
+  			<div class="female_cont">
+   			<label for="female">Женщина</label>
+    		<input type="radio" name="gender" value="f" class="female_checked_new_pup">
+    		</div>
+    		</form>
+    		<p class="errorInNewContextProfile"></p>
+		<button id="add_user_profile_overbottom" class="add_user_profile_overbottom new new_user">Сохранить</button>
+		</div>
+	</div>
+	
 	
 	<div class="add_user_profile_cont_fixed">
 	<div class="add_user_profile_container">
