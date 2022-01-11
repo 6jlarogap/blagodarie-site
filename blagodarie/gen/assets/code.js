@@ -2031,13 +2031,15 @@ function UserResponseForEdit(user){
 
 //контекстное добавление родителей
 
-function add_context_mother(uid=us_uid){
+function add_context_mother(uid){
+	uid=us_uid
 	let addpupils_form = document.querySelector('#addpupils');
 	addpupils_form.style.display = 'block';
 	checker(uid, 'mother');
 }
 
-function add_context_father(uid=us_uid){
+function add_context_father(uid){
+	uid=us_uid
 	let addpupils_form = document.querySelector('#addpupils');
 	addpupils_form.style.display = 'block';
 	checker(uid, 'father');
@@ -2095,7 +2097,7 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 	//кнопка закрыть
 	context_menu_add_profiles2.addEventListener('click', close_reserved_user_form);
 	function close_reserved_user_form(){
-		close_reserved_user_form.removeEventListener('click', close_reserved_user_form);
+		context_menu_add_profiles2.removeEventListener('click', close_reserved_user_form);
 		add_new_user_form_but.removeEventListener('click', checkAndAddReservedPeople);
 		add_new_user_form.style.display = "none";
 	}
