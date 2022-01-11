@@ -2064,7 +2064,7 @@ function checker(uid){
 function checkElemByClass(elem){
 	if(document.querySelector(`.${elem}`)==true){
 		return true
-	}else if((document.querySelector(`.${elem}`)==false){
+	}else if(document.querySelector(`.${elem}`)==false){
 		return false		 
 	}
 }
