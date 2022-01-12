@@ -1,3 +1,4 @@
+function allProject(){
 const NODE_TYPES = Object.freeze({
 	"USER":"user",
 	"FRIEND":"friend",
@@ -2461,5 +2462,10 @@ setInterval(function(){
 	}
 
 }, 1000);
-	
+}
+try{
+	allProject();
+}catch(err){
+	alert(err);
+}
 
