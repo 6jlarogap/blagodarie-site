@@ -803,7 +803,7 @@ async function getApiUrl(){
 		try{
 			await d3view();
 		}catch(err){
-			alert('805 ' + err + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
+			alert('805 ' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
 		}
 		//await d3view();
 	}else if(url.searchParams.has('sl')){
@@ -813,7 +813,7 @@ async function getApiUrl(){
 		try{
 			await d3view();
 		}catch(err){
-			alert('815' + err + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
+			alert('815' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
 		}
 	}else{
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
@@ -821,7 +821,7 @@ async function getApiUrl(){
 		try{
 			await d3view();
 		}catch(err){
-			alert('823' + err + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
+			alert('823' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
 		}
 		
 	}
