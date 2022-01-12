@@ -826,11 +826,9 @@ async function getApiUrl(){
 		
 	}
 }
-try{
+
 	getApiUrl();
-}catch(err){
-	alert('831' + err);
-}
+
 	//getApiUrl();
 var isConnection;
 var isTrust;
