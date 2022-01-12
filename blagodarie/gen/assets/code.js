@@ -3587,4 +3587,8 @@ setInterval(function(){
 	}
 }, 1000);
 }
-allProject();
+try{
+	allProject();
+}catch(err){
+	alert(err);
+}
