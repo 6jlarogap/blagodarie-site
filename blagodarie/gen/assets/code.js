@@ -2162,9 +2162,17 @@ function add_context_new_parents(us_id_from, type_of_user){
 	if(gender_value!=undefined){
 		form.append("gender", gender_value);
 	}
-	/*if(type_of_user == "father"){
-		form.append("gender", gender_value);
-	}*/
+	if(type_of_user == "child"){
+		for(let i=0; i<dataResponse.users.length; i++){
+			if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'm'){
+				form.append("link_is_father", us_id_from);
+			}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'f'){
+				form.append("link_is_mother", us_id_from);
+			}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == null){
+				form.append("link_is_mother", us_id_from);
+			}
+		}
+	}
 	if(gender_value==undefined){
 		errorInNewContextProfile.innerHTML = "Выберите пол";
 	}
