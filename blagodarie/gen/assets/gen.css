@@ -128,8 +128,8 @@ text{
 			x: -32px;
 			y: -32px;
 			/*clip-path: circle(50%);*/
-			-webkit-clip-path: circle(50% at center center);
-				clip-path: circle(50% at center center);
+			/*-webkit-clip-path: circle(50% at center center);
+				clip-path: circle(50% at center center);*/
 			-moz-user-select: none;
     			-webkit-user-select: none;
     			-webkit-touch-callout: none;   
@@ -137,6 +137,7 @@ text{
     			-o-user-select: none;
     			user-select: none;
     			-khtml-user-select: none;
+			clip-path: ellipse(32px 32px at 32px 32px);
 		}
 
 		image.filtered {
@@ -1113,7 +1114,8 @@ button.close:hover, .context_menu_close:hover{
 				/*clip-path: circle(17px at 18px 18px);*/
 				/*-webkit-clip-path: circle(80% at center center);
 				clip-path: circle(50% at center center);*/
-				clip-path: circle(50% at 0% 0%);
+				/*clip-path: circle(50% at 0% 0%);*/
+				clip-path: ellipse(18px 18px at 18px 18px);
 			}
 			image.userPortrait{
 				width: 64px;
