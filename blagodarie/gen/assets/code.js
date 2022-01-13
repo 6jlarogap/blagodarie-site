@@ -2093,7 +2093,7 @@ function checkerButton (){
 		if(add_new_pup.checked){
 			pagination_but_add_new_pup.removeEventListener('click', checkerButton);
 			closePupContextMenu();
-			add_context_new_parents();
+			add_context_new_parents(uid, type_of_user);
 		}else{
 			console.log(type_of_user);
 			pagination_but_add_new_pup.removeEventListener('click', checkerButton);
