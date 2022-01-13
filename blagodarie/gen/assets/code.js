@@ -1586,12 +1586,8 @@ function initializeDisplay() {
 		
 	
 	
-	defs.append("clipPath")
-		.attr("id", "avatar-clip")
-		.append('circle')
-		.attr("cx", avatarRadius)
-		.attr("cy", avatarRadius)
-		.attr("r", avatarRadius);
+	node.append("circle")
+		.attr("r", "16")
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
@@ -1613,8 +1609,7 @@ function initializeDisplay() {
 				return "friendPortrait";
 			}
 		})
-		.attr("style", "z-index:1;position:relative")
-		.attr("clip-path", "url(#avatar-clip)");	
+		.attr("style", "z-index:1;position:relative");	
 	
 	node.append("image")
 		.attr("xlink:href", d => {
