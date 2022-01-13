@@ -1588,8 +1588,7 @@ function initializeDisplay() {
 	
 	node.append("circle")
 		.attr("r", "32")
-	
-	node.append("image")
+		.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
