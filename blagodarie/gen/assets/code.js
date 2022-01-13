@@ -2177,6 +2177,14 @@ function add_context_new_parents(us_id_from, type_of_user){
 			}
 		}
 	}
+	if(type_of_user == "father"){
+		form.append("link_uuid", us_id_from);
+		form.append("link_relation", 'new_is_father');
+	}
+	if(type_of_user == "mother"){
+		form.append("link_uuid", us_id_from);
+		form.append("link_relation", 'new_is_mother');
+	}
 	if(gender_value==undefined){
 		errorInNewContextProfile.innerHTML = "Выберите пол";
 	}
