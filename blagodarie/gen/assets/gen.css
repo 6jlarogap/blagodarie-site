@@ -1111,8 +1111,9 @@ button.close:hover, .context_menu_close:hover{
     			x: -18px;
     			y: -18px;
 				/*clip-path: circle(17px at 18px 18px);*/
-				-webkit-clip-path: circle(80% at center center);
-				clip-path: circle(50% at center center);
+				/*-webkit-clip-path: circle(80% at center center);
+				clip-path: circle(50% at center center);*/
+				clip-path: circle(50% at 25% 25%);
 			}
 			image.userPortrait{
 				width: 64px;
