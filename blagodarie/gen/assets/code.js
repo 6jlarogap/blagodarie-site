@@ -1587,7 +1587,7 @@ function initializeDisplay() {
 	
 	
 	node.append("circle")
-		.attr("r", "16")
+		.attr("r", "32")
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
