@@ -2087,6 +2087,7 @@ function closePupContextMenu(){
 	pagination_but_add_new_pup.removeEventListener('click', checkerButton);
 }
 	
+	
 pagination_but_add_new_pup.addEventListener('click', checkerButton);
 function checkerButton (){
 		//event.preventDefault();
@@ -2126,6 +2127,12 @@ function add_context_new_parents(us_id_from, type_of_user){
 	user_profile_middlename_inp_new.value = "";
 	user_profile_name_inp_new.value = "";
 	errorInNewContextProfile.innerHTML = "";
+	
+	if(type_of_user == "father"){
+		male_checked_new_pup.checked = true;
+	}else{
+		female_checked_new_pup.checked = true;
+	}
 	
 	//закрытие формы
 	add_user_profile_close_popup_new.addEventListener('click', close_new_user_popup);
@@ -2211,45 +2218,8 @@ function add_context_new_parents(us_id_from, type_of_user){
 						let fName = pars1.first_name;
 						let midName = pars1.middle_name;
 						let gender_val = pars1.gender;
-						/*if(type_of_user == "father"){
-							try{
-								await add_user_parents(6, us_id_from, new_profile_user_uuid);
-							}catch(err){
-								errorInNewContextProfile.innerHTML = err;
-							}
-							close_new_user_popup();
-						}else if(type_of_user == "mother"){
-							try{
-								await add_user_parents(8, us_id_from, new_profile_user_uuid);
-							}catch(err){
-								errorInNewContextProfile.innerHTML = err;
-							}
-							close_new_user_popup();
-						}else if(type_of_user == "child"){
-							for(let i=0; i<dataResponse.users.length; i++){
-								if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'm'){
-									try{
-									await add_user_parents(6, new_profile_user_uuid, us_id_from);
-									}catch(err){
-										errorInNewContextProfile.innerHTML = err;
-									}
-								}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'f'){
-									try{
-									await add_user_parents(8, new_profile_user_uuid, us_id_from);
-									}catch(err){
-										errorInNewContextProfile.innerHTML = err;
-									}
-								}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == null){
-									try{
-									await add_user_parents(8, new_profile_user_uuid, us_id_from);
-									}catch(err){
-										errorInNewContextProfile.innerHTML = err;
-									}
-								}
-							}
-							close_new_user_popup();
-							
-						}*/
+						
+						close_new_user_popup();
 						
 					},
 					error: function(response){
