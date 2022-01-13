@@ -2210,16 +2210,17 @@ function add_context_new_parents(us_id_from, type_of_user){
   					"data": form,
 					success: async function(response){
 						
-						console.log(response)
+						/*console.log(response)
 						let str1 = response;
 						let pars1 = JSON.parse(str1);
 						let new_profile_user_uuid = pars1.uuid;
 						let last_name = pars1.last_name;
 						let fName = pars1.first_name;
 						let midName = pars1.middle_name;
-						let gender_val = pars1.gender;
+						let gender_val = pars1.gender;*/
 						
-						close_new_user_popup();
+						await close_new_user_popup();
+						window.location.reload();
 						
 					},
 					error: function(response){
