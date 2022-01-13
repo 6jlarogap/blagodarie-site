@@ -1431,7 +1431,7 @@ function initializeDisplay() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2);
 		
-	link.append("svg:defs")
+	defs = link.append("svg:defs")
 		.append("linearGradient")
 		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
 		.attr("gradientUnits", "userSpaceOnUse")
@@ -1570,6 +1570,9 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');
 	*/
+	
+	
+	
 	node = svg.append("g")
 		.selectAll("g")
 		.data(nodes)
