@@ -2162,6 +2162,9 @@ function add_context_new_parents(us_id_from, type_of_user){
 	if(gender_value!=undefined){
 		form.append("gender", gender_value);
 	}
+	/*if(type_of_user == "father"){
+		form.append("gender", gender_value);
+	}*/
 	if(gender_value==undefined){
 		errorInNewContextProfile.innerHTML = "Выберите пол";
 	}
@@ -2188,7 +2191,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 						let fName = pars1.first_name;
 						let midName = pars1.middle_name;
 						let gender_val = pars1.gender;
-						if(type_of_user == "father"){
+						/*if(type_of_user == "father"){
 							try{
 								await add_user_parents(6, us_id_from, new_profile_user_uuid);
 							}catch(err){
@@ -2226,15 +2229,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 							}
 							close_new_user_popup();
 							
-						}
-						
-						/*localStorage.setItem('npuuid', new_profile_user_uuid);
-						localStorage.setItem('lastName', last_name);
-						
-							localStorage.setItem('fName', fName);
-						localStorage.setItem('midName', midName);
-						localStorage.setItem('gender', gender_val);
-						*/
+						}*/
 						
 					},
 					error: function(response){
@@ -2255,7 +2250,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 	
 	
 	
-		async function add_user_parents(operation_type_id, us_id_from, clean_uid){
+		/*async function add_user_parents(operation_type_id, us_id_from, clean_uid){
 	
 				var settings = {
   					"url": `${new_settapi}api/addoperation`,
@@ -2289,7 +2284,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 					});
 			
 		
-		}
+		}*/
 	
 	
 }
