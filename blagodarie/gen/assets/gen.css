@@ -1115,7 +1115,7 @@ button.close:hover, .context_menu_close:hover{
 				/*-webkit-clip-path: circle(80% at center center);
 				clip-path: circle(50% at center center);*/
 				/*clip-path: circle(50% at 0% 0%);*/
-				clip-path: ellipse(18px 18px at 18px 18px);
+				clip-path: ellipse(18px 18px at 0px 0px);
 			}
 			image.userPortrait{
 				width: 64px;
