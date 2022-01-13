@@ -128,6 +128,8 @@ text{
 			x: -32px;
 			y: -32px;
 			/*clip-path: circle(50%);*/
+			-webkit-clip-path: circle(50% at center center);
+				clip-path: circle(50% at center center);
 			-moz-user-select: none;
     			-webkit-user-select: none;
     			-webkit-touch-callout: none;   
