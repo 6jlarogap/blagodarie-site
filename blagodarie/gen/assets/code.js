@@ -1596,6 +1596,8 @@ function initializeDisplay() {
 	
 	clipPath.append("circle")
     		.attr("r", d => {if(d.nodeType == NODE_TYPES.FRIEND){return "32"}   })
+			.attr("cx", 0)
+			.attr("cy", 0)
 						//.attr("r", 16);
 	 
 	node.append("image")
