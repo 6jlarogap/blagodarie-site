@@ -919,7 +919,7 @@ button.close:hover, .context_menu_close:hover{
 .add_user_profile_bottom_cont p{
 	margin-bottom: 2px;
 }
-.add_user_profile_overbottom{
+.add_user_profile_overbottom, .add_user_profile_overbottom_edit{
 	background-color: green;
 	border-color: green;
 	color: #fff;
@@ -1046,7 +1046,7 @@ button.close:hover, .context_menu_close:hover{
     margin-bottom: 30px;
     justify-content: center;
 }
-	.add_user_profile_overbottom {
+	.add_user_profile_overbottom, .add_user_profile_overbottom_edit {
     width: 38%;
     
 }
