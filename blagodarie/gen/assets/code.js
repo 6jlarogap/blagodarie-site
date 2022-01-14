@@ -1592,8 +1592,9 @@ function initializeDisplay() {
 	
 	var defs = node.append("defs").attr("id", "imgdefs")
 
-	clipPath = defs.append('clipPath').attr('id', 'clip-circle')
-						.append("circle")
+	clipPath = defs.append('clipPath').attr('id', 'clip-circle');
+	
+	clipPath.append("circle")
     					//.attr("r", d => {if(d.nodeType == NODE_TYPES.FRIEND){return "32"}   })
 						.attr("r", 16);
 	 
