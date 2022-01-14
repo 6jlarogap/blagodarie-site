@@ -1592,11 +1592,11 @@ function initializeDisplay() {
 	
 	var defs = node.append("defs").attr("id", "imgdefs")
 
-	var clipPath = defs.append('clipPath').attr('id', 'clip-circle')
+	clipPath = defs.append('clipPath').attr('id', 'clip-circle')
 						.append("circle")
-    					.attr("r", d => d.image)
+    					.attr("r", d => {if(d.nodeType == NODE_TYPES.FRIEND){return 32}   })
 						//.attr("r", 16);
-	
+	 
 	node.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
