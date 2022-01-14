@@ -1601,7 +1601,7 @@ function initializeDisplay() {
                         .attr("x", "0")
                         .attr("y", "0")
 	
-	node.append("image")
+	catpattern.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
@@ -1623,7 +1623,7 @@ function initializeDisplay() {
 		})
 		.attr("style", "z-index:1;position:relative");	
 	
-	node.append("image")
+	catpattern.append("image")
 		.attr("xlink:href", d => {
 		if(d.nodeType == NODE_TYPES.HOME){
 			return `${window.location.origin}`
@@ -1662,6 +1662,12 @@ function initializeDisplay() {
 			}
 		})
 		.attr("style", "opacity:0;z-index:1000;position:relative");
+	
+	svg.append("circle")
+    .attr("r", 100)
+    .attr("cy", 80)
+    .attr("cx", 120)
+    .attr("fill", "url(#catpattern)");
 
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
