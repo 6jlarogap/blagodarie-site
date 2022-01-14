@@ -1696,6 +1696,22 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.attr('class', 'svg_elem')
 		.attr('style', "cursor:pointer");
+	 
+	
+	var defs = node.append("defs").attr("id", "imgdefs")
+	
+	
+	clipPath = defs.append('clipPath').attr('id', "clip-circle");
+			clipPath.append("circle")
+    		.attr("r", 32)
+	
+	clipPath1 = defs.append('clipPath').attr('id', "clip-circle1");
+			clipPath1.append("circle")
+    		.attr("r", 16)
+	
+	clipPath2 = defs.append('clipPath').attr('id', "clip-circle2");
+			clipPath2.append("circle")
+    		.attr("r", 64)
 	
 		node.append("image")
 		.attr("xlink:href", d => d.image)
@@ -1717,7 +1733,21 @@ function initializeDisplay() {
 				return "friendPortrait";
 			}
 		})
-		.attr("style", "z-index:1;position:relative");
+		.attr("style", "z-index:1;position:relative")
+		.attr("clip-path", d => {
+		if(width>900 && d.nodeType == NODE_TYPES.FRIEND){
+			return "url(#clip-circle)";
+		}else if(width<900 && d.nodeType == NODE_TYPES.FRIEND){
+			return "url(#clip-circle1)";
+		}else if (width>900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
+			return "url(#clip-circle2)";
+		}else if (width<900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
+			return "url(#clip-circle)";
+		}else if (d.nodeType == NODE_TYPES.FILTERED) {
+			return "url(#clip-circle1)";
+		}
+		
+	});
 	
 	node.append("image")
 		.attr("xlink:href", d => {
