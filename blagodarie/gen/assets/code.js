@@ -1601,7 +1601,7 @@ function initializeDisplay() {
                         .attr("x", "0")
                         .attr("y", "0")
 	
-	catpattern.append("image")
+	node.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
 			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
@@ -1623,7 +1623,7 @@ function initializeDisplay() {
 		})
 		.attr("style", "z-index:1;position:relative");	
 	
-	catpattern.append("image")
+	node.append("image")
 		.attr("xlink:href", d => {
 		if(d.nodeType == NODE_TYPES.HOME){
 			return `${window.location.origin}`
@@ -1663,7 +1663,7 @@ function initializeDisplay() {
 		})
 		.attr("style", "opacity:0;z-index:1000;position:relative");
 	
-	catpattern.append("circle")
+	node.append("circle")
     .attr("r", 100)
     .attr("cy", 80)
     .attr("cx", 120)
