@@ -2122,6 +2122,9 @@ function checker(uid, type_of_user){
 	
 context_menu_add_profiles.addEventListener('click', closePupContextMenu);
 	
+	add_new_pup.checked = false;
+	add_reserved_pup.checked = false;
+	
 //функция закрытия и удаления обработчиков 
 function closePupContextMenu(){
 	addpupils_form.style.display = "none";
@@ -2162,9 +2165,13 @@ function add_context_new_parents(us_id_from, type_of_user){
 		user_profile_name_inp_new = document.querySelector('.user_profile_name_inp.new'),
 		male_checked_new_pup = document.querySelector('.male_checked_new_pup'),
 		female_checked_new_pup = document.querySelector('.female_checked_new_pup'),
-		add_user_profile_overbottom_new_new_user = document.querySelector('.add_user_profile_overbottom.new.new_user');
+		add_user_profile_overbottom_new_new_user = document.querySelector('.add_user_profile_overbottom.new.new_user'),
+		female_cont = document.querySelector('.female_cont'),
+		male_cont = document.querySelector('.male_cont');
 	
 	add_user_profile_container_prew.style.display = "block";
+	female_cont.style.display = "block";
+	male_cont.style.display = "block";
 	user_profile_surname_inp_new.value = "";
 	user_profile_middlename_inp_new.value = "";
 	user_profile_name_inp_new.value = "";
@@ -2172,16 +2179,16 @@ function add_context_new_parents(us_id_from, type_of_user){
 	
 	if(type_of_user == "father"){
 		male_checked_new_pup.checked = true;
-		female_checked_new_pup.disabled = true;
-		male_checked_new_pup.disabled = false;
+		female_cont.style.display = "none";
+		male_cont.style.display = "block";
 	}else if(type_of_user == "mother"){
 		female_checked_new_pup.checked = true;
-		male_checked_new_pup.disabled = true;
-		female_checked_new_pup.disabled = false;
+		female_cont.style.display = "block";
+		male_cont.style.display = "none";
 	}else{
 		female_checked_new_pup.checked = true;
-		female_checked_new_pup.disabled = false;
-		male_checked_new_pup.disabled = false;
+		female_cont.style.display = "block";
+		male_cont.style.display = "block";
 	}
 	
 	//закрытие формы
