@@ -1422,7 +1422,7 @@ drag = simulation => {
 
 function initializeDisplay() {
 	
-	const avatarRadius = width>900 ? 32 : 16;
+	
 	
 	link = svg.append("g")
 		.selectAll("g")
@@ -1434,7 +1434,7 @@ function initializeDisplay() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2);
 		
-	defs = link.append("svg:defs")
+	link.append("svg:defs")
 		.append("linearGradient")
 		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
 		.attr("gradientUnits", "userSpaceOnUse")
@@ -1459,6 +1459,15 @@ function initializeDisplay() {
 				return "stop-color:rgb(255,0,0);stop-opacity:1";
 			}
 		});
+	
+	var defs = svg.append("defs").attr("id", "imgdefs")
+
+	var catpattern = defs.append("pattern")
+                        .attr("id", "catpattern")
+                        .attr("height", 1)
+                        .attr("width", 1)
+                        .attr("x", "0")
+                        .attr("y", "0")
 		
 	link.append("svg:line")
 		.attr("class", "link")
