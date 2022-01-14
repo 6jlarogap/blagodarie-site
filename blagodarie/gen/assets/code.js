@@ -2798,11 +2798,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	add_user_profile_bd.value = "";
 	add_user_profile_dd.value = "";
 	
-	user_profile_surname_inp.value = last_name;
-	user_profile_name_inp.value = first_name;
-	user_profile_middlename_inp.value = middle_name;
-	add_user_profile_bd.value = dob=='null'?'':dob;
-	add_user_profile_dd.value = dod=='null'?'':dod;
+	
 	
 	window.history.pushState(null, null, url.search);
 	addEventListener("popstate",function(e){
@@ -3145,6 +3141,12 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	console.log(last_name);
 	console.log(first_name);
 	console.log(middle_name);
+	
+	user_profile_surname_inp.value = last_name;
+	user_profile_name_inp.value = first_name;
+	user_profile_middlename_inp.value = middle_name;
+	add_user_profile_bd.value = dob=='null'?'':dob;
+	add_user_profile_dd.value = dod=='null'?'':dod;
 	
 	async function getUsparent() {
 		const response = await fetch(`${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=100`, {
