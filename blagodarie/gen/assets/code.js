@@ -2167,7 +2167,10 @@ function add_context_new_parents(us_id_from, type_of_user){
 		female_checked_new_pup = document.querySelector('.female_checked_new_pup'),
 		add_user_profile_overbottom_new_new_user = document.querySelector('.add_user_profile_overbottom.new.new_user'),
 		female_cont = document.querySelector('.female_cont'),
-		male_cont = document.querySelector('.male_cont');
+		male_cont = document.querySelector('.male_cont'),
+		db_new_user = document.querySelector('.db_new_user'),
+		dd_new_user = document.querySelector('.dd_new_user');
+		
 	
 	add_user_profile_container_prew.style.display = "block";
 	female_cont.style.display = "block";
@@ -2176,6 +2179,8 @@ function add_context_new_parents(us_id_from, type_of_user){
 	user_profile_middlename_inp_new.value = "";
 	user_profile_name_inp_new.value = "";
 	errorInNewContextProfile.innerHTML = "";
+	db_new_user.value = "";
+	dd_new_user.value = "";
 	
 	if(type_of_user == "father"){
 		male_checked_new_pup.checked = true;
@@ -2226,6 +2231,10 @@ function add_context_new_parents(us_id_from, type_of_user){
 	}
 	if(gender_value!=undefined){
 		form.append("gender", gender_value);
+	}if(db_new_user.value!=null){
+		form.append("dob", db_new_user.value);
+	}if(dd_new_user.value!=null){
+		form.append("dod", dd_new_user.value);
 	}
 	if(type_of_user == "child"){
 		form.append("link_uuid", us_id_from);
