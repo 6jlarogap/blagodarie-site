@@ -2186,7 +2186,8 @@ function add_context_new_parents(us_id_from, type_of_user){
 		female_cont.style.display = "block";
 		male_cont.style.display = "none";
 	}else{
-		female_checked_new_pup.checked = true;
+		female_checked_new_pup.checked = false;
+		male_checked_new_pup.checked = false;
 		female_cont.style.display = "block";
 		male_cont.style.display = "block";
 	}
