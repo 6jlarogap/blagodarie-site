@@ -2180,6 +2180,8 @@ function add_context_new_parents(us_id_from, type_of_user){
 		female_checked_new_pup.disabled = false;
 	}else{
 		female_checked_new_pup.checked = true;
+		female_checked_new_pup.disabled = false;
+		male_checked_new_pup.disabled = false;
 	}
 	
 	//закрытие формы
