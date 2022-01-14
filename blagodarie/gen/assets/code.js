@@ -2172,6 +2172,10 @@ function add_context_new_parents(us_id_from, type_of_user){
 	
 	if(type_of_user == "father"){
 		male_checked_new_pup.checked = true;
+		female_checked_new_pup.disabled = true;
+	}else if(type_of_user == "mother"){
+		female_checked_new_pup.checked = true;
+		male_checked_new_pup.disabled = true;
 	}else{
 		female_checked_new_pup.checked = true;
 	}
