@@ -119,7 +119,7 @@ text{
 			height: 128px;
 			x: -64px;
 			y: -64px;
-			clip-path: circle(50%);
+			
 		}
 
 		image.friendPortrait {
@@ -145,7 +145,7 @@ text{
 			height: 32px;
 			x: -16px;
 			y: -16px;
-			clip-path: circle(50%);
+			
 		}
 		text.userName {
 			text-anchor: middle;
