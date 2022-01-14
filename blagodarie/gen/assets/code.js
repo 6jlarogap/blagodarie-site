@@ -1594,12 +1594,11 @@ function initializeDisplay() {
 	
 	var defs = node.append("defs").attr("id", "imgdefs")
 
-	var catpattern = defs.append("pattern")
-                        .attr("id", "catpattern")
-                        .attr("height", 1)
-                        .attr("width", 1)
-                        .attr("x", "0")
-                        .attr("y", "0")
+	var clipPath = defs.append('clipPath').attr('id', 'clip-circle')
+						.append("circle")
+    					.attr("r", 100)
+						.attr("cy", 100)
+    					.attr("cx", 120);
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
@@ -1621,7 +1620,8 @@ function initializeDisplay() {
 				return "friendPortrait";
 			}
 		})
-		.attr("style", "z-index:1;position:relative");	
+		.attr("style", "z-index:1;position:relative")
+		.attr("clip-path", "url(#clip-circle)");
 	
 	node.append("image")
 		.attr("xlink:href", d => {
@@ -1661,13 +1661,10 @@ function initializeDisplay() {
 				return "friendPortrait";
 			}
 		})
-		.attr("style", "opacity:0;z-index:1000;position:relative");
+		.attr("style", "opacity:0;z-index:1000;position:relative")
+		.attr("clip-path", "url(#clip-circle)");
 	
-	node.append("circle")
-    .attr("r", 100)
-    .attr("cy", 80)
-    .attr("cx", 120)
-    .attr("fill", "url(#catpattern)");
+	
 
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
