@@ -1420,6 +1420,8 @@ drag = simulation => {
 	  .on("end", dragended);
 }
 
+var counter_id = 0;
+
 function initializeDisplay() {
 	
 	
@@ -1591,8 +1593,9 @@ function initializeDisplay() {
 	
 	
 	var defs = node.append("defs").attr("id", "imgdefs")
-
-	clipPath = defs.append('clipPath').attr('id', 'clip-circle');
+	
+	
+	clipPath = defs.append('clipPath').attr('id', `clip-circle${++counter_id}`);
 	
 	clipPath.append("circle")
     		.attr("r", d => {
@@ -1626,7 +1629,7 @@ function initializeDisplay() {
 			}
 		})
 		.attr("style", "z-index:1;position:relative")
-		.attr("clip-path", "url(#clip-circle)");
+		.attr("clip-path", `url(#clip-circle${counter_id})`);
 	
 	node.append("image")
 		.attr("xlink:href", d => {
@@ -1667,7 +1670,7 @@ function initializeDisplay() {
 			}
 		})
 		.attr("style", "opacity:0;z-index:1000;position:relative")
-		.attr("clip-path", "url(#clip-circle)");
+		.attr("clip-path", `url(#clip-circle${counter_id})`);
 	
 	
 
