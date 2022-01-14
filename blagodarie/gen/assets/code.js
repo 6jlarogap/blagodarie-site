@@ -1595,18 +1595,14 @@ function initializeDisplay() {
 	var defs = node.append("defs").attr("id", "imgdefs")
 	
 	
-	clipPath = defs.append('clipPath').attr('id', `clip-circle${++counter_id}`);
+	clipPath = defs.append('clipPath').attr('id', "clip-circle");
+			clipPath.append("circle")
+    		.attr("r", 32)
 	
-	clipPath.append("circle")
-    		.attr("r", d => {
-				if(width>900 && d.nodeType == NODE_TYPES.FRIEND){
-					return "32"
-				}else{
-					return "16"
-				}
-	})
+	clipPath1 = defs.append('clipPath').attr('id', "clip-circle1");
+			clipPath1.append("circle")
+    		.attr("r", 16)
 			
-			//.attr("r", width<900 ? 16 : 32);
 	 
 	node.append("image")
 		.attr("xlink:href", d => d.image)
@@ -1629,7 +1625,13 @@ function initializeDisplay() {
 			}
 		})
 		.attr("style", "z-index:1;position:relative")
-		.attr("clip-path", `url(#clip-circle${counter_id})`);
+		.attr("clip-path", d => {
+		if(width>900 && d.nodeType == NODE_TYPES.FRIEND){
+			return "url(#clip-circle)";
+		}else if(width<900 && d.nodeType == NODE_TYPES.FRIEND){
+			return "url(#clip-circle1)";
+		}
+	});
 	
 	node.append("image")
 		.attr("xlink:href", d => {
@@ -1669,8 +1671,7 @@ function initializeDisplay() {
 				return "friendPortrait";
 			}
 		})
-		.attr("style", "opacity:0;z-index:1000;position:relative")
-		.attr("clip-path", `url(#clip-circle${counter_id})`);
+		.attr("style", "opacity:0;z-index:1000;position:relative");
 	
 	
 
