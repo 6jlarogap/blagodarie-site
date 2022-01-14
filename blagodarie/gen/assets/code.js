@@ -1596,9 +1596,7 @@ function initializeDisplay() {
 
 	var clipPath = defs.append('clipPath').attr('id', 'clip-circle')
 						.append("circle")
-    					.attr("r", 100)
-						.attr("cy", 100)
-    					.attr("cx", 120);
+    					.attr("r", 30);
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
