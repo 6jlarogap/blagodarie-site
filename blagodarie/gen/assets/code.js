@@ -1595,10 +1595,15 @@ function initializeDisplay() {
 	clipPath = defs.append('clipPath').attr('id', 'clip-circle');
 	
 	clipPath.append("circle")
-    		/*.attr("r", d => {if(d.nodeType == NODE_TYPES.FRIEND){return "32"}   })
-			.attr("cx", 0)
-			.attr("cy", 0)*/
-			.attr("r", width<900 ? 16 : 32);
+    		.attr("r", d => {
+				if(width>900){
+					return "32"
+				}else{
+					return "16"
+				}
+	})
+			
+			//.attr("r", width<900 ? 16 : 32);
 	 
 	node.append("image")
 		.attr("xlink:href", d => d.image)
