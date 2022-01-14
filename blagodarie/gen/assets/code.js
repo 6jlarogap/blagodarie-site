@@ -1596,7 +1596,7 @@ function initializeDisplay() {
 	
 	clipPath.append("circle")
     		.attr("r", d => {
-				if(width>900){
+				if(width>900 && d.nodeType == NODE_TYPES.FRIEND){
 					return "32"
 				}else{
 					return "16"
