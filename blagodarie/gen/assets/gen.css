@@ -1127,6 +1127,7 @@ button.close:hover, .context_menu_close:hover{
 				left: 50%;
 				margin-left: -44%;
 				width: 72%;
+				padding: 8%;
 			}
 			#shareDialog{
 				top: 10%;
