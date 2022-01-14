@@ -1460,14 +1460,7 @@ function initializeDisplay() {
 			}
 		});
 	
-	var defs = svg.append("defs").attr("id", "imgdefs")
-
-	var catpattern = defs.append("pattern")
-                        .attr("id", "catpattern")
-                        .attr("height", 1)
-                        .attr("width", 1)
-                        .attr("x", "0")
-                        .attr("y", "0")
+	
 		
 	link.append("svg:line")
 		.attr("class", "link")
@@ -1598,6 +1591,15 @@ function initializeDisplay() {
 	/*node.append("circle")
 		.attr("r", "32");
 	*/
+	
+	var defs = node.append("defs").attr("id", "imgdefs")
+
+	var catpattern = defs.append("pattern")
+                        .attr("id", "catpattern")
+                        .attr("height", 1)
+                        .attr("width", 1)
+                        .attr("x", "0")
+                        .attr("y", "0")
 	
 	node.append("image")
 		.attr("xlink:href", d => d.image)
