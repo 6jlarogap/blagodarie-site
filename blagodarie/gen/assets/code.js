@@ -3142,7 +3142,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	console.log(first_name);
 	console.log(middle_name);
 	
-	user_profile_surname_inp.value = last_name;
+	user_profile_surname_inp.value = `${last_name}`;
 	user_profile_name_inp.value = first_name;
 	user_profile_middlename_inp.value = middle_name;
 	add_user_profile_bd.value = dob=='null'?'':dob;
