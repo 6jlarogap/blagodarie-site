@@ -2772,7 +2772,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let user_profile_name_inp = document.querySelector('.user_profile_name_inp_edit');
 	let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp_edit');
 	let add_user_profile_photo = document.querySelector('.add_user_profile_photo');
-	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom');
+	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom_edit');
 	let add_user_profile_bd = document.querySelector('.add_user_profile_bd');
 	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
 	//let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
