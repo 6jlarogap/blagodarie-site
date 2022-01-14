@@ -2220,13 +2220,13 @@ function add_context_new_parents(us_id_from, type_of_user){
 		}
 		
 		var form = new FormData();
-	if(user_profile_name_inp.value != ''){
+	if(user_profile_name_inp_new.value != ''){
 		form.append("first_name", user_profile_name_inp_new.value);
 	}
-	if(user_profile_surname_inp.value != ''){
+	if(user_profile_surname_inp_new.value != ''){
 		form.append("last_name", user_profile_surname_inp_new.value);
 	}
-	if(user_profile_middlename_inp.value != ''){
+	if(user_profile_middlename_inp_new.value != ''){
 		form.append("middle_name", user_profile_middlename_inp_new.value);
 	}
 	if(gender_value!=undefined){
