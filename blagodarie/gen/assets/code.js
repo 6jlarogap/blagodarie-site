@@ -2790,6 +2790,18 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	let warning1 = document.querySelector('.warning1');
 	
+	user_profile_surname_inp.value = "";
+	user_profile_name_inp.value = "";
+	user_profile_middlename_inp.value = "";
+	add_user_profile_bd.value = "";
+	add_user_profile_dd.value = "";
+	
+	user_profile_surname_inp.value = last_name;
+	user_profile_name_inp.value = first_name;
+	user_profile_middlename_inp.value = middle_name;
+	add_user_profile_bd.value = dob=='null'?'':dob;
+	add_user_profile_dd.value = dod=='null'?'':dod;
+	
 	window.history.pushState(null, null, url.search);
 	addEventListener("popstate",function(e){
     	window.location.reload();
@@ -3118,11 +3130,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	//конец
 	
-	user_profile_surname_inp.value = last_name;
-	user_profile_name_inp.value = first_name;
-	user_profile_middlename_inp.value = middle_name;
-	add_user_profile_bd.value = dob=='null'?'':dob;
-	add_user_profile_dd.value = dod=='null'?'':dod;
+	
 	console.log(dod, add_user_profile_dd.value);
 	console.log(dob, add_user_profile_bd.value);
 	/*add_user_profile_bd.value = dob;
