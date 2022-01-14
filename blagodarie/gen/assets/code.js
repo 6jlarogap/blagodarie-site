@@ -1595,15 +1595,15 @@ function initializeDisplay() {
 	var defs = node.append("defs").attr("id", "imgdefs")
 	
 	
-	clipPath = defs.append('clipPath').attr('id', "clip-circle");
+	clipPath = defs.append('clipPath').attr('id', "clip-circle-medium");
 			clipPath.append("circle")
     		.attr("r", 32)
 	
-	clipPath1 = defs.append('clipPath').attr('id', "clip-circle1");
+	clipPath1 = defs.append('clipPath').attr('id', "clip-circle-small");
 			clipPath1.append("circle")
     		.attr("r", 16)
 	
-	clipPath2 = defs.append('clipPath').attr('id', "clip-circle2");
+	clipPath2 = defs.append('clipPath').attr('id', "clip-circle-large");
 			clipPath2.append("circle")
     		.attr("r", 64)
 			
@@ -1631,15 +1631,15 @@ function initializeDisplay() {
 		.attr("style", "z-index:1;position:relative")
 		.attr("clip-path", d => {
 		if(width>900 && d.nodeType == NODE_TYPES.FRIEND){
-			return "url(#clip-circle)";
+			return "url(#clip-circle-medium)";
 		}else if(width<900 && d.nodeType == NODE_TYPES.FRIEND){
-			return "url(#clip-circle1)";
+			return "url(#clip-circle-small)";
 		}else if (width>900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
-			return "url(#clip-circle2)";
+			return "url(#clip-circle-large)";
 		}else if (width<900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
-			return "url(#clip-circle)";
+			return "url(#clip-circle-medium)";
 		}else if (d.nodeType == NODE_TYPES.FILTERED) {
-			return "url(#clip-circle1)";
+			return "url(#clip-circle-small)";
 		}
 		
 	});
@@ -3142,7 +3142,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	console.log(first_name);
 	console.log(middle_name);
 	
-	user_profile_surname_inp.value = `${last_name}`;
+	user_profile_surname_inp.value = last_name;
 	user_profile_name_inp.value = first_name;
 	user_profile_middlename_inp.value = middle_name;
 	add_user_profile_bd.value = dob=='null'?'':dob;
