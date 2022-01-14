@@ -1663,7 +1663,7 @@ function initializeDisplay() {
 		})
 		.attr("style", "opacity:0;z-index:1000;position:relative");
 	
-	svg.append("circle")
+	catpattern.append("circle")
     .attr("r", 100)
     .attr("cy", 80)
     .attr("cx", 120)
