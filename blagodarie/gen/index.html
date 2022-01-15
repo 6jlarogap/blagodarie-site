@@ -237,6 +237,10 @@
    			<label for="female">Женщина</label>
     		<input type="radio" name="gender" value="f" class="female_checked_new_pup">
     		</div>
+    		<label>Дата рождения</label>
+    		<input type="text" name="db_new_user" placeholder="дд.мм.гггг или мм.гггг или гггг" class="db_new_user">
+    		<label>Дата смерти</label>
+    		<input type="text" name="dd_new_user" placeholder="дд.мм.гггг или мм.гггг или гггг" class="dd_new_user">
     		</form>
     		<p class="errorInNewContextProfile"></p>
 		<button id="add_user_profile_overbottom" class="add_user_profile_overbottom new new_user">Сохранить</button>
@@ -258,11 +262,11 @@
 			</div>
 			<div class="add_user_profile_fio">
 				<p class="add_user_profile_surname">Фамилия</p>
-				<input type="text" class="user_profile_surname_inp">
+				<input type="text" class="user_profile_surname_inp_edit">
 				<p class="add_user_profile_name">Имя</p>
-				<input type="text" class="user_profile_name_inp">
+				<input type="text" class="user_profile_name_inp_edit">
 				<p class="add_user_profile_middlename">Отчество</p>
-				<input type="text" class="user_profile_middlename_inp">
+				<input type="text" class="user_profile_middlename_inp_edit">
 				<form class="gender_cont">
 					<div class="male_cont">
 						<label for="male">Мужчина</label>
@@ -320,7 +324,7 @@
 		</div>
 		<p class="warning1"></p>
 		<div class="bottom_but_container">
-			<button class="add_user_profile_overbottom">Сохранить</button>
+			<button class="add_user_profile_overbottom_edit">Сохранить</button>
 			<button class="nophoto_but">Обезличить профиль</button>
 		</div>
 		<button class="btn btn-danger add_user_profile_close_popup"><i class="fas fa-times"></i></button>

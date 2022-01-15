@@ -1,3 +1,4 @@
+
 const NODE_TYPES = Object.freeze({
 	"USER":"user",
 	"FRIEND":"friend",
@@ -802,7 +803,7 @@ async function getApiUrl(){
 		try{
 			await d3view();
 		}catch(err){
-			alert('805' + err);
+			alert('805 ' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
 		}
 		//await d3view();
 	}else if(url.searchParams.has('sl')){
@@ -812,7 +813,7 @@ async function getApiUrl(){
 		try{
 			await d3view();
 		}catch(err){
-			alert('815' + err);
+			alert('815' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
 		}
 	}else{
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
@@ -820,16 +821,14 @@ async function getApiUrl(){
 		try{
 			await d3view();
 		}catch(err){
-			alert('823' + err);
+			alert('823' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
 		}
 		
 	}
 }
-try{
+
 	getApiUrl();
-}catch(err){
-	alert('831' + err);
-}
+
 	//getApiUrl();
 var isConnection;
 var isTrust;
@@ -1421,7 +1420,12 @@ drag = simulation => {
 	  .on("end", dragended);
 }
 
+var counter_id = 0;
+
 function initializeDisplay() {
+	
+	
+	
 	link = svg.append("g")
 		.selectAll("g")
 		.data(links)
@@ -1457,6 +1461,8 @@ function initializeDisplay() {
 				return "stop-color:rgb(255,0,0);stop-opacity:1";
 			}
 		});
+	
+	
 		
 	link.append("svg:line")
 		.attr("class", "link")
@@ -1571,6 +1577,9 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');
 	*/
+	
+	
+	
 	node = svg.append("g")
 		.selectAll("g")
 		.data(nodes)
@@ -1582,6 +1591,23 @@ function initializeDisplay() {
 	
 	
 	
+	
+	var defs = node.append("defs").attr("id", "imgdefs")
+	
+	
+	clipPath = defs.append('clipPath').attr('id', "clip-circle-medium");
+			clipPath.append("circle")
+    		.attr("r", 32)
+	
+	clipPath1 = defs.append('clipPath').attr('id', "clip-circle-small");
+			clipPath1.append("circle")
+    		.attr("r", 16)
+	
+	clipPath2 = defs.append('clipPath').attr('id', "clip-circle-large");
+			clipPath2.append("circle")
+    		.attr("r", 64)
+			
+	 
 	node.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
@@ -1602,8 +1628,21 @@ function initializeDisplay() {
 				return "friendPortrait";
 			}
 		})
-		.attr("style", "z-index:1;position:relative");
-	
+		.attr("style", "z-index:1;position:relative")
+		.attr("clip-path", d => {
+		if(width>900 && d.nodeType == NODE_TYPES.FRIEND){
+			return "url(#clip-circle-medium)";
+		}else if(width<900 && d.nodeType == NODE_TYPES.FRIEND){
+			return "url(#clip-circle-small)";
+		}else if (width>900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
+			return "url(#clip-circle-large)";
+		}else if (width<900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
+			return "url(#clip-circle-medium)";
+		}else if (d.nodeType == NODE_TYPES.FILTERED) {
+			return "url(#clip-circle-small)";
+		}
+		
+	});
 	
 	node.append("image")
 		.attr("xlink:href", d => {
@@ -1644,6 +1683,8 @@ function initializeDisplay() {
 			}
 		})
 		.attr("style", "opacity:0;z-index:1000;position:relative");
+	
+	
 
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
@@ -2081,6 +2122,9 @@ function checker(uid, type_of_user){
 	
 context_menu_add_profiles.addEventListener('click', closePupContextMenu);
 	
+	add_new_pup.checked = false;
+	add_reserved_pup.checked = false;
+	
 //функция закрытия и удаления обработчиков 
 function closePupContextMenu(){
 	addpupils_form.style.display = "none";
@@ -2088,13 +2132,14 @@ function closePupContextMenu(){
 	pagination_but_add_new_pup.removeEventListener('click', checkerButton);
 }
 	
+	
 pagination_but_add_new_pup.addEventListener('click', checkerButton);
 function checkerButton (){
 		//event.preventDefault();
 		if(add_new_pup.checked){
 			pagination_but_add_new_pup.removeEventListener('click', checkerButton);
 			closePupContextMenu();
-			add_context_new_parents();
+			add_context_new_parents(uid, type_of_user);
 		}else{
 			console.log(type_of_user);
 			pagination_but_add_new_pup.removeEventListener('click', checkerButton);
@@ -2120,13 +2165,37 @@ function add_context_new_parents(us_id_from, type_of_user){
 		user_profile_name_inp_new = document.querySelector('.user_profile_name_inp.new'),
 		male_checked_new_pup = document.querySelector('.male_checked_new_pup'),
 		female_checked_new_pup = document.querySelector('.female_checked_new_pup'),
-		add_user_profile_overbottom_new_new_user = document.querySelector('.add_user_profile_overbottom.new.new_user');
+		add_user_profile_overbottom_new_new_user = document.querySelector('.add_user_profile_overbottom.new.new_user'),
+		female_cont = document.querySelector('.female_cont'),
+		male_cont = document.querySelector('.male_cont'),
+		db_new_user = document.querySelector('.db_new_user'),
+		dd_new_user = document.querySelector('.dd_new_user');
+		
 	
 	add_user_profile_container_prew.style.display = "block";
+	female_cont.style.display = "block";
+	male_cont.style.display = "block";
 	user_profile_surname_inp_new.value = "";
 	user_profile_middlename_inp_new.value = "";
 	user_profile_name_inp_new.value = "";
 	errorInNewContextProfile.innerHTML = "";
+	db_new_user.value = "";
+	dd_new_user.value = "";
+	
+	if(type_of_user == "father"){
+		male_checked_new_pup.checked = true;
+		female_cont.style.display = "none";
+		male_cont.style.display = "block";
+	}else if(type_of_user == "mother"){
+		female_checked_new_pup.checked = true;
+		female_cont.style.display = "block";
+		male_cont.style.display = "none";
+	}else{
+		female_checked_new_pup.checked = false;
+		male_checked_new_pup.checked = false;
+		female_cont.style.display = "block";
+		male_cont.style.display = "block";
+	}
 	
 	//закрытие формы
 	add_user_profile_close_popup_new.addEventListener('click', close_new_user_popup);
@@ -2151,17 +2220,44 @@ function add_context_new_parents(us_id_from, type_of_user){
 		}
 		
 		var form = new FormData();
-	if(user_profile_name_inp.value != ''){
+	if(user_profile_name_inp_new.value != ''){
 		form.append("first_name", user_profile_name_inp_new.value);
 	}
-	if(user_profile_surname_inp.value != ''){
+	if(user_profile_surname_inp_new.value != ''){
 		form.append("last_name", user_profile_surname_inp_new.value);
 	}
-	if(user_profile_middlename_inp.value != ''){
+	if(user_profile_middlename_inp_new.value != ''){
 		form.append("middle_name", user_profile_middlename_inp_new.value);
 	}
 	if(gender_value!=undefined){
 		form.append("gender", gender_value);
+	}if(db_new_user.value!=null){
+		form.append("dob", db_new_user.value);
+	}if(dd_new_user.value!=null){
+		form.append("dod", dd_new_user.value);
+	}
+	if(type_of_user == "child"){
+		form.append("link_uuid", us_id_from);
+		for(let i=0; i<dataResponse.users.length; i++){
+			if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'm'){
+				form.append("link_relation", 'link_is_father');
+				break;
+			}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'f'){
+				form.append("link_relation", 'link_is_mother');
+				break;
+			}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == null){
+				form.append("link_relation", 'link_is_mother');
+				break;
+			}
+		}
+	}
+	if(type_of_user == "father"){
+		form.append("link_uuid", us_id_from);
+		form.append("link_relation", 'new_is_father');
+	}
+	if(type_of_user == "mother"){
+		form.append("link_uuid", us_id_from);
+		form.append("link_relation", 'new_is_mother');
 	}
 	if(gender_value==undefined){
 		errorInNewContextProfile.innerHTML = "Выберите пол";
@@ -2181,61 +2277,17 @@ function add_context_new_parents(us_id_from, type_of_user){
   					"data": form,
 					success: async function(response){
 						
-						console.log(response)
+						/*console.log(response)
 						let str1 = response;
 						let pars1 = JSON.parse(str1);
 						let new_profile_user_uuid = pars1.uuid;
 						let last_name = pars1.last_name;
 						let fName = pars1.first_name;
 						let midName = pars1.middle_name;
-						let gender_val = pars1.gender;
-						if(type_of_user == "father"){
-							try{
-								await add_user_parents(6, us_id_from, new_profile_user_uuid);
-							}catch(err){
-								errorInNewContextProfile.innerHTML = err;
-							}
-							close_new_user_popup();
-						}else if(type_of_user == "mother"){
-							try{
-								await add_user_parents(8, us_id_from, new_profile_user_uuid);
-							}catch(err){
-								errorInNewContextProfile.innerHTML = err;
-							}
-							close_new_user_popup();
-						}else if(type_of_user == "child"){
-							for(let i=0; i<dataResponse.users.length; i++){
-								if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'm'){
-									try{
-									await add_user_parents(6, new_profile_user_uuid, us_id_from);
-									}catch(err){
-										errorInNewContextProfile.innerHTML = err;
-									}
-								}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'f'){
-									try{
-									await add_user_parents(8, new_profile_user_uuid, us_id_from);
-									}catch(err){
-										errorInNewContextProfile.innerHTML = err;
-									}
-								}else if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == null){
-									try{
-									await add_user_parents(8, new_profile_user_uuid, us_id_from);
-									}catch(err){
-										errorInNewContextProfile.innerHTML = err;
-									}
-								}
-							}
-							close_new_user_popup();
-							
-						}
+						let gender_val = pars1.gender;*/
 						
-						/*localStorage.setItem('npuuid', new_profile_user_uuid);
-						localStorage.setItem('lastName', last_name);
-						
-							localStorage.setItem('fName', fName);
-						localStorage.setItem('midName', midName);
-						localStorage.setItem('gender', gender_val);
-						*/
+						await close_new_user_popup();
+						window.location.reload();
 						
 					},
 					error: function(response){
@@ -2256,7 +2308,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 	
 	
 	
-		async function add_user_parents(operation_type_id, us_id_from, clean_uid){
+		/*async function add_user_parents(operation_type_id, us_id_from, clean_uid){
 	
 				var settings = {
   					"url": `${new_settapi}api/addoperation`,
@@ -2290,7 +2342,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 					});
 			
 		
-		}
+		}*/
 	
 	
 }
@@ -2716,11 +2768,11 @@ let add_user_profile_container = document.querySelector('.add_user_profile_cont_
 function user_changed_info(id, last_name, first_name, middle_name, usr_photo, dob, dod, gender_val, us_latitude, us_longtitude){
 	
 	let add_user_profile_close_popup = document.querySelector('.add_user_profile_close_popup');
-	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp');
-	let user_profile_name_inp = document.querySelector('.user_profile_name_inp');
-	let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp');
+	let user_profile_surname_inp = document.querySelector('.user_profile_surname_inp_edit');
+	let user_profile_name_inp = document.querySelector('.user_profile_name_inp_edit');
+	let user_profile_middlename_inp = document.querySelector('.user_profile_middlename_inp_edit');
 	let add_user_profile_photo = document.querySelector('.add_user_profile_photo');
-	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom');
+	let add_user_profile_overbottom = document.querySelector('.add_user_profile_overbottom_edit');
 	let add_user_profile_bd = document.querySelector('.add_user_profile_bd');
 	let add_user_profile_dd = document.querySelector('.add_user_profile_dd');
 	//let add_user_profile_mother_input = document.querySelector('.add_user_profile_mother_input');
@@ -2737,6 +2789,16 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	let cheked_gend = document.getElementsByName('gender');
 	
 	let warning1 = document.querySelector('.warning1');
+	
+	
+	
+	user_profile_surname_inp.value = "";
+	user_profile_name_inp.value = "";
+	user_profile_middlename_inp.value = "";
+	add_user_profile_bd.value = "";
+	add_user_profile_dd.value = "";
+	
+	
 	
 	window.history.pushState(null, null, url.search);
 	addEventListener("popstate",function(e){
@@ -2818,9 +2880,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 );
 }
 	
-	user_profile_surname_inp.value = '';
+	/*user_profile_surname_inp.value = '';
 	user_profile_name_inp.value = '';
-	user_profile_middlename_inp.value = '';
+	user_profile_middlename_inp.value = '';*/
 	//add_user_profile_mother_input.value = '';
 	//add_user_profile_father_input.value = '';
 	
@@ -3066,11 +3128,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	
 	//конец
 	
-	user_profile_surname_inp.value = last_name;
-	user_profile_name_inp.value = first_name;
-	user_profile_middlename_inp.value = middle_name;
-	add_user_profile_bd.value = dob=='null'?'':dob;
-	add_user_profile_dd.value = dod=='null'?'':dod;
+	
 	console.log(dod, add_user_profile_dd.value);
 	console.log(dob, add_user_profile_bd.value);
 	/*add_user_profile_bd.value = dob;
@@ -3083,6 +3141,12 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	console.log(last_name);
 	console.log(first_name);
 	console.log(middle_name);
+	
+	user_profile_surname_inp.value = last_name;
+	user_profile_name_inp.value = first_name;
+	user_profile_middlename_inp.value = middle_name;
+	add_user_profile_bd.value = dob=='null'?'':dob;
+	add_user_profile_dd.value = dod=='null'?'':dod;
 	
 	async function getUsparent() {
 		const response = await fetch(`${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=100`, {
@@ -3585,3 +3649,4 @@ setInterval(function(){
 	else {
 	}
 }, 1000);
+
