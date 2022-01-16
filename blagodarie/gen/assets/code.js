@@ -797,7 +797,10 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 });
 var apiUrl;
 async function getApiUrl(){
-	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
+	if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+				apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
+	}
+	else if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
 		try{
