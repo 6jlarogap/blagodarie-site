@@ -1284,11 +1284,11 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
       .force("charge", d3.forceManyBody().strength(-50))
 	  .force("collide", d3.forceCollide().radius(40));
 		
-		*/
+		
 		
 		
     
-	Не удалять
+	Не удалять*/
 	
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(20).links(links)); //distance(150)
 		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(25).links(links_parent)); //distance(150)
