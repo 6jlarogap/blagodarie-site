@@ -892,7 +892,10 @@ var url = new URL(link);
 		document.querySelector('#btn_prev').style.background = '#6a2300;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
 		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('q');
-            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
+			var apiUrl;
+			if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+				apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
+			}
 		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
@@ -908,7 +911,9 @@ var url = new URL(link);
                 apiUrl = `${settings.api}api/profile_graph?uuid=${userIdFrom}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
 				
                 //console.log(apiUrl);
-            }
+            }else{
+				apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
+			}
 		console.log(apiUrl);
 }else{
 	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}`;
