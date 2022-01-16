@@ -1290,7 +1290,7 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
       simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).strength(1))
       .force("link", d3.forceLink(links_parent).id(d => d.id).distance(30).strength(1))
       .force("charge", d3.forceManyBody().strength(-50))
-	  .force("collide", d3.forceCollide().radius(50));
+	  .force("collide", d3.forceCollide().radius(70));
       /*.force("x", d3.forceX())
       .force("y", d3.forceY());*/
 		
