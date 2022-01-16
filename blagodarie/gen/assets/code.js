@@ -45,7 +45,7 @@ const PROFILE = {
 }
 let w = window.innerWidth;
 let h = window.innerHeight;
-var svg = d3.select("#main").attr("viewBox", "0 0 " + w + " " + h )
+var svg = d3.select("#main").attr("viewBox", "30 20 " + w-30 + " " + h-20 )
 			.attr("preserveAspectRatio", "xMidYMid meet");
 var width = +svg.node().getBoundingClientRect().width;
 var height = +svg.node().getBoundingClientRect().height;
