@@ -1287,8 +1287,8 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 	}		
 	else{
 
-      simulation.force("link", d3.forceLink(links).id(d => d.id).distance(0).strength(1))
-      .force("link", d3.forceLink(links_parent).id(d => d.id).distance(0).strength(1))
+      simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).strength(1))
+      .force("link", d3.forceLink(links_parent).id(d => d.id).distance(30).strength(1))
       .force("charge", d3.forceManyBody().strength(-50))
       .force("x", d3.forceX())
       .force("y", d3.forceY());
