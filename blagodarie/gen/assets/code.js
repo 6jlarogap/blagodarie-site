@@ -1224,28 +1224,27 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 			break;
 		case SHARE_ID:
 			d.fx = width<900 ? width/2+80 : width / 2 + 300;
-			d.fy = height / 2 - 300;
+			d.fy = 20;
 			break;
 		case FILTER_ID:
 			d.fx = width<900 ? width/2+170 : width / 2 + 400;
-			d.fy = height / 2 - 300;
+			d.fy = 20;
 			break;
 		case OPTIONS_ID:
 			d.fx = width<900 ? 10 : width / 2 - 400;
-			//d.fy = height / 2 - 300;
 			d.fy = 20;
 			break;
 		case INVITE_ID:
 			d.fx = width<900 ? width/2-20 : width / 2 - 200;
-			d.fy = height / 2 - 300;	
+			d.fy = 20;	
 			break;
 		case HOME_ID:
 			d.fx = width<900 ? width/2-81 :width / 2 - 300;
-			d.fy = height / 2 - 300;
+			d.fy = 20;
 			break;
 		case MAPS_ID:
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
-			d.fy = height / 2 - 300;
+			d.fy = 20;
 			break;
 		/*case TRUST_ID:
 			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
