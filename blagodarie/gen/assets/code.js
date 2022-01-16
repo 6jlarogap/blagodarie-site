@@ -1239,7 +1239,7 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 			d.fy = 20;	
 			break;
 		case HOME_ID:
-			d.fx = width<900 ? width/2-81 :width / 2 - 300;
+			d.fx = width<900 ? width/2-101 :width / 2 - 300;
 			d.fy = 20;
 			break;
 		case MAPS_ID:
