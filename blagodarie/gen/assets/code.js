@@ -1232,7 +1232,8 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 			break;
 		case OPTIONS_ID:
 			d.fx = width<900 ? 10 : width / 2 - 400;
-			d.fy = height / 2 - 300;	
+			//d.fy = height / 2 - 300;
+			d.fy = 0;
 			break;
 		case INVITE_ID:
 			d.fx = width<900 ? width/2-20 : width / 2 - 200;
