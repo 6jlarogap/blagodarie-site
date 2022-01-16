@@ -797,7 +797,10 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 });
 var apiUrl;
 async function getApiUrl(){
-	if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
+	if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+				window.location.href = window.location.origin;
+	}
+	else if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
 		console.log(apiUrl)
 		try{
@@ -1224,27 +1227,27 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 			break;
 		case SHARE_ID:
 			d.fx = width<900 ? width/2+80 : width / 2 + 300;
-			d.fy = height / 2 - 300;
+			d.fy = 20;
 			break;
 		case FILTER_ID:
 			d.fx = width<900 ? width/2+170 : width / 2 + 400;
-			d.fy = height / 2 - 300;
+			d.fy = 20;
 			break;
 		case OPTIONS_ID:
 			d.fx = width<900 ? 10 : width / 2 - 400;
-			d.fy = height / 2 - 300;	
+			d.fy = 20;
 			break;
 		case INVITE_ID:
 			d.fx = width<900 ? width/2-20 : width / 2 - 200;
-			d.fy = height / 2 - 300;	
+			d.fy = 20;	
 			break;
 		case HOME_ID:
-			d.fx = width<900 ? width/2-81 :width / 2 - 300;
-			d.fy = height / 2 - 300;
+			d.fx = width<900 ? width/2-91 :width / 2 - 300;
+			d.fy = 20;
 			break;
 		case MAPS_ID:
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
-			d.fy = height / 2 - 300;
+			d.fy = 20;
 			break;
 		/*case TRUST_ID:
 			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
@@ -1279,20 +1282,54 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 	
 	simulation = d3.forceSimulation(nodes);
 	if(width<900){
-    		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(20).links(links)); //distance(150)
+	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).strength(1))
+      .force("link", d3.forceLink(links_parent).id(d => d.id).distance(30).strength(1))
+      .force("charge", d3.forceManyBody().strength(-50))
+	  .force("collide", d3.forceCollide().radius(40));
+		
+		
+		
+		
+    
+	/*Не удалять
+	
+	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(20).links(links)); //distance(150)
 		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(25).links(links_parent)); //distance(150)
 	    	simulation.force("charge", d3.forceManyBody().strength(-30)) //0.5
 //		simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
 	  	simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	}		
-	else{
+	}	*/	
+	}else{
+
+      simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).strength(1))
+      .force("link", d3.forceLink(links_parent).id(d => d.id).distance(30).strength(1))
+      .force("charge", d3.forceManyBody().strength(-50))
+	  .force("collide", d3.forceCollide().radius(70));
+      
+		
+		
+		
+		
+		/*
+		Не удалять
+		
+		
 		simulation.force("link", d3.forceLink(links).id(d => d.id).links(links).distance(30));
 		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).links(links_parent).distance(30));
 		simulation.force("charge", d3.forceManyBody().strength(-50));
 		simulation.force("center", d3.forceCenter(width / 2, height / 2));
 		simulation.force("collide", d3.forceCollide().radius(30));
 		
+
+		
+		
+		*/
+		
 /*		
+	БЫЛО
+
+
+
 	//	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(150).links(links)); //distance(150)
 	//	simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(150).links(links_parent)); //distance(150)
 	//	simulation.force("charge", d3.forceManyBody().strength(-400))
@@ -1760,10 +1797,10 @@ function ticked() {
 
 
 function calcX1(d){
-	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
-	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
-	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
-	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
+	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 && width<900 ? 0 : d.source.x < 30 && width>900 ? 30 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width-30 && width>900 ? width-30 : d.source.x)); //везде нули
+	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 && width<900 ? 0 : d.target.x < 30 && width>900 ? 30 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width-30 && width>900 ? width-30 : d.target.x));
+	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height-70 && width>900 ? height-70 : d.source.y));
+	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height-70 && width>900 ? height-70 : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
@@ -1779,10 +1816,10 @@ function calcX1(d){
 }
 
 function calcY1(d){
-	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
-	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
-	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
-	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
+	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 && width<900 ? 0 : d.source.x < 30 && width>900 ? 30 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width-30 && width>900 ? width-30 : d.source.x)); //везде нули
+	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 && width<900 ? 0 : d.target.x < 30 && width>900 ? 30 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width-30 && width>900 ? width-30 : d.target.x));
+	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height-70 && width>900 ? height-70 : d.source.y));
+	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height-70 && width>900 ? height-70 : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
@@ -1798,10 +1835,10 @@ function calcY1(d){
 }
 
 function calcX2(d){
-	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
-	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
-	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
-	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
+	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 && width<900 ? 0 : d.source.x < 30 && width>900 ? 30 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width-30 && width>900 ? width-30 : d.source.x)); //везде нули
+	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 && width<900 ? 0 : d.target.x < 30 && width>900 ? 30 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width-30 && width>900 ? width-30 : d.target.x));
+	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height-70 && width>900 ? height-70 : d.source.y));
+	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height-70 && width>900 ? height-70 : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
@@ -1817,10 +1854,10 @@ function calcX2(d){
 }
 
 function calcY2(d){
-	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
-	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
-	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
-	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
+	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 && width<900 ? 0 : d.source.x < 30 && width>900 ? 30 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width-30 && width>900 ? width-30 : d.source.x)); //везде нули
+	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 && width<900 ? 0 : d.target.x < 30 && width>900 ? 30 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width-30 && width>900 ? width-30 : d.target.x));
+	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height-70 && width>900 ? height-70 : d.source.y));
+	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height-70 && width>900 ? height-70 : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
 	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
