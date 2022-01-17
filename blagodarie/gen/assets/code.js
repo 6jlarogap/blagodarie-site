@@ -2576,7 +2576,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	}
 		
 	for(let i = 0; i<user_connections.users.length; i++){
-		if(user_connections.users[i].uuid = uid){
+		if(user_connections.users[i].uuid == uid){
 			context_menu_user_name.innerHTML = `${user_connections.users[i].last_name} ${user_connections.users[i].first_name} ${user_connections.users[i].middle_name}`;
 			break;
 		}else{
