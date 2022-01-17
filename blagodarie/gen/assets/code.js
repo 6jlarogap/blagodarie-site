@@ -2539,6 +2539,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	let UserMistrust = document.querySelector('#UserMistrust');
 	let ShortRoad = document.querySelector('#ShortRoad');
 	let context_menu_close = document.querySelector('.context_menu_close');
+	let context_menu_user_name = document.querySelector('.context_menu_user_name');
 	let isConn;
 	let isDataTrust;
 	let isDataMistrust;
@@ -2571,6 +2572,15 @@ async function OnfriendClickFunc(uid, nodeType){
 		}
 		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == true){
 			add_mother.style.display = 'none';
+		}
+	}
+		
+	for(let i = 0; i<user_connections.users.length; i++){
+		if(user_connections.users[i].uuid = uid){
+			context_menu_user_name.innerHTML = `${user_connections.users[i].last_name} ${user_connections.users[i].first_name} ${user_connections.users[i].middle_name}`;
+			break;
+		}else{
+			context_menu_user_name.innerHTML = "";
 		}
 	}
 		
