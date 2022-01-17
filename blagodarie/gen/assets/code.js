@@ -797,8 +797,28 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 });
 var apiUrl;
 async function getApiUrl(){
-	if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+	if((getCookie("auth_token")=="" || getCookie("auth_token")==false) && !window.location.href.includes("id")){
 				window.location.href = window.location.origin;
+	}else if((getCookie("auth_token")=="" || getCookie("auth_token")==false) && window.location.href.includes("id")){
+		if(url.searchParams.has('sl')){
+			apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}`;
+			try{
+				await d3view();
+			}catch(err){
+				alert('803 ' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
+			}
+		}else{
+			if(url.searchParams.has('d')){
+			 apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
+			}else{
+				apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}`;
+			}
+			try{
+				await d3view();
+			}catch(err){
+				alert('803 ' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
+			}
+		}
 	}
 	else if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
@@ -1283,10 +1303,10 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 	simulation = d3.forceSimulation(nodes);
 	if(width<900){
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(20).strength(1))
-      .force("link", d3.forceLink(links_parent).id(d => d.id).distance(30).strength(1))
+      .force("link", d3.forceLink(links_parent).id(d => d.id).distance(20).strength(1))
       .force("charge", d3.forceManyBody().strength(-50))
 	  .force("collide", d3.forceCollide().radius(30))
-	  .force("center", d3.forceCenter(width / 2, height / 3));
+	  .force("center", d3.forceCenter((+width + 30) / 2, +height / 3));
 		
 		
 		
@@ -1298,15 +1318,20 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).distance(25).links(links_parent)); //distance(150)
 	    	simulation.force("charge", d3.forceManyBody().strength(-30)) //0.5
 //		simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
+<<<<<<< HEAD
+	  	simulation.force("center", d3.forceCenter((+width + 60) / 2, (+height + 40) / 2))
+	}		
+	else{
+=======
 	  	simulation.force("center", d3.forceCenter(width / 2, height / 2))
 	}	*/	
 	}else{
 
       simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).strength(1))
-      .force("link", d3.forceLink(links_parent).id(d => d.id).distance(30).strength(1))
+      .force("link", d3.forceLink(links_parent).id(d => d.id).distance(20).strength(1))
       .force("charge", d3.forceManyBody().strength(-50))
 	  .force("collide", d3.forceCollide().radius(70))
-		.force("center", d3.forceCenter(width / 2, height / 3));
+		.force("center", d3.forceCenter(width / 2, height / 2.5));
       
 		
 		
@@ -1316,6 +1341,7 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 		Не удалять
 		
 		
+>>>>>>> 1e556db52ee70e6c5cb8018b60e43f4d49044368
 		simulation.force("link", d3.forceLink(links).id(d => d.id).links(links).distance(30));
 		simulation.force("link", d3.forceLink(links_parent).id(d => d.id).links(links_parent).distance(30));
 		simulation.force("charge", d3.forceManyBody().strength(-50));
@@ -1754,12 +1780,20 @@ function initializeDisplay() {
 
 function ticked() {
 	node.attr("transform", d => {
+		
 		var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
+		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 && width>900 ? height-70 : d.y));
+		
+		
+		
+		/*
+		Стало
+		var x = (d.x < 30 && width<900 ? 30 : d.x < 0 && width<900 ? 0 : d.x < 30 && width>900 ? 30 : (d.x > width-30 && width<900 ? width-30 : d.x > width-30 && width>900 ? width-30 : d.x));
 		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 && width>900 ? height-70 : d.y));
 		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
 //			simulation.force("x").x(x);
 //			simulation.force("y").y(y);
-		}
+		}*/
 		return `translate(${x},${y})`;
 	});
 	
@@ -2533,6 +2567,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	let UserMistrust = document.querySelector('#UserMistrust');
 	let ShortRoad = document.querySelector('#ShortRoad');
 	let context_menu_close = document.querySelector('.context_menu_close');
+	let context_menu_user_name = document.querySelector('.context_menu_user_name');
 	let isConn;
 	let isDataTrust;
 	let isDataMistrust;
@@ -2565,6 +2600,15 @@ async function OnfriendClickFunc(uid, nodeType){
 		}
 		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == true){
 			add_mother.style.display = 'none';
+		}
+	}
+		
+	for(let i = 0; i<user_connections.users.length; i++){
+		if(user_connections.users[i].uuid == uid){
+			context_menu_user_name.innerHTML = `${user_connections.users[i].last_name} ${user_connections.users[i].first_name} ${user_connections.users[i].middle_name}`;
+			break;
+		}else{
+			context_menu_user_name.innerHTML = "";
 		}
 	}
 		
