@@ -797,8 +797,24 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 });
 var apiUrl;
 async function getApiUrl(){
-	if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+	if((getCookie("auth_token")=="" || getCookie("auth_token")==false) && !window.location.href.includes("id")){
 				window.location.href = window.location.origin;
+	}else if((getCookie("auth_token")=="" || getCookie("auth_token")==false) && window.location.href.includes("id")){
+		if(url.searchParams.has('sl')){
+			apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}`;
+			try{
+				await d3view();
+			}catch(err){
+				alert('803 ' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
+			}
+		}else{
+			 apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}`;
+			try{
+				await d3view();
+			}catch(err){
+				alert('803 ' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
+			}
+		}
 	}
 	else if(!window.location.href.includes('id') || url.searchParams.get('id') == getCookie('user_uuid')){
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}&depth=${url.searchParams.get('d')}`;
