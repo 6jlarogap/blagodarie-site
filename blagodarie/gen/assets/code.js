@@ -1286,9 +1286,7 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
       .force("link", d3.forceLink(links_parent).id(d => d.id).distance(30).strength(1))
       .force("charge", d3.forceManyBody().strength(-50))
 	  .force("collide", d3.forceCollide().radius(30))
-	  .force("center", d3.forceCenter((+width + 30) / 2, (+height + 25) / 2))
-	  /*.force("x", d3.forceX())
-      .force("y", d3.forceY());*/
+	  .force("center", d3.forceCenter((+width + 30) / 2, (+height + 25) / 2));
 		
 		
 		
@@ -1778,7 +1776,7 @@ function ticked() {
 //			simulation.force("y").y(y);
 		}
 		return `translate(${x},${y})`;
-	});
+	});*/
 	
 	link.selectAll("g")
 		.attr("x1", calcX1)
@@ -1809,7 +1807,7 @@ function ticked() {
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
-		.attr("y2", calcY2);*/
+		.attr("y2", calcY2);
 	
 	
 	
@@ -1817,7 +1815,7 @@ function ticked() {
 	node.attr("cx", d => d.x)
         .attr("cy", d => d.y);
 	
-	link.selectAll("g")
+	/*link.selectAll("g")
         .attr("x1", d => d.source.x)
         .attr("y1", d => d.source.y)
         .attr("x2", d => d.target.x)
@@ -1851,7 +1849,7 @@ function ticked() {
         .attr("x1", d => d.source.x)
         .attr("y1", d => d.source.y)
         .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
+        .attr("y2", d => d.target.y);*/
 }
 
 
