@@ -808,7 +808,11 @@ async function getApiUrl(){
 				alert('803 ' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
 			}
 		}else{
-			 apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}`;
+			if(url.searchParams.has('d')){
+			 apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
+			}else{
+				apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}`;
+			}
 			try{
 				await d3view();
 			}catch(err){
