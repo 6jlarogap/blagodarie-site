@@ -1287,8 +1287,8 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
       .force("charge", d3.forceManyBody().strength(-50))
 	  .force("collide", d3.forceCollide().radius(30))
 	  .force("center", d3.forceCenter((+width + 30) / 2, (+height + 25) / 2))
-	  .force("x", d3.forceX())
-      .force("y", d3.forceY());
+	  /*.force("x", d3.forceX())
+      .force("y", d3.forceY());*/
 		
 		
 		
