@@ -1,3 +1,4 @@
+
 const NODE_TYPES = Object.freeze({
 	"USER":"user",
 	"FRIEND":"friend",
@@ -19,6 +20,7 @@ const NODE_TYPES = Object.freeze({
 	"FILTERED": "filtered",
 	"INVITE": "invite",
 	"MAPS": "maps"
+	//"PLUS": "plus"
 });
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const KEYS_ROOT_ID = "KEYS_ROOT";
@@ -34,6 +36,7 @@ const HOME_ID = "HOME_ROOT";
 const GENESIS_ID = "GENESIS_ROOT";
 const MAPS_ID = "MAPS_ROOT";
 const INVITE_ID = "INVITE_ROOT";
+//const PLUS_ID = "PLUS_ROOT";
 const PROFILE = {
 	id: "",
 	text: "",
@@ -889,7 +892,10 @@ var url = new URL(link);
 		document.querySelector('#btn_prev').style.background = '#6a2300;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
 		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('q');
-            var apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
+			var apiUrl;
+			if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+				apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
+			}
 		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
                 apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
@@ -905,7 +911,9 @@ var url = new URL(link);
                 apiUrl = `${settings.api}api/profile_graph?uuid=${userIdFrom}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
 				
                 //console.log(apiUrl);
-            }
+            }else{
+				apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
+			}
 		console.log(apiUrl);
 }else{
 	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}`;
@@ -1017,7 +1025,7 @@ d3.json(apiUrl)
 		//добавить вершину желаний
 		nodes.push({
 			id: WISHES_ROOT_ID,
-			text: "Желания",
+			text: "Потребности",
 			image: `${settings.url}images/sleep.png`,
 			nodeType: NODE_TYPES.WISH_ROOT
 		});
@@ -1124,7 +1132,7 @@ d3.json(apiUrl)
 			image: `${settings.url}images/menu.png`,
 			nodeType: NODE_TYPES.OPTIONS
 		})
-
+	
 		//Добавить вершину invite
 		nodes.push({
 			id: INVITE_ID,
@@ -1132,8 +1140,8 @@ d3.json(apiUrl)
 			image: `${settings.url}images/genesis.png`,
 			nodeType: NODE_TYPES.INVITE
 		})
+	
 	}
-
 	//добавить вершину share
 	nodes.push({
 		id: SHARE_ID,
@@ -1172,7 +1180,14 @@ d3.json(apiUrl)
 		image: `${settings.url}images/map_button.png`,
 		nodeType: NODE_TYPES.MAPS
 	});
-
+	/*if(!url.searchParams.has('id') || userIdFrom == getCookie('user_uuid')){
+	nodes.push({
+		id: PLUS_ID,
+		plus_text: "+",
+		image: `${settings.url}images/plused_icon.png`,
+		nodeType: NODE_TYPES.PLUS
+	});
+	}*/
 	//добавить вершину filter
 	nodes.push({
 		id: FILTER_ID,
@@ -1185,7 +1200,7 @@ d3.json(apiUrl)
 		//добавить вершину ключей
 		nodes.push({
 			id: KEYS_ROOT_ID,
-			text: "Ключи",
+			text: "Контакты",
 			image: `${settings.url}images/folder-key.png`,
 			nodeType: NODE_TYPES.KEY_ROOT
 		});
@@ -1391,6 +1406,10 @@ d3.json(apiUrl)
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
 			d.fy = height / 2 - 300;
 			break;
+		/*case PLUS_ID:
+			d.fx = width<900 ? width/2+50 : width/2+80;
+			d.fy = height/2;
+			break;*/
 		case TRUST_ID:
 			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
@@ -1582,6 +1601,11 @@ drag = simulation => {
 		if (!event.active) simulation.alphaTarget(0);
 		//d.fx = null;
 		//d.fy = null;
+		/*if(d.nodeType == NODE_TYPES.PLUS){
+			d.fx = width<900 ? width/2+50 : width/2+80;
+			d.fy = height/2;
+		}*/
+		
 	}
 
 	return d3.drag()
@@ -1675,8 +1699,25 @@ function initializeDisplay() {
 		.join("g")
 		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
 		.call(drag(simulation))
-		.attr('class', 'svg_elem');
-		
+		.attr('class', 'svg_elem')
+		.attr('style', "cursor:pointer");
+	 
+	
+	var defs = node.append("defs").attr("id", "imgdefs")
+	
+	
+	clipPath = defs.append('clipPath').attr('id', "clip-circle-medium");
+			clipPath.append("circle")
+    		.attr("r", 32)
+	
+	clipPath1 = defs.append('clipPath').attr('id', "clip-circle-small");
+			clipPath1.append("circle")
+    		.attr("r", 16)
+	
+	clipPath2 = defs.append('clipPath').attr('id', "clip-circle-large");
+			clipPath2.append("circle")
+    		.attr("r", 64)
+	
 		node.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
@@ -1697,7 +1738,21 @@ function initializeDisplay() {
 				return "friendPortrait";
 			}
 		})
-		.attr("style", "z-index:1;position:relative");
+		.attr("style", "z-index:1;position:relative")
+		.attr("clip-path", d => {
+		if(width>900 && d.nodeType == NODE_TYPES.FRIEND){
+			return "url(#clip-circle-medium)";
+		}else if(width<900 && d.nodeType == NODE_TYPES.FRIEND){
+			return "url(#clip-circle-small)";
+		}else if (width>900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
+			return "url(#clip-circle-large)";
+		}else if (width<900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
+			return "url(#clip-circle-medium)";
+		}else if (d.nodeType == NODE_TYPES.FILTERED) {
+			return "url(#clip-circle-small)";
+		}
+		
+	});
 	
 	node.append("image")
 		.attr("xlink:href", d => {
@@ -1744,6 +1799,15 @@ function initializeDisplay() {
 		.attr("font-size", width<900 ? '12' : "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
 		.text(d => (d.text));
+	
+	/*node.append("text")
+		.attr("y", d => (d.nodeType == NODE_TYPES.PLUS ? 0 : 0))
+		.attr("font-size", width<900 ? '15' : "23")
+		.attr("class", d => (d.nodeType == NODE_TYPES.PLUS ? "friendName" : "friendName"))
+		.attr('dominant-baseline', "central")
+		.attr("font-weight", 900)
+		.attr("fill", "#fff")
+		.text(d => (d.plus_text));*/
 	  
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47))
@@ -2031,7 +2095,7 @@ async function onNodeClick(nodeType, uuid, txt){
 			
 		});
 		shareDialog.style.display = "flex";*/
-		window.location.href = url.origin + '/gen';
+		window.location.href = url.origin + '/gen/?id=' + getCookie("user_uuid");
 	}
 	else if (nodeType == NODE_TYPES.OPTIONS) {
 		optionsDialog.style.display = "flex";
@@ -2048,7 +2112,11 @@ async function onNodeClick(nodeType, uuid, txt){
 		window.history.pushState(null, null, url.search);
 		window.location.href = url.href;
 		
-	}
+	}/*else if(nodeType == NODE_TYPES.PLUS){
+		let trust_plus_dialog = document.querySelector('#trust_plus');
+		trust_plus_dialog.style.display = "flex";
+		modalTrustPlus();
+	}*/
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
 			if (isConnection) {
@@ -2161,7 +2229,49 @@ async function onNodeClick(nodeType, uuid, txt){
 	
 }, 500);
 }*/
-	
+	/* function modalTrustPlus(){
+		let plus_trust_but = document.querySelector('#plus_trust_but');
+		
+		plus_trust_but.addEventListener('click', ()=>{
+			upd_plus_trust();
+		})
+		
+	}*/
+async function upd_plus_trust(){
+	let plus_trust_inp = document.querySelector('#plus_trust_inp');
+	let plus_trust_error_message = document.querySelector('#plus_trust_error_message');
+	if(plus_trust_inp.value==''){
+				plus_trust_error_message.innerHTML = 'Введите id пользователя или ссылку';
+			}else{
+				if (isAuth) {
+			if (isConnection) {
+				if (isTrust) {
+					await updateTrust(5, plus_trust_inp.value);
+					
+					
+				}
+				else {
+					
+					await updateTrust(4, plus_trust_inp.value);
+					await updateTrust(5, plus_trust_inp.value);
+				}
+			}
+			else {
+				
+				await updateTrust(5, plus_trust_inp.value);
+				
+			}
+			
+			
+			window.location.reload();
+		}
+		else {
+			deleteCookie("","set_mistrust");
+			document.cookie = `set_trust=${userIdFrom}; path=/;`;
+			authDialog.style.display = "flex";
+		}
+			}
+}
 
 //
 async function rootFunctions(category) {
@@ -2174,7 +2284,7 @@ async function rootFunctions(category) {
 			value: 'text',
 			empty: 'желаний'
 		};
-		elementAddInput.setAttribute("placeholder", "Желание...");
+		elementAddInput.setAttribute("placeholder", "Потребность...");
 		elementAddInput.setAttribute("category", category);
 	}
 	else if (category == 'keys') {
@@ -2186,7 +2296,7 @@ async function rootFunctions(category) {
 			type: 'type_id',
 			empty: 'ключей'
 		};
-		elementAddInput.setAttribute("placeholder", "Ключ...");
+		elementAddInput.setAttribute("placeholder", "Контакт...");
 		elementAddInput.setAttribute("category", category);
 	}
 	else {
@@ -2263,9 +2373,9 @@ async function updateTrust(operationId, referal = null) {
 			"Authorization": "Token " + getCookie("auth_token"),
 			"Content-Type": "application/json"
 		},
-		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "operation_type_id": operationId})
+		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "operation_type_id": operationId}),
 	}).then(data => data.json())
-	console.log('add');
+	console.log(operationId);
 }
 
 
@@ -2387,5 +2497,6 @@ setInterval(function(){
 	}
 
 }, 1000);
-	
+
+
 

@@ -25,7 +25,9 @@ settingSets.forEach((setting, i) => {
 let new_settapi = settings.api;
 let new_setturl = settings.url;
 
-
+if(!isAuth){
+	window.location.href = settings.url;
+}
 
 let user_table_body = document.querySelector('#user_table_body');
 
@@ -48,8 +50,7 @@ async function myProfilesinfo() {
 		var replacement = "media"; 
 		var toReplace = "thumb"; 
 		var str1 = str.replace(replacement, toReplace);
-		
-		tr.innerHTML = `<td><img src='${response[i].photo=="" ? settings.url+"/images/default_avatar.png" : str1+"/45x45~crop~12."+ext}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td><div class="bd_dd"><div class="bd_dd_cont"><p>${response[i].dob != null ? response[i].dob : ''}</p><p>|</p><p>${response[i].dod != null ? response[i].dod : ''}</p></div><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/gen/?id=${response[i].uuid}&d=5"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info('${response[i].uuid}', '${response[i].last_name}', '${response[i].first_name}', '${response[i].middle_name}', '${str1+"/320x320~crop~12."+ext}', '${response[i].dob}', '${response[i].dod}', '${response[i].gender}')"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
+		tr.innerHTML = `<td><img src='${response[i].photo==""||response[i].photo==undefined ? settings.url+"/images/default_avatar.png" : str1+"/45x45~crop~12."+ext}'/></td><td>${response[i].last_name + ' ' + response[i].first_name + ' ' + response[i].middle_name}</td><td><div class="bd_dd"><div class="bd_dd_cont"><p>${response[i].dob != null ? response[i].dob : ''}</p><p>|</p><p>${response[i].dod != null ? response[i].dod : ''}</p></div><div class="user_changed"><a class="user_changed_link" href="${window.location.origin}/gen/?id=${response[i].uuid}&d=5"><i class="fa fa-link" aria-hidden="true"></i></a><div class="user_changed_info" onclick="user_changed_info('${response[i].uuid}', '${response[i].last_name}', '${response[i].first_name}', '${response[i].middle_name}', '${str1+"/320x320~crop~12."+ext}', '${response[i].dob}', '${response[i].dod}', '${response[i].gender}')"><img src="${settings.url}images/pen.png"></div></div></div></td>`;
 		user_table_body.append(tr); 
 	}
 }
@@ -63,7 +64,7 @@ function setGenders(item){
 	value_gender = item.value;
 }
 
-let dynamic_id;
+let dynamic_id; 
 
 //редактировать профиль
 function user_changed_info(id, last_name, first_name, middle_name, usr_photo, dob, dod, gender_val){
@@ -1361,13 +1362,13 @@ setInterval(function(){
 let gen_container = document.querySelector('.gen_container');
 let div = document.createElement('div');
 div.style.position = 'relative';
-div.innerHTML = `<img src="${settings.url}images/genesis.png" /><img src="${settings.url}gen" />`;
+div.innerHTML = `<img src="${settings.url}images/genesis.png" /><img src="${settings.url}gen/?id=${getCookie('user_uuid')}" />`;
 gen_container.append(div);
 
 //кнопка род
 
 gen_container.addEventListener('click', function(){
-	window.location.href = window.location.origin + '/gen';
+	window.location.href = window.location.origin + '/gen/?id=' + getCookie("user_uuid");
 })
 
 
