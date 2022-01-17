@@ -1286,7 +1286,7 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
       .force("link", d3.forceLink(links_parent).id(d => d.id).distance(30).strength(1))
       .force("charge", d3.forceManyBody().strength(-50))
 	  .force("collide", d3.forceCollide().radius(30))
-	  .force("center", d3.forceCenter((+width + 30) / 2, (+height + 25) / 2));
+	  .force("center", d3.forceCenter((+width + 30) / 2, +height / 3));
 		
 		
 		
