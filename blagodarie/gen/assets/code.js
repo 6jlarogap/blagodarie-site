@@ -885,7 +885,7 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 		nodes.push(PROFILE);
 	}else if (getCookie("auth_token")){
 		deleteCookie("auth_token");
-		window.location.reload();
+		//window.location.reload();
 	}
 	
 	//добавить пользователей в вершины
