@@ -880,9 +880,12 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 	data = response;
 	console.log(data);
 	user_connections = data;
-	if (isAuth) {
+	if (isAuth && getCookie("user_uuid")) {
 		await setProfile();
 		nodes.push(PROFILE);
+	}else if (getCookie("auth_token")){
+		deleteCookie("auth_token");
+		window.location.reload();
 	}
 	
 	//добавить пользователей в вершины
