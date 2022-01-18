@@ -885,7 +885,7 @@ if((getCookie("auth_token")=="" || getCookie("auth_token")==false || !getCookie(
 		nodes.push(PROFILE);
 	}else if (getCookie("auth_token")){
 		deleteCookie("", "auth_token");
-		window.location.reload();
+		window.location.href = window.location.origin;
 	}
 	
 	//добавить пользователей в вершины
