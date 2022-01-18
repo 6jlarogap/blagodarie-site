@@ -864,7 +864,7 @@ let dataResponse;
 async function d3view(){
 //d3.json(apiUrl)
 let response;
-if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+if((getCookie("auth_token")=="" || getCookie("auth_token")==false || !getCookie("auth_token")) && (getCookie("user_uuid")=="" || getCookie("user_uuid")==false || !getCookie("user_uuid"))){
 	response = await fetch(`${apiUrl}`, {
 		method: "GET"
 	}).then(data => data.json());
