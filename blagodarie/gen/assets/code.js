@@ -511,7 +511,7 @@ async function setProfile() {
 		}
 	}).then(data => data.json());
 	if(response.users == undefined){
-		alert(response);
+		alert(response.message);
 	}
 	var str = response.users[0].photo;
 	var extArray = str.split(".");
