@@ -510,7 +510,9 @@ async function setProfile() {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
-
+	if(response.users == undefined){
+		alert(response);
+	}
 	var str = response.users[0].photo;
 	var extArray = str.split(".");
 	var ext = extArray[extArray.length - 1];
