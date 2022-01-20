@@ -529,6 +529,7 @@ async function setProfile() {
 		if(getCookie("auth_token")){
 			deleteCookie("", "auth_token");
 		}
+		window.location.reload();
 	}
 	var str = response.users[0].photo;
 	var extArray = str.split(".");
