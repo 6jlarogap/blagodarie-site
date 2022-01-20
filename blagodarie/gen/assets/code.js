@@ -523,6 +523,12 @@ async function setProfile() {
 	if(response.users == undefined){
 		let error_response = JSON.stringify(response);
 		alert(error_response);
+		if(getCookie("user_uuid")){
+			deleteCookie("", "user_uuid");
+		}
+		if(getCookie("auth_token")){
+			deleteCookie("", "auth_token");
+		}
 	}
 	var str = response.users[0].photo;
 	var extArray = str.split(".");
