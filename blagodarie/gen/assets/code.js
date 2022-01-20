@@ -106,7 +106,17 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 
 
 
+//preloader in start load
+let loaders = document.querySelector("#loaders");
+window.onload = function(){
+	loaders.style.display = "block";
+	setTimeout(function(){
+		loaders.style.transition = "0.8s";
+		loaders.style.opacity = "1";
+	},10);
+}
 
+//end preload container
 
 //filter stuff
 var filterInput = document.getElementById("filterInput");
