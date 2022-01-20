@@ -510,7 +510,10 @@ async function setProfile() {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 	}).then(data => data.json());
-
+	if(response.users == undefined){
+		let error_response = JSON.stringify(response);
+		alert(error_response);
+	}
 	var str = response.users[0].photo;
 	var extArray = str.split(".");
 	var ext = extArray[extArray.length - 1];
@@ -828,19 +831,16 @@ async function getApiUrl(){
 		}catch(err){
 			alert('805 ' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
 		}
-		//await d3view();
 	}else if(url.searchParams.has('sl')){
 			apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}`;
 			console.log(apiUrl)
-			//await d3view(); 
 		try{
 			await d3view();
 		}catch(err){
-			alert('815' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid'));
+			alert('815' + err + "Стэк: " + err.stack + "Ссылка: " + window.location.href + " URL: " + url + " Куки: " + getCookie('user_uuid') + " SetProfile: " + `${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}` + "auth_token: " + getCookie('auth_token'));
 		}
 	}else{
 		apiUrl = `${settings.api}api/profile_genesis?uuid=${url.searchParams.get('id')}&depth=${url.searchParams.get('d')}`;
-		//await d3view();
 		try{
 			await d3view();
 		}catch(err){
@@ -864,7 +864,7 @@ let dataResponse;
 async function d3view(){
 //d3.json(apiUrl)
 let response;
-if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
+if((getCookie("auth_token")=="" || getCookie("auth_token")==false || !getCookie("auth_token")) && (getCookie("user_uuid")=="" || getCookie("user_uuid")==false || !getCookie("user_uuid"))){
 	response = await fetch(`${apiUrl}`, {
 		method: "GET"
 	}).then(data => data.json());
@@ -880,9 +880,12 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 	data = response;
 	console.log(data);
 	user_connections = data;
-	if (isAuth) {
+	if (isAuth && getCookie("user_uuid")) {
 		await setProfile();
 		nodes.push(PROFILE);
+	}else if (getCookie("auth_token")){
+		deleteCookie("", "auth_token");
+		window.location.href = window.location.origin;
 	}
 	
 	//добавить пользователей в вершины
@@ -1304,9 +1307,9 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 	if(width<900){
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(20).strength(1))
       .force("link", d3.forceLink(links_parent).id(d => d.id).distance(20).strength(1))
-      .force("charge", d3.forceManyBody().strength(-50))
-	  .force("collide", d3.forceCollide().radius(30))
-	  .force("center", d3.forceCenter((+width + 30) / 2, +height / 3));
+      .force("charge", d3.forceManyBody().strength(-120))
+	  //.force("collide", d3.forceCollide().radius(30))
+	  .force("center", d3.forceCenter(width / 2, height / 2));
 		
 		
 		
@@ -1329,9 +1332,9 @@ if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
 
       simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).strength(1))
       .force("link", d3.forceLink(links_parent).id(d => d.id).distance(20).strength(1))
-      .force("charge", d3.forceManyBody().strength(-50))
-	  .force("collide", d3.forceCollide().radius(70))
-		.force("center", d3.forceCenter(width / 2, height / 2.5));
+      .force("charge", d3.forceManyBody().strength(120))
+	  .force("collide", d3.forceCollide().radius(50))
+		.force("center", d3.forceCenter(width / 2, height / 2));
       
 		
 		
@@ -2892,8 +2895,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	dynamic_id = id;
 	
 	userIdFrom = id;
-	if(isAuth){
-	setProfile();
+	if(isAuth && getCookie("user_uuid")){
+		setProfile();
 	}
 	
 	get_position1.addEventListener('click', ClickOnGetPosition);
