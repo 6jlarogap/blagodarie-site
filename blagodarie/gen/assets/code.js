@@ -2894,8 +2894,8 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	dynamic_id = id;
 	
 	userIdFrom = id;
-	if(isAuth){
-	setProfile();
+	if(isAuth && getCookie("user_uuid")){
+		setProfile();
 	}
 	
 	get_position1.addEventListener('click', ClickOnGetPosition);
