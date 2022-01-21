@@ -116,6 +116,23 @@ window.onload = function(){
 	},900);
 }
 
+function startLoad(){
+	loaders.style.display = "block";
+	setTimeout(function(){
+		loaders.style.transition = "0.8s";
+		loaders.style.opacity = "1";
+	},10);
+}
+
+function endLoad(){
+	loaders.style.transition = "0.8s";
+	loaders.style.opacity = "0";
+	setTimeout(function(){
+		loaders.style.display = "none";
+	},900);
+}
+
+
 //end preload container
 
 //filter stuff
@@ -2370,17 +2387,11 @@ function add_context_new_parents(us_id_from, type_of_user){
   					"data": form,
 					success: async function(response){
 						
-						/*console.log(response)
-						let str1 = response;
-						let pars1 = JSON.parse(str1);
-						let new_profile_user_uuid = pars1.uuid;
-						let last_name = pars1.last_name;
-						let fName = pars1.first_name;
-						let midName = pars1.middle_name;
-						let gender_val = pars1.gender;*/
 						
 						await close_new_user_popup();
-						window.location.reload();
+						startLoad();
+						await addDynamicUsers();
+						//window.location.reload();
 						
 					},
 					error: function(response){
@@ -2399,43 +2410,18 @@ function add_context_new_parents(us_id_from, type_of_user){
 	}
 	
 	
+	function addDynamicUsers(){
+		response = await fetch(`${apiUrl}`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+		}).then(data => data.json());
+		console.log(response);
+		endLoad();
+	}
 	
 	
-		/*async function add_user_parents(operation_type_id, us_id_from, clean_uid){
-	
-				var settings = {
-  					"url": `${new_settapi}api/addoperation`,
-  					"method": "POST",
-  					"timeout": 0,
-  					"headers": {
-    					"Authorization": `Token ${getCookie("auth_token")}`,
-    					"Content-Type": "application/json"
-  					},
-  					"data": JSON.stringify({
-    					"user_id_from": us_id_from,
-    					"user_id_to": clean_uid,
-    					"operation_type_id": operation_type_id
-  					}),
-					success: function(response){
-						console.log(response);
-						close_reserved_user_form();
-					},
-					error: function(response){
-						console.log(response);
-						let first_resp = response.responseText;
-						let pars1 = JSON.parse(first_resp);
-						reserved_user_form_error.innerHTML = pars1.message;
-					}
-					
-					
-					};
-
-					$.ajax(settings).done(function (response) {
-  					console.log(response);
-					});
-			
-		
-		}*/
 	
 	
 }
