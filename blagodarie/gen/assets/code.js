@@ -2466,8 +2466,9 @@ function add_context_new_parents(us_id_from, type_of_user){
                 .attr("viewBox", "0 0 " + w + " " + h )
                 .attr("preserveAspectRatio", "xMidYMid meet");
 		
-		initializeDisplay();
-		initializeSimulation();
+		/*initializeDisplay();
+		initializeSimulation();*/
+			d3view();
 			
 			
 	});
