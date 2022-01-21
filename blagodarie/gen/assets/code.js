@@ -1341,8 +1341,8 @@ if((getCookie("auth_token")=="" || getCookie("auth_token")==false || !getCookie(
 	if(width<900){
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(20).strength(1))
       .force("link", d3.forceLink(links_parent).id(d => d.id).distance(20).strength(1))
-      .force("charge", d3.forceManyBody().strength(-120))
-	  //.force("collide", d3.forceCollide().radius(30))
+      .force("charge", d3.forceManyBody().strength(120))
+	  .force("collide", d3.forceCollide().radius(30))
 	  .force("center", d3.forceCenter(width / 2, height / 2));
 		
 		
@@ -2526,13 +2526,6 @@ function add_context_new_parents(us_id_from, type_of_user){
 		
 		
 		
-		/*node = svg.append("g")
-		.selectAll("g")
-		.data(nodes)
-		.join("g")
-		.attr("onclick", d => d.nodeType==NODE_TYPES.FRIEND||d.nodeType==NODE_TYPES.PROFILE||d.nodeType==NODE_TYPES.USER ? `OnfriendClickFunc("${d.id}", "${d.nodeType}")` : `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
-		.call(drag(simulation))
-		.attr('class', 'svg_elem');*/
 		
 		
 		endLoad();
