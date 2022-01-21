@@ -1690,8 +1690,10 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');*/
 	
-	node = svg.append("g")
-		.selectAll("g")
+	node = svg.append("g");
+	
+	
+	node.enter().selectAll("g")
 		.data(nodes)
 		.merge(node)
 		.join("g")
