@@ -1690,17 +1690,14 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');*/
 	
-	var node = svg.append("g")
-	
-	
-	
-	node.enter().selectAll("g")
-				.data(nodes)
-                .merge(node)
-                .join("g")
-				.attr("onclick", d => d.nodeType==NODE_TYPES.FRIEND||d.nodeType==NODE_TYPES.PROFILE||d.nodeType==NODE_TYPES.USER ? `OnfriendClickFunc("${d.id}", "${d.nodeType}")` : `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
-				.call(drag(simulation))
-				.attr('class', 'svg_elem');
+	node = svg.append("g")
+		.selectAll("g")
+		.data(nodes)
+		.merge(node)
+		.join("g")
+		.attr("onclick", d => d.nodeType==NODE_TYPES.FRIEND||d.nodeType==NODE_TYPES.PROFILE||d.nodeType==NODE_TYPES.USER ? `OnfriendClickFunc("${d.id}", "${d.nodeType}")` : `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
+		.call(drag(simulation))
+		.attr('class', 'svg_elem');
 	
 	
 	
