@@ -1692,8 +1692,8 @@ function initializeDisplay() {
 		
 	node = svg.enter().append("g")
 		.selectAll("g")
-		.merge(node)
 		.data(nodes)
+		.merge(svg)
 		.join("g")
 		.attr("onclick", d => d.nodeType==NODE_TYPES.FRIEND||d.nodeType==NODE_TYPES.PROFILE||d.nodeType==NODE_TYPES.USER ? `OnfriendClickFunc("${d.id}", "${d.nodeType}")` : `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
 		.call(drag(simulation))
