@@ -2429,7 +2429,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 		
 		
 		
-		
+		let new_dyn_id;
 		
 		data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
@@ -2448,6 +2448,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
+			new_dyn_id = d.uuid
 			}else{
 				nodes.push ({
 				id: d.uuid,
@@ -2456,6 +2457,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
 				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
 			});
+			new_dyn_id = d.uuid;
 			}			
 		}
 		});
@@ -2463,6 +2465,41 @@ function add_context_new_parents(us_id_from, type_of_user){
 		
 		
 		
+	// родственные линки 
+	data.connections.forEach(function(d){
+		if((links_parent.some(user => user.source.id == new_dyn_id)) || (links_parent.some(user => user.target.id == new_dyn_id))){
+		if (d.is_father == true){
+			var reverse_is_parent = d.is_father;
+			data.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_father == true){
+					reverse_is_parent = dd.is_father;				
+				}
+			});
+			links_parent.push({
+				source: d.source,
+				target: d.target,
+				is_father: d.is_father,
+				reverse_is_parent: reverse_is_parent
+			});
+//			console.log(links_parent);
+		}
+		if (d.is_mother == true){
+			var reverse_is_parent = d.is_mother;
+			data.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_mother == true){
+					reverse_is_parent = dd.is_mother;				
+				}
+			});
+			links_parent.push({
+				source: d.source,
+				target: d.target,
+				is_mother: d.is_mother,
+				reverse_is_parent: reverse_is_parent
+			});
+//			console.log(links_parent);
+		}
+	}
+	});
 			
 			
 		
