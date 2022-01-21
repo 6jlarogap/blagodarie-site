@@ -1693,7 +1693,7 @@ function initializeDisplay() {
 	node = svg.append("g");
 	
 	
-	node.selectAll("g")
+	svg.selectAll("g")
 		.data(nodes)
 		.join("g")
 		.attr("onclick", d => d.nodeType==NODE_TYPES.FRIEND||d.nodeType==NODE_TYPES.PROFILE||d.nodeType==NODE_TYPES.USER ? `OnfriendClickFunc("${d.id}", "${d.nodeType}")` : `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
