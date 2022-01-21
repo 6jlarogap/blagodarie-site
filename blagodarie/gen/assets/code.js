@@ -1656,7 +1656,7 @@ function initializeDisplay() {
 					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
 				}
 			} else {
-				return "#345334";
+				return "#000aff";
 			}
 		})
 		.attr("marker-end", d => {
@@ -1667,7 +1667,7 @@ function initializeDisplay() {
 					return "url(#arrow-gen)";
 				}
 			} else {
-				return "url(#arrow-to-other)";
+				return "url(#arrow-gen)";
 			}
 		});
 	
