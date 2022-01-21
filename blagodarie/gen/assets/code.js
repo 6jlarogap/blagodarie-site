@@ -1690,7 +1690,7 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');*/
 	
-	node = svg.append("g")
+	node = svg.append("div")
 		.selectAll("g")
 		.data(nodes)
 		.join("g")
