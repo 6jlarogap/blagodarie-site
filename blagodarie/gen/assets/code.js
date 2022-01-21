@@ -2418,6 +2418,55 @@ function add_context_new_parents(us_id_from, type_of_user){
 		}
 		}).then(data => data.json());
 		console.log(response);
+		data = response;
+		
+		
+		
+		
+		
+		
+		data.users.forEach(function(d){
+		if (!nodes.some(user => user.id == d.uuid)) {
+			
+			var str = d.photo;
+			var extArray = str.split(".");
+			var ext = extArray[extArray.length - 1];	
+			var replacement = "media"; 
+			var toReplace = "thumb"; 
+			var str1 = str.replace(replacement, toReplace);
+
+			if(d.ability === null){
+			nodes.push ({
+				id: d.uuid,
+				text: (d.first_name + " " + d.last_name + " " + " "),
+				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
+				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
+			});
+			}else{
+				nodes.push ({
+				id: d.uuid,
+				text: (d.first_name + " " + d.last_name),
+				tabil: (d.ability),
+				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
+				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
+			});
+			}			
+		}
+	});
+		
+		
+		
+		
+		
+		/*node = svg.append("g")
+		.selectAll("g")
+		.data(nodes)
+		.join("g")
+		.attr("onclick", d => d.nodeType==NODE_TYPES.FRIEND||d.nodeType==NODE_TYPES.PROFILE||d.nodeType==NODE_TYPES.USER ? `OnfriendClickFunc("${d.id}", "${d.nodeType}")` : `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
+		.call(drag(simulation))
+		.attr('class', 'svg_elem');*/
+		
+		
 		endLoad();
 	}
 	
