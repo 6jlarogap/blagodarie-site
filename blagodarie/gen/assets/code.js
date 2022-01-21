@@ -1689,10 +1689,13 @@ function initializeDisplay() {
 		.attr("onclick", d => d.nodeType==NODE_TYPES.FRIEND||d.nodeType==NODE_TYPES.PROFILE||d.nodeType==NODE_TYPES.USER ? `OnfriendClickFunc("${d.id}", "${d.nodeType}")` : `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');*/
-		
-	var node = svg.selectAll("g").data(nodes);
 	
-	node.enter().append("g").style("width", "0px")
+	var node = svg.append("g")
+	
+	
+	
+	node.enter().selectAll("g")
+				.data(nodes)
                 .merge(node)
                 .join("g")
 				.attr("onclick", d => d.nodeType==NODE_TYPES.FRIEND||d.nodeType==NODE_TYPES.PROFILE||d.nodeType==NODE_TYPES.USER ? `OnfriendClickFunc("${d.id}", "${d.nodeType}")` : `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
