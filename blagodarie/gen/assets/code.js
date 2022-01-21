@@ -2467,7 +2467,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 		
 	// родственные линки 
 	data.connections.forEach(function(d){
-		if((links_parent.some(user => user.source.id == new_dyn_id)) || (links_parent.some(user => user.target.id == new_dyn_id))){
+		if(d.source == new_dyn_id || d.target == new_dyn_id){
 		if (d.is_father == true){
 			var reverse_is_parent = d.is_father;
 			data.connections.forEach(function(dd){
