@@ -2719,9 +2719,9 @@ async function OnfriendClickFunc(uid, nodeType){
 		}
 	}
 		
-	for(let i = 0; i<user_connections.users.length; i++){
-		if(user_connections.users[i].uuid == uid){
-			context_menu_user_name.innerHTML = `${user_connections.users[i].last_name} ${user_connections.users[i].first_name} ${user_connections.users[i].middle_name}`;
+	for(let i = 0; i<data.users.length; i++){
+		if(data.users[i].uuid == uid){
+			context_menu_user_name.innerHTML = `${data.users[i].last_name} ${data.users[i].first_name} ${data.users[i].middle_name}`;
 			break;
 		}else{
 			context_menu_user_name.innerHTML = "";
