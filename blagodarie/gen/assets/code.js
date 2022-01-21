@@ -2459,7 +2459,12 @@ function add_context_new_parents(us_id_from, type_of_user){
 			}			
 		}
 			
-		svg.enter().remove();
+		svg.remove();
+			
+		svg = d3.select("body").append("svg")
+                .attr("id", "main")
+                .attr("viewBox", "0 0 " + w + " " + h )
+                .attr("preserveAspectRatio", "xMidYMid meet");
 		
 		initializeDisplay();
 		initializeSimulation();
