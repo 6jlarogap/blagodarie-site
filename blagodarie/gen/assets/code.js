@@ -106,7 +106,34 @@ var keyTypesBtns = document.getElementById("keyTypesBtns");
 
 
 
+//preloader in start load
+let loaders = document.querySelector("#loaders");
+window.onload = function(){
+	loaders.style.transition = "0.8s";
+	loaders.style.opacity = "0";
+	setTimeout(function(){
+		loaders.style.display = "none";
+	},900);
+}
 
+function startLoad(){
+	loaders.style.display = "block";
+	setTimeout(function(){
+		loaders.style.transition = "0.8s";
+		loaders.style.opacity = "1";
+	},10);
+}
+
+function endLoad(){
+	loaders.style.transition = "0.8s";
+	loaders.style.opacity = "0";
+	setTimeout(function(){
+		loaders.style.display = "none";
+	},900);
+}
+
+
+//end preload container
 
 //filter stuff
 var filterInput = document.getElementById("filterInput");
@@ -513,6 +540,13 @@ async function setProfile() {
 	if(response.users == undefined){
 		let error_response = JSON.stringify(response);
 		alert(error_response);
+		if(getCookie("user_uuid")){
+			deleteCookie("", "user_uuid");
+		}
+		if(getCookie("auth_token")){
+			deleteCookie("", "auth_token");
+		}
+		window.location.reload();
 	}
 	var str = response.users[0].photo;
 	var extArray = str.split(".");
@@ -1307,8 +1341,8 @@ if((getCookie("auth_token")=="" || getCookie("auth_token")==false || !getCookie(
 	if(width<900){
 	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(20).strength(1))
       .force("link", d3.forceLink(links_parent).id(d => d.id).distance(20).strength(1))
-      .force("charge", d3.forceManyBody().strength(-120))
-	  //.force("collide", d3.forceCollide().radius(30))
+      .force("charge", d3.forceManyBody().strength(120))
+	  .force("collide", d3.forceCollide().radius(30))
 	  .force("center", d3.forceCenter(width / 2, height / 2));
 		
 		
@@ -1622,7 +1656,7 @@ function initializeDisplay() {
 					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
 				}
 			} else {
-				return "#345334";
+				return "#000aff";
 			}
 		})
 		.attr("marker-end", d => {
@@ -1633,7 +1667,7 @@ function initializeDisplay() {
 					return "url(#arrow-gen)";
 				}
 			} else {
-				return "url(#arrow-to-other)";
+				return "url(#arrow-gen)";
 			}
 		});
 	
@@ -1648,6 +1682,14 @@ function initializeDisplay() {
 	
 	
 	
+	/*node = svg.append("g")
+		.selectAll("g")
+		.data(nodes)
+		.join("g")
+		.attr("onclick", d => d.nodeType==NODE_TYPES.FRIEND||d.nodeType==NODE_TYPES.PROFILE||d.nodeType==NODE_TYPES.USER ? `OnfriendClickFunc("${d.id}", "${d.nodeType}")` : `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
+		.call(drag(simulation))
+		.attr('class', 'svg_elem');*/
+	
 	node = svg.append("g")
 		.selectAll("g")
 		.data(nodes)
@@ -1655,8 +1697,6 @@ function initializeDisplay() {
 		.attr("onclick", d => d.nodeType==NODE_TYPES.FRIEND||d.nodeType==NODE_TYPES.PROFILE||d.nodeType==NODE_TYPES.USER ? `OnfriendClickFunc("${d.id}", "${d.nodeType}")` : `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
 		.call(drag(simulation))
 		.attr('class', 'svg_elem');
-		
-	
 	
 	
 	
@@ -2353,17 +2393,11 @@ function add_context_new_parents(us_id_from, type_of_user){
   					"data": form,
 					success: async function(response){
 						
-						/*console.log(response)
-						let str1 = response;
-						let pars1 = JSON.parse(str1);
-						let new_profile_user_uuid = pars1.uuid;
-						let last_name = pars1.last_name;
-						let fName = pars1.first_name;
-						let midName = pars1.middle_name;
-						let gender_val = pars1.gender;*/
 						
 						await close_new_user_popup();
-						window.location.reload();
+						startLoad();
+						await addDynamicUsers();
+						//window.location.reload();
 						
 					},
 					error: function(response){
@@ -2382,43 +2416,122 @@ function add_context_new_parents(us_id_from, type_of_user){
 	}
 	
 	
-	
-	
-		/*async function add_user_parents(operation_type_id, us_id_from, clean_uid){
-	
-				var settings = {
-  					"url": `${new_settapi}api/addoperation`,
-  					"method": "POST",
-  					"timeout": 0,
-  					"headers": {
-    					"Authorization": `Token ${getCookie("auth_token")}`,
-    					"Content-Type": "application/json"
-  					},
-  					"data": JSON.stringify({
-    					"user_id_from": us_id_from,
-    					"user_id_to": clean_uid,
-    					"operation_type_id": operation_type_id
-  					}),
-					success: function(response){
-						console.log(response);
-						close_reserved_user_form();
-					},
-					error: function(response){
-						console.log(response);
-						let first_resp = response.responseText;
-						let pars1 = JSON.parse(first_resp);
-						reserved_user_form_error.innerHTML = pars1.message;
-					}
-					
-					
-					};
+	async function addDynamicUsers(){
+		response = await fetch(`${apiUrl}`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+		}).then(data => data.json());
+		console.log(response);
+		data = response;
+		
+		
+		
+		
+		let new_dyn_id;
+		
+		data.users.forEach(function(d){
+		if (!nodes.some(user => user.id == d.uuid)) {
+			
+			var str = d.photo;
+			var extArray = str.split(".");
+			var ext = extArray[extArray.length - 1];	
+			var replacement = "media"; 
+			var toReplace = "thumb"; 
+			var str1 = str.replace(replacement, toReplace);
 
-					$.ajax(settings).done(function (response) {
-  					console.log(response);
-					});
+			if(d.ability === null){
+			nodes.push ({
+				id: d.uuid,
+				text: (d.first_name + " " + d.last_name + " " + " "),
+				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
+				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
+			});
+			new_dyn_id = d.uuid
+			}else{
+				nodes.push ({
+				id: d.uuid,
+				text: (d.first_name + " " + d.last_name),
+				tabil: (d.ability),
+				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
+				nodeType: (d.uuid == userIdFrom ? NODE_TYPES.USER : localStorage.getItem("filter") != null && !(d.first_name + " " + d.last_name).toLowerCase().includes(localStorage.getItem("filter").toLowerCase()) ? NODE_TYPES.FILTERED : NODE_TYPES.FRIEND)
+			});
+			new_dyn_id = d.uuid;
+			}			
+		}
+		});
+		
+		
+		
+		
+	// родственные линки 
+	data.connections.forEach(function(d){
+		if(d.source == new_dyn_id || d.target == new_dyn_id){
+		if (d.is_father == true){
+			var reverse_is_parent = d.is_father;
+			data.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_father == true){
+					reverse_is_parent = dd.is_father;				
+				}
+			});
+			links_parent.push({
+				source: d.source,
+				target: d.target,
+				is_father: d.is_father,
+				reverse_is_parent: reverse_is_parent
+			});
+//			console.log(links_parent);
+		}
+		if (d.is_mother == true){
+			var reverse_is_parent = d.is_mother;
+			data.connections.forEach(function(dd){
+				if (d.source == dd.target && d.target == dd.source && dd.is_mother == true){
+					reverse_is_parent = dd.is_mother;				
+				}
+			});
+			links_parent.push({
+				source: d.source,
+				target: d.target,
+				is_mother: d.is_mother,
+				reverse_is_parent: reverse_is_parent
+			});
+//			console.log(links_parent);
+		}
+	}
+	});
+			
 			
 		
-		}*/
+			
+			
+			
+			
+		svg.remove();
+			
+		svg = d3.select("body").append("svg")
+                .attr("id", "main")
+                .attr("viewBox", "0 0 " + w + " " + h )
+                .attr("preserveAspectRatio", "xMidYMid meet");
+		
+		initDefs();
+		initializeDisplay();
+		initializeSimulation();
+			//d3view();
+			
+			
+	
+		
+		
+		
+		
+		
+		
+		
+		endLoad();
+	}
+	
+	
 	
 	
 }
@@ -2606,9 +2719,9 @@ async function OnfriendClickFunc(uid, nodeType){
 		}
 	}
 		
-	for(let i = 0; i<user_connections.users.length; i++){
-		if(user_connections.users[i].uuid == uid){
-			context_menu_user_name.innerHTML = `${user_connections.users[i].last_name} ${user_connections.users[i].first_name} ${user_connections.users[i].middle_name}`;
+	for(let i = 0; i<data.users.length; i++){
+		if(data.users[i].uuid == uid){
+			context_menu_user_name.innerHTML = `${data.users[i].last_name} ${data.users[i].first_name} ${data.users[i].middle_name}`;
 			break;
 		}else{
 			context_menu_user_name.innerHTML = "";
