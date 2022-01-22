@@ -539,7 +539,7 @@ async function setProfile() {
 	}).then(data => data.json());
 	if(response.users == undefined){
 		let error_response = JSON.stringify(response);
-		alert(error_response);
+		//alert(error_response);
 		if(getCookie("user_uuid")){
 			deleteCookie("", "user_uuid");
 		}
