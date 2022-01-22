@@ -2693,6 +2693,36 @@ async function OnfriendClickFunc(uid, nodeType){
 	isConn ? isDataTrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==true) : null;
 	isConn ? isDataMistrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==false) : null;
 	}
+	await infoAboutUser();
+	async function infoAboutUser() {
+	let response;
+	if((userIdFrom.includes('%2C') || userIdFrom.includes(',')) && getCookie("auth_token")=="" || (userIdFrom.includes('%2C') || userIdFrom.includes(',')) && getCookie("auth_token")==false){
+		let shorterUuidstr = userIdFrom.split(',')[0];
+		response = await fetch(`${new_settapi}api/profile?uuid=${shorterUuidstr}&number=2000`, {
+		method: "GET"
+		}).then(data => data.json());
+		resp_owned_users = response;
+		console.log(`${new_settapi}api/profile?uuid=${shorterUuidstr}&number=2000`);
+	}
+	else if((!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")=="" || (!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")==false){
+		response = await fetch(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`, {
+		method: "GET"
+		}).then(data => data.json());
+	resp_owned_users = response;
+		console.log(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`);
+	}else{
+		response = await fetch(`${new_settapi}api/profile?number=2000`, {
+		method: "GET",
+		headers: {
+			"Authorization": 'Token ' + getCookie("auth_token")
+		}
+		}).then(data => data.json());
+		resp_owned_users = response;
+		console.log(`${new_settapi}api/profile?number=2000`);
+	}
+	}
+	
+	
 	//clickOnUser.style.display = "flex";
 	async function RenderSettings(){
 		//let resp_owned_users = myProfilesinfo;
