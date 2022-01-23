@@ -2417,14 +2417,16 @@ function add_context_new_parents(us_id_from, type_of_user){
 	
 	
 	async function addDynamicUsers(new_added_user, type_of_user){
-		response = await fetch(`${apiUrl}`, {
+		/*response = await fetch(`${apiUrl}`, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
 		}
 		}).then(data => data.json());
 		console.log(response);
-		data = response;
+		data = response;*/
+		
+		data.users.push(new_added_user)
 		
 		
 		console.log(new_added_user, type_of_user)
