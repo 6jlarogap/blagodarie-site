@@ -4002,7 +4002,7 @@ dialog_father_save.addEventListener('click', ()=>{
 		formdata.append("dod", add_user_profile_dd.value);
 		formdata.append("gender", value_gender? value_gender : gender_val ? gender_val : '');
 		
-	async function add_gen(){	
+	//async function add_gen(){	
 		var settings = {
   					"url": `${new_settapi}api/profile`,
   					"method": "PUT",
@@ -4014,9 +4014,34 @@ dialog_father_save.addEventListener('click', ()=>{
   					"mimeType": "multipart/form-data",
   					"contentType": false,
   					"data": formdata,
-					success: function(response){
-						console.log(response);
+					success: async function(response){
+						//console.log(response);
 						warning1.innerHTML = '';
+						OwnerSettings.removeEventListener("click", UserResponseForEdit);
+				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
+				get_position1.removeEventListener('click', ClickOnGetPosition);
+				nophoto_but.removeEventListener('click', deleteAccount);
+				profile_mother_input.removeEventListener('click', motherOpenFunc);
+				profile_father_input.removeEventListener('click', fatherOpenFunc);
+				if(document.querySelector('#mapid')){
+				document.querySelector('#mapid').remove();
+				}
+				add_user_profile_container.style.display = "none";
+				
+				
+				startLoad();
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();	
+				svg = d3.select("body").append("svg")
+    			            .attr("id", "main")
+    			            .attr("viewBox", "0 0 " + w + " " + h )
+    			            .attr("preserveAspectRatio", "xMidYMid meet");
+					initDefs();
+					await getApiUrl();
+					endLoad();	
 					},
 					error: function(response){
 						let first_resp = response.responseText;
@@ -4033,12 +4058,12 @@ dialog_father_save.addEventListener('click', ()=>{
 		
 		
 		
-	}
+	//}
 		
-		await add_gen();
+		//await add_gen();
 		
 		
-		setTimeout(async function(){
+		/*setTimeout(async function(){
 			if(warning1.innerHTML == ''){
 				//window.location.reload();
 				OwnerSettings.removeEventListener("click", UserResponseForEdit);
@@ -4069,7 +4094,7 @@ dialog_father_save.addEventListener('click', ()=>{
 					initializeSimulation();
 					endLoad();	
 			}
-		}, 3500)
+		}, 3500)*/
 	}
 	
 	
