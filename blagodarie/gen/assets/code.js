@@ -1645,7 +1645,6 @@ function initializeDisplay() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
 		.attr("stroke", d => {
-			console.log(d);
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE ||  d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_father == d.reverse_is_parent || d.is_mother == d.reverse_is_parent){
 					if(d.is_father || d.is_mother){
