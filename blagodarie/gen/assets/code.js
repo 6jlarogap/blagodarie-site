@@ -2417,16 +2417,9 @@ function add_context_new_parents(us_id_from, type_of_user){
 	
 	
 	async function addDynamicUsers(new_added_user, type_of_user, us_id_from){
-		/*response = await fetch(`${apiUrl}`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-		}).then(data => data.json());
-		console.log(response);
-		data = response;*/
-		
 		data.users.push(new_added_user);
+		resp_owned_users.push(new_added_user);
+		
 		let new_dyn_id;
 		console.log(new_added_user, type_of_user, us_id_from)
 		data.users.forEach(function(d){
@@ -2468,6 +2461,13 @@ function add_context_new_parents(us_id_from, type_of_user){
 				is_mother: true,
 				reverse_is_parent: true
 			});
+			data.connections.push({
+				source: us_id_from,
+				target: new_added_user.uuid,
+				is_mother: true,
+				is_father: false,
+				is_trust: null
+			});
 			break;
 		case "father":
 			links_parent.push({
@@ -2475,6 +2475,13 @@ function add_context_new_parents(us_id_from, type_of_user){
 				target: new_added_user.uuid,
 				is_father: true,
 				reverse_is_parent: true
+			});
+			data.connections.push({
+				source: us_id_from,
+				target: new_added_user.uuid,
+				is_mother: false,
+				is_father: true,
+				is_trust: null
 			});
 			break;
 		case "child":
@@ -2485,6 +2492,13 @@ function add_context_new_parents(us_id_from, type_of_user){
 					is_father: true,
 					reverse_is_parent: true
 				});
+				data.connections.push({
+					source: new_added_user.uuid,
+					target: us_id_from,
+					is_mother: false,
+					is_father: true,
+					is_trust: null
+				});
 			}else{
 				links_parent.push({
 					source: new_added_user.uuid,
@@ -2492,53 +2506,17 @@ function add_context_new_parents(us_id_from, type_of_user){
 					is_mother: true,
 					reverse_is_parent: true
 				});
+				data.connections.push({
+					source: new_added_user.uuid,
+					target: us_id_from,
+					is_mother: true,
+					is_father: false,
+					is_trust: null
+				});
 			}
 			break;
 	}
 		
-		
-	// родственные линки 
-	/*data.connections.forEach(function(d){
-		if(d.source == new_dyn_id || d.target == new_dyn_id){
-		if (d.is_father == true){
-			var reverse_is_parent = d.is_father;
-			data.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_father == true){
-					reverse_is_parent = dd.is_father;				
-				}
-			});
-			links_parent.push({
-				source: d.source,
-				target: d.target,
-				is_father: d.is_father,
-				reverse_is_parent: reverse_is_parent
-			});
-//			console.log(links_parent);
-		}
-		if (d.is_mother == true){
-			var reverse_is_parent = d.is_mother;
-			data.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_mother == true){
-					reverse_is_parent = dd.is_mother;				
-				}
-			});
-			links_parent.push({
-				source: d.source,
-				target: d.target,
-				is_mother: d.is_mother,
-				reverse_is_parent: reverse_is_parent
-			});
-//			console.log(links_parent);
-		}
-	}
-	});*/
-			
-			
-		
-			
-			
-			
-			
 		svg.remove();
 			
 		svg = d3.select("body").append("svg")
@@ -2549,17 +2527,6 @@ function add_context_new_parents(us_id_from, type_of_user){
 		initDefs();
 		initializeDisplay();
 		initializeSimulation();
-			//d3view();
-			
-			
-	
-		
-		
-		
-		
-		
-		
-		
 		endLoad();
 	}
 	
@@ -2724,37 +2691,6 @@ async function OnfriendClickFunc(uid, nodeType){
 	isConn ? isDataTrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==true) : null;
 	isConn ? isDataMistrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==false) : null;
 	}
-	/*await infoAboutUser();
-	async function infoAboutUser() {
-	let response;
-	if((userIdFrom.includes('%2C') || userIdFrom.includes(',')) && getCookie("auth_token")=="" || (userIdFrom.includes('%2C') || userIdFrom.includes(',')) && getCookie("auth_token")==false){
-		let shorterUuidstr = userIdFrom.split(',')[0];
-		response = await fetch(`${new_settapi}api/profile?uuid=${shorterUuidstr}&number=2000`, {
-		method: "GET"
-		}).then(data => data.json());
-		resp_owned_users = response;
-		console.log(`${new_settapi}api/profile?uuid=${shorterUuidstr}&number=2000`);
-	}
-	else if((!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")=="" || (!userIdFrom.includes('%2C') || !userIdFrom.includes(',')) && getCookie("auth_token")==false){
-		response = await fetch(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`, {
-		method: "GET"
-		}).then(data => data.json());
-	resp_owned_users = response;
-		console.log(`${new_settapi}api/profile?uuid=${userIdFrom}&number=2000`);
-	}else{
-		response = await fetch(`${new_settapi}api/profile?number=2000`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-		}).then(data => data.json());
-		resp_owned_users = response;
-		console.log(`${new_settapi}api/profile?number=2000`);
-	}
-	}*/
-	
-	
-	//clickOnUser.style.display = "flex";
 	async function RenderSettings(){
 		//let resp_owned_users = myProfilesinfo;
 	console.log(resp_owned_users);
@@ -2772,11 +2708,11 @@ async function OnfriendClickFunc(uid, nodeType){
 	add_mother.style.display = 'block';
 	add_child.style.display = 'block';
 	
-	for(let i=0; i<user_connections.connections.length; i++){
-		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == true){
+	for(let i=0; i<data.connections.length; i++){
+		if(data.connections[i].source==uid && data.connections[i].is_father == true){
 			add_father.style.display = 'none';
 		}
-		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == true){
+		if(data.connections[i].source==uid && data.connections[i].is_mother == true){
 			add_mother.style.display = 'none';
 		}
 	}
