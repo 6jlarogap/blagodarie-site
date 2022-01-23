@@ -809,7 +809,6 @@ recur_select.onchange = async function(){
 	 url.searchParams.set('d', this.value);
 	await startLoad();
 	await getApiUrl();
-	await d3view();
 	svg.remove();
 			
 		svg = d3.select("body").append("svg")
