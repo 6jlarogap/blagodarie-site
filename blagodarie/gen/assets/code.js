@@ -3672,9 +3672,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   					"contentType": false,
   					"data": form1,
 					success: function(){
-						setTimeout(function(){
+						/*setTimeout(function(){
 							window.location.reload();
-						},1000)
+						},1000)*/
 					},
 					error: function(){
 						console.log('ошибка');
@@ -3720,10 +3720,28 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			},1000)*/
 			if(id==getCookie("user_uuid")){
 				deleteCookie("", "auth_token");
-				window.location.href = window.location.origin + "/?q=25&f=0"
+				//window.location.href = window.location.origin + "/?q=25&f=0"
+				CloseUserPopup();
 			}else{
 				CloseUserPopup();
 			}
+			
+			startLoad();
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				await getApiUrl();
+				svg.remove();	
+				svg = d3.select("body").append("svg")
+    			            .attr("id", "main")
+    			            .attr("viewBox", "0 0 " + w + " " + h )
+    			            .attr("preserveAspectRatio", "xMidYMid meet");
+				initDefs();
+					initializeDisplay();
+					initializeSimulation();
+					endLoad();	
+			
 		},
 			error: function(response){
 				let first_resp = response.responseText;
@@ -4034,6 +4052,23 @@ dialog_father_save.addEventListener('click', ()=>{
 				alert("Данные сохранены");
 				document.querySelector('#mapid').remove();
 				add_user_profile_container.style.display = "none";
+				
+				
+				await startLoad();
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				await getApiUrl();
+				svg.remove();	
+				svg = d3.select("body").append("svg")
+    			            .attr("id", "main")
+    			            .attr("viewBox", "0 0 " + w + " " + h )
+    			            .attr("preserveAspectRatio", "xMidYMid meet");
+				initDefs();
+					initializeDisplay();
+					initializeSimulation();
+					endLoad();	
 			}
 		}, 3500)
 	}
