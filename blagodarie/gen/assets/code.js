@@ -2463,16 +2463,16 @@ function add_context_new_parents(us_id_from, type_of_user){
 	switch(type_of_user){
 		case "mother":
 			links_parent.push({
-				source: new_added_user.uuid,
-				target: us_id_from,
+				source: us_id_from,
+				target: new_added_user.uuid,
 				is_mother: true,
 				reverse_is_parent: true
 			});
 			break;
 		case "father":
 			links_parent.push({
-				source: new_added_user.uuid,
-				target: us_id_from,
+				source: us_id_from,
+				target: new_added_user.uuid,
 				is_father: true,
 				reverse_is_parent: true
 			});
@@ -2480,15 +2480,15 @@ function add_context_new_parents(us_id_from, type_of_user){
 		case "child":
 			if(new_added_user.gender == "m"){
 				links_parent.push({
-					source: us_id_from,
-					target: new_added_user.uuid,
+					source: new_added_user.uuid,
+					target: us_id_from,
 					is_father: true,
 					reverse_is_parent: true
 				});
 			}else{
 				links_parent.push({
-					source: us_id_from,
-					target: new_added_user.uuid,
+					source: new_added_user.uuid,
+					target: us_id_from,
 					is_mother: true,
 					reverse_is_parent: true
 				});
