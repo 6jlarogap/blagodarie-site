@@ -2781,12 +2781,12 @@ async function OnfriendClickFunc(uid, nodeType){
 		endLoad();*/
 		
 		url.searchParams.set('id', uid);
-	await startLoad();
+	startLoad();
 	data = [];
 	nodes = [];
 	links = [];
 	links_parent = [];
-	await getApiUrl();
+	getApiUrl();
 	svg.remove();
 			
 		svg = d3.select("body").append("svg")
