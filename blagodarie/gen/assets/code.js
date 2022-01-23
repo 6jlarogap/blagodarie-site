@@ -2394,7 +2394,7 @@ function add_context_new_parents(us_id_from, type_of_user){
   					"data": form,
 					success: async function(response){
 						
-						console.log(response)
+						console.log(JSON.parse(response))
 						await close_new_user_popup();
 						startLoad();
 						await addDynamicUsers();
@@ -2693,7 +2693,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	isConn ? isDataTrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==true) : null;
 	isConn ? isDataMistrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==false) : null;
 	}
-	await infoAboutUser();
+	/*await infoAboutUser();
 	async function infoAboutUser() {
 	let response;
 	if((userIdFrom.includes('%2C') || userIdFrom.includes(',')) && getCookie("auth_token")=="" || (userIdFrom.includes('%2C') || userIdFrom.includes(',')) && getCookie("auth_token")==false){
@@ -2720,7 +2720,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		resp_owned_users = response;
 		console.log(`${new_settapi}api/profile?number=2000`);
 	}
-	}
+	}*/
 	
 	
 	//clickOnUser.style.display = "flex";
