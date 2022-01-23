@@ -2758,10 +2758,30 @@ async function OnfriendClickFunc(uid, nodeType){
 	add_child.addEventListener('click', closer);
 		
 		
-	href_onUser.addEventListener("click", ()=>{
-		window.location.href = `${settings.url}gen?id=` + uid;
-	});
+	href_onUser.addEventListener("click", link_to_user);
+	href_onUser.addEventListener("click", closer);
 	
+	async function link_to_user(){
+	 	url.searchParams.set('id', uid);
+		history.pushState(null, null, url.href);
+		await startLoad();
+		data = [];
+		nodes = [];
+		links = [];
+		links_parent = [];
+		await getApiUrl();
+		svg.remove();
+		svg = d3.select("body").append("svg")
+    	        .attr("id", "main")
+    	        .attr("viewBox", "0 0 " + w + " " + h )
+    	        .attr("preserveAspectRatio", "xMidYMid meet");
+		initDefs();
+		initializeDisplay();
+		initializeSimulation();
+		endLoad();
+	}
+		
+		
 	/*function UserResponseForEdit(user){
 		for(let i=0; i<resp_owned_users.length; i++){
 			if(uid == resp_owned_users[i].uuid){
@@ -2932,6 +2952,8 @@ async function OnfriendClickFunc(uid, nodeType){
 		add_mother.removeEventListener('click', add_context_mother);
 		add_father.removeEventListener('click', add_context_father);
 		add_child.removeEventListener('click', add_context_child);
+		href_onUser.addEventListener("click", link_to_user);
+		href_onUser.addEventListener("click", closer);
 		add_child.removeEventListener('click', closer);
 		add_mother.removeEventListener('click', closer);
 		add_father.removeEventListener('click', closer);
@@ -2946,6 +2968,8 @@ async function OnfriendClickFunc(uid, nodeType){
 			add_mother.removeEventListener('click', add_context_mother);
 			add_father.removeEventListener('click', add_context_father);
 			add_child.removeEventListener('click', add_context_child);
+			href_onUser.addEventListener("click", link_to_user);
+			href_onUser.addEventListener("click", closer);
 			add_child.removeEventListener('click', closer);
 			add_mother.removeEventListener('click', closer);
 			add_father.removeEventListener('click', closer);
