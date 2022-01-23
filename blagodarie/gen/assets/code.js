@@ -3713,7 +3713,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   		"mimeType": "multipart/form-data",
   		"contentType": false,
   		"data": form12,
-		success: await function(){
+		success: async function(){
 			warning1.innerHTML = '';
 			
 			if(id==getCookie("user_uuid")){
