@@ -858,7 +858,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 });
 var apiUrl;
 async function getApiUrl(){
-	url = new URL(window.location.href);
+	//url = new URL(window.location.href);
 	if((getCookie("auth_token")=="" || getCookie("auth_token")==false) && !window.location.href.includes("id")){
 				window.location.href = window.location.origin;
 	}else if((getCookie("auth_token")=="" || getCookie("auth_token")==false) && window.location.href.includes("id")){
