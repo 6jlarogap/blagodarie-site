@@ -3097,7 +3097,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			let newstrFrom = userIdFrom.split(',')[0];
 			if(getCookie('user_uuid') && (getCookie('user_uuid')==newstrFrom)){
 				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
-				let new_uid = ${getCookie('user_uuid') + ',' + uid}
+				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
 				url.searchParams.set('id', new_uid);
 				url.searchParams.append("sl", "true")
 				startLoad();
@@ -3112,13 +3112,14 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
 				await getApiUrl();
 				endLoad();
 			
 			}else if(newstrFrom==uid){
 				if(getCookie('user_uuid')){
 					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
-					let new_uid = ${getCookie('user_uuid') + ',' + uid}
+					let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
 				url.searchParams.set('id', new_uid);
 				url.searchParams.append("sl", "true")
 				startLoad();
@@ -3133,6 +3134,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
 				await getApiUrl();
 				endLoad();
 					
@@ -3155,6 +3157,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
 				await getApiUrl();
 				endLoad();
 					
@@ -3162,7 +3165,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			}else{
 				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${newstrFrom + ',' + uid}&sl=true`;
 				
-				let new_uid = ${getCookie('user_uuid') + ',' + uid}
+				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
 				url.searchParams.set('id', new_uid);
 				url.searchParams.append("sl", "true")
 				startLoad();
@@ -3177,6 +3180,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
 				await getApiUrl();
 				endLoad();
 			}
@@ -3184,7 +3188,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			if(getCookie('user_uuid') && (getCookie('user_uuid')==userIdFrom)){
 				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
 				
-				let new_uid = ${getCookie('user_uuid') + ',' + uid}
+				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
 				url.searchParams.set('id', new_uid);
 				url.searchParams.append("sl", "true")
 				startLoad();
@@ -3199,13 +3203,14 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
 				await getApiUrl();
 				endLoad();
 			}else if(userIdFrom==uid){
 				if(getCookie('user_uuid')){
 					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
 					
-					let new_uid = ${getCookie('user_uuid') + ',' + uid}
+					let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
 				url.searchParams.set('id', new_uid);
 				url.searchParams.append("sl", "true")
 				startLoad();
@@ -3220,6 +3225,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
 				await getApiUrl();
 				endLoad();
 				}else{
@@ -3242,13 +3248,14 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
 				await getApiUrl();
 				endLoad();
 				}
 			}else{
 				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${userIdFrom + ',' + uid}&sl=true`;
 				
-				let new_uid = ${userIdFrom + ',' + uid}
+				let new_uid = `${userIdFrom + ',' + uid}`;
 				url.searchParams.set('id', new_uid);
 				url.searchParams.append("sl", "true")
 				startLoad();
@@ -3263,6 +3270,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
 				await getApiUrl();
 				endLoad();
 			}
