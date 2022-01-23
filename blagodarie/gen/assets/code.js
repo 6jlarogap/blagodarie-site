@@ -2786,7 +2786,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	nodes = [];
 	links = [];
 	links_parent = [];
-	getApiUrl();
+	
 	svg.remove();
 			
 		svg = d3.select("body").append("svg")
@@ -2794,10 +2794,11 @@ async function OnfriendClickFunc(uid, nodeType){
                 .attr("viewBox", "0 0 " + w + " " + h )
                 .attr("preserveAspectRatio", "xMidYMid meet");
 	history.pushState(null, null, url.href);
-	initDefs();
+	/*initDefs();
 		initializeDisplay();
 		initializeSimulation();
-		endLoad();
+		endLoad();*/
+	getApiUrl();
 	}
 		
 		
