@@ -3715,12 +3715,9 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   		"data": form12,
 		success: await function(){
 			warning1.innerHTML = '';
-			/*setTimeout(function(){
-				window.location.reload();
-			},1000)*/
+			
 			if(id==getCookie("user_uuid")){
 				deleteCookie("", "auth_token");
-				//window.location.href = window.location.origin + "/?q=25&f=0"
 				CloseUserPopup();
 			}else{
 				CloseUserPopup();
