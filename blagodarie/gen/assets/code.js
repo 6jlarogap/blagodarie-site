@@ -2762,7 +2762,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	href_onUser.addEventListener("click", closer);
 	
 	async function link_to_user(){
-	 	url.searchParams.set('id', uid);
+	 	/*url.searchParams.set('id', uid);
 		history.pushState(null, null, url.href);
 		startLoad();
 		data = [];
@@ -2776,6 +2776,25 @@ async function OnfriendClickFunc(uid, nodeType){
     	        .attr("preserveAspectRatio", "xMidYMid meet");
 		getApiUrl();
 		initDefs();
+		initializeDisplay();
+		initializeSimulation();
+		endLoad();*/
+		
+		url.searchParams.set('id', uid);
+	await startLoad();
+	data = [];
+	nodes = [];
+	links = [];
+	links_parent = [];
+	await getApiUrl();
+	svg.remove();
+			
+		svg = d3.select("body").append("svg")
+                .attr("id", "main")
+                .attr("viewBox", "0 0 " + w + " " + h )
+                .attr("preserveAspectRatio", "xMidYMid meet");
+	history.pushState(null, null, url.href);
+	initDefs();
 		initializeDisplay();
 		initializeSimulation();
 		endLoad();
