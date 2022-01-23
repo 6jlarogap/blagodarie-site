@@ -3085,205 +3085,6 @@ async function OnfriendClickFunc(uid, nodeType){
 		}	
 	UserTrust.addEventListener("click", UserTrustClick);
 	UserMistrust.addEventListener("click", UserMistrustClick);
-	
-		
-	
-		
-	
-		
-		async function ShowShortRoad(){
-		
-		if(userIdFrom.includes(',') || userIdFrom.includes('%2C')){
-			let newstrFrom = userIdFrom.split(',')[0];
-			if(getCookie('user_uuid') && (getCookie('user_uuid')==newstrFrom)){
-				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
-				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
-				url.searchParams.set('id', new_uid);
-				url.searchParams.append("sl", "true")
-				startLoad();
-				userIdFrom = url.searchParams.get('id');
-				data = [];
-				nodes = [];
-				links = [];
-				links_parent = [];
-				svg.remove();
-				svg = d3.select("body").append("svg")
-                	.attr("id", "main")
-                	.attr("viewBox", "0 0 " + w + " " + h )
-                	.attr("preserveAspectRatio", "xMidYMid meet");
-				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
-				await getApiUrl();
-				endLoad();
-			
-			}else if(newstrFrom==uid){
-				if(getCookie('user_uuid')){
-					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
-					let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
-				url.searchParams.set('id', new_uid);
-				url.searchParams.append("sl", "true")
-				startLoad();
-				userIdFrom = url.searchParams.get('id');
-				data = [];
-				nodes = [];
-				links = [];
-				links_parent = [];
-				svg.remove();
-				svg = d3.select("body").append("svg")
-                	.attr("id", "main")
-                	.attr("viewBox", "0 0 " + w + " " + h )
-                	.attr("preserveAspectRatio", "xMidYMid meet");
-				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
-				await getApiUrl();
-				endLoad();
-					
-				}else{
-					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${uid}`;
-					if(url.searchParams.has("sl")){
-						url.searchParams.delete("sl");
-					}
-					
-				url.searchParams.set('id', uid);
-				startLoad();
-				userIdFrom = url.searchParams.get('id');
-				data = [];
-				nodes = [];
-				links = [];
-				links_parent = [];
-				svg.remove();
-				svg = d3.select("body").append("svg")
-                	.attr("id", "main")
-                	.attr("viewBox", "0 0 " + w + " " + h )
-                	.attr("preserveAspectRatio", "xMidYMid meet");
-				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
-				await getApiUrl();
-				endLoad();
-					
-				}
-			}else{
-				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${newstrFrom + ',' + uid}&sl=true`;
-				
-				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
-				url.searchParams.set('id', new_uid);
-				url.searchParams.append("sl", "true")
-				startLoad();
-				userIdFrom = url.searchParams.get('id');
-				data = [];
-				nodes = [];
-				links = [];
-				links_parent = [];
-				svg.remove();
-				svg = d3.select("body").append("svg")
-                	.attr("id", "main")
-                	.attr("viewBox", "0 0 " + w + " " + h )
-                	.attr("preserveAspectRatio", "xMidYMid meet");
-				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
-				await getApiUrl();
-				endLoad();
-			}
-		}else{
-			if(getCookie('user_uuid') && (getCookie('user_uuid')==userIdFrom)){
-				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
-				
-				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
-				url.searchParams.set('id', new_uid);
-				url.searchParams.append("sl", "true")
-				startLoad();
-				userIdFrom = url.searchParams.get('id');
-				data = [];
-				nodes = [];
-				links = [];
-				links_parent = [];
-				svg.remove();
-				svg = d3.select("body").append("svg")
-                	.attr("id", "main")
-                	.attr("viewBox", "0 0 " + w + " " + h )
-                	.attr("preserveAspectRatio", "xMidYMid meet");
-				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
-				await getApiUrl();
-				endLoad();
-			}else if(userIdFrom==uid){
-				if(getCookie('user_uuid')){
-					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
-					
-					let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
-				url.searchParams.set('id', new_uid);
-				url.searchParams.append("sl", "true")
-				startLoad();
-				userIdFrom = url.searchParams.get('id');
-				data = [];
-				nodes = [];
-				links = [];
-				links_parent = [];
-				svg.remove();
-				svg = d3.select("body").append("svg")
-                	.attr("id", "main")
-                	.attr("viewBox", "0 0 " + w + " " + h )
-                	.attr("preserveAspectRatio", "xMidYMid meet");
-				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
-				await getApiUrl();
-				endLoad();
-				}else{
-					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${uid}`;
-					
-					if(url.searchParams.has("sl")){
-						url.searchParams.delete("sl");
-					}
-					
-				url.searchParams.set('id', uid);
-				startLoad();
-				userIdFrom = url.searchParams.get('id');
-				data = [];
-				nodes = [];
-				links = [];
-				links_parent = [];
-				svg.remove();
-				svg = d3.select("body").append("svg")
-                	.attr("id", "main")
-                	.attr("viewBox", "0 0 " + w + " " + h )
-                	.attr("preserveAspectRatio", "xMidYMid meet");
-				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
-				await getApiUrl();
-				endLoad();
-				}
-			}else{
-				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${userIdFrom + ',' + uid}&sl=true`;
-				
-				let new_uid = `${userIdFrom + ',' + uid}`;
-				url.searchParams.set('id', new_uid);
-				url.searchParams.append("sl", "true")
-				startLoad();
-				userIdFrom = url.searchParams.get('id');
-				data = [];
-				nodes = [];
-				links = [];
-				links_parent = [];
-				svg.remove();
-				svg = d3.select("body").append("svg")
-                	.attr("id", "main")
-                	.attr("viewBox", "0 0 " + w + " " + h )
-                	.attr("preserveAspectRatio", "xMidYMid meet");
-				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
-				await getApiUrl();
-				endLoad();
-			}
-		}
-		}
 		
 		ShortRoad.addEventListener('click', ShowShortRoad);
 		ShortRoad.addEventListener('click', closer);
@@ -3294,6 +3095,234 @@ async function OnfriendClickFunc(uid, nodeType){
 	UserMistrust.style.display = "none";
 	ShortRoad.style.display = "none";
 }
+		
+		
+		async function ShowShortRoad(){
+		
+		if(userIdFrom.includes(',') || userIdFrom.includes('%2C')){
+			let newstrFrom = userIdFrom.split(',')[0];
+			if(getCookie('user_uuid') && (getCookie('user_uuid')==newstrFrom)){
+				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
+				if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
+				ShortRoad.removeEventListener('click', closer);
+				initDefs();
+				await getApiUrl();
+				endLoad();
+			
+			}else if(newstrFrom==uid){
+				if(getCookie('user_uuid')){
+					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+					let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
+					if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
+				ShortRoad.removeEventListener('click', closer);
+				initDefs();
+				await getApiUrl();
+				endLoad();
+					
+				}else{
+					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${uid}`;
+					if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+					
+				url.searchParams.set('id', uid);
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
+				ShortRoad.removeEventListener('click', closer);
+				initDefs();
+				await getApiUrl();
+				endLoad();
+					
+				}
+			}else{
+				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${newstrFrom + ',' + uid}&sl=true`;
+				
+				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
+				if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
+				ShortRoad.removeEventListener('click', closer);
+				await getApiUrl();
+				initDefs();
+				endLoad();
+			}
+		}else{
+			if(getCookie('user_uuid') && (getCookie('user_uuid')==userIdFrom)){
+				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+				
+				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
+				if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
+				ShortRoad.removeEventListener('click', closer);
+				await getApiUrl();
+				initDefs();
+				endLoad();
+			}else if(userIdFrom==uid){
+				if(getCookie('user_uuid')){
+					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+					
+					let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
+					if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
+				ShortRoad.removeEventListener('click', closer);
+				await getApiUrl();
+				initDefs();
+				endLoad();
+				}else{
+					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${uid}`;
+					
+					if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+					
+				url.searchParams.set('id', uid);
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
+				ShortRoad.removeEventListener('click', closer);
+				await getApiUrl();
+				initDefs();
+				endLoad();
+				}
+			}else{
+				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${userIdFrom + ',' + uid}&sl=true`;
+				
+				let new_uid = `${userIdFrom + ',' + uid}`;
+				if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				ShortRoad.removeEventListener('click', ShowShortRoad);
+				ShortRoad.removeEventListener('click', closer);
+				await getApiUrl();
+				initDefs();
+				endLoad();
+			}
+		}
+		}
+		
+		
+		
+		
+		
+		
+		
 
 	context_menu_close.addEventListener("click", function(){
 		copyUserLink.removeEventListener('click', UserLink);
