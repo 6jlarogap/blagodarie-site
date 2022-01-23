@@ -3089,8 +3089,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		
 	
 		
-	ShortRoad.addEventListener('click', ShowShortRoad)
-	ShortRoad.addEventListener('click', closer)
+	
 		
 		async function ShowShortRoad(){
 		
@@ -3285,6 +3284,9 @@ async function OnfriendClickFunc(uid, nodeType){
 			}
 		}
 		}
+		
+		ShortRoad.addEventListener('click', ShowShortRoad);
+		ShortRoad.addEventListener('click', closer);
 	
 		
 }else{
@@ -3307,6 +3309,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		add_mother.removeEventListener('click', closer);
 		add_father.removeEventListener('click', closer);
 		ShortRoad.removeEventListener('click', ShowShortRoad);
+		ShortRoad.removeEventListener('click', closer);
 		clickOnUser.style.display = "none";
 	});
 		
