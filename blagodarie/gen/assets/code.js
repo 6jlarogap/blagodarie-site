@@ -804,6 +804,7 @@ if(!url.searchParams.has('d')){
 
 let recur_select = document.querySelector('.recur_select');
 let recur_select_value = document.querySelector('.recur_select_value');
+recur_select_value.innerHTML = url.searchParams.get('d');
 recur_select.onchange = async function(){
 	 url.searchParams.set('d', this.value);
 	recur_select_value.innerHTML = url.searchParams.get('d');
@@ -3867,7 +3868,7 @@ async function updateTrust(operationId, referal = null) {
 		},
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "operation_type_id": operationId})
 	}).then(data => data.json())
-	console.log('add');
+	console.log(response);
 }
 
 async function getReferalToken() {
