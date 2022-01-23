@@ -807,7 +807,12 @@ let recur_select_value = document.querySelector('.recur_select_value');
 recur_select_value.innerHTML = url.searchParams.get('d');
 recur_select.onchange = function(){
 	 url.searchParams.set('d', this.value);
+	startLoad();
 	history.pushState(null, null, url.href);
+	initDefs();
+		initializeDisplay();
+		initializeSimulation();
+		endLoad();
 	//window.location.href = url.href;
 }
 
