@@ -805,9 +805,11 @@ if(!url.searchParams.has('d')){
 let recur_select = document.querySelector('.recur_select');
 let recur_select_value = document.querySelector('.recur_select_value');
 recur_select_value.innerHTML = url.searchParams.get('d');
-recur_select.onchange = function(){
+recur_select.onchange = async function(){
 	 url.searchParams.set('d', this.value);
-	startLoad();
+	await startLoad();
+	await getApiUrl();
+	await d3view();
 	svg.remove();
 			
 		svg = d3.select("body").append("svg")
