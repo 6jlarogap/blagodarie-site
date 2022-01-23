@@ -2764,6 +2764,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	async function link_to_user(){
 		url.searchParams.set('id', uid);
 	startLoad();
+	userIdFrom = url.searchParams.get('id');
 	data = [];
 	nodes = [];
 	links = [];
