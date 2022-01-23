@@ -4040,6 +4040,7 @@ dialog_father_save.addEventListener('click', ()=>{
     			            .attr("viewBox", "0 0 " + w + " " + h )
     			            .attr("preserveAspectRatio", "xMidYMid meet");
 					initDefs();
+					history.pushState(null, null, url.href);
 					await getApiUrl();
 					endLoad();	
 					},
