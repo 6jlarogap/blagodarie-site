@@ -4050,7 +4050,7 @@ dialog_father_save.addEventListener('click', ()=>{
 				add_user_profile_container.style.display = "none";
 				
 				
-				await startLoad();
+				startLoad();
 				data = [];
 				nodes = [];
 				links = [];
