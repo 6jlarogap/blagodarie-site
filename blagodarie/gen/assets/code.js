@@ -2894,6 +2894,21 @@ async function OnfriendClickFunc(uid, nodeType){
 					alert('Благодарность установлена');
 					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
+
+					startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						await getApiUrl();
+						endLoad();
 				}
 				else {
 					await updateTrust(4, uid);
@@ -2901,6 +2916,21 @@ async function OnfriendClickFunc(uid, nodeType){
 					alert('Доверие установлено');
 					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
+					
+					startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						await getApiUrl();
+						endLoad();
 				}
 			}
 			else {
@@ -2908,6 +2938,22 @@ async function OnfriendClickFunc(uid, nodeType){
 				alert('Доверие установлено');
 				UserTrust.removeEventListener("click", UserTrustClick);
 				clickOnUser.style.display = "none";
+				
+				
+				startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						await getApiUrl();
+						endLoad();
 			}
 			//window.location.reload();
 		}
@@ -2925,6 +2971,21 @@ async function OnfriendClickFunc(uid, nodeType){
 					alert('Недоверие установлено');
 					UserMistrust.removeEventListener("click", UserMistrustClick);
 					clickOnUser.style.display = "none";
+					
+					startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						await getApiUrl();
+						endLoad();
 				}
 				else {
 					await updateTrust(4, uid);
@@ -2932,6 +2993,21 @@ async function OnfriendClickFunc(uid, nodeType){
 					alert('Недоверие установлено');
 					UserMistrust.removeEventListener("click", UserMistrustClick);
 					clickOnUser.style.display = "none";
+					
+					startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						await getApiUrl();
+						endLoad();
 				}
 			}
 			else {
@@ -2939,6 +3015,21 @@ async function OnfriendClickFunc(uid, nodeType){
 				alert('Недоверие установлено');
 				UserMistrust.removeEventListener("click", UserMistrustClick);
 				clickOnUser.style.display = "none";
+				
+				startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						await getApiUrl();
+						endLoad();
 			}
 			//window.location.reload();
 		}
