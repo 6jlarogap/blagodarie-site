@@ -2762,8 +2762,6 @@ async function OnfriendClickFunc(uid, nodeType){
 	href_onUser.addEventListener("click", closer);
 	
 	async function link_to_user(){
-	 	href_onUser.removeEventListener("click", link_to_user);
-		href_onUser.removeEventListener("click", closer);
 		url.searchParams.set('id', uid);
 	startLoad();
 	data = [];
@@ -2957,8 +2955,8 @@ async function OnfriendClickFunc(uid, nodeType){
 		add_mother.removeEventListener('click', add_context_mother);
 		add_father.removeEventListener('click', add_context_father);
 		add_child.removeEventListener('click', add_context_child);
-		href_onUser.addEventListener("click", link_to_user);
-		href_onUser.addEventListener("click", closer);
+		href_onUser.removeEventListener("click", link_to_user);
+		href_onUser.removeEventListener("click", closer);
 		add_child.removeEventListener('click', closer);
 		add_mother.removeEventListener('click', closer);
 		add_father.removeEventListener('click', closer);
@@ -2973,8 +2971,8 @@ async function OnfriendClickFunc(uid, nodeType){
 			add_mother.removeEventListener('click', add_context_mother);
 			add_father.removeEventListener('click', add_context_father);
 			add_child.removeEventListener('click', add_context_child);
-			href_onUser.addEventListener("click", link_to_user);
-			href_onUser.addEventListener("click", closer);
+			href_onUser.removeEventListener("click", link_to_user);
+			href_onUser.removeEventListener("click", closer);
 			add_child.removeEventListener('click', closer);
 			add_mother.removeEventListener('click', closer);
 			add_father.removeEventListener('click', closer);
