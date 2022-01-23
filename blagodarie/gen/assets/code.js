@@ -2891,6 +2891,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			if (isConn) {
 				if (isDataTrust) {
 					await updateTrust(5, uid);
+					UserMistrust.removeEventListener("click", UserMistrustClick);
 					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
 
@@ -2913,6 +2914,7 @@ async function OnfriendClickFunc(uid, nodeType){
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
+					UserMistrust.removeEventListener("click", UserMistrustClick);
 					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
 					
@@ -2935,6 +2937,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			}
 			else {
 				await updateTrust(5, uid);
+				UserMistrust.removeEventListener("click", UserMistrustClick);
 				UserTrust.removeEventListener("click", UserTrustClick);
 				clickOnUser.style.display = "none";
 				
@@ -2958,6 +2961,8 @@ async function OnfriendClickFunc(uid, nodeType){
 			//window.location.reload();
 		}
 		else {
+			UserMistrust.removeEventListener("click", UserMistrustClick);
+			UserTrust.removeEventListener("click", UserTrustClick);
 			deleteCookie("","set_mistrust");
 			document.cookie = `set_trust=${userIdFrom}; path=/;`;
 			authDialog.style.display = "flex";
@@ -2969,6 +2974,7 @@ async function OnfriendClickFunc(uid, nodeType){
 				if (!isDataTrust) {
 					await updateTrust(4, uid);		
 					UserMistrust.removeEventListener("click", UserMistrustClick);
+					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
 					
 					startLoad();
@@ -2992,6 +2998,7 @@ async function OnfriendClickFunc(uid, nodeType){
 					await updateTrust(4, uid);
 					await updateTrust(2, uid);
 					UserMistrust.removeEventListener("click", UserMistrustClick);
+					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
 					
 					startLoad();
@@ -3014,6 +3021,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			else {
 				await updateTrust(2, uid);
 				UserMistrust.removeEventListener("click", UserMistrustClick);
+				UserTrust.removeEventListener("click", UserTrustClick);
 				clickOnUser.style.display = "none";
 				
 				startLoad();
@@ -3035,6 +3043,8 @@ async function OnfriendClickFunc(uid, nodeType){
 			//window.location.reload();
 		}
 		else {
+			UserMistrust.removeEventListener("click", UserMistrustClick);
+			UserTrust.removeEventListener("click", UserTrustClick);
 			deleteCookie("","set_trust");
 			document.cookie = `set_mistrust=${userIdFrom}; path=/;`;
 			authDialog.style.display = "flex";
