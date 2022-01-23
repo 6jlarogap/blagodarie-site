@@ -2891,7 +2891,6 @@ async function OnfriendClickFunc(uid, nodeType){
 			if (isConn) {
 				if (isDataTrust) {
 					await updateTrust(5, uid);
-					alert('Благодарность установлена');
 					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
 
@@ -2907,13 +2906,13 @@ async function OnfriendClickFunc(uid, nodeType){
     				            .attr("id", "main")
     				            .attr("viewBox", "0 0 " + w + " " + h )
     				            .attr("preserveAspectRatio", "xMidYMid meet");
+						initDefs();
 						await getApiUrl();
 						endLoad();
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
-					alert('Доверие установлено');
 					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
 					
@@ -2929,13 +2928,13 @@ async function OnfriendClickFunc(uid, nodeType){
     				            .attr("id", "main")
     				            .attr("viewBox", "0 0 " + w + " " + h )
     				            .attr("preserveAspectRatio", "xMidYMid meet");
+						initDefs();
 						await getApiUrl();
 						endLoad();
 				}
 			}
 			else {
 				await updateTrust(5, uid);
-				alert('Доверие установлено');
 				UserTrust.removeEventListener("click", UserTrustClick);
 				clickOnUser.style.display = "none";
 				
@@ -2952,6 +2951,7 @@ async function OnfriendClickFunc(uid, nodeType){
     				            .attr("id", "main")
     				            .attr("viewBox", "0 0 " + w + " " + h )
     				            .attr("preserveAspectRatio", "xMidYMid meet");
+						initDefs();
 						await getApiUrl();
 						endLoad();
 			}
@@ -2968,7 +2968,6 @@ async function OnfriendClickFunc(uid, nodeType){
 			if (isConn) {
 				if (!isDataTrust) {
 					await updateTrust(4, uid);		
-					alert('Недоверие установлено');
 					UserMistrust.removeEventListener("click", UserMistrustClick);
 					clickOnUser.style.display = "none";
 					
@@ -2984,13 +2983,14 @@ async function OnfriendClickFunc(uid, nodeType){
     				            .attr("id", "main")
     				            .attr("viewBox", "0 0 " + w + " " + h )
     				            .attr("preserveAspectRatio", "xMidYMid meet");
+						
 						await getApiUrl();
+					initDefs();
 						endLoad();
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(2, uid);
-					alert('Недоверие установлено');
 					UserMistrust.removeEventListener("click", UserMistrustClick);
 					clickOnUser.style.display = "none";
 					
@@ -3007,12 +3007,12 @@ async function OnfriendClickFunc(uid, nodeType){
     				            .attr("viewBox", "0 0 " + w + " " + h )
     				            .attr("preserveAspectRatio", "xMidYMid meet");
 						await getApiUrl();
+						initDefs();
 						endLoad();
 				}
 			}
 			else {
 				await updateTrust(2, uid);
-				alert('Недоверие установлено');
 				UserMistrust.removeEventListener("click", UserMistrustClick);
 				clickOnUser.style.display = "none";
 				
@@ -3029,6 +3029,7 @@ async function OnfriendClickFunc(uid, nodeType){
     				            .attr("viewBox", "0 0 " + w + " " + h )
     				            .attr("preserveAspectRatio", "xMidYMid meet");
 						await getApiUrl();
+						initDefs();
 						endLoad();
 			}
 			//window.location.reload();
