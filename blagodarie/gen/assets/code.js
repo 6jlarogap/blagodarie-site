@@ -2394,10 +2394,10 @@ function add_context_new_parents(us_id_from, type_of_user){
   					"data": form,
 					success: async function(response){
 						
-						console.log(JSON.parse(response))
+						let new_added_user = JSON.parse(response)
 						await close_new_user_popup();
 						startLoad();
-						await addDynamicUsers();
+						await addDynamicUsers(new_added_user, type_of_user);
 						//window.location.reload();
 						
 					},
@@ -2417,7 +2417,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 	}
 	
 	
-	async function addDynamicUsers(){
+	async function addDynamicUsers(new_added_user, type_of_user){
 		response = await fetch(`${apiUrl}`, {
 		method: "GET",
 		headers: {
@@ -2428,7 +2428,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 		data = response;
 		
 		
-		
+		console.log(new_added_user, type_of_user)
 		
 		let new_dyn_id;
 		
