@@ -4046,7 +4046,9 @@ dialog_father_save.addEventListener('click', ()=>{
 				nophoto_but.removeEventListener('click', deleteAccount);
 				profile_mother_input.removeEventListener('click', motherOpenFunc);
 				profile_father_input.removeEventListener('click', fatherOpenFunc);
+				if(document.querySelector('#mapid')){
 				document.querySelector('#mapid').remove();
+				}
 				add_user_profile_container.style.display = "none";
 				
 				
