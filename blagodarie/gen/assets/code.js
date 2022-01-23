@@ -2797,7 +2797,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	/*initDefs();
 		initializeDisplay();
 		initializeSimulation();*/
-		getApiUrl();
+		await getApiUrl();
 		endLoad();
 	
 	}
