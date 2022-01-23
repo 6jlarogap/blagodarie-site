@@ -808,6 +808,12 @@ recur_select_value.innerHTML = url.searchParams.get('d');
 recur_select.onchange = function(){
 	 url.searchParams.set('d', this.value);
 	startLoad();
+	svg.remove();
+			
+		svg = d3.select("body").append("svg")
+                .attr("id", "main")
+                .attr("viewBox", "0 0 " + w + " " + h )
+                .attr("preserveAspectRatio", "xMidYMid meet");
 	history.pushState(null, null, url.href);
 	initDefs();
 		initializeDisplay();
