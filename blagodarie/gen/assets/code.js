@@ -3713,7 +3713,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   		"mimeType": "multipart/form-data",
   		"contentType": false,
   		"data": form12,
-		success: function(){
+		success: await function(){
 			warning1.innerHTML = '';
 			/*setTimeout(function(){
 				window.location.reload();
@@ -4040,7 +4040,7 @@ dialog_father_save.addEventListener('click', ()=>{
 		await add_gen();
 		
 		
-		setTimeout(function(){
+		setTimeout(async function(){
 			if(warning1.innerHTML == ''){
 				//window.location.reload();
 				OwnerSettings.removeEventListener("click", UserResponseForEdit);
