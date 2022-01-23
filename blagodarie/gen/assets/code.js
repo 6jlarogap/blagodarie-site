@@ -2796,9 +2796,10 @@ async function OnfriendClickFunc(uid, nodeType){
 	history.pushState(null, null, url.href);
 	/*initDefs();
 		initializeDisplay();
-		initializeSimulation();
-		endLoad();*/
-	getApiUrl();
+		initializeSimulation();*/
+		getApiUrl();
+		endLoad();
+	
 	}
 		
 		
