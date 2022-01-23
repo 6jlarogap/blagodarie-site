@@ -2644,7 +2644,6 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 		
 		
 		
-		
 	}
 	
 	
@@ -2666,8 +2665,83 @@ function add_context_reserved_parents(us_id_from, type_of_user){
     					"operation_type_id": operation_type_id
   					}),
 					success: function(response){
-						console.log(response);
-						close_reserved_user_form();
+			
+		
+					switch(type_of_user){
+						case "mother":
+							links_parent.push({
+								source: us_id_from,
+								target: clean_uid,
+								is_mother: true,
+								reverse_is_parent: true
+							});
+							data.connections.push({
+								source: us_id_from,
+								target: clean_uid,
+								is_mother: true,
+								is_father: false,
+								is_trust: null
+							});
+							break;
+						case "father":
+							links_parent.push({
+								source: us_id_from,
+								target: clean_uid,
+								is_father: true,
+								reverse_is_parent: true
+							});
+							data.connections.push({
+								source: us_id_from,
+								target: clean_uid,
+								is_mother: false,
+								is_father: true,
+								is_trust: null
+							});
+							break;
+						case "child":
+							if(new_added_user.gender == "m"){
+								links_parent.push({
+									source: clean_uid,
+									target: us_id_from,
+									is_father: true,
+									reverse_is_parent: true
+								});
+								data.connections.push({
+									source: clean_uid,
+									target: us_id_from,
+									is_mother: false,
+									is_father: true,
+									is_trust: null
+								});
+							}else{
+								links_parent.push({
+									source: clean_uid,
+									target: us_id_from,
+									is_mother: true,
+									reverse_is_parent: true
+								});
+								data.connections.push({
+									source: clean_uid,
+									target: us_id_from,
+									is_mother: true,
+									is_father: false,
+									is_trust: null
+								});
+							}
+							break;
+					}
+					close_reserved_user_form();
+					svg.remove();
+						
+					svg = d3.select("body").append("svg")
+        			        .attr("id", "main")
+        			        .attr("viewBox", "0 0 " + w + " " + h )
+        			        .attr("preserveAspectRatio", "xMidYMid meet");
+					
+					initDefs();
+					initializeDisplay();
+					initializeSimulation();
+					endLoad();
 					},
 					error: function(response){
 						console.log(response);
