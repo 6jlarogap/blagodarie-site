@@ -2396,7 +2396,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 						let new_added_user = JSON.parse(response)
 						await close_new_user_popup();
 						startLoad();
-						await addDynamicUsers(new_added_user, type_of_user);
+						await addDynamicUsers(new_added_user, type_of_user, us_id_from);
 						//window.location.reload();
 						
 					},
@@ -2416,7 +2416,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 	}
 	
 	
-	async function addDynamicUsers(new_added_user, type_of_user){
+	async function addDynamicUsers(new_added_user, type_of_user, us_id_from){
 		/*response = await fetch(`${apiUrl}`, {
 		method: "GET",
 		headers: {
@@ -2426,13 +2426,9 @@ function add_context_new_parents(us_id_from, type_of_user){
 		console.log(response);
 		data = response;*/
 		
-		data.users.push(new_added_user)
-		
-		
-		console.log(new_added_user, type_of_user)
-		
+		data.users.push(new_added_user);
 		let new_dyn_id;
-		
+		console.log(new_added_user, type_of_user, us_id_from)
 		data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
 			
@@ -2466,13 +2462,37 @@ function add_context_new_parents(us_id_from, type_of_user){
 		
 	switch(type_of_user){
 		case "mother":
-			console.log("mother")
+			links_parent.push({
+				source: new_added_user.uuid,
+				target: us_id_from,
+				is_mother: true,
+				reverse_is_parent: true
+			});
 			break;
 		case "father":
-			console.log("father")
+			links_parent.push({
+				source: new_added_user.uuid,
+				target: us_id_from,
+				is_father: true,
+				reverse_is_parent: true
+			});
 			break;
 		case "child":
-			console.log("child")
+			if(new_added_user.gender == "m"){
+				links_parent.push({
+					source: us_id_from,
+					target: new_added_user.uuid,
+					is_father: true,
+					reverse_is_parent: true
+				});
+			}else{
+				links_parent.push({
+					source: us_id_from,
+					target: new_added_user.uuid,
+					is_mother: true,
+					reverse_is_parent: true
+				});
+			}
 			break;
 	}
 		
