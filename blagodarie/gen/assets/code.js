@@ -2464,11 +2464,21 @@ function add_context_new_parents(us_id_from, type_of_user){
 		}
 		});
 		
-		
+	switch(type_of_user){
+		case "mother":
+			console.log("mother")
+			break;
+		case "father":
+			console.log("father")
+			break;
+		case "child":
+			console.log("child")
+			break;
+	}
 		
 		
 	// родственные линки 
-	data.connections.forEach(function(d){
+	/*data.connections.forEach(function(d){
 		if(d.source == new_dyn_id || d.target == new_dyn_id){
 		if (d.is_father == true){
 			var reverse_is_parent = d.is_father;
@@ -2501,7 +2511,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 //			console.log(links_parent);
 		}
 	}
-	});
+	});*/
 			
 			
 		
