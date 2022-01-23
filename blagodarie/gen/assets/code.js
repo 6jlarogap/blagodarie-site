@@ -2837,6 +2837,9 @@ async function OnfriendClickFunc(uid, nodeType){
 	href_onUser.addEventListener("click", closer);
 	
 	async function link_to_user(){
+		if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+		}
 		url.searchParams.set('id', uid);
 	startLoad();
 	userIdFrom = url.searchParams.get('id');
@@ -2855,6 +2858,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	/*initDefs();
 		initializeDisplay();
 		initializeSimulation();*/
+		initDefs();
 		await getApiUrl();
 		endLoad();
 	
@@ -3087,7 +3091,7 @@ async function OnfriendClickFunc(uid, nodeType){
 	UserMistrust.addEventListener("click", UserMistrustClick);
 		
 		ShortRoad.addEventListener('click', ShowShortRoad);
-		ShortRoad.addEventListener('click', closer);
+		//ShortRoad.addEventListener('click', closer);
 	
 		
 }else{
@@ -3121,8 +3125,9 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
+				/*ShortRoad.removeEventListener('click', ShowShortRoad);
+				ShortRoad.removeEventListener('click', closer);*/
+				closer();
 				initDefs();
 				await getApiUrl();
 				endLoad();
@@ -3148,8 +3153,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
+				closer();
 				initDefs();
 				await getApiUrl();
 				endLoad();
@@ -3173,8 +3177,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
+				closer();
 				initDefs();
 				await getApiUrl();
 				endLoad();
@@ -3201,8 +3204,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
+				closer();
 				await getApiUrl();
 				initDefs();
 				endLoad();
@@ -3229,8 +3231,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
+				closer();
 				await getApiUrl();
 				initDefs();
 				endLoad();
@@ -3256,8 +3257,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
+				closer();
 				await getApiUrl();
 				initDefs();
 				endLoad();
@@ -3281,8 +3281,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
+				closer();
 				await getApiUrl();
 				initDefs();
 				endLoad();
@@ -3308,8 +3307,7 @@ async function OnfriendClickFunc(uid, nodeType){
                 	.attr("viewBox", "0 0 " + w + " " + h )
                 	.attr("preserveAspectRatio", "xMidYMid meet");
 				history.pushState(null, null, url.href);
-				ShortRoad.removeEventListener('click', ShowShortRoad);
-				ShortRoad.removeEventListener('click', closer);
+				closer();
 				await getApiUrl();
 				initDefs();
 				endLoad();
