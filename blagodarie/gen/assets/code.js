@@ -807,7 +807,8 @@ let recur_select_value = document.querySelector('.recur_select_value');
 recur_select_value.innerHTML = url.searchParams.get('d');
 recur_select.onchange = function(){
 	 url.searchParams.set('d', this.value);
-	window.location.href = url.href;
+	history.pushState(null, null, url.href);
+	//window.location.href = url.href;
 }
 
 document.querySelector(".mapid_clean").addEventListener("click", function(){
