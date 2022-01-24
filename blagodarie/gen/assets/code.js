@@ -3729,12 +3729,42 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 			
 			if(id==getCookie("user_uuid")){
 				deleteCookie("", "auth_token");
-				CloseUserPopup();
+				//CloseUserPopup();
 			}else{
-				CloseUserPopup();
+				//CloseUserPopup();
 			}
 			
-			startLoad();
+			warning1.innerHTML = '';
+						OwnerSettings.removeEventListener("click", UserResponseForEdit);
+				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
+				get_position1.removeEventListener('click', ClickOnGetPosition);
+				nophoto_but.removeEventListener('click', deleteAccount);
+				profile_mother_input.removeEventListener('click', motherOpenFunc);
+				profile_father_input.removeEventListener('click', fatherOpenFunc);
+				if(document.querySelector('#mapid')){
+				document.querySelector('#mapid').remove();
+				}
+				add_user_profile_container.style.display = "none";
+				
+				add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
+							
+				startLoad();
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();	
+				svg = d3.select("body").append("svg")
+    			            .attr("id", "main")
+    			            .attr("viewBox", "0 0 " + w + " " + h )
+    			            .attr("preserveAspectRatio", "xMidYMid meet");
+					initDefs();
+					history.pushState(null, null, url.href);
+					await getApiUrl();
+					endLoad();	
+			
+			
+			/*startLoad();
 				data = [];
 				nodes = [];
 				links = [];
@@ -3748,7 +3778,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 				initDefs();
 					initializeDisplay();
 					initializeSimulation();
-					endLoad();	
+					endLoad();	*/
 			
 		},
 			error: function(response){
@@ -3784,7 +3814,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	console.log(dob, add_user_profile_bd.value);
 	/*add_user_profile_bd.value = dob;
 	add_user_profile_dd.value = dod;*/
-	add_user_profile_photo.setAttribute('src', `${usr_photo == '' ? settings.url+'images/default_avatar.png' : usr_photo}`);
+	add_user_profile_photo.setAttribute('src', `${usr_photo == '' || !usr_photo.includes('.') ? settings.url+'images/default_avatar.png' : usr_photo}`);
 	
 	
 	add_user_profile_container.style.display = "block";
