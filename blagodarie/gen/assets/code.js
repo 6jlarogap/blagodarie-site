@@ -2219,7 +2219,8 @@ let clickOnUser;
 let us_uid;
 
 
-function UserResponseForEdit(user){
+async function UserResponseForEdit(user){
+	await myProfilesinfo();
 		for(let i=0; i<resp_owned_users.length; i++){
 			if(us_uid == resp_owned_users[i].uuid){
 				user = resp_owned_users[i];
