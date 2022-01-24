@@ -4037,7 +4037,8 @@ dialog_father_save.addEventListener('click', ()=>{
 				}
 				add_user_profile_container.style.display = "none";
 				
-				CloseUserPopup();
+				add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
+							
 				startLoad();
 				data = [];
 				nodes = [];
@@ -4123,7 +4124,9 @@ dialog_father_save.addEventListener('click', ()=>{
 			nophoto_but.removeEventListener('click', deleteAccount);
 			profile_mother_input.removeEventListener('click', motherOpenFunc);
 			profile_father_input.removeEventListener('click', fatherOpenFunc);
-			document.querySelector('#mapid').remove();
+			if(document.querySelector('#mapid')){
+				document.querySelector('#mapid').remove();
+			}
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
 			if(user_profile_not_save == true){
@@ -4135,7 +4138,9 @@ dialog_father_save.addEventListener('click', ()=>{
 				nophoto_but.removeEventListener('click', deleteAccount);
 				profile_mother_input.removeEventListener('click', motherOpenFunc);
 				profile_father_input.removeEventListener('click', fatherOpenFunc);
-				document.querySelector('#mapid').remove();
+				if(document.querySelector('#mapid')){
+					document.querySelector('#mapid').remove();
+				}
 			}
 		}
 	}
