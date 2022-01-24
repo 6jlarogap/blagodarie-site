@@ -114,7 +114,39 @@ window.onload = function(){
 	setTimeout(function(){
 		loaders.style.display = "none";
 	},900);
+	
 }
+
+function sendNotification(title, options) {
+
+		if (!("Notification" in window)) {
+			console.log('Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.');
+		}
+
+		else if (Notification.permission === "granted") {
+			var notification = new Notification(title, options);
+
+			function clickFunc() { console.log('Пользователь кликнул на уведомление'); }
+
+			notification.onclick = clickFunc;
+		}
+		
+		// Если прав нет, пытаемся их получить
+		else if (Notification.permission !== 'denied') {
+			Notification.requestPermission(function (permission) {
+				// Если права успешно получены, отправляем уведомление
+				if (permission === "granted") {
+					var notification = new Notification(title, options);
+					
+				} else {
+					console.log('Вы запретили показывать уведомления'); // Юзер отклонил наш запрос на показ уведомлений
+				}
+			});
+		} else {
+			
+		}
+		
+	}
 
 function startLoad(){
 	loaders.style.display = "block";
@@ -705,7 +737,7 @@ function get_cur_position(){
 
 function show_smart_map(lati, long){
 	map_container.style.display = "block";
-	if(document.querySelector('#mapid').hasChildNodes()){}
+	if(document.querySelector('#mapid') && document.querySelector('#mapid').hasChildNodes()){}
 	else{
 		if(response_smat_map[0].user_latitude != null){
 			for(let i=0;i<response_smat_map.length;i++){
@@ -762,7 +794,7 @@ function show_smart_map(lati, long){
 
 document.querySelector(".mapid_send").addEventListener("click", function(){
 	var form = new FormData();
-    form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
+    form.append("uuid", `${us_uid ? us_uid : userIdFrom ? userIdFrom : getCookie("auth_token")}`);
     form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null}`);	
     form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);
 	var settings = {
@@ -802,8 +834,31 @@ if(!url.searchParams.has('d')){
 	window.location.href = url.href;
 }
 
+let recur_select = document.querySelector('.recur_select');
 let recur_select_value = document.querySelector('.recur_select_value');
 recur_select_value.innerHTML = url.searchParams.get('d');
+recur_select.onchange = async function(){
+	 url.searchParams.set('d', this.value);
+	recur_select_value.innerHTML = url.searchParams.get('d');
+	await startLoad();
+	data = [];
+	nodes = [];
+	links = [];
+	links_parent = [];
+	await getApiUrl();
+	svg.remove();
+			
+		svg = d3.select("body").append("svg")
+                .attr("id", "main")
+                .attr("viewBox", "0 0 " + w + " " + h )
+                .attr("preserveAspectRatio", "xMidYMid meet");
+	history.pushState(null, null, url.href);
+	initDefs();
+		initializeDisplay();
+		initializeSimulation();
+		endLoad();
+	//window.location.href = url.href;
+}
 
 document.querySelector(".mapid_clean").addEventListener("click", function(){
 	var form = new FormData();
@@ -835,6 +890,7 @@ document.querySelector(".mapid_clean").addEventListener("click", function(){
 });
 var apiUrl;
 async function getApiUrl(){
+	url = new URL(window.location.href);
 	if((getCookie("auth_token")=="" || getCookie("auth_token")==false) && !window.location.href.includes("id")){
 				window.location.href = window.location.origin;
 	}else if((getCookie("auth_token")=="" || getCookie("auth_token")==false) && window.location.href.includes("id")){
@@ -929,7 +985,7 @@ if((getCookie("auth_token")=="" || getCookie("auth_token")==false || !getCookie(
 			
 			var str = d.photo;
 			var extArray = str.split(".");
-			var ext = extArray[extArray.length - 1];	
+			var ext = extArray[extArray.length - 1]+`?${Date.now()}`;	
 			var replacement = "media"; 
 			var toReplace = "thumb"; 
 			var str1 = str.replace(replacement, toReplace);
@@ -1427,7 +1483,7 @@ function show_map_style(){
 		map_latitude = 49.019638199999996;
 		map_longitude = 35.226296399999995;
 	}
-	if(document.querySelector('#new_map').hasChildNodes()){}
+	if(document.querySelector('#new_map') && document.querySelector('#new_map').hasChildNodes()){}
 	else{
 	new_map = L.map('new_map').setView([map_latitude, map_longitude], 13);
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
@@ -1475,10 +1531,13 @@ function show_map_style(){
 		url.searchParams.delete('map_visible');
 		window.history.pushState(null, null, url.search);
 		new_map_container.classList.remove('active');
+		if(document.querySelector('#new_map')){
+				document.querySelector('#new_map').remove();
+		}
 	})
 	}
 	}
-
+/*
 let new_map_container = document.querySelector('.new_map_container');
 if(window.location.href.includes('map_visible')){
 	window.onload = function(){
@@ -1488,7 +1547,7 @@ if(window.location.href.includes('map_visible')){
 	},300);
 	}
 }
-
+*/
 function newFF(){
 	return this.__data__
 }
@@ -1645,7 +1704,6 @@ function initializeDisplay() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
 		.attr("stroke", d => {
-			console.log(d);
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE ||  d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_father == d.reverse_is_parent || d.is_mother == d.reverse_is_parent){
 					if(d.is_father || d.is_mother){
@@ -1760,7 +1818,7 @@ function initializeDisplay() {
 		}else if(d.nodeType == NODE_TYPES.INVITE){
 			return `${window.location.origin}/profiles/?id=${getCookie('user_uuid')}`
 		}else if(d.nodeType == NODE_TYPES.MAPS){
-			return `${window.location.href}&map_visible`
+			//return `${window.location.href}&map_visible`
 		}else if(d.nodeType == NODE_TYPES.FRIEND || d.nodeType == NODE_TYPES.PROFILE || d.nodeType == NODE_TYPES.USER){
 			if(url.searchParams.has('id')){
 				return `${window.location.origin}${window.location.pathname}${window.location.search}`
@@ -2043,6 +2101,7 @@ function initDefs(){
 		.attr("fill", "#ff0000");
 }
 
+let new_map_container;
 var tgIframe;
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
@@ -2073,7 +2132,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		share.updateContent({
 			url: window.location.href
 		});
-		shareLink = window.location.href + '/?gay=123';
+		shareLink = /*window.location.href + '/?gay=123'*/window.location.origin;
 		shareDialog.style.display = "flex";
 	}
 	else if(nodeType == NODE_TYPES.INVITE) {
@@ -2095,9 +2154,14 @@ async function onNodeClick(nodeType, uuid, txt){
 		window.location.href = url.origin + '/gen';
 	}
 	else if(nodeType == NODE_TYPES.MAPS){
-		url.searchParams.append('map_visible', 'true');
+		/*url.searchParams.append('map_visible', 'true');
 		window.history.pushState(null, null, url.search);
-		window.location.href = url.href;
+		window.location.href = url.href;*/
+		startLoad();
+		new_map_container = document.querySelector('.new_map_container');
+		new_map_container.classList.add('active');
+		show_map_style();
+		endLoad();
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
@@ -2196,7 +2260,8 @@ let clickOnUser;
 let us_uid;
 
 
-function UserResponseForEdit(user){
+async function UserResponseForEdit(user){
+	await myProfilesinfo();
 		for(let i=0; i<resp_owned_users.length; i++){
 			if(us_uid == resp_owned_users[i].uuid){
 				user = resp_owned_users[i];
@@ -2204,7 +2269,7 @@ function UserResponseForEdit(user){
 			}
 		}
 		clickOnUser.style.display = "none";
-		user_changed_info(user.uuid, user.last_name, user.first_name, user.middle_name, user.photo, user.dob, user.dod, user.gender, user.latitude, user.longitude);
+		user_changed_info(user.uuid, user.last_name, user.first_name, user.middle_name, `${user.photo+'?'+Date.now()}`, user.dob, user.dod, user.gender, user.latitude, user.longitude);
 }
 
 //контекстное добавление родителей
@@ -2394,10 +2459,10 @@ function add_context_new_parents(us_id_from, type_of_user){
   					"data": form,
 					success: async function(response){
 						
-						
+						let new_added_user = JSON.parse(response)
 						await close_new_user_popup();
 						startLoad();
-						await addDynamicUsers();
+						await addDynamicUsers(new_added_user, type_of_user, us_id_from);
 						//window.location.reload();
 						
 					},
@@ -2417,21 +2482,12 @@ function add_context_new_parents(us_id_from, type_of_user){
 	}
 	
 	
-	async function addDynamicUsers(){
-		response = await fetch(`${apiUrl}`, {
-		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
-		}).then(data => data.json());
-		console.log(response);
-		data = response;
-		
-		
-		
+	async function addDynamicUsers(new_added_user, type_of_user, us_id_from){
+		data.users.push(new_added_user);
+		resp_owned_users.push(new_added_user);
 		
 		let new_dyn_id;
-		
+		console.log(new_added_user, type_of_user, us_id_from)
 		data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
 			
@@ -2463,51 +2519,70 @@ function add_context_new_parents(us_id_from, type_of_user){
 		}
 		});
 		
-		
-		
-		
-	// родственные линки 
-	data.connections.forEach(function(d){
-		if(d.source == new_dyn_id || d.target == new_dyn_id){
-		if (d.is_father == true){
-			var reverse_is_parent = d.is_father;
-			data.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_father == true){
-					reverse_is_parent = dd.is_father;				
-				}
-			});
+	switch(type_of_user){
+		case "mother":
 			links_parent.push({
-				source: d.source,
-				target: d.target,
-				is_father: d.is_father,
-				reverse_is_parent: reverse_is_parent
+				source: us_id_from,
+				target: new_added_user.uuid,
+				is_mother: true,
+				reverse_is_parent: true
 			});
-//			console.log(links_parent);
-		}
-		if (d.is_mother == true){
-			var reverse_is_parent = d.is_mother;
-			data.connections.forEach(function(dd){
-				if (d.source == dd.target && d.target == dd.source && dd.is_mother == true){
-					reverse_is_parent = dd.is_mother;				
-				}
+			data.connections.push({
+				source: us_id_from,
+				target: new_added_user.uuid,
+				is_mother: true,
+				is_father: false,
+				is_trust: null
 			});
+			break;
+		case "father":
 			links_parent.push({
-				source: d.source,
-				target: d.target,
-				is_mother: d.is_mother,
-				reverse_is_parent: reverse_is_parent
+				source: us_id_from,
+				target: new_added_user.uuid,
+				is_father: true,
+				reverse_is_parent: true
 			});
-//			console.log(links_parent);
-		}
+			data.connections.push({
+				source: us_id_from,
+				target: new_added_user.uuid,
+				is_mother: false,
+				is_father: true,
+				is_trust: null
+			});
+			break;
+		case "child":
+			if(new_added_user.gender == "m"){
+				links_parent.push({
+					source: new_added_user.uuid,
+					target: us_id_from,
+					is_father: true,
+					reverse_is_parent: true
+				});
+				data.connections.push({
+					source: new_added_user.uuid,
+					target: us_id_from,
+					is_mother: false,
+					is_father: true,
+					is_trust: null
+				});
+			}else{
+				links_parent.push({
+					source: new_added_user.uuid,
+					target: us_id_from,
+					is_mother: true,
+					reverse_is_parent: true
+				});
+				data.connections.push({
+					source: new_added_user.uuid,
+					target: us_id_from,
+					is_mother: true,
+					is_father: false,
+					is_trust: null
+				});
+			}
+			break;
 	}
-	});
-			
-			
 		
-			
-			
-			
-			
 		svg.remove();
 			
 		svg = d3.select("body").append("svg")
@@ -2518,17 +2593,6 @@ function add_context_new_parents(us_id_from, type_of_user){
 		initDefs();
 		initializeDisplay();
 		initializeSimulation();
-			//d3view();
-			
-			
-	
-		
-		
-		
-		
-		
-		
-		
 		endLoad();
 	}
 	
@@ -2624,7 +2688,6 @@ function add_context_reserved_parents(us_id_from, type_of_user){
 		
 		
 		
-		
 	}
 	
 	
@@ -2646,8 +2709,83 @@ function add_context_reserved_parents(us_id_from, type_of_user){
     					"operation_type_id": operation_type_id
   					}),
 					success: function(response){
-						console.log(response);
-						close_reserved_user_form();
+			
+		
+					switch(type_of_user){
+						case "mother":
+							links_parent.push({
+								source: us_id_from,
+								target: clean_uid,
+								is_mother: true,
+								reverse_is_parent: true
+							});
+							data.connections.push({
+								source: us_id_from,
+								target: clean_uid,
+								is_mother: true,
+								is_father: false,
+								is_trust: null
+							});
+							break;
+						case "father":
+							links_parent.push({
+								source: us_id_from,
+								target: clean_uid,
+								is_father: true,
+								reverse_is_parent: true
+							});
+							data.connections.push({
+								source: us_id_from,
+								target: clean_uid,
+								is_mother: false,
+								is_father: true,
+								is_trust: null
+							});
+							break;
+						case "child":
+							if(new_added_user.gender == "m"){
+								links_parent.push({
+									source: clean_uid,
+									target: us_id_from,
+									is_father: true,
+									reverse_is_parent: true
+								});
+								data.connections.push({
+									source: clean_uid,
+									target: us_id_from,
+									is_mother: false,
+									is_father: true,
+									is_trust: null
+								});
+							}else{
+								links_parent.push({
+									source: clean_uid,
+									target: us_id_from,
+									is_mother: true,
+									reverse_is_parent: true
+								});
+								data.connections.push({
+									source: clean_uid,
+									target: us_id_from,
+									is_mother: true,
+									is_father: false,
+									is_trust: null
+								});
+							}
+							break;
+					}
+					close_reserved_user_form();
+					svg.remove();
+						
+					svg = d3.select("body").append("svg")
+        			        .attr("id", "main")
+        			        .attr("viewBox", "0 0 " + w + " " + h )
+        			        .attr("preserveAspectRatio", "xMidYMid meet");
+					
+					initDefs();
+					initializeDisplay();
+					initializeSimulation();
+					endLoad();
 					},
 					error: function(response){
 						console.log(response);
@@ -2693,7 +2831,6 @@ async function OnfriendClickFunc(uid, nodeType){
 	isConn ? isDataTrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==true) : null;
 	isConn ? isDataMistrust = dataResponse.trust_connections.some(link => link.source == getCookie('user_uuid') && link.target == uid && link.is_trust==false) : null;
 	}
-	//clickOnUser.style.display = "flex";
 	async function RenderSettings(){
 		//let resp_owned_users = myProfilesinfo;
 	console.log(resp_owned_users);
@@ -2701,6 +2838,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
 			OwnerSettings.addEventListener("click", UserResponseForEdit);
+			OwnerSettings.addEventListener("click", closer);
 
 			break;
 		}else{
@@ -2711,11 +2849,11 @@ async function OnfriendClickFunc(uid, nodeType){
 	add_mother.style.display = 'block';
 	add_child.style.display = 'block';
 	
-	for(let i=0; i<user_connections.connections.length; i++){
-		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_father == true){
+	for(let i=0; i<data.connections.length; i++){
+		if(data.connections[i].source==uid && data.connections[i].is_father == true){
 			add_father.style.display = 'none';
 		}
-		if(user_connections.connections[i].source==uid && user_connections.connections[i].is_mother == true){
+		if(data.connections[i].source==uid && data.connections[i].is_mother == true){
 			add_mother.style.display = 'none';
 		}
 	}
@@ -2739,10 +2877,38 @@ async function OnfriendClickFunc(uid, nodeType){
 	add_child.addEventListener('click', closer);
 		
 		
-	href_onUser.addEventListener("click", ()=>{
-		window.location.href = `${settings.url}gen?id=` + uid;
-	});
+	href_onUser.addEventListener("click", link_to_user);
+	href_onUser.addEventListener("click", closer);
 	
+	async function link_to_user(){
+		if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+		}
+		url.searchParams.set('id', uid);
+	startLoad();
+	userIdFrom = url.searchParams.get('id');
+	data = [];
+	nodes = [];
+	links = [];
+	links_parent = [];
+	
+	svg.remove();
+			
+		svg = d3.select("body").append("svg")
+                .attr("id", "main")
+                .attr("viewBox", "0 0 " + w + " " + h )
+                .attr("preserveAspectRatio", "xMidYMid meet");
+	history.pushState(null, null, url.href);
+	/*initDefs();
+		initializeDisplay();
+		initializeSimulation();*/
+		initDefs();
+		await getApiUrl();
+		endLoad();
+	
+	}
+		
+		
 	/*function UserResponseForEdit(user){
 		for(let i=0; i<resp_owned_users.length; i++){
 			if(uid == resp_owned_users[i].uuid){
@@ -2773,27 +2939,94 @@ async function OnfriendClickFunc(uid, nodeType){
 			if (isConn) {
 				if (isDataTrust) {
 					await updateTrust(5, uid);
-					alert('Благодарность установлена');
+					UserMistrust.removeEventListener("click", UserMistrustClick);
 					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
+
+					startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						initDefs();
+						await getApiUrl();
+						endLoad();
+					sendNotification('Благодари.рф', {
+						body: 'Благодарность поставлена',
+						image: `${settings.url}images/ic_launcher.png`,
+						dir: 'auto'
+					});
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(5, uid);
-					alert('Доверие установлено');
+					UserMistrust.removeEventListener("click", UserMistrustClick);
 					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
+					
+					startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						initDefs();
+						await getApiUrl();
+						endLoad();
+						sendNotification('Благодари.рф', {
+							body: 'Доверие поставлено',
+							image: `${settings.url}images/ic_launcher.png`,
+							dir: 'auto'
+						});
 				}
 			}
 			else {
 				await updateTrust(5, uid);
-				alert('Доверие установлено');
+				UserMistrust.removeEventListener("click", UserMistrustClick);
 				UserTrust.removeEventListener("click", UserTrustClick);
 				clickOnUser.style.display = "none";
+				
+				
+				startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						initDefs();
+						await getApiUrl();
+						endLoad();
+						sendNotification('Благодари.рф', {
+							body: 'Доверие поставлено',
+							image: `${settings.url}images/ic_launcher.png`,
+							dir: 'auto'
+						});
 			}
 			//window.location.reload();
+			
 		}
 		else {
+			UserMistrust.removeEventListener("click", UserMistrustClick);
+			UserTrust.removeEventListener("click", UserTrustClick);
 			deleteCookie("","set_mistrust");
 			document.cookie = `set_trust=${userIdFrom}; path=/;`;
 			authDialog.style.display = "flex";
@@ -2804,27 +3037,93 @@ async function OnfriendClickFunc(uid, nodeType){
 			if (isConn) {
 				if (!isDataTrust) {
 					await updateTrust(4, uid);		
-					alert('Недоверие установлено');
 					UserMistrust.removeEventListener("click", UserMistrustClick);
+					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
+					
+					startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						
+						await getApiUrl();
+					initDefs();
+						endLoad();
+					sendNotification('Благодари.рф', {
+						body: 'Доверие обнулено',
+						image: `${settings.url}images/ic_launcher.png`,
+						dir: 'auto'
+					});
 				}
 				else {
 					await updateTrust(4, uid);
 					await updateTrust(2, uid);
-					alert('Недоверие установлено');
 					UserMistrust.removeEventListener("click", UserMistrustClick);
+					UserTrust.removeEventListener("click", UserTrustClick);
 					clickOnUser.style.display = "none";
+					
+					startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						await getApiUrl();
+						initDefs();
+						endLoad();
+					sendNotification('Благодари.рф', {
+						body: 'Недоверие поставлено',
+						image: `${settings.url}images/ic_launcher.png`,
+						dir: 'auto'
+					});
 				}
 			}
 			else {
 				await updateTrust(2, uid);
-				alert('Недоверие установлено');
 				UserMistrust.removeEventListener("click", UserMistrustClick);
+				UserTrust.removeEventListener("click", UserTrustClick);
 				clickOnUser.style.display = "none";
+				
+				startLoad();
+					data = [];
+					nodes = [];
+					links = [];
+					links_parent = [];
+					
+					svg.remove();
+							
+						svg = d3.select("body").append("svg")
+    				            .attr("id", "main")
+    				            .attr("viewBox", "0 0 " + w + " " + h )
+    				            .attr("preserveAspectRatio", "xMidYMid meet");
+						await getApiUrl();
+						initDefs();
+						endLoad();
+					sendNotification('Благодари.рф', {
+						body: 'Недоверие поставлено',
+						image: `${settings.url}images/ic_launcher.png`,
+						dir: 'auto'
+					});
 			}
 			//window.location.reload();
 		}
 		else {
+			UserMistrust.removeEventListener("click", UserMistrustClick);
+			UserTrust.removeEventListener("click", UserTrustClick);
 			deleteCookie("","set_trust");
 			document.cookie = `set_mistrust=${userIdFrom}; path=/;`;
 			authDialog.style.display = "flex";
@@ -2864,72 +3163,281 @@ async function OnfriendClickFunc(uid, nodeType){
 			}
 		}	
 	UserTrust.addEventListener("click", UserTrustClick);
+	UserTrust.addEventListener("click", closer);
 	UserMistrust.addEventListener("click", UserMistrustClick);
-	
+	UserMistrust.addEventListener("click", closer);
 		
+		ShortRoad.addEventListener('click', ShowShortRoad);
+		//ShortRoad.addEventListener('click', closer);
 	
-		
-	ShortRoad.addEventListener('click', function(){
-		if(userIdFrom.includes(',') || userIdFrom.includes('%2C')){
-			let newstrFrom = userIdFrom.split(',')[0];
-			if(getCookie('user_uuid') && (getCookie('user_uuid')==newstrFrom)){
-				window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
-			}else if(newstrFrom==uid){
-				if(getCookie('user_uuid')){
-					window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
-				}else{
-					window.location.href = `${window.location.origin}${window.location.pathname}?id=${uid}`;
-				}
-			}else{
-				window.location.href = `${window.location.origin}${window.location.pathname}?id=${newstrFrom + ',' + uid}&sl=true`;
-			}
-		}else{
-			if(getCookie('user_uuid') && (getCookie('user_uuid')==userIdFrom)){
-				window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
-			}else if(userIdFrom==uid){
-				if(getCookie('user_uuid')){
-					window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
-				}else{
-					window.location.href = `${window.location.origin}${window.location.pathname}?id=${uid}`;
-				}
-			}else{
-				window.location.href = `${window.location.origin}${window.location.pathname}?id=${userIdFrom + ',' + uid}&sl=true`;
-			}
-		}
-
-	});
 		
 }else{
 	UserTrust.style.display = "none";
 	UserMistrust.style.display = "none";
 	ShortRoad.style.display = "none";
 }
+		
+		
+		async function ShowShortRoad(){
+		
+		if(userIdFrom.includes(',') || userIdFrom.includes('%2C')){
+			let newstrFrom = userIdFrom.split(',')[0];
+			if(getCookie('user_uuid') && (getCookie('user_uuid')==newstrFrom)){
+				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
+				if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				/*ShortRoad.removeEventListener('click', ShowShortRoad);
+				ShortRoad.removeEventListener('click', closer);*/
+				closer();
+				initDefs();
+				await getApiUrl();
+				endLoad();
+			
+			}else if(newstrFrom==uid){
+				if(getCookie('user_uuid')){
+					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+					let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
+					if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				closer();
+				initDefs();
+				await getApiUrl();
+				endLoad();
+					
+				}else{
+					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${uid}`;
+					if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+					
+				url.searchParams.set('id', uid);
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				closer();
+				initDefs();
+				await getApiUrl();
+				endLoad();
+					
+				}
+			}else{
+				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${newstrFrom + ',' + uid}&sl=true`;
+				
+				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
+				if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				closer();
+				await getApiUrl();
+				initDefs();
+				endLoad();
+			}
+		}else{
+			if(getCookie('user_uuid') && (getCookie('user_uuid')==userIdFrom)){
+				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+				
+				let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
+				if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				closer();
+				await getApiUrl();
+				initDefs();
+				endLoad();
+			}else if(userIdFrom==uid){
+				if(getCookie('user_uuid')){
+					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${getCookie('user_uuid') + ',' + uid}&sl=true`;
+					
+					let new_uid = `${getCookie('user_uuid') + ',' + uid}`;
+					if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				closer();
+				await getApiUrl();
+				initDefs();
+				endLoad();
+				}else{
+					//window.location.href = `${window.location.origin}${window.location.pathname}?id=${uid}`;
+					
+					if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+					
+				url.searchParams.set('id', uid);
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				closer();
+				await getApiUrl();
+				initDefs();
+				endLoad();
+				}
+			}else{
+				//window.location.href = `${window.location.origin}${window.location.pathname}?id=${userIdFrom + ',' + uid}&sl=true`;
+				
+				let new_uid = `${userIdFrom + ',' + uid}`;
+				if(url.searchParams.has("sl")){
+						url.searchParams.delete("sl");
+					}
+				url.searchParams.set('id', new_uid);
+				url.searchParams.append("sl", "true")
+				startLoad();
+				userIdFrom = url.searchParams.get('id');
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();
+				svg = d3.select("body").append("svg")
+                	.attr("id", "main")
+                	.attr("viewBox", "0 0 " + w + " " + h )
+                	.attr("preserveAspectRatio", "xMidYMid meet");
+				history.pushState(null, null, url.href);
+				closer();
+				await getApiUrl();
+				initDefs();
+				endLoad();
+			}
+		}
+		}
+		
+		
+		
+		
+		
+		
+		
 
 	context_menu_close.addEventListener("click", function(){
 		copyUserLink.removeEventListener('click', UserLink);
 		UserTrust.removeEventListener("click", UserTrustClick);
+		UserTrust.removeEventListener("click", closer);
 		UserMistrust.removeEventListener("click", UserMistrustClick);
+		UserMistrust.removeEventListener("click", closer);
 		OwnerSettings.removeEventListener("click", UserResponseForEdit);
+		OwnerSettings.removeEventListener("click", closer);
 		add_mother.removeEventListener('click', add_context_mother);
 		add_father.removeEventListener('click', add_context_father);
 		add_child.removeEventListener('click', add_context_child);
+		href_onUser.removeEventListener("click", link_to_user);
+		href_onUser.removeEventListener("click", closer);
 		add_child.removeEventListener('click', closer);
 		add_mother.removeEventListener('click', closer);
 		add_father.removeEventListener('click', closer);
+		ShortRoad.removeEventListener('click', ShowShortRoad);
+		ShortRoad.removeEventListener('click', closer);
 		clickOnUser.style.display = "none";
 	});
 		
 		function closer(){
 			copyUserLink.removeEventListener('click', UserLink);
 			UserTrust.removeEventListener("click", UserTrustClick);
+			UserTrust.removeEventListener("click", closer);
 			UserMistrust.removeEventListener("click", UserMistrustClick);
+			UserMistrust.removeEventListener("click", closer);
 			OwnerSettings.removeEventListener("click", UserResponseForEdit);
+			OwnerSettings.removeEventListener("click", closer);
 			add_mother.removeEventListener('click', add_context_mother);
 			add_father.removeEventListener('click', add_context_father);
 			add_child.removeEventListener('click', add_context_child);
+			href_onUser.removeEventListener("click", link_to_user);
+			href_onUser.removeEventListener("click", closer);
 			add_child.removeEventListener('click', closer);
 			add_mother.removeEventListener('click', closer);
 			add_father.removeEventListener('click', closer);
+			ShortRoad.removeEventListener('click', ShowShortRoad);
+			ShortRoad.removeEventListener('click', closer);
 			clickOnUser.style.display = "none";
 		}
 
@@ -3008,7 +3516,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	warning1.innerHTML = "";
 	dynamic_id = id;
 	
-	userIdFrom = id;
+	//userIdFrom = id;
 	if(isAuth && getCookie("user_uuid")){
 		setProfile();
 	}
@@ -3018,7 +3526,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	async function ClickOnGetPosition(){
 			
 	async function getUserPos() {
-	const response = await fetch(`${settings.api}api/profile_graph?uuid=${userIdFrom}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+	const response = await fetch(`${settings.api}api/profile_graph?uuid=${dynamic_id}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
@@ -3047,10 +3555,10 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	function get_cur_position1(){
   navigator.geolocation.getCurrentPosition(
     function(position) {
-      if (response_smat_map.some(e => e.user_uuid === userIdFrom)) {
+      if (response_smat_map.some(e => e.user_uuid === dynamic_id)) {
         console.log(response_smat_map);
       for(let i=0;i<response_smat_map.length;i++){
-        if(response_smat_map[i].user_uuid == userIdFrom){
+        if(response_smat_map[i].user_uuid == dynamic_id){
           lati = +response_smat_map[i].user_latitude;
           long = +response_smat_map[i].user_longitude;
           console.log(lati, long);
@@ -3066,7 +3574,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
     },
     function(error){
       for(let i=0;i<response_smat_map.length;i++){
-        if(response_smat_map[i].user_uuid == userIdFrom){
+        if(response_smat_map[i].user_uuid == dynamic_id){
           let lati = +response_smat_map[i].user_latitude;
           let long = +response_smat_map[i].user_longitude;
           console.log(lati, long);
@@ -3247,9 +3755,11 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   					"contentType": false,
   					"data": form1,
 					success: function(){
-						setTimeout(function(){
+						/*setTimeout(function(){
 							window.location.reload();
-						},1000)
+						},1000)*/
+						bs_modal.modal('hide');
+						add_user_profile_photo.setAttribute("src", "");
 					},
 					error: function(){
 						console.log('ошибка');
@@ -3288,17 +3798,62 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
   		"mimeType": "multipart/form-data",
   		"contentType": false,
   		"data": form12,
-		success: function(){
+		success: async function(){
 			warning1.innerHTML = '';
-			/*setTimeout(function(){
-				window.location.reload();
-			},1000)*/
+			
 			if(id==getCookie("user_uuid")){
 				deleteCookie("", "auth_token");
-				window.location.href = window.location.origin + "/?q=25&f=0"
+				//CloseUserPopup();
 			}else{
-				CloseUserPopup();
+				//CloseUserPopup();
 			}
+			
+			warning1.innerHTML = '';
+						OwnerSettings.removeEventListener("click", UserResponseForEdit);
+				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
+				get_position1.removeEventListener('click', ClickOnGetPosition);
+				nophoto_but.removeEventListener('click', deleteAccount);
+				profile_mother_input.removeEventListener('click', motherOpenFunc);
+				profile_father_input.removeEventListener('click', fatherOpenFunc);
+				if(document.querySelector('#mapid')){
+				document.querySelector('#mapid').remove();
+				}
+				add_user_profile_container.style.display = "none";
+				
+				add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
+							
+				startLoad();
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();	
+				svg = d3.select("body").append("svg")
+    			            .attr("id", "main")
+    			            .attr("viewBox", "0 0 " + w + " " + h )
+    			            .attr("preserveAspectRatio", "xMidYMid meet");
+					initDefs();
+					history.pushState(null, null, url.href);
+					await getApiUrl();
+					endLoad();	
+			
+			
+			/*startLoad();
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				await getApiUrl();
+				svg.remove();	
+				svg = d3.select("body").append("svg")
+    			            .attr("id", "main")
+    			            .attr("viewBox", "0 0 " + w + " " + h )
+    			            .attr("preserveAspectRatio", "xMidYMid meet");
+				initDefs();
+					initializeDisplay();
+					initializeSimulation();
+					endLoad();	*/
+			
 		},
 			error: function(response){
 				let first_resp = response.responseText;
@@ -3333,7 +3888,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	console.log(dob, add_user_profile_bd.value);
 	/*add_user_profile_bd.value = dob;
 	add_user_profile_dd.value = dod;*/
-	add_user_profile_photo.setAttribute('src', `${usr_photo == '' ? settings.url+'images/default_avatar.png' : usr_photo}`);
+	add_user_profile_photo.setAttribute('src', `${usr_photo == '' || !usr_photo.includes('.') ? settings.url+'images/default_avatar.png' : usr_photo}`);
 	
 	
 	add_user_profile_container.style.display = "block";
@@ -3561,7 +4116,7 @@ dialog_father_save.addEventListener('click', ()=>{
 		formdata.append("dod", add_user_profile_dd.value);
 		formdata.append("gender", value_gender? value_gender : gender_val ? gender_val : '');
 		
-	async function add_gen(){	
+	//async function add_gen(){	
 		var settings = {
   					"url": `${new_settapi}api/profile`,
   					"method": "PUT",
@@ -3573,9 +4128,36 @@ dialog_father_save.addEventListener('click', ()=>{
   					"mimeType": "multipart/form-data",
   					"contentType": false,
   					"data": formdata,
-					success: function(response){
-						console.log(response);
+					success: async function(response){
+						//console.log(response);
 						warning1.innerHTML = '';
+						OwnerSettings.removeEventListener("click", UserResponseForEdit);
+				add_user_profile_overbottom.removeEventListener('click', SaveUserInfo);
+				get_position1.removeEventListener('click', ClickOnGetPosition);
+				nophoto_but.removeEventListener('click', deleteAccount);
+				profile_mother_input.removeEventListener('click', motherOpenFunc);
+				profile_father_input.removeEventListener('click', fatherOpenFunc);
+				if(document.querySelector('#mapid')){
+				document.querySelector('#mapid').remove();
+				}
+				add_user_profile_container.style.display = "none";
+				
+				add_user_profile_close_popup.removeEventListener('click', CloseUserPopup);
+							
+				startLoad();
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				svg.remove();	
+				svg = d3.select("body").append("svg")
+    			            .attr("id", "main")
+    			            .attr("viewBox", "0 0 " + w + " " + h )
+    			            .attr("preserveAspectRatio", "xMidYMid meet");
+					initDefs();
+					history.pushState(null, null, url.href);
+					await getApiUrl();
+					endLoad();	
 					},
 					error: function(response){
 						let first_resp = response.responseText;
@@ -3592,12 +4174,12 @@ dialog_father_save.addEventListener('click', ()=>{
 		
 		
 		
-	}
+	//}
 		
-		await add_gen();
+		//await add_gen();
 		
 		
-		setTimeout(function(){
+		/*setTimeout(async function(){
 			if(warning1.innerHTML == ''){
 				//window.location.reload();
 				OwnerSettings.removeEventListener("click", UserResponseForEdit);
@@ -3606,11 +4188,29 @@ dialog_father_save.addEventListener('click', ()=>{
 				nophoto_but.removeEventListener('click', deleteAccount);
 				profile_mother_input.removeEventListener('click', motherOpenFunc);
 				profile_father_input.removeEventListener('click', fatherOpenFunc);
-				alert("Данные сохранены");
+				if(document.querySelector('#mapid')){
 				document.querySelector('#mapid').remove();
+				}
 				add_user_profile_container.style.display = "none";
+				
+				
+				startLoad();
+				data = [];
+				nodes = [];
+				links = [];
+				links_parent = [];
+				await getApiUrl();
+				svg.remove();	
+				svg = d3.select("body").append("svg")
+    			            .attr("id", "main")
+    			            .attr("viewBox", "0 0 " + w + " " + h )
+    			            .attr("preserveAspectRatio", "xMidYMid meet");
+				initDefs();
+					initializeDisplay();
+					initializeSimulation();
+					endLoad();	
 			}
-		}, 3500)
+		}, 3500)*/
 	}
 	
 	
@@ -3629,7 +4229,9 @@ dialog_father_save.addEventListener('click', ()=>{
 			nophoto_but.removeEventListener('click', deleteAccount);
 			profile_mother_input.removeEventListener('click', motherOpenFunc);
 			profile_father_input.removeEventListener('click', fatherOpenFunc);
-			document.querySelector('#mapid').remove();
+			if(document.querySelector('#mapid')){
+				document.querySelector('#mapid').remove();
+			}
 		}else{
 			let user_profile_not_save = confirm('Есть несохранённые данные. Всё равно закрыть?');
 			if(user_profile_not_save == true){
@@ -3641,7 +4243,9 @@ dialog_father_save.addEventListener('click', ()=>{
 				nophoto_but.removeEventListener('click', deleteAccount);
 				profile_mother_input.removeEventListener('click', motherOpenFunc);
 				profile_father_input.removeEventListener('click', fatherOpenFunc);
-				document.querySelector('#mapid').remove();
+				if(document.querySelector('#mapid')){
+					document.querySelector('#mapid').remove();
+				}
 			}
 		}
 	}
@@ -3746,7 +4350,7 @@ async function updateTrust(operationId, referal = null) {
 		},
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "operation_type_id": operationId})
 	}).then(data => data.json())
-	console.log('add');
+	console.log(response);
 }
 
 async function getReferalToken() {
