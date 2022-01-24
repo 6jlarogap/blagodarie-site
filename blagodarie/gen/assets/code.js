@@ -1451,7 +1451,7 @@ function show_map_style(){
 		map_latitude = 49.019638199999996;
 		map_longitude = 35.226296399999995;
 	}
-	if(document.querySelector('#new_map').hasChildNodes()){}
+	if(document.querySelector('#new_map') && document.querySelector('#new_map').hasChildNodes()){}
 	else{
 	new_map = L.map('new_map').setView([map_latitude, map_longitude], 13);
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmlraXRhbGFzdCIsImEiOiJja3UwYmtnbjYwOWo0MnZvMTJ3ZTRiY3ZhIn0.5YnAsUvxjkv-oyTUmD-Kxw', {
