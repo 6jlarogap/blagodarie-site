@@ -705,7 +705,7 @@ function get_cur_position(){
 
 function show_smart_map(lati, long){
 	map_container.style.display = "block";
-	if(document.querySelector('#mapid').hasChildNodes()){}
+	if(document.querySelector('#mapid') && document.querySelector('#mapid').hasChildNodes()){}
 	else{
 		if(response_smat_map[0].user_latitude != null){
 			for(let i=0;i<response_smat_map.length;i++){
