@@ -4028,7 +4028,7 @@ dialog_father_save.addEventListener('click', ()=>{
 				}
 				add_user_profile_container.style.display = "none";
 				
-				
+				CloseUserPopup();
 				startLoad();
 				data = [];
 				nodes = [];
