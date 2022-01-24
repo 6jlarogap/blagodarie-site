@@ -3329,6 +3329,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		UserTrust.removeEventListener("click", UserTrustClick);
 		UserMistrust.removeEventListener("click", UserMistrustClick);
 		OwnerSettings.removeEventListener("click", UserResponseForEdit);
+		OwnerSettings.removeEventListener("click", closer);
 		add_mother.removeEventListener('click', add_context_mother);
 		add_father.removeEventListener('click', add_context_father);
 		add_child.removeEventListener('click', add_context_child);
@@ -3347,6 +3348,7 @@ async function OnfriendClickFunc(uid, nodeType){
 			UserTrust.removeEventListener("click", UserTrustClick);
 			UserMistrust.removeEventListener("click", UserMistrustClick);
 			OwnerSettings.removeEventListener("click", UserResponseForEdit);
+			OwnerSettings.removeEventListener("click", closer);
 			add_mother.removeEventListener('click', add_context_mother);
 			add_father.removeEventListener('click', add_context_father);
 			add_child.removeEventListener('click', add_context_child);
