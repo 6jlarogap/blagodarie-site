@@ -3090,7 +3090,9 @@ async function OnfriendClickFunc(uid, nodeType){
 			}
 		}	
 	UserTrust.addEventListener("click", UserTrustClick);
+	UserTrust.addEventListener("click", closer);
 	UserMistrust.addEventListener("click", UserMistrustClick);
+	UserMistrust.addEventListener("click", closer);
 		
 		ShortRoad.addEventListener('click', ShowShortRoad);
 		//ShortRoad.addEventListener('click', closer);
@@ -3327,7 +3329,9 @@ async function OnfriendClickFunc(uid, nodeType){
 	context_menu_close.addEventListener("click", function(){
 		copyUserLink.removeEventListener('click', UserLink);
 		UserTrust.removeEventListener("click", UserTrustClick);
+		UserTrust.removeEventListener("click", closer);
 		UserMistrust.removeEventListener("click", UserMistrustClick);
+		UserMistrust.removeEventListener("click", closer);
 		OwnerSettings.removeEventListener("click", UserResponseForEdit);
 		OwnerSettings.removeEventListener("click", closer);
 		add_mother.removeEventListener('click', add_context_mother);
@@ -3346,7 +3350,9 @@ async function OnfriendClickFunc(uid, nodeType){
 		function closer(){
 			copyUserLink.removeEventListener('click', UserLink);
 			UserTrust.removeEventListener("click", UserTrustClick);
+			UserTrust.removeEventListener("click", closer);
 			UserMistrust.removeEventListener("click", UserMistrustClick);
+			UserMistrust.removeEventListener("click", closer);
 			OwnerSettings.removeEventListener("click", UserResponseForEdit);
 			OwnerSettings.removeEventListener("click", closer);
 			add_mother.removeEventListener('click', add_context_mother);
