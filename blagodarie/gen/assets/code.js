@@ -762,7 +762,7 @@ function show_smart_map(lati, long){
 
 document.querySelector(".mapid_send").addEventListener("click", function(){
 	var form = new FormData();
-    form.append("uuid", `${userIdFrom ? userIdFrom : getCookie("auth_token")}`);
+    form.append("uuid", `${us_uid ? us_uid : userIdFrom ? userIdFrom : getCookie("auth_token")}`);
     form.append("latitude", `${new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null}`);	
     form.append("longitude", `${new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null}`);
 	var settings = {
