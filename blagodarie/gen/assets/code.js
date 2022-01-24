@@ -1499,10 +1499,13 @@ function show_map_style(){
 		url.searchParams.delete('map_visible');
 		window.history.pushState(null, null, url.search);
 		new_map_container.classList.remove('active');
+		if(document.querySelector('#new_map')){
+				document.querySelector('#new_map').remove();
+		}
 	})
 	}
 	}
-
+/*
 let new_map_container = document.querySelector('.new_map_container');
 if(window.location.href.includes('map_visible')){
 	window.onload = function(){
@@ -1512,7 +1515,7 @@ if(window.location.href.includes('map_visible')){
 	},300);
 	}
 }
-
+*/
 function newFF(){
 	return this.__data__
 }
@@ -1783,7 +1786,7 @@ function initializeDisplay() {
 		}else if(d.nodeType == NODE_TYPES.INVITE){
 			return `${window.location.origin}/profiles/?id=${getCookie('user_uuid')}`
 		}else if(d.nodeType == NODE_TYPES.MAPS){
-			return `${window.location.href}&map_visible`
+			//return `${window.location.href}&map_visible`
 		}else if(d.nodeType == NODE_TYPES.FRIEND || d.nodeType == NODE_TYPES.PROFILE || d.nodeType == NODE_TYPES.USER){
 			if(url.searchParams.has('id')){
 				return `${window.location.origin}${window.location.pathname}${window.location.search}`
@@ -2066,6 +2069,7 @@ function initDefs(){
 		.attr("fill", "#ff0000");
 }
 
+let new_map_container;
 var tgIframe;
 async function onNodeClick(nodeType, uuid, txt){
 	if(nodeType == NODE_TYPES.KEY){
@@ -2118,9 +2122,14 @@ async function onNodeClick(nodeType, uuid, txt){
 		window.location.href = url.origin + '/gen';
 	}
 	else if(nodeType == NODE_TYPES.MAPS){
-		url.searchParams.append('map_visible', 'true');
+		/*url.searchParams.append('map_visible', 'true');
 		window.history.pushState(null, null, url.search);
-		window.location.href = url.href;
+		window.location.href = url.href;*/
+		startLoad();
+		new_map_container = document.querySelector('.new_map_container');
+		new_map_container.classList.add('active');
+		show_map_style();
+		endLoad();
 	}
 	else if (nodeType == NODE_TYPES.TRUST) {
 		if (isAuth) {
