@@ -2960,7 +2960,7 @@ async function OnfriendClickFunc(uid, nodeType){
 						endLoad();
 					sendNotification('Благодари.рф', {
 						body: 'Благодарность поставлена',
-						image: `${settings.url}/images/ic_launcher.png`,
+						image: `${settings.url}images/ic_launcher.png`,
 						dir: 'auto'
 					});
 				}
@@ -2988,7 +2988,7 @@ async function OnfriendClickFunc(uid, nodeType){
 						endLoad();
 						sendNotification('Благодари.рф', {
 							body: 'Доверие поставлено',
-							image: `${settings.url}/images/ic_launcher.png`,
+							image: `${settings.url}images/ic_launcher.png`,
 							dir: 'auto'
 						});
 				}
@@ -3017,7 +3017,7 @@ async function OnfriendClickFunc(uid, nodeType){
 						endLoad();
 						sendNotification('Благодари.рф', {
 							body: 'Доверие поставлено',
-							image: `${settings.url}/images/ic_launcher.png`,
+							image: `${settings.url}images/ic_launcher.png`,
 							dir: 'auto'
 						});
 			}
@@ -3059,7 +3059,7 @@ async function OnfriendClickFunc(uid, nodeType){
 						endLoad();
 					sendNotification('Благодари.рф', {
 						body: 'Доверие обнулено',
-						image: `${settings.url}/images/ic_launcher.png`,
+						image: `${settings.url}images/ic_launcher.png`,
 						dir: 'auto'
 					});
 				}
@@ -3087,7 +3087,7 @@ async function OnfriendClickFunc(uid, nodeType){
 						endLoad();
 					sendNotification('Благодари.рф', {
 						body: 'Недоверие поставлено',
-						image: `${settings.url}/images/ic_launcher.png`,
+						image: `${settings.url}images/ic_launcher.png`,
 						dir: 'auto'
 					});
 				}
@@ -3115,7 +3115,7 @@ async function OnfriendClickFunc(uid, nodeType){
 						endLoad();
 					sendNotification('Благодари.рф', {
 						body: 'Недоверие поставлено',
-						image: `${settings.url}/images/ic_launcher.png`,
+						image: `${settings.url}images/ic_launcher.png`,
 						dir: 'auto'
 					});
 			}
