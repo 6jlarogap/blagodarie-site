@@ -3695,6 +3695,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 						/*setTimeout(function(){
 							window.location.reload();
 						},1000)*/
+						bs_modal.modal('hide');
 					},
 					error: function(){
 						console.log('ошибка');
