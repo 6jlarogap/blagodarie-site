@@ -2958,6 +2958,11 @@ async function OnfriendClickFunc(uid, nodeType){
 						initDefs();
 						await getApiUrl();
 						endLoad();
+					sendNotification('Благодари.рф', {
+						body: 'Благодарность поставлена',
+						image: `${settings.url}/images/ic_launcher.png`,
+						dir: 'auto'
+					});
 				}
 				else {
 					await updateTrust(4, uid);
@@ -2981,6 +2986,11 @@ async function OnfriendClickFunc(uid, nodeType){
 						initDefs();
 						await getApiUrl();
 						endLoad();
+						sendNotification('Благодари.рф', {
+							body: 'Доверие поставлено',
+							image: `${settings.url}/images/ic_launcher.png`,
+							dir: 'auto'
+						});
 				}
 			}
 			else {
@@ -3005,8 +3015,14 @@ async function OnfriendClickFunc(uid, nodeType){
 						initDefs();
 						await getApiUrl();
 						endLoad();
+						sendNotification('Благодари.рф', {
+							body: 'Доверие поставлено',
+							image: `${settings.url}/images/ic_launcher.png`,
+							dir: 'auto'
+						});
 			}
 			//window.location.reload();
+			
 		}
 		else {
 			UserMistrust.removeEventListener("click", UserMistrustClick);
@@ -3041,6 +3057,11 @@ async function OnfriendClickFunc(uid, nodeType){
 						await getApiUrl();
 					initDefs();
 						endLoad();
+					sendNotification('Благодари.рф', {
+						body: 'Недоверие поставлено',
+						image: `${settings.url}/images/ic_launcher.png`,
+						dir: 'auto'
+					});
 				}
 				else {
 					await updateTrust(4, uid);
@@ -3064,6 +3085,11 @@ async function OnfriendClickFunc(uid, nodeType){
 						await getApiUrl();
 						initDefs();
 						endLoad();
+					sendNotification('Благодари.рф', {
+						body: 'Обнулено',
+						image: `${settings.url}/images/ic_launcher.png`,
+						dir: 'auto'
+					});
 				}
 			}
 			else {
@@ -3087,6 +3113,11 @@ async function OnfriendClickFunc(uid, nodeType){
 						await getApiUrl();
 						initDefs();
 						endLoad();
+					sendNotification('Благодари.рф', {
+						body: 'Недоверие поставлено',
+						image: `${settings.url}/images/ic_launcher.png`,
+						dir: 'auto'
+					});
 			}
 			//window.location.reload();
 		}
