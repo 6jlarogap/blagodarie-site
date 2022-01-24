@@ -953,7 +953,7 @@ if((getCookie("auth_token")=="" || getCookie("auth_token")==false || !getCookie(
 			
 			var str = d.photo;
 			var extArray = str.split(".");
-			var ext = extArray[extArray.length - 1];	
+			var ext = extArray[extArray.length - 1]+`?${Date.now()}`;	
 			var replacement = "media"; 
 			var toReplace = "thumb"; 
 			var str1 = str.replace(replacement, toReplace);
