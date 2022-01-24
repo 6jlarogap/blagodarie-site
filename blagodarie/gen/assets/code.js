@@ -115,8 +115,9 @@ window.onload = function(){
 		loaders.style.display = "none";
 	},900);
 	
-	
-	function sendNotification(title, options) {
+}
+
+function sendNotification(title, options) {
 
 		if (!("Notification" in window)) {
 			console.log('Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.');
@@ -146,7 +147,6 @@ window.onload = function(){
 		}
 		
 	}
-}
 
 function startLoad(){
 	loaders.style.display = "block";
