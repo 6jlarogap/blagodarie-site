@@ -2132,7 +2132,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		share.updateContent({
 			url: window.location.href
 		});
-		shareLink = window.location.href + '/?gay=123';
+		shareLink = /*window.location.href + '/?gay=123'*/window.location.origin;
 		shareDialog.style.display = "flex";
 	}
 	else if(nodeType == NODE_TYPES.INVITE) {
