@@ -3058,7 +3058,7 @@ async function OnfriendClickFunc(uid, nodeType){
 					initDefs();
 						endLoad();
 					sendNotification('Благодари.рф', {
-						body: 'Недоверие поставлено',
+						body: 'Доверие обнулено',
 						image: `${settings.url}/images/ic_launcher.png`,
 						dir: 'auto'
 					});
@@ -3086,7 +3086,7 @@ async function OnfriendClickFunc(uid, nodeType){
 						initDefs();
 						endLoad();
 					sendNotification('Благодари.рф', {
-						body: 'Обнулено',
+						body: 'Недоверие поставлено',
 						image: `${settings.url}/images/ic_launcher.png`,
 						dir: 'auto'
 					});
