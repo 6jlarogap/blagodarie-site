@@ -4112,12 +4112,8 @@ dialog_father_save.addEventListener('click', ()=>{
 		formdata.append("first_name", user_profile_name_inp.value);
 		formdata.append("last_name", user_profile_surname_inp.value);
 		formdata.append("middle_name", user_profile_middlename_inp.value);
-		if(add_user_profile_bd.value != ""){
 		formdata.append("dob", add_user_profile_bd.value);
-		}
-		if(add_user_profile_dd.value != ""){
 		formdata.append("dod", add_user_profile_dd.value);
-		}
 		formdata.append("gender", value_gender? value_gender : gender_val ? gender_val : '');
 		
 	//async function add_gen(){	
