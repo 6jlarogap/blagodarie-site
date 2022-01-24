@@ -114,6 +114,38 @@ window.onload = function(){
 	setTimeout(function(){
 		loaders.style.display = "none";
 	},900);
+	
+	
+	function sendNotification(title, options) {
+
+		if (!("Notification" in window)) {
+			console.log('Ваш браузер не поддерживает HTML Notifications, его необходимо обновить.');
+		}
+
+		else if (Notification.permission === "granted") {
+			var notification = new Notification(title, options);
+
+			function clickFunc() { console.log('Пользователь кликнул на уведомление'); }
+
+			notification.onclick = clickFunc;
+		}
+		
+		// Если прав нет, пытаемся их получить
+		else if (Notification.permission !== 'denied') {
+			Notification.requestPermission(function (permission) {
+				// Если права успешно получены, отправляем уведомление
+				if (permission === "granted") {
+					var notification = new Notification(title, options);
+					
+				} else {
+					console.log('Вы запретили показывать уведомления'); // Юзер отклонил наш запрос на показ уведомлений
+				}
+			});
+		} else {
+			
+		}
+		
+	}
 }
 
 function startLoad(){
@@ -3696,6 +3728,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 							window.location.reload();
 						},1000)*/
 						bs_modal.modal('hide');
+						add_user_profile_photo.setAttribute("src", "");
 					},
 					error: function(){
 						console.log('ошибка');
