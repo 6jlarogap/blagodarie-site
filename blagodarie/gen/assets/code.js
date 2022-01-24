@@ -2796,6 +2796,7 @@ async function OnfriendClickFunc(uid, nodeType){
 		if(uid == resp_owned_users[i].uuid){
 			OwnerSettings.style.display = "block";
 			OwnerSettings.addEventListener("click", UserResponseForEdit);
+			OwnerSettings.addEventListener("click", closer);
 
 			break;
 		}else{
