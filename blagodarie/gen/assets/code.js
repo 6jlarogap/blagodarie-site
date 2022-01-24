@@ -3434,7 +3434,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	warning1.innerHTML = "";
 	dynamic_id = id;
 	
-	userIdFrom = id;
+	//userIdFrom = id;
 	if(isAuth && getCookie("user_uuid")){
 		setProfile();
 	}
@@ -3444,7 +3444,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	async function ClickOnGetPosition(){
 			
 	async function getUserPos() {
-	const response = await fetch(`${settings.api}api/profile_graph?uuid=${userIdFrom}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+	const response = await fetch(`${settings.api}api/profile_graph?uuid=${dynamic_id}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
 		method: "GET",
 		headers: {
 			"Authorization": 'Token ' + getCookie("auth_token")
@@ -3473,10 +3473,10 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
 	function get_cur_position1(){
   navigator.geolocation.getCurrentPosition(
     function(position) {
-      if (response_smat_map.some(e => e.user_uuid === userIdFrom)) {
+      if (response_smat_map.some(e => e.user_uuid === dynamic_id)) {
         console.log(response_smat_map);
       for(let i=0;i<response_smat_map.length;i++){
-        if(response_smat_map[i].user_uuid == userIdFrom){
+        if(response_smat_map[i].user_uuid == dynamic_id){
           lati = +response_smat_map[i].user_latitude;
           long = +response_smat_map[i].user_longitude;
           console.log(lati, long);
@@ -3492,7 +3492,7 @@ function user_changed_info(id, last_name, first_name, middle_name, usr_photo, do
     },
     function(error){
       for(let i=0;i<response_smat_map.length;i++){
-        if(response_smat_map[i].user_uuid == userIdFrom){
+        if(response_smat_map[i].user_uuid == dynamic_id){
           let lati = +response_smat_map[i].user_latitude;
           let long = +response_smat_map[i].user_longitude;
           console.log(lati, long);
