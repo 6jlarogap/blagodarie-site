@@ -1,6 +1,6 @@
 const settingSets = [
     {
-        url: 'https://xn--80aabjfzq0au.xn--p1ai/',
+        url: 'https://blagodarie.org/',
         api: 'https://api.blagodarie.org/',
         bot: 'Blagodarie_bot',
         yandex: {
