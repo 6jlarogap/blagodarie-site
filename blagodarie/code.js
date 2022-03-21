@@ -362,7 +362,7 @@ addElement.addEventListener("click", async () => {
 			body: {
 				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
 				"text": elementAddInput.value,
-				"last_edit": new Date().getTime()
+				"last_edit": Math.floor(new Date().getTime()/1000)
 			}
 		}
 	}
@@ -372,7 +372,7 @@ addElement.addEventListener("click", async () => {
 			body: {
 				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
 				"text": elementAddInput.value,
-				"last_edit": new Date().getTime()
+				"last_edit": Math.floor(new Date().getTime()/1000)
 			}
 		}
 	}
