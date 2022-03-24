@@ -2,7 +2,7 @@ const settingSets = [
     {
         url: 'https://blagodarie.org/',
         api: 'https://api.blagodarie.org/',
-        bot: 'Blagodarie_bot',
+        bot: 'zltp_bot',
         yandex: {
             client_id: '1656d92ee4f8436a8e1de4f5938b0786'
         },
@@ -18,7 +18,7 @@ const settingSets = [
 	{
         url: 'https://www.xn--80aabjfzq0au.xn--p1ai/',
         api: 'https://api.blagodarie.org/',
-        bot: 'Blagodarie_bot',
+        bot: 'zltp_bot',
         yandex: {
             client_id: '1656d92ee4f8436a8e1de4f5938b0786'
         },
