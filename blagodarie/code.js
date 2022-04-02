@@ -1106,6 +1106,7 @@ d3.json(apiUrl)
 	var resp_empty = ""
 		
 		//добавить вершину доверие/недоверие
+		/*
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
@@ -1121,6 +1122,7 @@ d3.json(apiUrl)
 			image: !isConnection ? inactiveMistrust : isTrust ? inactiveMistrust : activeMistrust,
 			nodeType: NODE_TYPES.MISTRUST
 		});
+		*/
 	}
 	
 	
@@ -1232,6 +1234,7 @@ d3.json(apiUrl)
 	}
 	
 	//добавить элемент авторизации
+/*		
 	if (!isAuth) {
 		nodes.push({
 			id: AUTH_ID,
@@ -1240,6 +1243,7 @@ d3.json(apiUrl)
 			nodeType: NODE_TYPES.AUTH
 		});
 	}
+*/
 	if(isAuth && !window.location.href.includes('id') && !window.location.href.includes('gen')){
 		async function setProfilesLinks(){
 	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
