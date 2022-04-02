@@ -1106,7 +1106,7 @@ d3.json(apiUrl)
 	var resp_empty = ""
 		
 		//добавить вершину доверие/недоверие
-		/*
+/*
 		nodes.push({
 			id: TRUST_ID,
 			text: "Доверие",
@@ -1114,6 +1114,7 @@ d3.json(apiUrl)
 			tspan: !isConnection ? resp_empty : isTrust ? resp : resp_empty,
 			nodeType: NODE_TYPES.TRUST
 		});
+*/		
 		}
 		await count_plus()
 		nodes.push({
@@ -1122,7 +1123,6 @@ d3.json(apiUrl)
 			image: !isConnection ? inactiveMistrust : isTrust ? inactiveMistrust : activeMistrust,
 			nodeType: NODE_TYPES.MISTRUST
 		});
-		*/
 	}
 	
 	
