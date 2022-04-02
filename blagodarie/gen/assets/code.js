@@ -1217,6 +1217,7 @@ if((getCookie("auth_token")=="" || getCookie("auth_token")==false || !getCookie(
 	}
 	
 	//добавить элемент авторизации
+/*
 	if (!isAuth) {
 		nodes.push({
 			id: AUTH_ID,
@@ -1225,6 +1226,7 @@ if((getCookie("auth_token")=="" || getCookie("auth_token")==false || !getCookie(
 			nodeType: NODE_TYPES.AUTH
 		});
 	}
+*/	
 //	console.log(data);
 	data.trust_connections.forEach(function(d){
 		if (d.is_trust != null){
