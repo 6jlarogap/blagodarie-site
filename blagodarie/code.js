@@ -1117,12 +1117,14 @@ d3.json(apiUrl)
 */		
 		}
 		await count_plus()
+/*		
 		nodes.push({
 			id: MISTRUST_ID,
 			text: "Недоверие",
 			image: !isConnection ? inactiveMistrust : isTrust ? inactiveMistrust : activeMistrust,
 			nodeType: NODE_TYPES.MISTRUST
 		});
+*/
 	}
 	
 	
