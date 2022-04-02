@@ -1147,12 +1147,14 @@ d3.json(apiUrl)
 	
 	}
 	//добавить вершину share
+/*	
 	nodes.push({
 		id: SHARE_ID,
 		text: "Поделиться",
 		image: `${settings.url}images/shareee.png`,
 		nodeType: NODE_TYPES.SHARE
 	});
+*/
 
 	//Добавить вершину home
 	if(!window.location.href.includes('gen')){
@@ -1191,14 +1193,16 @@ d3.json(apiUrl)
 		image: `${settings.url}images/plused_icon.png`,
 		nodeType: NODE_TYPES.PLUS
 	});
-	}*/
+	}*/	
 	//добавить вершину filter
+/*	
 	nodes.push({
 		id: FILTER_ID,
 		text: "Фильтр",
 		image: localStorage.getItem('filter') ? `${settings.url}images/filter_act.png` : `${settings.url}images/filter.png`,
 		nodeType: NODE_TYPES.FILTER
 	});
+*/
 
 	if(data.keys != null){
 		//добавить вершину ключей
