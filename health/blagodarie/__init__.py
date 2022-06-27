@@ -458,8 +458,8 @@ def update_chart_users_symptoms(search, value):
                 ),
             ])
 
-    rc, data = request_json('/api/getstats/user_connections/')
-    if rc == 200:
+    ### rc, data = request_json('/api/getstats/user_connections/')
+    if False: ### rc == 200:
         pk_sorted = list(data['users'].keys())
         pk_sorted.sort()
         num_users = len(pk_sorted)
