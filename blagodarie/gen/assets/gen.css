@@ -218,10 +218,10 @@ text{
 		}
 
 		image.friendPortrait {
-			width: 64px;
-			height: 64px;
-			x: -32px;
-			y: -32px;
+			width: 128px;
+			height: 128px;
+			x: -64px;
+			y: -64px;
 			-moz-user-select: none;
     			-webkit-user-select: none;
     			-webkit-touch-callout: none;   
