@@ -2087,7 +2087,7 @@ function initDefs(){
 		.append("circle")
 		.attr("cx", "0")
 		.attr("cy", "0")
-		.attr("r", "32")
+		.attr("r", "64")
 		.attr("fill", "#ff0000");
 	defs.append("clipPath")
 		.attr("id", "userCircle")
