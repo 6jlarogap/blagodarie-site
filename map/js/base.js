@@ -25,7 +25,15 @@ function main_() {
 }
 
 function show_map(data) {
-    // https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png - только по английски
+
+    // https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png
+    //      только по английски
+    // https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png
+    //      по-немецки, там где не латинское, включая русские города. Вроде бесплатно
+    // https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+    //      стандарт, бесплатно, но китайские города в китайских иероглифах
+    // По-русски бесплатных не нашел
+
     var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 20,
             // attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
