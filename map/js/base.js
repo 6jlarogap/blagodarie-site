@@ -41,9 +41,8 @@ function show_map(data) {
 
     for (var i = 0; i < data.points.length; i++) {
         var point = data.points[i];
-        var title = point.title;
-        var marker = L.marker(L.latLng(point.latitude, point.longitude), { title: title });
-        marker.bindPopup(title);
+        var marker = L.marker(L.latLng(point.latitude, point.longitude), { title: point.title });
+        marker.bindPopup(point.popup);
         markerList.push(marker);
     }
     markers.addLayers(markerList);
