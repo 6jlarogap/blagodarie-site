@@ -31,9 +31,8 @@ function main_() {
         url: api_url  + '/api/user/points/' + (api_get_parm ? '?' + api_get_parm : ''),
         dataType: 'json',
         success: function(data) {
-            console.log(data);
             if (data.first_name) {
-                $('#id_subtitle_').html('<h2>' + data.first_name + '</h2>');
+                $('#id_subtitle_').html('<h2><a href="' + document.URL + '">' + data.first_name + '</a></h2>');
                 if (data.found_coordinates) {
                     $('#id_error_').html('<h3>на карте</h3>');
                 } else {
@@ -62,7 +61,6 @@ function show_map(data) {
             // Это обязательно!
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         });
-    console.log(data.lat_avg, data.lng_avg);
     var latlng = L.latLng(data.lat_avg, data.lng_avg);
     var progress = document.getElementById('progress');
     var progressBar = document.getElementById('progress-bar');
