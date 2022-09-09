@@ -34,9 +34,13 @@ function main_() {
             if (data.first_name) {
                 $('#id_subtitle_').html('<h2><a href="' + document.URL + '">' + data.first_name + '</a></h2>');
                 if (data.found_coordinates) {
-                    $('#id_error_').html('<h3>на карте</h3>');
+                    if (data.address) {
+                        $('#id_address_').html('<big>' + data.address + '</big><br />');
+                    } else {
+                        $('#id_address_').html('<h3>на карте</h3>');
+                    }
                 } else {
-                    $('#id_error_').html('<h4>(Не задал(а) местоположение. Показаны все участники)</h4>');
+                    $('#id_address_').html('<h4>(Не задал(а) местоположение. Показаны все участники)</h4>');
                 }
             } else {
                 $('#id_subtitle_').html('<h2><big>Наши участники</big></h2>');
@@ -71,6 +75,18 @@ function show_map(data) {
     for (var i = 0; i < data.points.length; i++) {
         var point = data.points[i];
         var marker = L.marker(L.latLng(point.latitude, point.longitude), { title: point.title });
+        if (point.is_of_found_user) {
+            marker.setIcon(L.icon({
+                iconUrl:       'images/marker-icon-red.png',
+                iconRetinaUrl: 'images/marker-icon-red-2x.png',
+                shadowUrl:     'images/marker-shadow.png',
+                iconSize:    [27, 41],
+                iconAnchor:  [13, 41],
+                popupAnchor: [1, -34],
+                tooltipAnchor: [16, -28],
+                shadowSize:  [41, 41]
+            }));
+        }
         marker.bindPopup(point.popup);
         markerList.push(marker);
     }
