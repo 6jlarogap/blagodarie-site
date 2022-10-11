@@ -96,7 +96,7 @@ window.addEventListener('load', async () => {
 
 
 setTimeout(() => {
-	if(false)){
+	if(false){
     }
 }, 2000)
 
