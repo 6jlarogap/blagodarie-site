@@ -101,17 +101,6 @@ setTimeout(() => {
 }, 2000)
 
 
-// add event to buttons
-//-----------------------------------------------------------------------------------------------
-// close buttons
-[...document.getElementsByClassName("close")].forEach(button => {
-	button.addEventListener("click", () => {
-		button.parentElement.style.display = "none";
-	});
-});
-
-
-
 // add wish menu button
 rootAddElementMenu.addEventListener("click", () => {
 	elementAddInput.value = "";
@@ -221,48 +210,6 @@ document.getElementById("deleteProfile").addEventListener("click", async () => {
 
 	window.location.href = settings.url;
 })
-
-// exit button
-document.getElementById("logOut").addEventListener("click", () => {
-	deleteCookie('', 'user_uuid', 'auth_token');
-	window.location.href = settings.url;
-})
-
-//vk auth
-/*
-vkAuth.addEventListener("click", () => {
-	window.location.href = `https://oauth.vk.com/authorize?client_id=${settings.vk.client_id}&response_type=code&redirect_uri=${settings.vk.redirect_uri}`
-})
-*/
-//yandex auth
-/*
-yandexAuth.addEventListener("click", () => {
-	window.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${settings.yandex.client_id}`
-})
-*/
-//ok auth
-/*
-okAuth.addEventListener("click", () => {
-	window.location.href = `http://ok.ru/oauth/authorize?client_id=${settings.ok.client_id}&response_type=code&redirect_uri=${settings.ok.redirect_uri}`
-})
-*/
-document.getElementById("keys").addEventListener("click", async () => {
-	await rootFunctions('keys')
-})
-
-document.getElementById("abilities").addEventListener("click", async () => {
-	await rootFunctions('abilities')
-})
-
-document.getElementById("wishes").addEventListener("click", async () => {
-	await rootFunctions('wishes')
-})
-
-// document.getElementById("invite").addEventListener("click", () => {
-// 	copyToClipboard(`${settings.url}?ref_uuid=${PROFILE.id}`)
-// })
-//-----------------------------------------------------------------------------------------------
-
 
 function uuidv4() {
 	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
