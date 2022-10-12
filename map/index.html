@@ -21,6 +21,24 @@
         <span id="id_subtitle_"></span>
         <span id="id_address_"></span>
     </div>
+    <div id="id_block_form" style="margin:auto; width:70%;text-align:center; display: none">
+        <hr />
+        <form action="" method="get" id="id_form">
+            <span id="id_showed_also"></span>
+            <input type="hidden" name="uuid" value="" />
+            <input type="checkbox" name="participants" id="id_participants">
+            <label for="id_participants">Участники</label>&nbsp;
+
+            <input type="checkbox" name="owned_alive" id="id_owned_alive">
+            <label for="id_owned_alive">Добавленные живы</label>&nbsp;
+
+            <input type="checkbox" name="owned_dead" id="id_owned_dead">
+            <label for="id_owned_dead">Добавленные умершие</label>&nbsp;
+
+            <input type="submit" value="обновить" id="id_submit">
+        </form>
+        <hr />
+    </div>
     <br />
     <div style="margin:auto;width: 90%" id="progress"><div id="progress-bar"></div></div>
     <div style="margin:auto;width: 90%" id="map"></div>
