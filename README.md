@@ -1,3 +1,6 @@
 # blagodarie-site
-blagodarie:     blagodarie.org, благодари.рф
-health:         health.blagodarie.org, health.благодари.рф
+contrib/                    сервисные процедуры, инструкции
+blagodarie/:                blagodarie.org, благодари.рф, blagoroda.org
+blagodarie/genesis/:        genesis.blagodarie.org
+
+health/:                    health.blagodarie.org, health.благодари.рф
