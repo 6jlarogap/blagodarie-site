@@ -3,7 +3,7 @@
 <head>
     <title>БлагоДари. Карта</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet-src.js" crossorigin=""></script>
@@ -27,13 +27,10 @@
             <span id="id_showed_also"></span>
             <input type="hidden" name="uuid" value="" />
             <input type="checkbox" name="participants" id="id_participants">
-            <label for="id_participants">Участники</label>&nbsp;
+            <label for="id_participants">Активные</label>&nbsp;
 
-            <input type="checkbox" name="owned_alive" id="id_owned_alive">
-            <label for="id_owned_alive">Добавленные живы</label>&nbsp;
-
-            <input type="checkbox" name="owned_dead" id="id_owned_dead">
-            <label for="id_owned_dead">Добавленные умершие</label>&nbsp;
+            <input type="checkbox" name="owned" id="id_owned">
+            <label for="id_owned">Не активные</label>&nbsp;
 
             <input type="submit" value="обновить" id="id_submit">
         </form>

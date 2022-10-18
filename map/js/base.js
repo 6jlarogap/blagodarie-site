@@ -16,8 +16,7 @@ function get_api_url_() {
 var chat_id = '';
 var uuid = '';
 var participants = false;
-var owned_alive = false;
-var owned_dead = false;
+var owned = false;
 
 function main_() {
     var api_url = get_api_url_();
@@ -47,18 +46,13 @@ function main_() {
             participants = true;
             api_get_parms.push('participants=on');
         }
-        if (document.URL.match(/owned_alive\=on/i)) {
-            $('#id_owned_alive').attr('checked', 'checked');
-            owned_alive = true;
-            api_get_parms.push('owned_alive=on');
-        }
-        if (document.URL.match(/owned_dead\=on/i)) {
-            owned_dead = true;
-            $('#id_owned_dead').attr('checked', 'checked');
-            api_get_parms.push('owned_dead=on');
+        if (document.URL.match(/owned\=on/i)) {
+            $('#id_owned').attr('checked', 'checked');
+            owned = true;
+            api_get_parms.push('owned=on');
         }
         if (!document.URL.match(/\?/)) {
-            window.location.assign(document.URL + '?participants=on&owned_alive=on');
+            window.location.assign(document.URL + '?participants=on');
         }
     }
 
@@ -107,7 +101,7 @@ function main_() {
                 $('#id_subtitle_').html(subtitle);
             } else {
                 num_men = '(указавших место среди выбранных: ' + data.points.length +  ')';
-                $('#id_subtitle_').html('<h3><big>Наши участники ' + num_men + '</big></h3>');
+                $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Наши участники</big></a>' + ' ' + num_men + '</h3>');
             }
 
             show_map(data);
