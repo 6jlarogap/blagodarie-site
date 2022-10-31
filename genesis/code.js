@@ -342,13 +342,16 @@ var url = new URL(window.location.href);
 var userIdFrom = url.searchParams.get("id");
 var fromApp = url.searchParams.get("from_app");
 
-var depth = url.searchParams.get("depth") || 100;
+var depth = url.searchParams.get("depth") || 3;
 var up = url.searchParams.get("up") || '';
 var down = url.searchParams.get("down") || '';
 var chat_id = url.searchParams.get("chat_id") || '';
 var count_ = url.searchParams.get("q") || '';
 
 if (userIdFrom) {
+    if (depth <= 0 || depth > 100 ) {
+        depth = 100;
+    }
     document.querySelector('.pagination_block').style.display = 'none';
 } else if (chat_id) {
     if (depth <= 0 || depth > 9 ) {
@@ -1237,7 +1240,7 @@ async function onNodeClick(nodeType, uuid, txt){
 		copyToClipboard(txt);
 	} else if (nodeType == NODE_TYPES.PROFILE || nodeType == NODE_TYPES.FRIEND || nodeType == NODE_TYPES.FILTERED) {
         url.searchParams.set('f', 0);
-        window.location.href = `${settings.url}?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f') + '&depth=' + (chat_id ? 1 : depth) + '&up=' + up + '&down=' + down;
+        window.location.href = `${settings.url}?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f') + '&depth=' + (chat_id ? 1 : 3) + '&up=' + up + '&down=' + down;
     }
 }
 
