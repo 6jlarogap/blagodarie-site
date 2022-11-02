@@ -2,7 +2,7 @@ const settingSets = [
     {
         url: 'http://sev12t.bsuir.by/',
         api: 'http://sev12t.bsuir.by:8000/',
-        bot: 'Blagodarie_bot',
+        bot: 'DevBlagoBot',
         yandex: {
             client_id: '1656d92ee4f8436a8e1de4f5938b0786'
         },
@@ -16,19 +16,19 @@ const settingSets = [
         }
     },
     {
-        url: 'https://genesis.blagodarie.org/',
-        api: 'https://api.blagodarie.org/',
-        bot: 'BlagodarieAuthBot',
+        url: 'https://genesis.blagoroda.org/',
+        api: 'https://api.blagoroda.org/',
+        bot: 'doverabot',
         yandex: {
             client_id: 'cf3f096c100041eaa2d2642bc94a9f5b'
         },
         vk: {
             client_id: '7811224',
-            redirect_uri: 'https://api.dev.blagodarie.org/api/oauth/callback/vk/'
+            redirect_uri: 'https://api.dev.blagoroda.org/api/oauth/callback/vk/'
         },
         ok: {
             client_id: '512000750172',
-            redirect_uri: 'https://api.dev.blagodarie.org/api/oauth/callback/odnoklassniki'
+            redirect_uri: 'https://api.dev.blagoroda.org/api/oauth/callback/odnoklassniki'
         }
     }
 ] 
