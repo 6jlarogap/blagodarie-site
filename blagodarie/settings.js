@@ -48,6 +48,7 @@ const settingSets = [
         }
     },
     {
+        // сайт разработчика
         url: 'http://sev12t.bsuir.by/',
         api: 'http://sev12t.bsuir.by:8000/',
         bot: 'DevBlagoBot',
