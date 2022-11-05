@@ -342,11 +342,11 @@ var url = new URL(window.location.href);
 var userIdFrom = url.searchParams.get("id");
 var fromApp = url.searchParams.get("from_app");
 
-var depth = url.searchParams.get("depth") || 3;
+var depth = url.searchParams.get("depth") || 10;
 var up = url.searchParams.get("up") || '';
 var down = url.searchParams.get("down") || '';
 var chat_id = url.searchParams.get("chat_id") || '';
-var count_ = url.searchParams.get("q") || '';
+var count_ = url.searchParams.get("q") || 50;
 
 if (userIdFrom) {
     if (depth <= 0 || depth > 100 ) {
@@ -354,11 +354,11 @@ if (userIdFrom) {
     }
     document.querySelector('.pagination_block').style.display = 'none';
 } else if (chat_id) {
-    if (depth <= 0 || depth > 9 ) {
-        depth = 9;
+    if (depth <= 0 || depth > 10 ) {
+        depth = 10;
     }
-    if (count_ <= 0 || count_ > 20 ) {
-        count_ = 20;
+    if (count_ <= 0 || count_ > 50 ) {
+        count_ = 50;
     }
 }
 
@@ -532,8 +532,9 @@ var url = new URL(link);
 
         if (chat_id) {
             if(!url.searchParams.has('q') && !url.searchParams.has('f')){
-                url.searchParams.append('q', 10);
+                url.searchParams.append('q', 50);
                 url.searchParams.append('f', 0);
+                url.searchParams.append('depth', 10);
                 window.history.pushState(null, null, url.search);
                 window.location.href = url.href;
             }
@@ -643,12 +644,19 @@ d3.json(apiUrl)
 	if(!window.location.href.includes('gen')){
 	let selected_val_num = +url.searchParams.get('q');
 	let but_next = document.querySelector('#btn_next');
-	if(data.users.length == selected_val_num){
+
+    // Если chat_id, то число юзеров на странице может быть больше,
+    // чем заказано участников группы в выпадающем списке.
+    // Сколько всего, есть в ответе от апи: data.participants_on_page
+    //
+    data_users_length = chat_id ? data.participants_on_page : data.users.length;
+
+    if(data_users_length == selected_val_num){
 		but_next.style.background = '#8b0000';
 		but_next.style.cursor = 'pointer';
 		but_next.style.pointerEvents = 'all';
 	}
-	else if (data.users.length < selected_val_num){
+	else if (data_users_length < selected_val_num){
 		but_next.style.background = '#aaa0a0';
 		but_next.style.cursor = 'context-menu';
 		but_next.style.pointerEvents = 'none';
