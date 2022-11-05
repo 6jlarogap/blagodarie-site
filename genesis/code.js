@@ -625,7 +625,7 @@ d3.json(apiUrl)
 			var str1 = str.replace(replacement, toReplace);
 			
             var nd = NODE_TYPES.USER;
-            if (chat_id && !d.is_in_group) {
+            if (chat_id && !d.is_in_page) {
                 nd = NODE_TYPES.FILTERED;
             } else if (d.uuid != userIdFrom) {
                 nd = NODE_TYPES.FRIEND;
