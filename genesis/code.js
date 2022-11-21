@@ -340,19 +340,25 @@ var url = new URL(window.location.href);
 // var url = new URL('https://dev.blagodarie.org/?id=c03ce3fd-6fda-4112-b1c5-bd9847afee2e');
 
 var userIdFrom = url.searchParams.get("id");
-var fromApp = url.searchParams.get("from_app");
+var chat_id = url.searchParams.get("chat_id") || '';
+var all=false;
+if (!userIdFrom && !chat_id && url.searchParams.get("all")) {
+    all = true;
+}
 
 var depth = url.searchParams.get("depth") || 10;
 var up = url.searchParams.get("up") || '';
 var down = url.searchParams.get("down") || '';
-var chat_id = url.searchParams.get("chat_id") || '';
 var count_ = url.searchParams.get("q") || 50;
+
+if (userIdFrom || all) {
+    document.querySelector('.pagination_block').style.display = 'none';
+}
 
 if (userIdFrom) {
     if (depth <= 0 || depth > 100 ) {
         depth = 100;
     }
-    document.querySelector('.pagination_block').style.display = 'none';
 } else if (chat_id) {
     if (depth <= 0 || depth > 10 ) {
         depth = 10;
@@ -583,13 +589,19 @@ var url = new URL(link);
 		document.querySelector('.pagination_count').innerHTML = (chat_id ? count_ : url.searchParams.get('q'));
 			var apiUrl;
 		
+            console.log(all);
             if (chat_id) {
                 apiUrl = `${settings.api}api/profile_genesis?&chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
-            } else {
+            } else if (userIdFrom) {
                 // apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
                 apiUrl = `${settings.api}api/profile_genesis?&uuid=` + userIdFrom + '&depth=' + depth + '&up=' + up + '&down=' + down;
                 //console.log(apiUrl);
+            } else if (all) {
+                // apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
+                apiUrl = `${settings.api}api/profile_genesis/all`;
+                //console.log(apiUrl);
             }
+
 
 
 document.addEventListener("popstate",function(e){
@@ -625,7 +637,7 @@ d3.json(apiUrl)
 			var str1 = str.replace(replacement, toReplace);
 			
             var nd = NODE_TYPES.USER;
-            if (chat_id && !d.is_in_page) {
+            if (all || chat_id && !d.is_in_page) {
                 nd = NODE_TYPES.FILTERED;
             } else if (d.uuid != userIdFrom) {
                 nd = NODE_TYPES.FRIEND;
