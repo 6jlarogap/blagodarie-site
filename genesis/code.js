@@ -262,7 +262,7 @@ async function setProfile() {
 	var toReplace = "thumb"; 
 	var str1 = str.replace(replacement, toReplace);
 	
-	PROFILE.text = response.users[0].first_name + " " + response.users[0].last_name;
+	PROFILE.text = response.users[0].first_name;
 	PROFILE.abil = response.users[0].ability;
 	PROFILE.image = response.users[0].photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && response.users[0].photo.includes('media') ? str1+"/64x64~crop~12."+ext : width>900 && response.users[0].photo.includes('media') ?  str1+"/128x128~crop~12."+ext : response.users[0].photo;
 	PROFILE.id = getCookie("user_uuid");
@@ -644,7 +644,7 @@ d3.json(apiUrl)
             }
 			nodes.push ({
 				id: d.uuid,
-				text: (d.first_name + " " + d.last_name + " " + " "),
+				text: (d.first_name + " "),
 				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
 				nodeType: nd
 			});
