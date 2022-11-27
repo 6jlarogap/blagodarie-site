@@ -800,7 +800,7 @@ d3.json(apiUrl)
 	else{
 
 	simulation = d3.forceSimulation(nodes);
-	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(50).strength(0.3));
+	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(50).strength(30));
 	simulation.force("charge", d3.forceManyBody().strength(-400));
 	simulation.force("x", d3.forceX(width / 2));
 	simulation.force("y", d3.forceY(height / 2));		
