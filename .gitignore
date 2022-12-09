@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 
 ENV
+robots.txt
