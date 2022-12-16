@@ -1467,8 +1467,8 @@ d3.json(apiUrl)
 	simulation.force("charge", d3.forceManyBody().strength(0.5));
 	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
 	simulation.force("collide", d3.forceCollide().strength(0.4).radius(80).iterations(1));//radius 80  strength(0.6)
-	simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
-	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))
+	simulation.force("x", d3.forceX(width / 2).strength(0.3)); //strength(0.2))
+	simulation.force("y", d3.forceY(height / 2).strength(0.3)); // strength(0.2))
 	}
 
 	initializeDisplay();
