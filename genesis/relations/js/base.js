@@ -14,10 +14,16 @@ function main_() {
         dataType: 'json',
         success: function(data) {
 
+            const photoTextureUnknown = new THREE.TextureLoader().load(`./images/quest.png`);
             const Graph = ForceGraph3D()
             (document.getElementById('3d-graph'))
             .nodeThreeObject(({ id, photo }) => {
-                const photoTexture = new THREE.TextureLoader().load(photo ? photo: `./images/quest.png`);
+                var photoTexture;
+                if (photo) {
+                    photoTexture = new THREE.TextureLoader().load(photo);
+                } else {
+                    photoTexture = photoTextureUnknown;
+                }
                 const material = new THREE.SpriteMaterial({ map: photoTexture });
                 const sprite = new THREE.Sprite(material);
                 sprite.scale.set(25, 25);
