@@ -20,15 +20,11 @@ function main_() {
                 const photoTexture = new THREE.TextureLoader().load(photo ? photo: `./images/quest.png`);
                 const material = new THREE.SpriteMaterial({ map: photoTexture });
                 const sprite = new THREE.Sprite(material);
-                if (photo) {
-                    sprite.scale.set(25, 25);
-                } else {
-                    sprite.scale.set(25, 25);
-                }
+                sprite.scale.set(25, 25);
                 return sprite;
             })
             .graphData(data)
-            .linkDirectionalArrowLength(5)
+            .linkDirectionalArrowLength(10)
             .linkDirectionalArrowRelPos(1)
             .linkCurvature(0.25)
             .nodeLabel(node => `${node.first_name}`);
