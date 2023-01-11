@@ -589,7 +589,6 @@ var url = new URL(link);
 		document.querySelector('.pagination_count').innerHTML = (chat_id ? count_ : url.searchParams.get('q'));
 			var apiUrl;
 		
-            console.log(all);
             if (chat_id) {
                 apiUrl = `${settings.api}api/profile_genesis?&chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
             } else if (userIdFrom) {
@@ -598,7 +597,7 @@ var url = new URL(link);
                 //console.log(apiUrl);
             } else if (all) {
                 // apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                apiUrl = `${settings.api}api/profile_genesis/all`;
+                apiUrl = `${settings.api}api/profile_genesis/all/?withalone=on`;
                 //console.log(apiUrl);
             }
 
