@@ -14,7 +14,7 @@ function main_() {
         dataType: 'json',
         success: function(data) {
 
-            const photoTextureUnknown = new THREE.TextureLoader().load(`./images/quest.png`);
+            const photoTextureUnknown = new THREE.TextureLoader().load(`./images/star.jpeg`);
             const Graph = ForceGraph3D()
             (document.getElementById('3d-graph'))
             .nodeThreeObject(({ id, photo }) => {
@@ -30,10 +30,13 @@ function main_() {
                 return sprite;
             })
             .graphData(data)
+            .linkColor(() => '#a10000')
+            .linkOpacity(0.8)
+            .linkCurvature(0.25)
+            .nodeLabel(node => `${node.first_name}`)
             .linkDirectionalArrowLength(10)
             .linkDirectionalArrowRelPos(1)
-            .linkCurvature(0.25)
-            .nodeLabel(node => `${node.first_name}`);
+            .linkDirectionalArrowColor(() => 'rgba(161, 0, 0, 0.8)');
         }
     });
 }
