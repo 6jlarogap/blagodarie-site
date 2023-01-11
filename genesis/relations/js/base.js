@@ -30,13 +30,13 @@ function main_() {
                 return sprite;
             })
             .graphData(data)
-            .linkColor(() => '#a10000')
+            .linkColor(() => '#ffe8e8')
             .linkOpacity(0.8)
             .linkCurvature(0.25)
             .nodeLabel(node => `${node.first_name}`)
             .linkDirectionalArrowLength(10)
             .linkDirectionalArrowRelPos(1)
-            .linkDirectionalArrowColor(() => 'rgba(161, 0, 0, 0.8)');
+            .linkDirectionalArrowColor(() => 'rgba(255, 232, 232, 0.8)');
         }
     });
 }
