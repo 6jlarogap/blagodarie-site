@@ -341,9 +341,11 @@ var url = new URL(window.location.href);
 
 var userIdFrom = url.searchParams.get("id");
 var chat_id = url.searchParams.get("chat_id") || '';
-var all=false;
+var all = false;
+var withalone = false;
 if (!userIdFrom && !chat_id && url.searchParams.get("all")) {
     all = true;
+    withalone = url.searchParams.get("withalone") || '';
 }
 
 var depth = url.searchParams.get("depth") || 10;
@@ -597,7 +599,7 @@ var url = new URL(link);
                 //console.log(apiUrl);
             } else if (all) {
                 // apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                apiUrl = `${settings.api}api/profile_genesis/all/?withalone=on`;
+                apiUrl = `${settings.api}api/profile_genesis/all/` + (withalone ? `?withalone=on` : '');
                 //console.log(apiUrl);
             }
 
