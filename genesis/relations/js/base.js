@@ -7,10 +7,16 @@ function get_api_url_() {
     }
 }
 
+var parm_withalone = '';
+
 function main_() {
     const api_url = get_api_url_();
+    var got_parm = document.URL.match(/[\?\&]withalone\=(\w+)/i);
+    if (got_parm) {
+        parm_withalone = got_parm[1];
+    }
     $.ajax({
-        url: api_url  + '/api/profile_genesis/all?fmt=3d-force-graph',
+        url: api_url  + '/api/profile_genesis/all?fmt=3d-force-graph' + '&withalone=' + parm_withalone,
         dataType: 'json',
         success: function(data) {
 
