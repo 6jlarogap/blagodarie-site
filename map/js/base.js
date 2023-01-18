@@ -134,18 +134,12 @@ function show_map(data) {
     for (var i = 0; i < data.points.length; i++) {
         var point = data.points[i];
         var marker = L.marker(L.latLng(point.latitude, point.longitude), { title: point.title });
-        if (point.is_of_found_user) {
-            marker.setIcon(L.icon({
-                iconUrl:       'images/marker-icon-red.png',
-                iconRetinaUrl: 'images/marker-icon-red-2x.png',
-                shadowUrl:     'images/marker-shadow.png',
-                iconSize:    [27, 41],
-                iconAnchor:  [13, 41],
-                popupAnchor: [1, -34],
-                tooltipAnchor: [16, -28],
-                shadowSize:  [41, 41]
-            }));
-        }
+        marker.setIcon(L.icon({
+            iconUrl: point.icon,
+            iconSize: [point.size_icon, point.size_icon],
+            iconAnchor: [point.size_icon/2, point.size_icon/2],
+            className: point.is_of_found_user ? '' : 'photo-in-circle'
+        }));
         marker.bindPopup(point.popup);
         markerList.push(marker);
     }
