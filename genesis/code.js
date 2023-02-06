@@ -599,7 +599,7 @@ var url = new URL(link);
                 //console.log(apiUrl);
             } else if (all) {
                 // apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                apiUrl = `${settings.api}api/profile_genesis/all/` + (withalone ? `?withalone=on` : '');
+                apiUrl = `${settings.api}api/profile_genesis/all/?fmt=d3js&rod=on` + (withalone ? `&withalone=on` : '');
                 //console.log(apiUrl);
             }
 
