@@ -63,6 +63,7 @@ function main_() {
             .linkDirectionalArrowColor(
                 link => link.is_child && parm_rod ? 'rgba(255, 232, 232, 0.8)' : 'rgba(54, 107, 13, 0.8)'
             )
+            .d3Force('charge').strength(-320)
             ;
         }
     });
