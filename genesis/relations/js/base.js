@@ -12,8 +12,8 @@ function get_parm(parm) {
     // Если не было в строке parm=, возвращаем null
     // если было, то или '', или то что было
 
-    var result = false;
-    const got_parm = document.URL.match(new RegExp("[\\?\\&]" + parm + "\\=(\\w+)?", "i"));
+    var result = null;
+    const got_parm = document.URL.match(new RegExp("[\\?\\&]" + parm + "\\=([A-Za-z_0-9\\-]+)?", "i"));
     if (got_parm) {
         result = got_parm[1] || '';
         if (result.match(/^\&/)) {
@@ -25,21 +25,47 @@ function get_parm(parm) {
 var parm_rod = '';
 
 function main_() {
+
+    // Один и тот же код для 2 вариантов имени сайта:
+    //      - сайт начинается с 'group.', например, group.org.com,
+    //          учитывается параметр tg_group_chat_id.
+    //          Если его нет, будет пустота, т.е. в апи отправляется
+    //          запрос по заведомо несуществующей группе.
+    //          Если в параметре tg_group_chat_id будет чушь,
+    //          то апи вернет пустоту
+    //      - любые другие имена сайта:
+    //          учитываются параметры rod, dover, withalone
+
+    const is_group_site = window.location.host.match(/^group\./);
+
     if (!document.URL.match(/\?/)) {
-        window.location.assign(document.URL + '?rod=on&dover=&withalone=');
+        window.location.assign(
+            document.URL +
+                (is_group_site ? '?tg_group_chat_id=0' : '?rod=on&dover=&withalone=')
+        );
     }
-    parm_rod = get_parm('rod') || '';
-    const parm_dover = get_parm('dover') || '';
-    const parm_withalone = get_parm('withalone') || '';
+    var parm_dover, parm_withalone, parm_tg_group_chat_id;
+    if (is_group_site) {
+        parm_tg_group_chat_id = get_parm('tg_group_chat_id') || '?tg_group_chat_id=0';
+    } else {
+        parm_rod = get_parm('rod') || '';
+        parm_dover = get_parm('dover') || '';
+        parm_withalone = get_parm('withalone') || '';
+    }
     const api_url = get_api_url_();
-    $.ajax({
-        url:
-            api_url  +
+    const api_get_parms =  is_group_site
+        ?
+            '/api/getstats/user_connections_graph?fmt=3d-force-graph' +
+            '&number=0' +
+            '&tg_group_chat_id=' + parm_tg_group_chat_id
+        :
             '/api/profile_genesis/all?fmt=3d-force-graph' +
             '&withalone=' + parm_withalone +
             '&dover=' + parm_dover +
             '&rod=' + parm_rod
-        ,
+        ;
+    $.ajax({
+        url: api_url  + api_get_parms,
         dataType: 'json',
         success: function(data) {
 
