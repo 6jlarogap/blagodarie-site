@@ -7,12 +7,19 @@ function get_api_url_() {
 }
 
 function get_parm(parm) {
-    var result = '';
-    const got_parm = document.URL.match(new RegExp("[\\?\\&]" + parm + "\\=(\\w+)", "i"));
+
+    // Получить get parameter
+    // Если не было в строке parm=, возвращаем null
+    // если было, то или '', или то что было
+
+    var result = false;
+    const got_parm = document.URL.match(new RegExp("[\\?\\&]" + parm + "\\=(\\w+)?", "i"));
     if (got_parm) {
-        result = got_parm[1];
-    }
-    return result;
+        result = got_parm[1] || '';
+        if (result.match(/^\&/)) {
+            result = '';
+        }
+    }    return result;
 }
 
 var parm_rod = '';
@@ -21,9 +28,9 @@ function main_() {
     if (!document.URL.match(/\?/)) {
         window.location.assign(document.URL + '?rod=on&dover=&withalone=');
     }
-    parm_rod = get_parm('rod');
-    const parm_dover = get_parm('dover');
-    const parm_withalone = get_parm('withalone');
+    parm_rod = get_parm('rod') || '';
+    const parm_dover = get_parm('dover') || '';
+    const parm_withalone = get_parm('withalone') || '';
     const api_url = get_api_url_();
     $.ajax({
         url:
