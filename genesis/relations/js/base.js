@@ -7,31 +7,23 @@ function get_api_url_() {
 }
 
 function get_parm(parm) {
-
-    // Получить get parameter
-    // Если не было в строке parm=, возвращаем null
-    // если было, то или '', или то что было
-
-    var result = null;
-    const got_parm = document.URL.match(new RegExp("[\\?\\&]" + parm + "\\=(\w?)", "i"));
+    var result = '';
+    const got_parm = document.URL.match(new RegExp("[\\?\\&]" + parm + "\\=(\\w+)", "i"));
     if (got_parm) {
         result = got_parm[1];
-        if (result.match(/^\&/)) {
-            result = '';
-        }
     }
     return result;
 }
 
-var parm_rod = null;
+var parm_rod = '';
 
 function main_() {
     if (!document.URL.match(/\?/)) {
         window.location.assign(document.URL + '?rod=on&dover=&withalone=');
     }
-    parm_rod = get_parm('rod') || '';
-    const parm_dover = get_parm('dover') || '';
-    const parm_withalone = get_parm('withalone') || '';
+    parm_rod = get_parm('rod');
+    const parm_dover = get_parm('dover');
+    const parm_withalone = get_parm('withalone');
     const api_url = get_api_url_();
     $.ajax({
         url:
@@ -71,6 +63,7 @@ function main_() {
             .linkDirectionalArrowColor(
                 link => link.is_child && parm_rod ? 'rgba(255, 232, 232, 0.8)' : 'rgba(54, 107, 13, 0.8)'
             )
+            .d3Force('charge').strength(-320)
             ;
         }
     });
