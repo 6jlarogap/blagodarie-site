@@ -21,7 +21,7 @@ def serve_layout():
         dcc.Location(id='url', refresh=False),
 
         html.H1(
-            html.A('Благодарие', href='https://health.blagodarie.org'),
+            html.A('Благодарие', href='https://health.blagoroda.org'),
             style={'textAlign': 'center'},
         ),
     ]
