@@ -32,19 +32,10 @@ def serve_layout():
                 'Пользователей: ' + str(data['users']) +
                 ' Сообщений: ' + str(data['symptoms']),
                 style={'textAlign': 'center'},
-            )
+            ),
+            html.Br(),
         ])
     page_children.extend([
-        html.Div(
-            html.A(
-                html.Img(
-                    src='https://play.google.com/intl/en_us/badges/static/images/badges/ru_badge_web_generic.png',
-                    alt='Доступно в Google Play',
-                ),
-                href='https://play.google.com/store/apps/details?id=org.blagodarie',
-            ),
-            style={'textAlign': 'center'},
-        ),
         html.Div([
                 html.Span('''
                     Дорогие бабушки и дедушки, было время когда вы жили
