@@ -24,6 +24,7 @@ function get_parm(parm) {
 
 var parm_rod = '';
 var parm_tg_poll_id = '';
+var parm_offer_uuid = '';
 
 function main_() {
 
@@ -45,12 +46,17 @@ function main_() {
                 (is_group_site ? '?tg_group_chat_id=0' : '?rod=on&dover=&withalone=')
         );
     }
-    var parm_dover, parm_withalone, parm_tg_group_chat_id;
-    if (is_group_site) {
-        parm_tg_group_chat_id = get_parm('tg_group_chat_id') || '?tg_group_chat_id=0';
+    var parm_dover, parm_withalone;
+    var parm_tg_group_chat_id = get_parm('tg_group_chat_id') || '';
+    if (is_group_site && !parm_tg_group_chat_id) {
+        parm_tg_group_chat_id = '?tg_group_chat_id=0';
+    }
+    if (parm_tg_group_chat_id) {
+        //
     } else {
         parm_tg_poll_id = get_parm('tg_poll_id') || '';
-        if (!parm_tg_poll_id) {
+        parm_offer_uuid = get_parm('offer_uuid') || '';
+        if (!parm_tg_poll_id && !parm_offer_uuid) {
             parm_rod = get_parm('rod') || '';
             parm_dover = get_parm('dover') || '';
             parm_withalone = get_parm('withalone') || '';
@@ -58,10 +64,13 @@ function main_() {
     }
     const api_url = get_api_url_();
     var api_get_parms;
-    if (parm_tg_poll_id) {
+    if (parm_offer_uuid) {
+        api_get_parms =
+            '/api/offer/results/?offer_uuid=' + parm_offer_uuid;
+    } else if (parm_tg_poll_id) {
         api_get_parms =
             '/api/bot/poll/results/?tg_poll_id=' + parm_tg_poll_id;
-    } else if (is_group_site) {
+    } else if (parm_tg_group_chat_id) {
         api_get_parms =
             '/api/getstats/user_connections_graph?fmt=3d-force-graph' +
             '&number=0' +
@@ -77,7 +86,7 @@ function main_() {
         url: api_url  + api_get_parms,
         dataType: 'json',
         success: function(data) {
-            if (parm_tg_poll_id && data.question) {
+            if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
                 document.title = 'Опрос: ' + data.question;
             }
             const photoTextureUnknown = new THREE.TextureLoader().load(`./images/star.jpeg`);
@@ -101,16 +110,16 @@ function main_() {
             .graphData(data)
             // Если есть и родственная связь, и доверие, и если задано
             // искать родственные связи, то показываем стрелку цвета родственной связи
-            .linkColor(link => (link.is_poll || link.is_child && parm_rod) ? '#ffe8e8' : '#366b0d' )
+            .linkColor(link => (link.is_poll || link.is_offer || link.is_child && parm_rod) ? '#ffe8e8' : '#366b0d' )
             .linkOpacity(0.8)
             .linkCurvature(0.25)
             .nodeLabel(node => `${node.first_name}`)
             .linkDirectionalArrowLength(10)
             .linkDirectionalArrowRelPos(1)
             .linkDirectionalArrowColor(
-                link => (link.is_poll || link.is_child && parm_rod) ? 'rgba(255, 232, 232, 0.8)' : 'rgba(54, 107, 13, 0.8)'
+                link => (link.is_poll  || link.is_offer || link.is_child && parm_rod) ? 'rgba(255, 232, 232, 0.8)' : 'rgba(54, 107, 13, 0.8)'
             );
-            if (!parm_tg_poll_id) {
+            if (!parm_tg_poll_id && !parm_offer_uuid) {
                 Graph.d3Force('charge').strength(-320);
             }
         }
