@@ -14,6 +14,7 @@ function get_api_url_() {
 }
 
 var chat_id = '';
+var offer_id = '';
 var uuid = '';
 var participants = false;
 var owned = false;
@@ -21,25 +22,31 @@ var owned = false;
 function main_() {
     var api_url = get_api_url_();
     var api_get_parms = [];
-    // Показ всех из группы
     var got_parm = document.URL.match(/chat_id\=([-]*[0-9]+)/i);
     if (got_parm) {
+        $('#id_block_form').hide();
         chat_id = got_parm[1];
         api_get_parms.push('chat_id=' + chat_id);
-        $('#id_block_form').hide();
     } else {
-        $('#id_block_form').show();
-        // Показ только одного юзера по центру
-        got_parm = document.URL.match(/uuid\=([0-9a-f\-]+)/i);
+        got_parm = document.URL.match(/offer_id\=([0-9a-f\-]+)/i);
         if (got_parm) {
-            uuid = got_parm[1];
-            api_get_parms.push('uuid=' + uuid);
-            $('input[name=uuid]').val(uuid);
+            $('#id_block_form').hide();
+            offer_id = got_parm[1];
+            api_get_parms.push('offer_id=' + offer_id);
         } else {
-            $('input[name=uuid]').remove();
+            $('#id_block_form').show();
+            // Показ только одного юзера по центру
+            got_parm = document.URL.match(/uuid\=([0-9a-f\-]+)/i);
+            if (got_parm) {
+                uuid = got_parm[1];
+                api_get_parms.push('uuid=' + uuid);
+                $('input[name=uuid]').val(uuid);
+            } else {
+                $('input[name=uuid]').remove();
+            }
         }
     }
-    if (!chat_id) {
+    if (!chat_id && !offer_id) {
         // uuid или без uuid
         if (document.URL.match(/participants\=on/i)) {
             $('#id_participants').attr('checked', 'checked');
@@ -99,6 +106,19 @@ function main_() {
                     }
                 }
                 $('#id_subtitle_').html(subtitle);
+            } else if (offer_id) {
+                var subtitle = '';
+                num_men = '(указавших место: ' + data.points.length +  ')';
+                if (data.offer_question) {
+                    subtitle =
+                        '<h2>Участники опроса' +
+                            ' ' + num_men +
+                        '</h2>' +
+                        '<h2><a href="' + document.URL + '">' + data.offer_question + '</a></h2>';
+                } else {
+                    subtitle = '<h2><big>Опрос не найден</big></h2>';
+                }
+                $('#id_subtitle_').html(subtitle);
             } else {
                 num_men = '(указавших место среди выбранных: ' + data.points.length +  ')';
                 $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Наши участники</big></a>' + ' ' + num_men + '</h3>');
@@ -138,6 +158,9 @@ function show_map(data) {
             iconUrl: point.icon,
             iconSize: [point.size_icon, point.size_icon],
             iconAnchor: [point.size_icon/2, point.size_icon/2],
+            // is_of_found_user: это
+            //  или пользователь, которого искали
+            //  или владелец опроса
             className: point.is_of_found_user ? '' : 'photo-in-circle'
         }));
         marker.bindPopup(point.popup);
