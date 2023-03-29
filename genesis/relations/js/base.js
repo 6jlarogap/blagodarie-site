@@ -26,6 +26,22 @@ var parm_rod = '';
 var parm_tg_poll_id = '';
 var parm_offer_uuid = '';
 
+function link_color(link, format) {
+    const color_relation = format == 'rgba' ? 'rgba(255, 232, 232, 0.8)' : '#ffe8e8';
+    const color_poll = color_relation;
+    const color_trust = format == 'rgba' ? 'rgba(54, 107, 13, 0.8)' : '#366b0d';
+    const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
+    if (link.is_poll  || link.is_offer) {
+        return color_poll;
+    } else if (link.is_child) {
+        return color_relation;
+    } else if (link.is_trust) {
+        return color_trust;
+    } else {
+        return color_not_trust;
+    }
+}
+
 function main_() {
 
     // Один и тот же код для 2 вариантов имени сайта:
@@ -110,15 +126,14 @@ function main_() {
             .graphData(data)
             // Если есть и родственная связь, и доверие, и если задано
             // искать родственные связи, то показываем стрелку цвета родственной связи
-            .linkColor(link => (link.is_poll || link.is_offer || link.is_child && parm_rod) ? '#ffe8e8' : '#366b0d' )
+            .linkColor(link => link_color(link, 'rgb'))
             .linkOpacity(0.8)
             .linkCurvature(0.25)
             .nodeLabel(node => `${node.first_name}`)
             .linkDirectionalArrowLength(10)
             .linkDirectionalArrowRelPos(1)
-            .linkDirectionalArrowColor(
-                link => (link.is_poll  || link.is_offer || link.is_child && parm_rod) ? 'rgba(255, 232, 232, 0.8)' : 'rgba(54, 107, 13, 0.8)'
-            );
+            .linkDirectionalArrowColor(link => link_color(link, 'rgba'))
+            ;
             if (!parm_tg_poll_id && !parm_offer_uuid) {
                 Graph.d3Force('charge').strength(-320);
             }
