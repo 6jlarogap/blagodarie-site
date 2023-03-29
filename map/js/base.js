@@ -114,7 +114,10 @@ function main_() {
                         '<h2>Участники опроса' +
                             ' ' + num_men +
                         '</h2>' +
-                        '<h2><a href="' + document.URL + '">' + data.offer_question + '</a></h2>';
+                        '<h2>' +
+                        '<a href="' + (data.offer_deeplink ? data.offer_deeplink : document.URL) + '">'
+                        + data.offer_question + '</a>' +
+                        '</h2>';
                 } else {
                     subtitle = '<h2><big>Опрос не найден</big></h2>';
                 }
