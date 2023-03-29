@@ -110,10 +110,7 @@ function main_() {
             (document.getElementById('3d-graph'))
             .nodeThreeObject(({ id, photo }) => {
                 var photoTexture;
-                if (photo == 'poll-answer') {
-                    photoTexture = new THREE.TextureLoader().load('./images/poll-answers/poll-answer_' + (Math.abs(id).toString()) + '.png');
-                }
-                else if (photo) {
+                if (photo) {
                     photoTexture = new THREE.TextureLoader().load(photo);
                 } else {
                     photoTexture = photoTextureUnknown;
