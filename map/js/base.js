@@ -1,16 +1,9 @@
 function get_api_url_() {
-    if (window.location.protocol == 'file:') {
-        // Для отладки
-        return 'http://127.0.0.1:8000';
+    if (typeof __API_URL__ === 'undefined') {
+        return 'https://api.blagoroda.org';
+    } else {
+        return __API_URL__;
     }
-    var location_host = window.location.host;
-    location_host = location_host.replace(/^www\./, '');
-    var re = /^(\w+)\.(\w+)\.(\w+)$/;
-    var s = location_host.replace(re, 'api.$2.$3');
-    if (s != location_host) {
-        return 'https://' + s;
-    }
-    return 'https://api.' + location_host;
 }
 
 var chat_id = '';
