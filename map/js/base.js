@@ -169,6 +169,12 @@ function show_map(data) {
         zoom = 2;
     }
     var map = L.map('map', { center: latlng, zoom: zoom, layers: [tiles] });
+    map.addControl(new L.Control.Fullscreen({
+        title: {
+            'false': 'Полный экран',
+            'true': 'Выйти из полного экрана'
+        }
+    }));
     markers.addLayers(markerList);
     map.addLayer(markers);
     if (!(data.found_coordinates || data.points.length <= 1)) {
