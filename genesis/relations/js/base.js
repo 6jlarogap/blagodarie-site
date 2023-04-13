@@ -44,16 +44,6 @@ function link_color(link, format) {
 
 function main_() {
 
-    // Один и тот же код для 2 вариантов имени сайта:
-    //      - сайт начинается с 'group.', например, group.org.com,
-    //          учитывается параметр tg_group_chat_id.
-    //          Если его нет, будет пустота, т.е. в апи отправляется
-    //          запрос по заведомо несуществующей группе.
-    //          Если в параметре tg_group_chat_id будет чушь,
-    //          то апи вернет пустоту
-    //      - любые другие имена сайта:
-    //          учитываются параметры rod, dover, withalone
-
     const is_group_site = window.location.host.match(/^group\./);
 
     if (!document.URL.match(/\?/)) {
@@ -127,6 +117,12 @@ function main_() {
             .linkOpacity(0.8)
             .linkCurvature(0.25)
             .nodeLabel(node => `${node.first_name}`)
+            .onNodeClick(function(node){
+                if (node.uuid && data.bot_username) {
+                    window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
+                }
+            })
+
             .linkDirectionalArrowLength(10)
             .linkDirectionalArrowRelPos(1)
             .linkDirectionalArrowColor(link => link_color(link, 'rgba'))
