@@ -6,6 +6,32 @@ function get_api_url_() {
     }
 }
 
+// Возможные параметры, по группам параметров:
+//  rod, dover, withalone
+//      показ родственных и связей доверия
+//          rod         (on или пусто)
+//                      показ родственных связей, от родителя к потомку
+//          dover       (on или пусто)
+//                      показ вязей доверия
+//                  NB: если родитель доверяет потомку, будет показана связь цветом потомка
+//          withalone   (on или пусто)
+//                      показ людей, у которых нет родственных связей (если задан rod) и/или
+//                      нет связей доверия (если задан dover)
+//      если не задан
+//
+//  tg_group_chat_id    ид группы в телеграме, показ связей доверия
+//                      если url начинается с 'group.', то ожидается
+//
+//  tg_poll_id          ид опроса телеграме, показ ответов, кто на что отвечал, связей доверия среди отвечавших
+//
+//  offer_uuid          ид опроса- предложения в телеграме, показ ответов, кто на что отвечал,
+//                      связей доверия среди отвечавших
+//
+//  user_uuid_trusts    uuid пользователя
+//                      все его (ее) связи доверия, а также связи доверия тех,
+//                      кто ему (ей) доверял или не доверял
+//
+
 function get_parm(parm) {
 
     // Получить get parameter
@@ -25,15 +51,16 @@ function get_parm(parm) {
 var parm_rod = '';
 var parm_tg_poll_id = '';
 var parm_offer_uuid = '';
+var parm_user_uuid_trusts = '';
 
 function link_color(link, format) {
     const color_relation = format == 'rgba' ? 'rgba(255, 232, 232, 0.8)' : '#ffe8e8';
     const color_poll = color_relation;
     const color_trust = format == 'rgba' ? 'rgba(54, 107, 13, 0.8)' : '#366b0d';
     const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
-    if (link.is_poll  || link.is_offer) {
+    if (link.is_poll || link.is_offer) {
         return color_poll;
-    } else if (link.is_child) {
+    } else if (link.is_child && parm_rod) {
         return color_relation;
     } else if (link.is_trust) {
         return color_trust;
@@ -62,7 +89,8 @@ function main_() {
     } else {
         parm_tg_poll_id = get_parm('tg_poll_id') || '';
         parm_offer_uuid = get_parm('offer_uuid') || '';
-        if (!parm_tg_poll_id && !parm_offer_uuid) {
+        parm_user_uuid_trusts = get_parm('user_uuid_trusts') || '';
+        if (!parm_tg_poll_id && !parm_offer_uuid && !parm_user_uuid_trusts) {
             parm_rod = get_parm('rod') || '';
             parm_dover = get_parm('dover') || '';
             parm_withalone = get_parm('withalone') || '';
@@ -70,7 +98,10 @@ function main_() {
     }
     const api_url = get_api_url_();
     var api_get_parms;
-    if (parm_offer_uuid) {
+    if (parm_user_uuid_trusts) {
+        api_get_parms =
+            '/api/profile_graph?fmt=3d-force-graph&uuid=' + parm_user_uuid_trusts;
+    } else if (parm_offer_uuid) {
         api_get_parms =
             '/api/offer/results/?offer_uuid=' + parm_offer_uuid;
     } else if (parm_tg_poll_id) {
