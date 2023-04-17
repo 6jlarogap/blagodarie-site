@@ -86,17 +86,15 @@ function main_() {
             } else if (chat_id) {
                 var subtitle = '';
                 num_men = '(указавших место: ' + data.points.length +  ')';
-                if (data.chat_id) {
-                    if (data.chat_title) {
-                        subtitle =
-                            '<h2>Участники телеграм ' +
-                            (data.chat_type == 'channel' ? 'канала' : 'группы') +
-                             ' ' + num_men +
-                            '</h2>' +
-                            '<h2><a href="' + document.URL + '">' + data.chat_title + '</a></h2>';
-                    } else {
-                        subtitle = '<h2><big>Канал или группа не найден(а)</big></h2>';
-                    }
+                if (data.chat_title) {
+                    subtitle =
+                        '<h2>Участники телеграм ' +
+                        (data.chat_type == 'channel' ? 'канала' : 'группы') +
+                            ' ' + num_men +
+                        '</h2>' +
+                        '<h2><a href="' + document.URL + '">' + data.chat_title + '</a></h2>';
+                } else {
+                    subtitle = '<h2><big>Канал или группа не найден(а)</big></h2>';
                 }
                 $('#id_subtitle_').html(subtitle);
             } else if (offer_id) {
