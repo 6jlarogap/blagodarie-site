@@ -1,6 +1,6 @@
 const settingSets = [
     {
-        url: 'http://sev12t.bsuir.by/',
+        url: 'http://genesis.sev12t.bsuir.by/',
         api: 'http://sev12t.bsuir.by:8000/',
         bot: 'DevBlagoBot',
         yandex: {
