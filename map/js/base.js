@@ -162,7 +162,7 @@ function show_map(data) {
     }
     var zoom = 5;
     if (data.found_coordinates) {
-        zoom = 10;
+        zoom = 12;
     } else if (data.points.length == 0) {
         zoom = 2;
     }
