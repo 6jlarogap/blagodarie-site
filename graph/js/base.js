@@ -6,31 +6,48 @@ function get_api_url_() {
     }
 }
 
-// Возможные параметры, по группам параметров, в порядке их рассмотрения:
+// Возможные параметры (?параметр1&параметр2 ...), по группам параметров,
+// в порядке их рассмотрения:
+//
+//  user_uuid_genesis_tree
+//                      uuid
+//                      Дерево родства
+//                  При этом возможны параметры:
+//      depth           глубина поиска по рекурсии родства от user с uuid
+//      up              поиск только к предкам,
+//                          без вяких ответвлений на дядей, двоюродных бабушек и т.п.
+//      down            поиск только к потомкам,
+//                          без вяких ответвлений на племянников, внучатых племянниц и т.п.
 //
 //  user_uuid_genesis_path
 //                      uuid1,uuid2
-//                      путь родства между user с uuid1 и user c uuid2
+//                      Путь родства между user с uuid1 и user c uuid2
 //                  При этом возможен параметр:
-//      depth           глубина поиска по рекурсии доверия от user с uuid1 до user c uuid2
+//      depth           глубина поиска по рекурсии родства от user с uuid1 до user c uuid2
+//
 //  user_uuid_trust_path
 //                      uuid1,uuid2
-//                      путь доверия между user с uuid1 и user c uuid2
+//                      Путь доверия между user с uuid1 и user c uuid2
 //                  При этом возможен параметр:
 //      depth           глубина поиска по рекурсии доверия от user с uuid1 до user c uuid2
 //
 //  user_uuid_trusts    uuid пользователя
-//                      все его (ее) связи доверия, а также связи доверия тех,
+//                      Все его (ее) связи доверия, а также связи доверия тех,
 //                      кто ему (ей) доверял или не доверял
 //
 //  offer_uuid          ид опроса- предложения (offer) в телеграме, показ ответов,
-//                      показ того, кто на что отвечал, связей доверия среди отвечавших
+//                      Показ того, кто на что отвечал, связей доверия среди отвечавших
 //
 //  tg_poll_id          ид опроса телеграма, показ ответов,
-//                      показ того, кто на что отвечал, связей доверия среди отвечавших
+//                      Показ того, кто на что отвечал, связей доверия среди отвечавших
 //
 //  tg_group_chat_id    ид группы/канала в телеграме, показ связей доверия участников группы.
-//                      если url начинается с 'group.', то ожидается tg_group_chat_id=
+//                      Если url начинается с 'group.', то ожидается tg_group_chat_id=
+//                      Если в url, начинающемся с group. нет tg_group_chat_id=,
+//                      то полагается tg_group_chat_id=0, а это пустота на экране
+//
+//  Если не задан ни один из перечисленных выше параметров, в том числе в url нет параметров,
+//  то это соответствует вызову с /?rod=on&dover=&withalone=
 //
 //  rod, dover, withalone
 //      показ всех родственных связей и связей доверия
@@ -41,8 +58,6 @@ function get_api_url_() {
 //          withalone   (что-то не пустое)
 //                      показ людей, у которых нет родственных связей (если задан rod) и/или
 //                      нет связей доверия (если задан dover)
-//
-//  если не заданы параметры, то это соответствует вызову с /?rod=on&dover=&withalone=
 //
 
 function get_parm(parm) {
@@ -65,6 +80,7 @@ var parm_rod = '';
 var parm_tg_poll_id = '';
 var parm_offer_uuid = '';
 var parm_user_uuid_genesis_path='';
+var parm_user_uuid_genesis_tree='';
 
 function link_color(link, format) {
     const color_relation = format == 'rgba' ? 'rgba(255, 232, 232, 0.8)' : '#ffe8e8';
@@ -73,7 +89,7 @@ function link_color(link, format) {
     const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
     if (link.is_poll || link.is_offer) {
         return color_poll;
-    } else if (link.is_child && parm_rod || parm_user_uuid_genesis_path) {
+    } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path || parm_user_uuid_genesis_tree)) {
         return color_relation;
     } else if (link.is_trust) {
         return color_trust;
@@ -135,7 +151,8 @@ function main_() {
             !parm_user_uuid_trusts &&
             !parm_tg_group_chat_id &&
             !parm_user_uuid_genesis_path &&
-            !parm_user_uuid_trust_path
+            !parm_user_uuid_trust_path &&
+            !parm_user_uuid_genesis_tree
            ) {
             parm_rod = get_parm('rod') || '';
             parm_dover = get_parm('dover') || '';
