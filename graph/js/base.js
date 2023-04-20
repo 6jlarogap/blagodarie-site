@@ -8,6 +8,11 @@ function get_api_url_() {
 
 // Возможные параметры, по группам параметров, в порядке их рассмотрения:
 //
+//  user_uuid_genesis_path
+//                      uuid1,uuid2
+//                      путь родства между user с uuid1 и user c uuid2
+//                  При этом возможен параметр:
+//      depth           глубина поиска по рекурсии доверия от user с uuid1 до user c uuid2
 //  user_uuid_trust_path
 //                      uuid1,uuid2
 //                      путь доверия между user с uuid1 и user c uuid2
@@ -59,6 +64,7 @@ function get_parm(parm) {
 var parm_rod = '';
 var parm_tg_poll_id = '';
 var parm_offer_uuid = '';
+var parm_user_uuid_genesis_path='';
 
 function link_color(link, format) {
     const color_relation = format == 'rgba' ? 'rgba(255, 232, 232, 0.8)' : '#ffe8e8';
@@ -67,7 +73,7 @@ function link_color(link, format) {
     const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
     if (link.is_poll || link.is_offer) {
         return color_poll;
-    } else if (link.is_child && parm_rod) {
+    } else if (link.is_child && parm_rod || parm_user_uuid_genesis_path) {
         return color_relation;
     } else if (link.is_trust) {
         return color_trust;
@@ -92,6 +98,8 @@ function main_() {
     var parm_user_uuid_trust_path='';
     var parm_depth='';
 
+    const r_uuid1_uuid2 = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}\,[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i;
+
     var parm_tg_group_chat_id = get_parm('tg_group_chat_id') || '';
     if (is_group_site && !parm_tg_group_chat_id) {
         parm_tg_group_chat_id = '?tg_group_chat_id=0';
@@ -99,10 +107,16 @@ function main_() {
     if (parm_tg_group_chat_id) {
         //
     } else {
+        parm_user_uuid_genesis_path = get_parm('user_uuid_genesis_path') || '';
+        if (parm_user_uuid_genesis_path) {
+            if (r_uuid1_uuid2.test(parm_user_uuid_genesis_path)) {
+                parm_depth = get_parm('depth') || '';
+            } else {
+                parm_user_uuid_genesis_path = '';
+            }
+        }
+
         parm_user_uuid_trust_path = get_parm('user_uuid_trust_path') || '';
-        parm_tg_poll_id = get_parm('tg_poll_id') || '';
-        parm_offer_uuid = get_parm('offer_uuid') || '';
-        parm_user_uuid_trusts = get_parm('user_uuid_trusts') || '';
         if (parm_user_uuid_trust_path) {
             const r_uuid1_uuid2 = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}\,[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i;
             if (r_uuid1_uuid2.test(parm_user_uuid_trust_path)) {
@@ -111,11 +125,16 @@ function main_() {
                 parm_user_uuid_trust_path = '';
             }
         }
+
+        parm_tg_poll_id = get_parm('tg_poll_id') || '';
+        parm_offer_uuid = get_parm('offer_uuid') || '';
+        parm_user_uuid_trusts = get_parm('user_uuid_trusts') || '';
         if (
             !parm_tg_poll_id &&
             !parm_offer_uuid &&
             !parm_user_uuid_trusts &&
             !parm_tg_group_chat_id &&
+            !parm_user_uuid_genesis_path &&
             !parm_user_uuid_trust_path
            ) {
             parm_rod = get_parm('rod') || '';
@@ -125,7 +144,10 @@ function main_() {
     }
     const api_url = get_api_url_();
     var api_get_parms;
-    if (parm_user_uuid_trust_path) {
+    if (parm_user_uuid_genesis_path) {
+        api_get_parms =
+            '/api/profile_genesis?uuid=' + parm_user_uuid_genesis_path + '&fmt=3d-force-graph&depth=' + parm_depth;
+    } else if (parm_user_uuid_trust_path) {
         api_get_parms =
             '/api/profile_trust?uuid=' + parm_user_uuid_trust_path + '&fmt=3d-force-graph&depth=' + parm_depth;
     } else if (parm_user_uuid_trusts) {
