@@ -221,6 +221,10 @@ function main_() {
                 document.title = 'Благо Рода, ближайшие доверия: ' + data.user_q_name;
             } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
                 document.title = 'Благо Рода, опрос: ' + data.question;
+            } else if (parm_tg_group_chat_id && data.tg_group) {
+                document.title =
+                    'Благо Рода, доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') + ': ' +
+                    data.tg_group.title;
             }
             const photoTextureUnknown = new THREE.TextureLoader().load(`./images/star.jpeg`);
             const Graph = ForceGraph3D()
