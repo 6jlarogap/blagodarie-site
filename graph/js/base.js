@@ -64,7 +64,7 @@ function get_parm(parm) {
 
     // Получить get parameter
     // Если не было в строке parm=, возвращаем null
-    // если было, то или '', или то что было
+    // если было, то или '', или то что было.
 
     var result = null;
     const got_parm = document.URL.match(new RegExp("[\\?\\&]" + parm + "\\=([A-Za-z_0-9\\-\\,]+)?", "i"));
