@@ -218,7 +218,7 @@ function main_() {
             '&withalone=' + parm_withalone +
             '&dover=' + parm_dover +
             '&rod=' + parm_rod +
-            '&from=' + parm_f
+            '&from=' + parm_f +
             '&number=' + parm_q
         ;
     } else if (parm_tg_group_chat_id) {
