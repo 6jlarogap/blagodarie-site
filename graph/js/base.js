@@ -6,8 +6,29 @@ function get_api_url_() {
     }
 }
 
+function get_blagoroda_host_() {
+    if (typeof __BLAGORODA_HOST__ === 'undefined') {
+        return 'blagoroda.org';
+    } else {
+        return __BLAGORODA_HOST__;
+    }
+}
+
 // Возможные параметры (?параметр1&параметр2 ...), по группам параметров,
 // в порядке их рассмотрения:
+//
+//  запрос к сайту __BLAGORODA_HOST__
+//      показать страницу пользователей с их родственными и сязями доверия.
+//      Порядок выборки пользователей: начиная с последнего присоединившегося
+//      к сообществу.
+//      Параметры такой страницы:
+//  f                   (from). Начало выборки, по умолчанию 0
+//  q                   (quantity). Сколько выбирать на странице, по умолчанию 25.
+//
+//  tg_group_chat_id    ид группы/канала в телеграме, показ связей доверия участников группы.
+//                      Если url начинается с 'group.', то ожидается tg_group_chat_id=
+//                      Если в url, начинающемся с group., нет tg_group_chat_id=,
+//                      то полагается несуществующая tg_group_chat_id=-1, а это пустота на экране
 //
 //  user_uuid_genesis_tree
 //                      uuid
@@ -41,11 +62,6 @@ function get_api_url_() {
 //  tg_poll_id          ид опроса телеграма, показ ответов,
 //                      Показ того, кто на что отвечал, связей доверия среди отвечавших
 //
-//  tg_group_chat_id    ид группы/канала в телеграме, показ связей доверия участников группы.
-//                      Если url начинается с 'group.', то ожидается tg_group_chat_id=
-//                      Если в url, начинающемся с group. нет tg_group_chat_id=,
-//                      то полагается tg_group_chat_id=0, а это пустота на экране
-//
 //  Если не задан ни один из перечисленных выше параметров, в том числе в url нет параметров,
 //  то это соответствует вызову с /?rod=on&dover=&withalone=
 //
@@ -76,12 +92,25 @@ function get_parm(parm) {
     }    return result;
 }
 
+var parm_f = '';
+var parm_q = '';
+
+var parm_tg_group_chat_id = '';
+
 var parm_rod = '';
+var parm_dover = '';
+var parm_withalone = '';
+
 var parm_tg_poll_id = '';
 var parm_offer_uuid = '';
 var parm_user_uuid_trusts='';
 var parm_user_uuid_genesis_path='';
+var parm_user_uuid_trust_path='';
+
 var parm_user_uuid_genesis_tree='';
+var parm_depth='';
+var parm_up='';
+var parm_down='';
 
 function link_color(link, format) {
     const color_relation = format == 'rgba' ? 'rgba(255, 232, 232, 0.8)' : '#ffe8e8';
@@ -102,31 +131,55 @@ function link_color(link, format) {
 function main_() {
 
     const is_group_site = window.location.host.match(/^group\./);
+    const is_blagoroda_host = get_blagoroda_host_() == window.location.host;
+    const is_other_site = 
+        !is_group_site &&
+        !is_blagoroda_host
+    ;
+    parm_tg_group_chat_id = parseInt(get_parm('tg_group_chat_id'));
+    parm_f = parseInt(get_parm('f'));
+    parm_q = parseInt(get_parm('q'));
 
-    if (!document.URL.match(/\?/)) {
+    parm_rod = get_parm('rod') || '';
+    parm_dover=get_parm('dover') || '';;
+    parm_withalone = get_parm('withalone') || '';
+
+    parm_user_uuid_genesis_tree = get_parm('user_uuid_genesis_tree') || '';
+    parm_user_uuid_genesis_path = get_parm('user_uuid_genesis_path') || '';
+    parm_user_uuid_trust_path = get_parm('user_uuid_trust_path') || '';
+    parm_tg_poll_id = get_parm('tg_poll_id') || '';
+    parm_offer_uuid = get_parm('offer_uuid') || '';
+    parm_user_uuid_trusts = get_parm('user_uuid_trusts') || '';
+    if (
+        !document.URL.match(/\?/) ||
+        document.URL.match(/\?$/) ||
+        is_group_site && isNaN(parm_tg_group_chat_id) ||
+        is_blagoroda_host && (isNaN(parm_f) || isNaN(parm_q) || parm_f < 0 || parm_q <= 0) ||
+        is_other_site && 
+            !parm_tg_group_chat_id &&
+            !parm_user_uuid_genesis_tree &&
+            !parm_user_uuid_genesis_path &&
+            !parm_user_uuid_trust_path &&
+            !parm_tg_poll_id &&
+            !parm_offer_uuid &&
+            !parm_user_uuid_trusts &&
+            !parm_rod && !parm_dover
+       ) {
         window.location.assign(
-            document.URL +
-                (is_group_site ? '?tg_group_chat_id=0' : '?rod=on&dover=&withalone=')
+            window.location.protocol + '//' +
+            window.location.host +
+            window.location.pathname + 
+            (
+                (is_blagoroda_host ? '?f=0&q=25' :
+                (is_group_site ? '?tg_group_chat_id=-1' : '?rod=on&dover=&withalone='
+            )))
         );
     }
-    var parm_dover='';
-    var parm_withalone='';
-    var parm_user_uuid_trust_path='';
-    var parm_depth='';
-    var parm_up='';
-    var parm_down='';
 
     const r_uuid = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i;
     const r_uuid1_uuid2 = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}\,[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i;
 
-    var parm_tg_group_chat_id = get_parm('tg_group_chat_id') || '';
-    if (is_group_site && !parm_tg_group_chat_id) {
-        parm_tg_group_chat_id = '?tg_group_chat_id=0';
-    }
-    if (parm_tg_group_chat_id) {
-        //
-    } else {
-        parm_user_uuid_genesis_tree = get_parm('user_uuid_genesis_tree') || '';
+    if (is_other_site) {
         if (parm_user_uuid_genesis_tree) {
             if (r_uuid.test(parm_user_uuid_genesis_tree)) {
                 parm_depth = get_parm('depth') || '';
@@ -137,7 +190,6 @@ function main_() {
             }
         }
 
-        parm_user_uuid_genesis_path = get_parm('user_uuid_genesis_path') || '';
         if (parm_user_uuid_genesis_path) {
             if (r_uuid1_uuid2.test(parm_user_uuid_genesis_path)) {
                 parm_depth = get_parm('depth') || '';
@@ -146,7 +198,6 @@ function main_() {
             }
         }
 
-        parm_user_uuid_trust_path = get_parm('user_uuid_trust_path') || '';
         if (parm_user_uuid_trust_path) {
             if (r_uuid1_uuid2.test(parm_user_uuid_trust_path)) {
                 parm_depth = get_parm('depth') || '';
@@ -154,27 +205,25 @@ function main_() {
                 parm_user_uuid_trust_path = '';
             }
         }
-
-        parm_tg_poll_id = get_parm('tg_poll_id') || '';
-        parm_offer_uuid = get_parm('offer_uuid') || '';
-        parm_user_uuid_trusts = get_parm('user_uuid_trusts') || '';
-        if (
-            !parm_tg_poll_id &&
-            !parm_offer_uuid &&
-            !parm_user_uuid_trusts &&
-            !parm_tg_group_chat_id &&
-            !parm_user_uuid_genesis_path &&
-            !parm_user_uuid_trust_path &&
-            !parm_user_uuid_genesis_tree
-           ) {
-            parm_rod = get_parm('rod') || '';
-            parm_dover = get_parm('dover') || '';
-            parm_withalone = get_parm('withalone') || '';
-        }
     }
+
     const api_url = get_api_url_();
     var api_get_parms;
-    if (parm_user_uuid_genesis_tree) {
+    if (is_blagoroda_host) {
+        api_get_parms =
+            '/api/profile_genesis/all?fmt=3d-force-graph' +
+            '&withalone=on' +
+            '&dover=on' +
+            '&rod=on' +
+            '&from=' + parm_f +
+            '&number=' + parm_q
+        ;
+    } else if (parm_tg_group_chat_id) {
+        api_get_parms =
+            '/api/getstats/user_connections_graph?fmt=3d-force-graph' +
+            '&number=0' +
+            '&tg_group_chat_id=' + parm_tg_group_chat_id;
+    } else if (is_other_site && parm_user_uuid_genesis_tree) {
         api_get_parms =
             '/api/profile_genesis?uuid=' + parm_user_uuid_genesis_tree +
             '&fmt=3d-force-graph' +
@@ -182,28 +231,23 @@ function main_() {
             '&up=' + parm_up +
             '&down=' + parm_down
         ;
-    } else if (parm_user_uuid_genesis_path) {
+    } else if (is_other_site && parm_user_uuid_genesis_path) {
         document.title = 'Благо Рода: путь родства';
         api_get_parms =
             '/api/profile_genesis?uuid=' + parm_user_uuid_genesis_path + '&fmt=3d-force-graph&depth=' + parm_depth;
-    } else if (parm_user_uuid_trust_path) {
+    } else if (is_other_site && parm_user_uuid_trust_path) {
         document.title = 'Благо Рода: путь доверий';
         api_get_parms =
             '/api/profile_trust?uuid=' + parm_user_uuid_trust_path + '&fmt=3d-force-graph&depth=' + parm_depth;
-    } else if (parm_user_uuid_trusts) {
+    } else if (is_other_site && parm_user_uuid_trusts) {
         api_get_parms =
             '/api/profile_graph?fmt=3d-force-graph&uuid=' + parm_user_uuid_trusts;
-    } else if (parm_offer_uuid) {
+    } else if (is_other_site && parm_offer_uuid) {
         api_get_parms =
             '/api/offer/results/?offer_uuid=' + parm_offer_uuid;
-    } else if (parm_tg_poll_id) {
+    } else if (is_other_site && parm_tg_poll_id) {
         api_get_parms =
             '/api/bot/poll/results/?tg_poll_id=' + parm_tg_poll_id;
-    } else if (parm_tg_group_chat_id) {
-        api_get_parms =
-            '/api/getstats/user_connections_graph?fmt=3d-force-graph' +
-            '&number=0' +
-            '&tg_group_chat_id=' + parm_tg_group_chat_id;
     } else {
         api_get_parms =
             '/api/profile_genesis/all?fmt=3d-force-graph' +
@@ -215,16 +259,16 @@ function main_() {
         url: api_url  + api_get_parms,
         dataType: 'json',
         success: function(data) {
-            if (parm_user_uuid_genesis_tree && data.user_q_name) {
+            if (parm_tg_group_chat_id && data.tg_group) {
+                document.title =
+                    'Благо Рода, доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') + ': ' +
+                    data.tg_group.title;
+            } else if (parm_user_uuid_genesis_tree && data.user_q_name) {
                 document.title = 'Благо Рода, родство: ' + data.user_q_name;
             } else if (parm_user_uuid_trusts && data.user_q_name) {
                 document.title = 'Благо Рода, ближайшие доверия: ' + data.user_q_name;
             } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
                 document.title = 'Благо Рода, опрос: ' + data.question;
-            } else if (parm_tg_group_chat_id && data.tg_group) {
-                document.title =
-                    'Благо Рода, доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') + ': ' +
-                    data.tg_group.title;
             }
             const photoTextureUnknown = new THREE.TextureLoader().load(`./images/star.jpeg`);
             const Graph = ForceGraph3D()
