@@ -8,7 +8,7 @@ function get_api_url_() {
 
 function get_blagoroda_host_() {
     if (typeof __BLAGORODA_HOST__ === 'undefined') {
-        return 'blagoroda.org';
+        return 'fq.blagoroda.org';
     } else {
         return __BLAGORODA_HOST__;
     }
@@ -210,12 +210,15 @@ function main_() {
     const api_url = get_api_url_();
     var api_get_parms;
     if (is_blagoroda_host) {
+        parm_rod = 'on';
+        parm_dover = 'on';
+        parm_withalone = 'on';
         api_get_parms =
             '/api/profile_genesis/all?fmt=3d-force-graph' +
-            '&withalone=on' +
-            '&dover=on' +
-            '&rod=on' +
-            '&from=' + parm_f +
+            '&withalone=' + parm_withalone +
+            '&dover=' + parm_dover +
+            '&rod=' + parm_rod +
+            '&from=' + parm_f
             '&number=' + parm_q
         ;
     } else if (parm_tg_group_chat_id) {
