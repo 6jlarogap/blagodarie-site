@@ -1,6 +1,6 @@
 const settingSets = [
     {
-        url: 'https://blagoroda.org/',
+        url: 'https://old.blagoroda.org/',
         api: 'https://api.blagoroda.org/',
         bot: 'doverabot',
         yandex: {
