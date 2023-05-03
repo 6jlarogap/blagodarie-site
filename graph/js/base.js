@@ -273,15 +273,21 @@ function main_() {
             } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
                 document.title = 'Благо Рода, опрос: ' + data.question;
             }
-            const photoTextureUnknown = new THREE.TextureLoader().load(`./images/star.jpeg`);
+            const photoTextureMale = new THREE.TextureLoader().load(`./images/no-photo-gender-male.jpg`);
+            const photoTextureFemale = new THREE.TextureLoader().load(`./images/no-photo-gender-female.jpg`);
+            const photoTextureNone = new THREE.TextureLoader().load(`./images/no-photo-gender-none.jpg`);
             const Graph = ForceGraph3D()
             (document.getElementById('3d-graph'))
-            .nodeThreeObject(({ id, photo }) => {
+            .nodeThreeObject(({ id, photo, gender }) => {
                 var photoTexture;
                 if (photo) {
                     photoTexture = new THREE.TextureLoader().load(photo);
+                } else if (gender == 'm') {
+                    photoTexture = photoTextureMale;
+                } else if (gender == 'f') {
+                    photoTexture = photoTextureFemale;
                 } else {
-                    photoTexture = photoTextureUnknown;
+                    photoTexture = photoTextureNone;
                 }
                 const material = new THREE.SpriteMaterial({ map: photoTexture });
                 const sprite = new THREE.Sprite(material);
