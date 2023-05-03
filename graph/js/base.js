@@ -8,7 +8,7 @@ function get_api_url_() {
 
 function get_blagoroda_host_() {
     if (typeof __BLAGORODA_HOST__ === 'undefined') {
-        return 'fq.blagoroda.org';
+        return 'blagoroda.org';
     } else {
         return __BLAGORODA_HOST__;
     }
