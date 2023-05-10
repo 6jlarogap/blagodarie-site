@@ -117,7 +117,9 @@ function main_() {
                 num_men = '(указавших место среди выбранных: ' + data.points.length +  ')';
                 $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Наши участники</big></a>' + ' ' + num_men + '</h3>');
             }
-
+            if (data.legend) {
+                $('#id_legend').html(data.legend);
+            }
             show_map(data);
         }
     });
