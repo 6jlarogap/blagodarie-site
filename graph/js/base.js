@@ -1,18 +1,6 @@
-function get_api_url_() {
-    if (typeof __API_URL__ === 'undefined') {
-        return 'https://api.blagoroda.org';
-    } else {
-        return __API_URL__;
-    }
-}
-
-function get_blagoroda_host_() {
-    if (typeof __BLAGORODA_HOST__ === 'undefined') {
-        return 'blagoroda.org';
-    } else {
-        return __BLAGORODA_HOST__;
-    }
-}
+//
+//  base.js
+//
 
 // Возможные параметры (?параметр1&параметр2 ...), по группам параметров,
 // в порядке их рассмотрения:
@@ -76,20 +64,12 @@ function get_blagoroda_host_() {
 //                      нет связей доверия (если задан dover)
 //
 
-function get_parm(parm) {
-
-    // Получить get parameter
-    // Если не было в строке parm=, возвращаем null
-    // если было, то или '', или то что было.
-
-    var result = null;
-    const got_parm = document.URL.match(new RegExp("[\\?\\&]" + parm + "\\=([A-Za-z_0-9\\-\\,]+)?", "i"));
-    if (got_parm) {
-        result = got_parm[1] || '';
-        if (result.match(/^\&/)) {
-            result = '';
-        }
-    }    return result;
+function get_blagoroda_host_() {
+    if (typeof __BLAGORODA_HOST__ === 'undefined') {
+        return 'blagoroda.org';
+    } else {
+        return __BLAGORODA_HOST__;
+    }
 }
 
 var parm_f = '';
