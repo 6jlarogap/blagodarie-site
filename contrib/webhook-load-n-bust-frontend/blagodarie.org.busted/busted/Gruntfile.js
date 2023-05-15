@@ -50,6 +50,54 @@ module.exports = function(grunt) {
                 jsonOutput: false
             },
 
+            prod_graph: {
+                options: {
+                    assets: ['**/*.js', '**/*.css'],
+                    createCopies: false,
+                    baseDir: './prod/tempo_/graph/'
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'prod/tempo_/graph/',
+                        src: ['**/index.html']
+                    }
+                ],
+                jsonOutput: false
+            },
+
+            prod_auth_telegram: {
+                options: {
+                    assets: ['**/*.js', '**/*.css'],
+                    createCopies: false,
+                    baseDir: './prod/tempo_/graph/auth/telegram/'
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'prod/tempo_/graph/auth/telegram/',
+                        src: ['**/index.html']
+                    }
+                ],
+                jsonOutput: false
+            },
+
+            prod_group_3djs: {
+                options: {
+                    assets: ['**/*.js', '**/*.css'],
+                    createCopies: false,
+                    baseDir: './prod/tempo_/group_3djs/'
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'prod/tempo_/group_3djs/',
+                        src: ['**/index.html']
+                    }
+                ],
+                jsonOutput: false
+            },
+
             dev_blagodarie: {
                 options: {
                     assets: ['**/*.js', '**/*.css'],

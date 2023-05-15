@@ -3,10 +3,10 @@
 # --- configurable parameters ------------------------
 VER_="prod"
 GIT_BRANCH_="master"
-FOLDERS_='blagodarie map genesis'
+FOLDERS_='blagodarie map genesis graph group_3djs auth_telegram'
 # --- end of configurable parameters -----------------
 
-root_dir_="/home/www-data/blagodarie.org.busted"
+root_dir_="/home/www-data/blagodari.rf.busted"
 tempo_="tempo_"
 
 cd "$root_dir_/git/$VER_"
