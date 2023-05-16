@@ -111,6 +111,7 @@ function link_color(link, format) {
 function main_() {
 
     const is_group_site = window.location.host.match(/^group\./);
+    if (is_group_site && !check_auth()) return;
     const is_blagoroda_host = get_blagoroda_host_() == window.location.host;
     const is_other_site = 
         !is_group_site &&
@@ -187,7 +188,7 @@ function main_() {
         }
     }
 
-    const api_url = get_api_url_();
+    const api_url = get_api_url();
     var api_get_parms;
     if (is_blagoroda_host) {
         parm_rod = 'on';

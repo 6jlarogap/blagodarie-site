@@ -1,54 +1,36 @@
-function get_api_url_() {
-    if (typeof __API_URL__ === 'undefined') {
-        return 'https://api.blagoroda.org';
-    } else {
-        return __API_URL__;
-    }
-}
-
 var chat_id = '';
 var offer_id = '';
 var uuid = '';
-var participants = false;
-var owned = false;
+var participants = '';
+var owned = '';
 
 function main_() {
-    var api_url = get_api_url_();
+    var api_url = get_api_url();
     var api_get_parms = [];
-    var got_parm = document.URL.match(/chat_id\=([-]*[0-9]+)/i);
-    if (got_parm) {
+    uuid = get_parm('uuid');
+    if (chat_id = get_parm('chat_id')) {
         $('#id_block_form').hide();
-        chat_id = got_parm[1];
         api_get_parms.push('chat_id=' + chat_id);
+    } else if (offer_id = get_parm('offer_id')) {
+        $('#id_block_form').hide();
+        api_get_parms.push('offer_id=' + offer_id);
     } else {
-        got_parm = document.URL.match(/offer_id\=([0-9a-f\-]+)/i);
-        if (got_parm) {
-            $('#id_block_form').hide();
-            offer_id = got_parm[1];
-            api_get_parms.push('offer_id=' + offer_id);
+        $('#id_block_form').show();
+        if (uuid = get_parm('uuid')) {
+            api_get_parms.push('uuid=' + uuid);
+            $('input[name=uuid]').val(uuid);
         } else {
-            $('#id_block_form').show();
-            // Показ только одного юзера по центру
-            got_parm = document.URL.match(/uuid\=([0-9a-f\-]+)/i);
-            if (got_parm) {
-                uuid = got_parm[1];
-                api_get_parms.push('uuid=' + uuid);
-                $('input[name=uuid]').val(uuid);
-            } else {
-                $('input[name=uuid]').remove();
-            }
+            $('input[name=uuid]').remove();
         }
     }
     if (!chat_id && !offer_id) {
         // uuid или без uuid
-        if (document.URL.match(/participants\=on/i)) {
+        if (participants = get_parm('participants')) {
             $('#id_participants').attr('checked', 'checked');
-            participants = true;
             api_get_parms.push('participants=on');
         }
-        if (document.URL.match(/owned\=on/i)) {
+        if (owned = get_parm('owned')) {
             $('#id_owned').attr('checked', 'checked');
-            owned = true;
             api_get_parms.push('owned=on');
         }
         if (!document.URL.match(/\?/)) {
