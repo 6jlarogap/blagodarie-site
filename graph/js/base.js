@@ -111,8 +111,8 @@ function link_color(link, format) {
 function main_() {
 
     const is_group_site = window.location.host.match(/^group\./);
-    if (is_group_site && !check_auth()) return;
     const is_blagoroda_host = get_blagoroda_host_() == window.location.host;
+    if (is_blagoroda_host && !check_auth()) return;
     const is_other_site = 
         !is_group_site &&
         !is_blagoroda_host
