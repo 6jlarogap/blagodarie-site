@@ -1,7 +1,7 @@
 const settingSets = [
     {
-        url: 'http://genesis.sev12t.bsuir.by/',
-        api: 'http://sev12t.bsuir.by:8000/',
+        url: 'http://genesis.blagoroda.bsuir.by/',
+        api: 'http://api.blagoroda.bsuir.by/',
         bot: 'DevBlagoBot',
         yandex: {
             client_id: '1656d92ee4f8436a8e1de4f5938b0786'
