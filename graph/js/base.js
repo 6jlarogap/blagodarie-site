@@ -92,6 +92,8 @@ var parm_depth='';
 var parm_up='';
 var parm_down='';
 
+var auth_data = {};
+
 function link_color(link, format) {
     const color_relation = format == 'rgba' ? 'rgba(255, 232, 232, 0.8)' : '#ffe8e8';
     const color_poll = color_relation;
@@ -112,7 +114,6 @@ function main_() {
 
     const is_group_site = window.location.host.match(/^group\./);
     const is_blagoroda_host = get_blagoroda_host_() == window.location.host;
-    if (is_blagoroda_host && !check_auth()) return;
     const is_other_site = 
         !is_group_site &&
         !is_blagoroda_host
@@ -191,6 +192,7 @@ function main_() {
     const api_url = get_api_url();
     var api_get_parms;
     if (is_blagoroda_host) {
+        if (!(auth_data = check_auth())) return;
         parm_rod = 'on';
         parm_dover = 'on';
         parm_withalone = 'on';
@@ -233,14 +235,17 @@ function main_() {
         api_get_parms =
             '/api/bot/poll/results/?tg_poll_id=' + parm_tg_poll_id;
     } else {
+        if (!(auth_data = check_auth())) return;
         api_get_parms =
             '/api/profile_genesis/all?fmt=3d-force-graph' +
             '&withalone=' + parm_withalone +
             '&dover=' + parm_dover +
             '&rod=' + parm_rod;
     }
+    var headers = auth_data ? { 'Authorization': 'Token ' + auth_data.auth_token } : {};
     $.ajax({
         url: api_url  + api_get_parms,
+        headers: headers,
         dataType: 'json',
         success: function(data) {
             if (parm_tg_group_chat_id && data.tg_group) {

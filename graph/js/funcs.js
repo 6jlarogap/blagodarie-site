@@ -29,22 +29,49 @@ function get_parm(parm) {
 
 
 function getCookie(name) {
-  let matches = document.cookie.match(new RegExp(
-    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-  ));
-  return matches ? decodeURIComponent(matches[1]) : undefined;
+
+    // Полагаю, что в куке всегда объект, его и возвращаю, если
+    // в строке куки имеется преобразуемый из json объект, или
+    // undefined, если кука не найдена или не преобразуется в объект
+
+    var result = undefined;
+    var matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    if (matches) {
+        var value = decodeURIComponent(matches[1]);
+        if (value.match(new RegExp(`^[\"\'\`].+[\"\'\`]$`))) {
+            // строка в кавычках типа:
+            // "{\"provider\": \"telegram\"\054 \"user_uuid\": \"...\"\054 \"auth_token\": \"...\"}"
+            value = eval (value);
+        }
+        try {
+            result = JSON.parse(value);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    return result;
 }
 
 
 function check_auth() {
 
-    // Проверяем, есть ли кука авторизации. Если нет, то:
-    //  -   в апи получаем token для document.URL, заодно
-    //      имя бота
-    //  -   уходим на страницу телеграма для авторизации
+    // Проверяем, есть ли кука авторизации.
+    //  Если есть, то:
+    //      -   возвращаем ее объект типа:
+    //          {
+    //              provider: "telegram",
+    //              user_uuid: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    //              auth_token: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    //          }
+    //  Если нет, то:
+    //      -   в апи получаем token для document.URL, заодно
+    //          имя бота
+    //      -   уходим на страницу телеграма для авторизации
 
-    var result = true;
-    if (getCookie('auth_data')) {
+    var result = undefined;
+    if (result = getCookie('auth_data')) {
         return result;
     }
     const api_url = get_api_url();
@@ -65,12 +92,10 @@ function check_auth() {
                     'https://t.me/' + data.bot_username + '?start=auth_redirect-' + data.token
                 );
             } else {
-                result = false;
                 alert(err_mes);
             }
         },
         error: function (error) {
-            result = false;
             alert(err_mes);
         }
     });
