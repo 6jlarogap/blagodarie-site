@@ -92,7 +92,7 @@ var parm_depth='';
 var parm_up='';
 var parm_down='';
 
-var auth_data = {};
+var auth_data = undefined;
 
 function link_color(link, format) {
     const color_relation = format == 'rgba' ? 'rgba(255, 232, 232, 0.8)' : '#ffe8e8';
