@@ -5,7 +5,7 @@
 // Возможные параметры (?параметр1&параметр2 ...), по группам параметров,
 // в порядке их рассмотрения:
 //
-//  запрос к сайту __BLAGORODA_HOST__
+//  запрос к сайту BLAGORODA_HOST
 //      показать страницу пользователей с их родственными и сязями доверия.
 //      Порядок выборки пользователей: начиная с последнего присоединившегося
 //      к сообществу.
@@ -65,10 +65,14 @@
 //
 
 function get_blagoroda_host_() {
-    if (typeof __BLAGORODA_HOST__ === 'undefined') {
+
+    // Можно переопределить в local_settings.js,
+    // который стоит раньше других js скриптов в .html
+
+    if (typeof BLAGORODA_HOST === 'undefined') {
         return 'blagoroda.org';
     } else {
-        return __BLAGORODA_HOST__;
+        return BLAGORODA_HOST;
     }
 }
 
