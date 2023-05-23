@@ -80,7 +80,7 @@ function check_auth() {
         "url": document.URL
     }
     $.ajax({
-        url: api_url + '/api/url/token/',
+        url: api_url + '/api/token/url/',
         type: 'POST',
         data: JSON.stringify(payload),
         contentType: 'application/json; charset=utf-8',
