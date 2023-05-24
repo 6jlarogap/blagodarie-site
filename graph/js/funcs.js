@@ -5,7 +5,7 @@
 
 function get_api_url() {
 
-    // Можно переопределить в local_settings.js,
+    // API_URL можно переопределить в local_settings.js,
     // который стоит раньше других js скриптов в .html
 
     if (typeof API_URL === 'undefined') {
@@ -18,8 +18,12 @@ function get_api_url() {
 function get_root_domain() {
 
     // Домен для куки.
-    // Можно переопределить в local_settings.js,
+    // ROOT_DOMAIN можно переопределить в local_settings.js,
     // который стоит раньше других js скриптов в .html
+
+    // Вместо этого некорректно было бы ставить window.location.host:
+    // можем обращаться к page.org.com, а куку надо ставить
+    // на org.com
 
     if (typeof ROOT_DOMAIN === 'undefined') {
         return 'blagoroda.org';
@@ -28,22 +32,15 @@ function get_root_domain() {
     }
 }
 
+const DOCUMENT_URL = new URL(window.location.href);
 function get_parm(parm) {
+        
+    // Получить get parameter, уже раскодированный!
+    // Если в search- строке (?a=1&b=2...) не было parm=,
+    // возвращаем null.
 
-    // Получить get parameter
-    // Если не было в строке parm=, возвращаем null
-    // если было, то или '', или то что было.
-
-    var result = null;
-    const got_parm = document.URL.match(new RegExp("[\\?\\&]" + parm + "\\=([A-Za-z_0-9\\-\\,\\%\\+]+)?", "i"));
-    if (got_parm) {
-        result = got_parm[1] || '';
-        if (result.match(/^\&/)) {
-            result = '';
-        }
-    }    return result;
+    return DOCUMENT_URL.searchParams.get(parm);
 }
-
 
 function getCookie(name) {
 
@@ -71,6 +68,18 @@ function getCookie(name) {
     return result;
 }
 
+function modal_dialog_show(html_text) {
+
+    // Показать диалог с html_text
+
+    $('.d-modal-close').click(function() {
+        $('#dialogModal').css("display", "none");
+    });
+    $('#dialogText').html(html_text);
+    $('#dialogModal').css("display", "block");
+}
+
+
 function check_auth() {
 
     // Проверяем, есть ли кука авторизации auth_data
@@ -89,7 +98,7 @@ function check_auth() {
     //              запускаем URL, без [?&]authdata_token=<authdata_token>
     //              в get параметрах
     //          -   если нет параметра [?&]authdata_token=<authdata_token>:
-    //              -   в апи получаем token для document.URL, заодно
+    //              -   в апи получаем token для window.location.href, заодно
     //                  имя бота
     //              -   уходим на страницу телеграма для авторизации
 
@@ -107,11 +116,11 @@ function check_auth() {
             dataType: 'json',
             async: false,
             success: function(data) {
-                // поставить куку
-                // Вырезать токен из адресной строки
-                // Уйти на document.URL без токена
-                var url = document.URL;
-                url = url.replace(/[\&\?]authdata_token\=[a-z0-9\-]+/i, '');
+                //  - вырезать токен из адресной строки
+                //  - поставить куку
+                //  - уйти на window.location.href без токена
+                var url = DOCUMENT_URL;
+                url.searchParams.delete('authdata_token');
                 var cookie_str  =
                     'auth_data=' + encodeURIComponent(JSON.stringify(data)) + ';' +
                     // 14 дней
@@ -120,28 +129,52 @@ function check_auth() {
                     'domain=' + get_root_domain() + '; ' +
                     'samesite=lax';
                 document.cookie = cookie_str;
-                window.location.assign(url);
+                window.location.assign(url.href);
             },
             error: function (error) {
                 alert(err_mes);
             }
         });
     } else {
-        const payload = {
-            "url": document.URL
-        }
         $.ajax({
             url: api_url + '/api/token/url/',
             type: 'POST',
-            data: JSON.stringify(payload),
+            data: JSON.stringify({ url: window.location.href }),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             async: false,
             success: function(data) {
                 if (data.bot_username) {
-                    window.location.assign(
-                        'https://t.me/' + data.bot_username + '?start=auth_redirect-' + data.token
+                    const auth_redirect_url =
+                        'https://t.me/' +
+                        data.bot_username +
+                        '?start=auth_redirect-' + data.token
+                    ;
+                    const bot_url = 'https://t.me/' + data.bot_username;
+                    modal_dialog_show(
+                        '<p>' +
+                            'Для авторизации перейдите по ссылке к телеграм-боту ' +
+                            'и следуйте его указаниям. ' +
+                            'Если переход по ссылке не работает ' +
+                            '<a ' +
+                                'href="' + auth_redirect_url + '">' +
+                                'скопируйте её текст' +
+                            '</a> ' +
+                            '- перейдите в телеграм - и отправьте её в чат - боту ' +
+                            '<a ' +
+                                'href="' + bot_url + '">' +
+                                bot_url +
+                            '</a>' +
+                        '</p>' +
+                        '<p style="text-align:center">' +
+                            '<a ' +
+                                'href="' + auth_redirect_url + '">' +
+                                '<button>Перейти</button>' +
+                            '</a>' +
+                        '</p>'
+
                     );
+                    // window.location.assign(auth_redirect_url);
                 } else {
                     alert(err_mes);
                 }

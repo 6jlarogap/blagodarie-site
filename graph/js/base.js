@@ -64,7 +64,7 @@
 //                      нет связей доверия (если задан dover)
 //
 
-function get_blagoroda_host_() {
+function get_blagoroda_host() {
 
     // Можно переопределить в local_settings.js,
     // который стоит раньше других js скриптов в .html
@@ -105,7 +105,7 @@ function link_color(link, format) {
     const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
     if (link.is_poll || link.is_offer) {
         return color_poll;
-    } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path || parm_user_uuid_genesis_tree)) {
+//     } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path || parm_user_uuid_genesis_tree)) {
         return color_relation;
     } else if (link.is_trust) {
         return color_trust;
@@ -117,7 +117,7 @@ function link_color(link, format) {
 function main_() {
 
     const is_group_site = window.location.host.match(/^group\./);
-    const is_blagoroda_host = get_blagoroda_host_() == window.location.host;
+    const is_blagoroda_host = get_blagoroda_host() == window.location.host;
     const is_other_site = 
         !is_group_site &&
         !is_blagoroda_host
@@ -137,8 +137,8 @@ function main_() {
     parm_offer_uuid = get_parm('offer_uuid') || '';
     parm_user_uuid_trusts = get_parm('user_uuid_trusts') || '';
     if (
-        !document.URL.match(/\?/) ||
-        document.URL.match(/\?$/) ||
+        !window.location.href.match(/\?/) ||
+        window.location.href.match(/\?$/) ||
         is_group_site && isNaN(parm_tg_group_chat_id) ||
         is_blagoroda_host && (isNaN(parm_f) || isNaN(parm_q) || parm_f < 0 || parm_q <= 0) ||
         is_other_site && 
