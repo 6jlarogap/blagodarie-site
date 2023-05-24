@@ -105,7 +105,7 @@ function link_color(link, format) {
     const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
     if (link.is_poll || link.is_offer) {
         return color_poll;
-//     } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path || parm_user_uuid_genesis_tree)) {
+    } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path || parm_user_uuid_genesis_tree)) {
         return color_relation;
     } else if (link.is_trust) {
         return color_trust;
