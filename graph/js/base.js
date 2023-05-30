@@ -266,16 +266,27 @@ function main_() {
             const photoTextureMale = new THREE.TextureLoader().load(`./images/no-photo-gender-male.jpg`);
             const photoTextureFemale = new THREE.TextureLoader().load(`./images/no-photo-gender-female.jpg`);
             const photoTextureNone = new THREE.TextureLoader().load(`./images/no-photo-gender-none.jpg`);
+
+            const photoTextureMaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-male-dead.jpg`);
+            const photoTextureFemaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-female-dead.jpg`);
+            const photoTextureNoneDead = new THREE.TextureLoader().load(`./images/no-photo-gender-none-dead.jpg`);
+
             const Graph = ForceGraph3D()
             (document.getElementById('3d-graph'))
-            .nodeThreeObject(({ id, photo, gender }) => {
+            .nodeThreeObject(({ id, photo, gender, is_dead }) => {
                 var photoTexture;
                 if (photo) {
                     photoTexture = new THREE.TextureLoader().load(photo);
-                } else if (gender == 'm') {
+                } else if (gender == 'm' && !is_dead) {
                     photoTexture = photoTextureMale;
-                } else if (gender == 'f') {
+                } else if (gender == 'm' && is_dead) {
+                    photoTexture = photoTextureMaleDead;
+                } else if (gender == 'f' && !is_dead) {
                     photoTexture = photoTextureFemale;
+                } else if (gender == 'f' && is_dead) {
+                    photoTexture = photoTextureFemaleDead;
+                } else if (is_dead) {
+                    photoTexture = photoTextureNoneDead;
                 } else {
                     photoTexture = photoTextureNone;
                 }
