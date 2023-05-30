@@ -99,7 +99,7 @@ var parm_down='';
 var auth_data = undefined;
 
 function link_color(link, format) {
-    const color_relation = format == 'rgba' ? 'rgba(255, 232, 232, 0.8)' : '#ffe8e8';
+    const color_relation = format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc';
     const color_poll = color_relation;
     const color_trust = format == 'rgba' ? 'rgba(54, 107, 13, 0.8)' : '#366b0d';
     const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
@@ -301,7 +301,8 @@ function main_() {
             .linkColor(link => link_color(link, 'rgb'))
             .linkOpacity(0.8)
             .linkCurvature(0.25)
-            .nodeLabel(node => `${node.first_name}`)
+            .backgroundColor("#FFFFFF")
+            .nodeLabel(node => `<span style="color: darkred">${node.first_name}</span>`)
             .onNodeClick(function(node){
                 if (node.uuid && data.bot_username) {
                     window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
