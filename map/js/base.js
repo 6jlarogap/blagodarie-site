@@ -4,7 +4,8 @@ var uuid = '';
 var participants = '';
 var owned = '';
 
-function main_() {
+$(document).ready (async function() {
+
     var api_url = get_api_url();
     var api_get_parms = [];
     uuid = get_parm('uuid');
@@ -105,7 +106,7 @@ function main_() {
             show_map(data);
         }
     });
-}
+});
 
 function show_map(data) {
 
@@ -178,7 +179,3 @@ function updateProgressBar(processed, total, elapsed, layersArray) {
         progress.style.display = 'none';
     }
 }
-
-$(function() {
-    main_();
-});

@@ -114,7 +114,7 @@ function link_color(link, format) {
     }
 }
 
-function main_() {
+$(document).ready (async function() {
 
     const is_group_site = window.location.host.match(/^group\./);
     const is_blagoroda_host = get_blagoroda_host() == window.location.host;
@@ -196,7 +196,8 @@ function main_() {
     const api_url = get_api_url();
     var api_get_parms;
     if (is_blagoroda_host) {
-        if (!(auth_data = check_auth())) return;
+        auth_data = await check_auth();
+        if (!auth_data) { return; };
         parm_rod = 'on';
         parm_dover = 'on';
         parm_withalone = 'on';
@@ -239,7 +240,8 @@ function main_() {
         api_get_parms =
             '/api/bot/poll/results/?tg_poll_id=' + parm_tg_poll_id;
     } else {
-        if (!(auth_data = check_auth())) return;
+        auth_data = await check_auth();
+        if (!auth_data) { return; };
         api_get_parms =
             '/api/profile_genesis/all?fmt=3d-force-graph' +
             '&withalone=' + parm_withalone +
@@ -318,8 +320,4 @@ function main_() {
             }
         }
     });
-}
-
-$(function() {
-    main_();
 });
