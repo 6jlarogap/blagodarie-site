@@ -289,13 +289,51 @@ document.addEventListener("popstate",function(e){
 
 var isTrust;
 
-
-
-
 let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
-d3.json(apiUrl)
+
+// --- let it authorize  (ES) --
+//
+function getCookieObject(name) {
+
+    // Полагаю, что в куке всегда объект, его и возвращаю, если
+    // в строке куки имеется преобразуемый из json объект, или
+    // undefined, если кука не найдена или не преобразуется в объект
+
+    let result = undefined;
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    if (matches) {
+        let value = decodeURIComponent(matches[1]);
+        if (value.match(new RegExp(`^[\"\'\`].+[\"\'\`]$`))) {
+            // строка в кавычках типа:
+            // "{\"provider\": \"telegram\"\054 \"user_uuid\": \"...\"\054 \"auth_token\": \"...\"}"
+            value = eval (value);
+        }
+        try {
+            result = JSON.parse(value);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    return result;
+}
+var auth_data_ = getCookieObject('auth_data');
+var auth_token_ = auth_data_ ? auth_data_.auth_token : '';
+var d3_json_parms = {};
+if (auth_token_) {
+    d3_json_parms = {
+        headers: new Headers({
+            'Authorization': 'Token ' + auth_token_
+        })
+    };
+}
+//
+// --- let it authorize --
+
+d3.json(apiUrl, d3_json_parms)
 	.then(async function(data) {
 
 		//добавить пользователей в вершины

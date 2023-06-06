@@ -18,17 +18,11 @@
     <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 
     <link rel="stylesheet" href="css/funcs.css" />
-    <!--
-        js/local_settings.js может и не быть (ничего страшного).
-        Это для удобства разработчика: он проверяет всё на своём домене
-        и это прописано у него в js/local_settings.js
-        А также там могут быть настройки для иного домена, нежели этого,
-        в котором применяются те же функции авторизации, см. js/funcs.js
-        Пример:
-            js/local_settings.js: js/local_settings.example.js
+    <!--    js/local_settings.js может и не быть (ничего страшного).
+            Для запуска функций в funcs.js из других доменов
     -->
-    <script src="js/local_settings.js"></script>
-    <script src="js/funcs.js"></script>
+    <script defer src="js/local_settings.js"></script>
+    <script defer src="js/funcs.js"></script>
     <script defer src="js/base.js"></script>
 </head>
 <body style="margin:0">

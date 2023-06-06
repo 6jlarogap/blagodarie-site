@@ -234,7 +234,7 @@ if (getCookie("auth_data")) {
 		setReferal();
 	}
 
-	window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
+	// window.location.href = `${settings.url}profile/?id=${getCookie("user_uuid")}`;
 }
 
 
@@ -313,6 +313,54 @@ copier.value = window.location.href;
 	})
 })
 
+// --- let it authorize  (ES) --
+//
+function getCookieObject(name) {
+
+    // Полагаю, что в куке всегда объект, его и возвращаю, если
+    // в строке куки имеется преобразуемый из json объект, или
+    // undefined, если кука не найдена или не преобразуется в объект
+
+    let result = undefined;
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    if (matches) {
+        let value = decodeURIComponent(matches[1]);
+        if (value.match(new RegExp(`^[\"\'\`].+[\"\'\`]$`))) {
+            // строка в кавычках типа:
+            // "{\"provider\": \"telegram\"\054 \"user_uuid\": \"...\"\054 \"auth_token\": \"...\"}"
+            value = eval (value);
+        }
+        try {
+            result = JSON.parse(value);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    return result;
+}
+var auth_data_ = getCookieObject('auth_data');
+var auth_token_ = auth_data_ ? auth_data_.auth_token : '';
+var d3_json_parms = {};
+var post_headers_ = {
+    "Content-Type": "application/json",
+};
+var get_headers_ = {
+};
+if (auth_token_) {
+    d3_json_parms = {
+        headers: new Headers({
+            'Authorization': 'Token ' + auth_token_
+        })
+    };
+    post_headers_.Authorization = 'Token ' + auth_token_
+    get_headers_.Authorization = 'Token ' + auth_token_
+}
+//
+// --- let it authorize --
+
+
 // agreement check
 agreementCheck.addEventListener("click", () => {
 	if (agreementCheck.checked) {
@@ -380,10 +428,7 @@ addElement.addEventListener("click", async () => {
 	if (elementAddInput.value != "") {
 		const response = await fetch(`${settings.api}api/${fetchSettings.apiurl}`, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"Authorization": `Token ${getCookie("auth_token")}`
-			},
+			headers: post_headers_,
 			body:  JSON.stringify(fetchSettings.body)
 		})
 		window.location.reload();
@@ -438,9 +483,7 @@ document.getElementById("filterNullify").addEventListener("click", () => {
 document.getElementById("deleteProfile").addEventListener("click", async () => {
 	const result = await fetch(`${settings.api}api/profile`, {
 		method: "DELETE",
-		headers: {
-			"Authorization": `Token ${getCookie("auth_token")}`
-		}
+		headers: get_headers_
 	})
 
 	deleteCookie('', 'user_uuid', 'auth_token');
@@ -528,9 +571,7 @@ let response_smat_map;
 async function setProfile() {
 	const response = await fetch(`${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
 		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
+		headers: get_headers_
 	}).then(data => data.json());
 	
 	var str = response.users[0].photo;
@@ -567,9 +608,7 @@ async function setProfile() {
 /*async function setProfilesLinks(){
 	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
 		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
+		headers: get_headers_
 	}).then(data => data.json());
 	response.connections.forEach(function(d){
 		if (d.is_trust != null){
@@ -596,10 +635,7 @@ async function setProfile() {
 async function add_gen(){
 		const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Token ${getCookie("auth_token")}`
-		},
+		headers: post_headers_,
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "first_name": "123"})
 	}).then(data => data.json());
 }
@@ -808,10 +844,7 @@ function show_smart_map(lati, long){
 document.querySelector(".mapid_send").addEventListener("click", async () => {
 			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Token ${getCookie("auth_token")}`
-		},
+		headers: post_headers_,
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null , "longitude": new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null })
 	}).then(data => data.json());
 	mapid_alert.style.display = "block";
@@ -834,10 +867,7 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 document.querySelector(".mapid_clean").addEventListener("click", async () => {
 			const response = await fetch(`${settings.api}api/profile`, {
 		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Token ${getCookie("auth_token")}`
-		},
+		headers: post_headers_,
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": null , "longitude": null })
 	}).then(data => data.json());
 	//map_container.style.display = "none";
@@ -941,7 +971,9 @@ var isTrust;
 let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
-d3.json(apiUrl)
+
+
+d3.json(apiUrl, d3_json_parms)
 	.then(async function(data) {
 
 	if (isAuth) {
@@ -1076,9 +1108,7 @@ d3.json(apiUrl)
 		async function count_plus() {
 		const response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
 		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
+		headers: get_headers_
 		}).then(data => data.json());
 
 	if(isAuth){
@@ -1254,9 +1284,7 @@ d3.json(apiUrl)
 		async function setProfilesLinks(){
 	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
 		method: "GET",
-		headers: {
-			"Authorization": 'Token ' + getCookie("auth_token")
-		}
+		headers: get_headers_
 	}).then(data => data.json());
 	response.connections.forEach(function(d){
 		if (d.is_trust != null){
@@ -2371,15 +2399,14 @@ async function rootFunctions(category) {
 async function deleteElement(uuid, apiurl) {
 	const response = await fetch(`${settings.api}api/${apiurl}${uuid}`, {
 		method: "GET",
-		headers: {
-			"Authorization": "Token " + getCookie("auth_token")
-		}
+		headers: get_headers_
 	}).then(data => data.json())
 }
 
 async function getElements(apiurl) {
 	const response = await fetch(`${settings.api}api/${apiurl}?uuid=${getCookie("user_uuid")}`, {
-		method: "GET"
+		method: "GET",
+		headers: get_headers_
 	}).then(data => data.json())
 	return response
 }
@@ -2391,10 +2418,7 @@ async function updateTrust(operationId, referal = null) {
 
 	const response = await fetch(`${settings.api}api/addoperation`, {
 		method: "POST",
-		headers: {
-			"Authorization": "Token " + getCookie("auth_token"),
-			"Content-Type": "application/json"
-		},
+		headers: post_headers_,
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "operation_type_id": operationId}),
 	}).then(data => data.json())
 	console.log(operationId);
@@ -2409,6 +2433,7 @@ async function updateTrust(operationId, referal = null) {
 async function getProfileInfo(uuid) {
 	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${uuid}`, {
 		method: 'GET',
+        headers: get_headers_
 	})
 	
 	return response
@@ -2417,10 +2442,7 @@ async function getProfileInfo(uuid) {
 async function getReferalToken() {
 	const response = await fetch(`${settings.api}api/invite/gettoken`, {
 		method: 'POST',
-		headers: {
-			"Authorization": "Token " + getCookie("auth_token"),
-			"content-Type": "application/json"
-		}
+		headers: post_headers_
 	}).then(data => data.json())
 
 	return response.token
@@ -2429,10 +2451,7 @@ async function getReferalToken() {
 async function useReferalToken() {
 	const response = await fetch(`${settings.api}api/invite/usetoken`, {
 		method: 'POST',
-		headers: {
-			"Authorization": "Token " + getCookie("auth_token"),
-			"Content-Type": "application/json"
-		},
+		headers: post_headers_,
 		body: JSON.stringify({
 			token: getCookie("invite_token")
 		})

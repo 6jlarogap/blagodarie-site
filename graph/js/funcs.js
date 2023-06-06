@@ -48,12 +48,12 @@ function getCookie(name) {
     // в строке куки имеется преобразуемый из json объект, или
     // undefined, если кука не найдена или не преобразуется в объект
 
-    var result = undefined;
-    var matches = document.cookie.match(new RegExp(
+    let result = undefined;
+    let matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
     if (matches) {
-        var value = decodeURIComponent(matches[1]);
+        let value = decodeURIComponent(matches[1]);
         if (value.match(new RegExp(`^[\"\'\`].+[\"\'\`]$`))) {
             // строка в кавычках типа:
             // "{\"provider\": \"telegram\"\054 \"user_uuid\": \"...\"\054 \"auth_token\": \"...\"}"
@@ -127,12 +127,18 @@ async function check_auth() {
         }
     }
 
+    let result = undefined;
+    let authdata_token = get_parm('authdata_token');
+
     if (result = getCookie('auth_data')) {
+        if (authdata_token) {
+            let url = DOCUMENT_URL;
+            url.searchParams.delete('authdata_token');
+            window.location.assign(url.href);
+        }
         return result;
     }
 
-    var result = undefined;
-    var authdata_token = get_parm('authdata_token');
     const err_mes = 'Ошибка авторизации!'
     const api_url = get_api_url();
 
@@ -142,9 +148,9 @@ async function check_auth() {
             //  - вырезать токен из адресной строки
             //  - поставить куку
             //  - уйти на window.location.href без токена
-            var url = DOCUMENT_URL;
+            let url = DOCUMENT_URL;
             url.searchParams.delete('authdata_token');
-            var cookie_str  =
+            let cookie_str  =
                 'auth_data=' + encodeURIComponent(JSON.stringify(data)) + ';' +
                 // 14 дней
                 'max-age=1209600; ' +

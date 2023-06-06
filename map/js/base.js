@@ -1,13 +1,16 @@
-var chat_id = '';
-var offer_id = '';
-var uuid = '';
-var participants = '';
-var owned = '';
+let chat_id = '';
+let offer_id = '';
+let uuid = '';
+let participants = '';
+let owned = '';
 
 $(document).ready (async function() {
 
-    var api_url = get_api_url();
-    var api_get_parms = [];
+    let auth_data = await check_auth();
+    if (!auth_data) { return; };
+
+    const api_url = get_api_url();
+    let api_get_parms = [];
     uuid = get_parm('uuid');
     if (chat_id = get_parm('chat_id')) {
         $('#id_block_form').hide();
@@ -39,12 +42,12 @@ $(document).ready (async function() {
         }
     }
 
-    var api_get_parm = api_get_parms.join('&');
+    const api_get_parm = api_get_parms.join('&');
     $.ajax({
         url: api_url  + '/api/user/points/' + (api_get_parm ? '?' + api_get_parm : ''),
         dataType: 'json',
         success: function(data) {
-            var num_men = '';
+            let num_men = '';
             if (uuid) {
                 if (data.first_name) {
                     $('#id_subtitle_').html('<h2><a href="' + document.URL + '">' + data.first_name + '</a></h2>');
@@ -67,7 +70,7 @@ $(document).ready (async function() {
                     ':</b>&nbsp;'
                 )
             } else if (chat_id) {
-                var subtitle = '';
+                let subtitle = '';
                 num_men = '(указавших место: ' + data.points.length +  ')';
                 if (data.chat_title) {
                     subtitle =
@@ -81,7 +84,7 @@ $(document).ready (async function() {
                 }
                 $('#id_subtitle_').html(subtitle);
             } else if (offer_id) {
-                var subtitle = '';
+                let subtitle = '';
                 num_men = '(указавших место: ' + data.points.length +  ')';
                 if (data.offer_question) {
                     subtitle =
@@ -118,21 +121,19 @@ function show_map(data) {
     //      стандарт, бесплатно, но китайские города в китайских иероглифах
     // По-русски бесплатных не нашел
 
-    var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 20,
             // Это обязательно!
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         });
-    var latlng = L.latLng(data.lat_avg, data.lng_avg);
-    var progress = document.getElementById('progress');
-    var progressBar = document.getElementById('progress-bar');
+    const latlng = L.latLng(data.lat_avg, data.lng_avg);
 
-    var markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
-    var markerList = [];
+    let markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
+    let markerList = [];
 
-    for (var i = 0; i < data.points.length; i++) {
-        var point = data.points[i];
-        var marker = L.marker(L.latLng(point.latitude, point.longitude), { title: point.title });
+    for (let i = 0; i < data.points.length; i++) {
+        let point = data.points[i];
+        let marker = L.marker(L.latLng(point.latitude, point.longitude), { title: point.title });
         marker.setIcon(L.icon({
             iconUrl: point.icon,
             iconSize: [point.size_icon, point.size_icon],
@@ -145,13 +146,13 @@ function show_map(data) {
         marker.bindPopup(point.popup);
         markerList.push(marker);
     }
-    var zoom = 5;
+    let zoom = 5;
     if (data.found_coordinates) {
         zoom = 12;
     } else if (data.points.length == 0) {
         zoom = 2;
     }
-    var map = L.map('map', { center: latlng, zoom: zoom, layers: [tiles] });
+    let map = L.map('map', { center: latlng, zoom: zoom, layers: [tiles] });
     map.addControl(new L.Control.Fullscreen({
         title: {
             'false': 'Полный экран',
@@ -168,6 +169,8 @@ function show_map(data) {
 }
 
 function updateProgressBar(processed, total, elapsed, layersArray) {
+    const progress = document.getElementById('progress');
+    const progressBar = document.getElementById('progress-bar');
     if (elapsed > 1000) {
         // if it takes more than a second to load, display the progress bar:
         progress.style.display = 'block';

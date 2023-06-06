@@ -2,6 +2,8 @@
 //  base.js
 //
 
+// Доступ требует авторизации, см. funcs.js:check_auth()
+//
 // Возможные параметры (?параметр1&параметр2 ...), по группам параметров,
 // в порядке их рассмотрения:
 //
@@ -14,9 +16,6 @@
 //  q                   (quantity). Сколько выбирать на странице, по умолчанию 25.
 //
 //  tg_group_chat_id    ид группы/канала в телеграме, показ связей доверия участников группы.
-//                      Если url начинается с 'group.', то ожидается tg_group_chat_id=
-//                      Если в url, начинающемся с group., нет tg_group_chat_id=,
-//                      то полагается несуществующая tg_group_chat_id=-1, а это пустота на экране
 //
 //  user_uuid_genesis_tree
 //                      uuid
@@ -76,27 +75,27 @@ function get_blagoroda_host() {
     }
 }
 
-var parm_f = '';
-var parm_q = '';
+let parm_f = '';
+let parm_q = '';
 
-var parm_tg_group_chat_id = '';
+let parm_tg_group_chat_id = '';
 
-var parm_rod = '';
-var parm_dover = '';
-var parm_withalone = '';
+let parm_rod = '';
+let parm_dover = '';
+let parm_withalone = '';
 
-var parm_tg_poll_id = '';
-var parm_offer_uuid = '';
-var parm_user_uuid_trusts='';
-var parm_user_uuid_genesis_path='';
-var parm_user_uuid_trust_path='';
+let parm_tg_poll_id = '';
+let parm_offer_uuid = '';
+let parm_user_uuid_trusts='';
+let parm_user_uuid_genesis_path='';
+let parm_user_uuid_trust_path='';
 
-var parm_user_uuid_genesis_tree='';
-var parm_depth='';
-var parm_up='';
-var parm_down='';
+let parm_user_uuid_genesis_tree='';
+let parm_depth='';
+let parm_up='';
+let parm_down='';
 
-var auth_data = undefined;
+let auth_data = undefined;
 
 function link_color(link, format) {
     const color_relation = format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc';
@@ -116,11 +115,11 @@ function link_color(link, format) {
 
 $(document).ready (async function() {
 
-    const is_group_site = window.location.host.match(/^group\./);
+    auth_data = await check_auth();
+    if (!auth_data) { return; };
+
     const is_blagoroda_host = get_blagoroda_host() == window.location.host;
-    const is_other_site = 
-        !is_group_site &&
-        !is_blagoroda_host
+    const is_other_site = !is_blagoroda_host;
     ;
     parm_tg_group_chat_id = parseInt(get_parm('tg_group_chat_id'));
     parm_f = parseInt(get_parm('f'));
@@ -139,7 +138,6 @@ $(document).ready (async function() {
     if (
         !window.location.href.match(/\?/) ||
         window.location.href.match(/\?$/) ||
-        is_group_site && isNaN(parm_tg_group_chat_id) ||
         is_blagoroda_host && (isNaN(parm_f) || isNaN(parm_q) || parm_f < 0 || parm_q <= 0) ||
         is_other_site && 
             !parm_tg_group_chat_id &&
@@ -154,12 +152,7 @@ $(document).ready (async function() {
         window.location.assign(
             window.location.protocol + '//' +
             window.location.host +
-            window.location.pathname + 
-            (
-                (is_blagoroda_host ? '?f=0&q=25' :
-                (is_group_site ? '?tg_group_chat_id=-1' : '?rod=on&dover=&withalone='
-            )))
-        );
+            window.location.pathname + (is_blagoroda_host ? '?f=0&q=25' : '?rod=on&dover=&withalone='));
     }
 
     const r_uuid = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i;
@@ -194,10 +187,8 @@ $(document).ready (async function() {
     }
 
     const api_url = get_api_url();
-    var api_get_parms;
+    let api_get_parms;
     if (is_blagoroda_host) {
-        auth_data = await check_auth();
-        if (!auth_data) { return; };
         parm_rod = 'on';
         parm_dover = 'on';
         parm_withalone = 'on';
@@ -240,15 +231,13 @@ $(document).ready (async function() {
         api_get_parms =
             '/api/bot/poll/results/?tg_poll_id=' + parm_tg_poll_id;
     } else {
-        auth_data = await check_auth();
-        if (!auth_data) { return; };
         api_get_parms =
             '/api/profile_genesis/all?fmt=3d-force-graph' +
             '&withalone=' + parm_withalone +
             '&dover=' + parm_dover +
             '&rod=' + parm_rod;
     }
-    var headers = auth_data ? { 'Authorization': 'Token ' + auth_data.auth_token } : {};
+    let headers = auth_data ? { 'Authorization': 'Token ' + auth_data.auth_token } : {};
     $.ajax({
         url: api_url  + api_get_parms,
         headers: headers,
@@ -276,7 +265,7 @@ $(document).ready (async function() {
             const Graph = ForceGraph3D()
             (document.getElementById('3d-graph'))
             .nodeThreeObject(({ id, photo, gender, is_dead }) => {
-                var photoTexture;
+                let photoTexture;
                 if (photo) {
                     photoTexture = new THREE.TextureLoader().load(photo);
                 } else if (gender == 'm' && !is_dead) {

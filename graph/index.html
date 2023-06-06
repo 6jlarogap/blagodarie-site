@@ -7,14 +7,12 @@
     <script src="https://unpkg.com/three"></script>
     <script src="https://unpkg.com/3d-force-graph"></script>
 
-    <!--    js/local_settings.js может и не быть (ничего страшного).
-            Для удобства разработчика.
-    -->
-    <script src="js/local_settings.js"></script>
-
     <link rel="stylesheet" href="css/funcs.css" />
-    <script src="js/funcs.js"></script>
-
+    <!--    js/local_settings.js может и не быть (ничего страшного).
+            Для запуска функций в funcs.js из других доменов
+    -->
+    <script defer src="js/local_settings.js"></script>
+    <script defer src="js/funcs.js"></script>
     <script defer src="js/base.js"></script>
 
     <title>Благо Рода</title>
