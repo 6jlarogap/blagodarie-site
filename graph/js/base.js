@@ -236,7 +236,7 @@ $(document).ready (async function() {
             '&dover=' + parm_dover +
             '&rod=' + parm_rod;
     }
-    let headers = auth_data ? { 'Authorization': 'Token ' + auth_data.auth_token } : {};
+    const headers = auth_data ? { 'Authorization': 'Token ' + auth_data.auth_token } : {};
     $.ajax({
         url: api_url  + api_get_parms,
         headers: headers,

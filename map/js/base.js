@@ -43,9 +43,11 @@ $(document).ready (async function() {
     }
 
     const api_get_parm = api_get_parms.join('&');
+    const headers = auth_data ? { 'Authorization': 'Token ' + auth_data.auth_token } : {};
     $.ajax({
         url: api_url  + '/api/user/points/' + (api_get_parm ? '?' + api_get_parm : ''),
         dataType: 'json',
+        headers: headers,
         success: function(data) {
             let num_men = '';
             if (uuid) {
