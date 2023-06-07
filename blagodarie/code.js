@@ -481,7 +481,7 @@ document.getElementById("filterNullify").addEventListener("click", () => {
 
 // delete profile button
 document.getElementById("deleteProfile").addEventListener("click", async () => {
-	const result = await fetch(`${settings.api}api/profile`, {
+	const result = await fetch(`${settings.api}api/profile/`, {
 		method: "DELETE",
 		headers: get_headers_
 	})
@@ -569,7 +569,7 @@ function deleteCookie(subdomain,...Cookies) {
 let map_users = [];
 let response_smat_map;
 async function setProfile() {
-	const response = await fetch(`${settings.api}api/profile_graph?uuid=${getCookie("user_uuid")}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
+	const response = await fetch(`${settings.api}api/profile_graph/?uuid=${getCookie("user_uuid")}`/*`${settings.api}api/getprofileinfo?uuid=${getCookie("user_uuid")}`*/, {
 		method: "GET",
 		headers: get_headers_
 	}).then(data => data.json());
@@ -606,7 +606,7 @@ async function setProfile() {
 	console.log(map_users);
 }
 /*async function setProfilesLinks(){
-	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
+	const response = await fetch(`${settings.api}api/getstats/user_connections_graph/?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
 		method: "GET",
 		headers: get_headers_
 	}).then(data => data.json());
@@ -633,7 +633,7 @@ async function setProfile() {
 
 /*
 async function add_gen(){
-		const response = await fetch(`${settings.api}api/profile`, {
+		const response = await fetch(`${settings.api}api/profile/`, {
 		method: "POST",
 		headers: post_headers_,
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "first_name": "123"})
@@ -648,7 +648,7 @@ if(window.location.href.includes('gen')){
 
 //telegram auth
 async function onTelegramAuth(user) {
-	const response = await fetch(`${settings.api}api/auth/telegram`, {
+	const response = await fetch(`${settings.api}api/auth/telegram/`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"
@@ -842,7 +842,7 @@ function show_smart_map(lati, long){
 
 
 document.querySelector(".mapid_send").addEventListener("click", async () => {
-			const response = await fetch(`${settings.api}api/profile`, {
+			const response = await fetch(`${settings.api}api/profile/`, {
 		method: "POST",
 		headers: post_headers_,
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": new_cur_pos_marker_lat ? new_cur_pos_marker_lat : lati ? lati : null , "longitude": new_cur_pos_marker_lng ? new_cur_pos_marker_lng : long ? long : null })
@@ -865,7 +865,7 @@ document.querySelector(".mapid_send").addEventListener("click", async () => {
 
 
 document.querySelector(".mapid_clean").addEventListener("click", async () => {
-			const response = await fetch(`${settings.api}api/profile`, {
+			const response = await fetch(`${settings.api}api/profile/`, {
 		method: "POST",
 		headers: post_headers_,
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "latitude": null , "longitude": null })
@@ -924,29 +924,29 @@ var url = new URL(link);
 		document.querySelector('.pagination_count').innerHTML = url.searchParams.get('q');
 			var apiUrl;
 			if(getCookie("auth_token")=="" || getCookie("auth_token")==false){
-				apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
+				apiUrl = `${settings.api}api/getstats/user_connections_graph/?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
 			}
 		
             if (userIdFrom != null && userIdTo != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
+                apiUrl = `${settings.api}api/profile_graph/?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom + "&uuid_to=" + userIdTo;
                 //console.log(apiUrl);
             } else if (userIdFrom != null && localStorage.getItem('filter') === null) {
-                apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
+                apiUrl = `${settings.api}api/profile_graph/?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
                 //console.log(apiUrl);
 				//
             }else if (localStorage.getItem('filter') != null && isAuth && userIdFrom==null){
-				apiUrl = `${settings.api}api/profile_graph?uuid=${getCookie('user_uuid')}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
+				apiUrl = `${settings.api}api/profile_graph/?uuid=${getCookie('user_uuid')}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
 			}
 			else if (localStorage.getItem('filter') != null && isAuth) {
-                apiUrl = `${settings.api}api/profile_graph?uuid=${userIdFrom}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
+                apiUrl = `${settings.api}api/profile_graph/?uuid=${userIdFrom}&from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&query=` + localStorage.getItem('filter');
 				
                 //console.log(apiUrl);
             }else{
-				apiUrl = `${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
+				apiUrl = `${settings.api}api/getstats/user_connections_graph/?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`;
 			}
 		console.log(apiUrl);
 }else{
-	 var apiUrl = `${settings.api}api/profile_genesis?uuid=${getCookie('user_uuid')}`;
+	 var apiUrl = `${settings.api}api/profile_genesis/?uuid=${getCookie('user_uuid')}`;
 }
 
 
@@ -1106,7 +1106,7 @@ d3.json(apiUrl, d3_json_parms)
 		isConnection ? isTrust = data.connections.some(link => link.source == PROFILE.id && link.target == userIdFrom && link.is_trust) : null;
 		
 		async function count_plus() {
-		const response = await fetch(`${settings.api}api/profile_graph?uuid=` + userIdFrom, {
+		const response = await fetch(`${settings.api}api/profile_graph/?uuid=` + userIdFrom, {
 		method: "GET",
 		headers: get_headers_
 		}).then(data => data.json());
@@ -1282,7 +1282,7 @@ d3.json(apiUrl, d3_json_parms)
 */
 	if(isAuth && !window.location.href.includes('id') && !window.location.href.includes('gen')){
 		async function setProfilesLinks(){
-	const response = await fetch(`${settings.api}api/getstats/user_connections_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
+	const response = await fetch(`${settings.api}api/getstats/user_connections_graph/?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}`, {
 		method: "GET",
 		headers: get_headers_
 	}).then(data => data.json());
@@ -2416,7 +2416,7 @@ async function updateTrust(operationId, referal = null) {
 	// 	operationId = 4;
 	// }
 
-	const response = await fetch(`${settings.api}api/addoperation`, {
+	const response = await fetch(`${settings.api}api/addoperation/`, {
 		method: "POST",
 		headers: post_headers_,
 		body: JSON.stringify({"user_id_from":getCookie("auth_token"), "user_id_to": referal ? referal : userIdFrom, "operation_type_id": operationId}),
@@ -2424,23 +2424,8 @@ async function updateTrust(operationId, referal = null) {
 	console.log(operationId);
 }
 
-
-
-
-
-
-/*
-async function getProfileInfo(uuid) {
-	const response = await fetch(`${settings.api}api/getprofileinfo?uuid=${uuid}`, {
-		method: 'GET',
-        headers: get_headers_
-	})
-	
-	return response
-}
-*/
 async function getReferalToken() {
-	const response = await fetch(`${settings.api}api/invite/gettoken`, {
+	const response = await fetch(`${settings.api}api/invite/gettoken/`, {
 		method: 'POST',
 		headers: post_headers_
 	}).then(data => data.json())
@@ -2449,7 +2434,7 @@ async function getReferalToken() {
 }
 
 async function useReferalToken() {
-	const response = await fetch(`${settings.api}api/invite/usetoken`, {
+	const response = await fetch(`${settings.api}api/invite/usetoken/`, {
 		method: 'POST',
 		headers: post_headers_,
 		body: JSON.stringify({

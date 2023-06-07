@@ -270,10 +270,10 @@ var url = new URL(link);
 			var apiUrl;
 		
             if (chat_id) {
-                apiUrl = `${settings.api}api/profile_genesis?&chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
+                apiUrl = `${settings.api}api/profile_genesis/?&chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
             } else if (userIdFrom) {
                 // apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                apiUrl = `${settings.api}api/profile_genesis?&uuid=` + userIdFrom + '&depth=' + depth + '&up=' + up + '&down=' + down;
+                apiUrl = `${settings.api}api/profile_genesis/?&uuid=` + userIdFrom + '&depth=' + depth + '&up=' + up + '&down=' + down;
                 //console.log(apiUrl);
             } else if (all) {
                 // apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;

@@ -120,7 +120,6 @@ $(document).ready (async function() {
 
     const is_blagoroda_host = get_blagoroda_host() == window.location.host;
     const is_other_site = !is_blagoroda_host;
-    ;
     parm_tg_group_chat_id = parseInt(get_parm('tg_group_chat_id'));
     parm_f = parseInt(get_parm('f'));
     parm_q = parseInt(get_parm('q'));
