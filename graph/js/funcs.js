@@ -76,6 +76,13 @@ function modal_dialog_show(html_text) {
         $('#dialogModal').css("display", "none");
     });
     $('#dialogText').html(html_text);
+
+    const clipboard = new ClipboardJS('#button-copy', {
+        text: function(trigger) {
+            return trigger.getAttribute('data-clipboard-text');
+        }
+    });
+
     $('#dialogModal').css("display", "block");
 }
 
@@ -175,11 +182,8 @@ async function check_auth() {
                 '<p>' +
                     'Для авторизации перейдите по ссылке к телеграм-боту ' +
                     'и следуйте его указаниям. ' +
-                    'Если переход по ссылке не работает ' +
-                    '<a ' +
-                        'href="' + auth_redirect_url + '">' +
-                        'скопируйте её текст' +
-                    '</a> ' +
+                    'Если \'Перейти\' по ссылке не работает - ' +
+                    '<button id="button-copy" data-clipboard-text="' + auth_redirect_url + '">скопируйте ссылку</button> ' +
                     '- перейдите в телеграм - и отправьте её в чат - боту ' +
                     '<a ' +
                         'href="' + bot_url + '">' +
