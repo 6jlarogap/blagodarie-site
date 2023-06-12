@@ -12,8 +12,8 @@
 //      Порядок выборки пользователей: начиная с последнего присоединившегося
 //      к сообществу.
 //      Параметры такой страницы:
-//  f                   (from). Начало выборки, по умолчанию 0
-//  q                   (quantity). Сколько выбирать на странице, по умолчанию 25.
+//          f           (from). Начало выборки, по умолчанию 0
+//          q           (quantity). Сколько выбирать на странице, по умолчанию 25.
 //
 //  tg_group_chat_id    ид группы/канала в телеграме, показ связей доверия участников группы.
 //
@@ -49,6 +49,11 @@
 //  tg_poll_id          ид опроса телеграма, показ ответов,
 //                      Показ того, кто на что отвечал, связей доверия среди отвечавших
 //
+//  videoid             Ид видео.
+//                      Показ того, кто какие лайки ставил на видео
+//      Параметр такой страницы:
+//  source              Источник видео, по умолчанию 'yt' (Youtube)
+//
 //  Если не задан ни один из перечисленных выше параметров, в том числе в url нет параметров,
 //  то это соответствует вызову с /?rod=on&dover=&withalone=
 //
@@ -61,6 +66,9 @@
 //          withalone   (что-то не пустое)
 //                      показ людей, у которых нет родственных связей (если задан rod) и/или
 //                      нет связей доверия (если задан dover)
+//      Параметры такой страницы:
+//          f           (from). Начало выборки, по умолчанию 0
+//          q           (quantity). Сколько выбирать на странице, по умолчанию всё после f.
 //
 
 function get_blagoroda_host() {
@@ -86,14 +94,17 @@ let parm_withalone = '';
 
 let parm_tg_poll_id = '';
 let parm_offer_uuid = '';
-let parm_user_uuid_trusts='';
-let parm_user_uuid_genesis_path='';
-let parm_user_uuid_trust_path='';
+let parm_user_uuid_trusts = '';
+let parm_user_uuid_genesis_path = '';
+let parm_user_uuid_trust_path = '';
 
-let parm_user_uuid_genesis_tree='';
-let parm_depth='';
-let parm_up='';
-let parm_down='';
+let parm_user_uuid_genesis_tree = '';
+let parm_depth = '';
+let parm_up = '';
+let parm_down = '';
+
+let parm_videoid = '';
+let parm_source = '';
 
 let auth_data = undefined;
 
@@ -102,7 +113,7 @@ function link_color(link, format) {
     const color_poll = color_relation;
     const color_trust = format == 'rgba' ? 'rgba(54, 107, 13, 0.8)' : '#366b0d';
     const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
-    if (link.is_poll || link.is_offer) {
+    if (link.is_poll || link.is_offer || link.is_video_vote) {
         return color_poll;
     } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path || parm_user_uuid_genesis_tree)) {
         return color_relation;
@@ -134,6 +145,12 @@ $(document).ready (async function() {
     parm_tg_poll_id = get_parm('tg_poll_id') || '';
     parm_offer_uuid = get_parm('offer_uuid') || '';
     parm_user_uuid_trusts = get_parm('user_uuid_trusts') || '';
+
+    parm_videoid = get_parm('videoid') || '';
+    if (parm_videoid) {
+        parm_source = get_parm('source') || 'yt';
+    }
+
     if (
         !window.location.href.match(/\?/) ||
         window.location.href.match(/\?$/) ||
@@ -146,6 +163,7 @@ $(document).ready (async function() {
             !parm_tg_poll_id &&
             !parm_offer_uuid &&
             !parm_user_uuid_trusts &&
+            !parm_videoid &&
             !parm_rod && !parm_dover
        ) {
         window.location.assign(
@@ -229,12 +247,19 @@ $(document).ready (async function() {
     } else if (is_other_site && parm_tg_poll_id) {
         api_get_parms =
             '/api/bot/poll/results/?tg_poll_id=' + parm_tg_poll_id;
+    } else if (is_other_site && parm_videoid) {
+        api_get_parms =
+            '/api/wote/vote/graph/' +
+            '?videoid=' + parm_videoid +
+            '&source=' + parm_source;
     } else {
         api_get_parms =
             '/api/profile_genesis/all?fmt=3d-force-graph' +
             '&withalone=' + parm_withalone +
             '&dover=' + parm_dover +
-            '&rod=' + parm_rod;
+            '&rod=' + parm_rod +
+            '&from=' + parm_f +
+            '&number=' + parm_q;
     }
     const headers = auth_data ? { 'Authorization': 'Token ' + auth_data.auth_token } : {};
     $.ajax({
