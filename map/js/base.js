@@ -3,6 +3,7 @@ let offer_id = '';
 let uuid = '';
 let participants = '';
 let owned = '';
+let videoid = '';
 
 $(document).ready (async function() {
 
@@ -18,6 +19,11 @@ $(document).ready (async function() {
     } else if (offer_id = get_parm('offer_id')) {
         $('#id_block_form').hide();
         api_get_parms.push('offer_id=' + offer_id);
+    } else if (videoid = get_parm('videoid')) {
+        $('#id_block_form').hide();
+        let source = get_parm('source') || 'yt';
+        api_get_parms.push('videoid=' + videoid);
+        api_get_parms.push('source=' + source);
     } else {
         $('#id_block_form').show();
         if (uuid = get_parm('uuid')) {
@@ -27,7 +33,7 @@ $(document).ready (async function() {
             $('input[name=uuid]').remove();
         }
     }
-    if (!chat_id && !offer_id) {
+    if (!chat_id && !offer_id & !videoid) {
         // uuid или без uuid
         if (participants = get_parm('participants')) {
             $('#id_participants').attr('checked', 'checked');
@@ -101,6 +107,9 @@ $(document).ready (async function() {
                     subtitle = '<h2><big>Опрос не найден</big></h2>';
                 }
                 $('#id_subtitle_').html(subtitle);
+            } else if (videoid) {
+                let subtitle = data.video_title ? data.video_title : 'Голосовашие по видео';
+                $('#id_subtitle_').html('<h2>' + subtitle + '</h2>')
             } else {
                 num_men = '(указавших место среди выбранных: ' + data.points.length +  ')';
                 $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Наши участники</big></a>' + ' ' + num_men + '</h3>');

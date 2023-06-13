@@ -277,6 +277,8 @@ $(document).ready (async function() {
                 document.title = 'Благо Рода, ближайшие доверия: ' + data.user_q_name;
             } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
                 document.title = 'Благо Рода, опрос: ' + data.question;
+            } else if (parm_videoid && data.title) {
+                document.title = 'Благо Рода, голоса по видео: ' + data.title;
             }
             const photoTextureMale = new THREE.TextureLoader().load(`./images/no-photo-gender-male.jpg`);
             const photoTextureFemale = new THREE.TextureLoader().load(`./images/no-photo-gender-female.jpg`);
