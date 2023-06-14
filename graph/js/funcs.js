@@ -187,7 +187,7 @@ async function check_auth() {
                     '</a>' +
                     'или ' +
                     '<button id="button-copy" data-clipboard-text="' + auth_redirect_url + '">Cкопируйте</button> ' +
-                    ' и отправьте ссылку - +
+                    ' и отправьте ссылку: ' +
                     '<a ' +
                         'href="' + bot_url + '">' +
                         bot_url +
