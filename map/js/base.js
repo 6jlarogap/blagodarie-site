@@ -24,6 +24,14 @@ $(document).ready (async function() {
         let source = get_parm('source') || 'yt';
         api_get_parms.push('videoid=' + videoid);
         api_get_parms.push('source=' + source);
+        let parm_from = get_parm('f');
+        if (parm_from) {
+            api_get_parms.push('from=' + parm_from);
+        }
+        let parm_to = get_parm('t');
+        if (parm_to) {
+            api_get_parms.push('to=' + parm_to);
+        }
     } else {
         $('#id_block_form').show();
         if (uuid = get_parm('uuid')) {

@@ -53,6 +53,10 @@
 //                      Показ того, кто какие лайки ставил на видео
 //      Параметр такой страницы:
 //  source              Источник видео, по умолчанию 'yt' (Youtube)
+//      Возможны еще параметры:
+//              f:  с такой секунды видео начинать
+//              t:  по какую секунду видео показывать
+//
 //
 //  Если не задан ни один из перечисленных выше параметров, в том числе в url нет параметров,
 //  то это соответствует вызову с /?rod=on&dover=&withalone=
@@ -252,6 +256,14 @@ $(document).ready (async function() {
             '/api/wote/vote/graph/' +
             '?videoid=' + parm_videoid +
             '&source=' + parm_source;
+        let parm_from = get_parm('f');
+        if (parm_from) {
+            api_get_parms += '&from=' + parm_from;
+        }
+        let parm_to = get_parm('t');
+        if (parm_to) {
+            api_get_parms += '&to=' + parm_to;
+        }
     } else {
         api_get_parms =
             '/api/profile_genesis/all?fmt=3d-force-graph' +
