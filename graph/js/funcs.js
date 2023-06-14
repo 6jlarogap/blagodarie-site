@@ -180,21 +180,20 @@ async function check_auth() {
             const bot_url = 'https://t.me/' + data.bot_username;
             modal_dialog_show(
                 '<p>' +
-                    'Для авторизации перейдите по ссылке к телеграм-боту ' +
-                    'и следуйте его указаниям. ' +
-                    'Если \'Перейти\' по ссылке не работает - ' +
-                    '<button id="button-copy" data-clipboard-text="' + auth_redirect_url + '">скопируйте ссылку</button> ' +
-                    '- перейдите в телеграм - и отправьте её в чат - боту ' +
+                    'Для продолжения - нажмите ' +
+                    '<a ' +
+                        'href="' + auth_redirect_url + '">' +
+                        '<button>Перейти</button>' +
+                    '</a>' +
+                    'или ' +
+                    '<button id="button-copy" data-clipboard-text="' + auth_redirect_url + '">Cкопируйте</button> ' +
+                    ' и отправьте ссылку - +
                     '<a ' +
                         'href="' + bot_url + '">' +
                         bot_url +
                     '</a>' +
                 '</p>' +
                 '<p style="text-align:center">' +
-                    '<a ' +
-                        'href="' + auth_redirect_url + '">' +
-                        '<button>Перейти</button>' +
-                    '</a>' +
                 '</p>'
 
             );
