@@ -102,7 +102,7 @@ async function api_request(url, options={}) {
     //              400     какая-то ошибка, которую поймала api, ok == false,
     //                      иногда ее надо анализировать.
     //              503     беда с web сервером, ошибка программиста в апи, ok=false
-    //          response:
+    //          data:
     //                      объект json, но при status >= 500: текст
     //      }
     //
@@ -131,11 +131,11 @@ async function api_request(url, options={}) {
         delete options.json;
     }
     const response = await fetch(url, options);
-    const response_ = response.status < 500 ? await response.json() : await response.text();
+    const data = response.status < 500 ? await response.json() : await response.text();
     return {
         ok: response.ok,
         status: response.status,
-        response: response_
+        data: data
     };
 }
 
@@ -242,8 +242,13 @@ async function check_auth() {
             alert(err_mes);
         }
     } else {
-        let data = await api_token_url(api_url, err_mes);
-        if (data && data.bot_username) {
+        let response = await api_request(
+            api_url + '/api/token/url/', {
+            method: 'POST',
+            json: { url: window.location.href }
+        });
+        if (response.ok && response.data.bot_username) {
+            const data = response.data;
             const auth_redirect_url =
                 'https://t.me/' +
                 data.bot_username +
