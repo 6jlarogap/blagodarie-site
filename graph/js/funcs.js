@@ -208,11 +208,15 @@ async function check_auth() {
     const api_url = get_api_url();
 
     if (authdata_token) {
-        let data = await api_token_authdata(api_url, authdata_token, err_mes);
-        if (data) {
+        const response = = await api_request(
+            api_url + '/api/token/authdata/', {
+            params: { token: authdata_token }
+        });
+        if (reponse.ok) {
             //  - вырезать токен из адресной строки
             //  - поставить куку
             //  - уйти на window.location.href без токена
+            const data = response.data;
             let url = DOCUMENT_URL;
             url.searchParams.delete('authdata_token');
             let cookie_str  =
@@ -228,7 +232,7 @@ async function check_auth() {
             alert(err_mes);
         }
     } else {
-        let response = await api_request(
+        const response = await api_request(
             api_url + '/api/token/url/', {
             method: 'POST',
             json: { url: window.location.href }
