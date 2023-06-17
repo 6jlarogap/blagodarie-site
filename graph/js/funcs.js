@@ -181,17 +181,6 @@ async function check_auth() {
     //                  имя бота
     //              -   уходим на страницу телеграма для авторизации
 
-    async function api_token_authdata (api_url, authdata_token, err_mes) {
-        try {
-            return await $.ajax({
-                url: api_url  + '/api/token/authdata/?token=' + authdata_token,
-                dataType: 'json'
-            });
-        } catch (error) {
-            alert(err_mes);
-        }
-    }
-
     let result = undefined;
     let authdata_token = get_parm('authdata_token');
 
