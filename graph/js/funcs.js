@@ -212,7 +212,7 @@ async function check_auth() {
             api_url + '/api/token/authdata/', {
             params: { token: authdata_token }
         });
-        if (reponse.ok) {
+        if (response.ok) {
             //  - вырезать токен из адресной строки
             //  - поставить куку
             //  - уйти на window.location.href без токена
