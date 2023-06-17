@@ -208,7 +208,7 @@ async function check_auth() {
     const api_url = get_api_url();
 
     if (authdata_token) {
-        const response = = await api_request(
+        const response = await api_request(
             api_url + '/api/token/authdata/', {
             params: { token: authdata_token }
         });
