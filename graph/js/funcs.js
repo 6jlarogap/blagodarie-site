@@ -192,20 +192,6 @@ async function check_auth() {
         }
     }
 
-    async function api_token_url (api_url, err_mes) {
-        try {
-            return await $.ajax({
-                url: api_url + '/api/token/url/',
-                type: 'POST',
-                data: JSON.stringify({ url: window.location.href }),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-            });
-        } catch (error) {
-            alert(err_mes);
-        }
-    }
-
     let result = undefined;
     let authdata_token = get_parm('authdata_token');
 
