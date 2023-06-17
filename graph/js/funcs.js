@@ -68,6 +68,78 @@ function getCookie(name) {
     return result;
 }
 
+async function api_request(url, options={}) {
+
+    // Выполнить запрос в апи
+    //
+    // По умолчанию:
+    //
+    //  method:                     GET
+    //  headers['Content-Type']:    'application/json; charset=utf-8'
+    //
+    // Возможные options, кроме тех, что в опциях для fetch()
+    //      (https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch),
+    //      (https://learn.javascript.ru/fetch):
+    //
+    //  params:
+    //          для get запроса, но может быть и в post и др.,
+    //          например, {token:123, smth: 'abc'}.
+    //          Если заданы, то будут добавлены к url.
+    //  json:
+    //          Заменит options.body на строку того json
+    //          Если для get запроса здесь сдуру будет задан, то в fetch не пойдет
+    //          (fool proof)
+    //  auth_token:
+    //          Поставит в headers:
+    //              'Authorization': 'Token <auth_token>'
+    //
+    // Возвращает:
+    //      {
+    //          ok:
+    //                      true или false,
+    //          status:
+    //              200     ok, если апи не отдало из кэша (тогда другой status), ok == true
+    //              400     какая-то ошибка, которую поймала api, ok == false,
+    //                      иногда ее надо анализировать.
+    //              503     беда с web сервером, ошибка программиста в апи, ok=false
+    //          response:
+    //                      объект json, но при status >= 500: текст
+    //      }
+    //
+
+    if (!options.method) options.method = 'GET';
+    if (!options.headers) options.headers = {};
+    if (!options.headers['Content-Type']) {
+        options.headers['Content-Type'] = 'application/json; charset=utf-8';
+    }
+    if (options.auth_token) {
+        options.headers.Authorization = 'Token ' + options.auth_token;
+        delete options.auth_token;
+    }
+    if (options.params) {
+        let parm_str = url.indexOf('?') == -1 ? '?' : '&';
+        for (param in options.params) {
+            parm_str += param + '=' + options.params[param] + '&';
+        }
+        parm_str = parm_str.substr(0, parm_str.length - 1);
+        url = encodeURI(url + parm_str);
+        delete options.params;
+    };
+
+    if (options.method.toUpperCase() != 'GET' && options.json) {
+        options.body = JSON.stringify(options.json);
+        delete options.json;
+    }
+    const response = await fetch(url, options);
+    const response_ = response.status < 500 ? await response.json() : await response.text();
+    return {
+        ok: response.ok,
+        status: response.status,
+        response: response_
+    };
+}
+
+
 function modal_dialog_show(html_text) {
 
     // Показать диалог с html_text
