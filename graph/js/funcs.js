@@ -114,7 +114,6 @@ async function api_request(url, options={}) {
     }
     if (options.auth_token) {
         options.headers.Authorization = 'Token ' + options.auth_token;
-        delete options.auth_token;
     }
     if (options.params) {
         let parm_str = url.indexOf('?') == -1 ? '?' : '&';
@@ -123,12 +122,10 @@ async function api_request(url, options={}) {
         }
         parm_str = parm_str.substr(0, parm_str.length - 1);
         url = encodeURI(url + parm_str);
-        delete options.params;
     };
 
     if (options.method.toUpperCase() != 'GET' && options.json) {
         options.body = JSON.stringify(options.json);
-        delete options.json;
     }
     const response = await fetch(url, options);
     const data = response.status < 500 ? await response.json() : await response.text();
