@@ -17,15 +17,32 @@ function get_api_url() {
 
 function get_root_domain() {
 
-    // Домен для куки.
-    // ROOT_DOMAIN можно переопределить в local_settings.js,
-    // который стоит раньше других js скриптов в .html
-
-    // Вместо этого некорректно было бы ставить window.location.host:
-    // можем обращаться к page.org.com, а куку надо ставить
-    // на org.com
+    //  Домен для куки.
+    //
+    //  Если разработчик имеет свой сайт, например, site.org.com:
+    //      он может создать, если не создал local_settings.js
+    //      и там, или где-то еще, абы этот .js подгружался
+    //      раньше этого скрипта, указать ROOT_DOMAIN:
+    //          например
+    //              ROOT_DOMAIN = 'site.org.com'
+    //          или лучше:
+    //              ROOT_DOMAIN = 'org.com'
+    //      Это и будет доменом для куки.
+    //
+    //  Если ROOT_DOMAIN не указан (в local_settings.js или где-то еще):
+    //      -   если сайт на github.io, то домен для куки: window.location.host
+    //      -   иначе домен для куки: 'blagoroda.org'
 
     if (typeof ROOT_DOMAIN === 'undefined') {
+        const developer_domain_regexps = [
+            "github\\.io$"
+        ];
+        const location_host = window.location.host;
+        for (let reg of developer_domain_regexps) {
+            if (location_host.match(new RegExp(reg))) {
+                return location_host;
+            }
+        }
         return 'blagoroda.org';
     } else {
         return ROOT_DOMAIN;
@@ -145,6 +162,7 @@ async function check_auth() {
         }
         return result;
     }
+
 
     const err_mes = 'Ошибка авторизации!'
     const api_url = get_api_url();
