@@ -334,6 +334,7 @@ $(document).ready (async function() {
             .nodeLabel(node => `<span style="color: darkred">${node.first_name}</span>`)
             .onNodeClick(function(node){
                 if (node.uuid && data.bot_username) {
+                    alert("Нажато на узел")
                     window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
                 }
             })
