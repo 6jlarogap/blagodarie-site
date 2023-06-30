@@ -85,6 +85,75 @@ function getCookie(name) {
     return result;
 }
 
+async function api_request(url, options={}) {
+
+    // Выполнить запрос в апи
+    //
+    // По умолчанию:
+    //
+    //  method:                     GET
+    //  headers['Content-Type']:    'application/json; charset=utf-8'
+    //
+    // Возможные options, кроме тех, что в опциях для fetch()
+    //      (https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch),
+    //      (https://learn.javascript.ru/fetch):
+    //
+    //  params:
+    //          для get запроса, но может быть и в post и др.,
+    //          например, {token:123, smth: 'abc'}.
+    //          Если заданы, то будут добавлены к url.
+    //  json:
+    //          Заменит options.body на строку того json
+    //          Если для get запроса здесь сдуру будет задан, то в fetch не пойдет
+    //          (fool proof)
+    //  auth_token:
+    //          Поставит в headers:
+    //              'Authorization': 'Token <auth_token>'
+    //
+    // Возвращает:
+    //      {
+    //          ok:
+    //                      true или false,
+    //          status:
+    //              200     ok, если апи не отдало из кэша (тогда другой status), ok == true
+    //              400     какая-то ошибка, которую поймала api, ok == false,
+    //                      иногда ее надо анализировать.
+    //              503     беда с web сервером, ошибка программиста в апи, ok=false
+    //          data:
+    //                      объект json, но при status >= 500: текст
+    //      }
+    //
+
+    if (!options.method) options.method = 'GET';
+    if (!options.headers) options.headers = {};
+    if (!options.headers['Content-Type']) {
+        options.headers['Content-Type'] = 'application/json; charset=utf-8';
+    }
+    if (options.auth_token) {
+        options.headers.Authorization = 'Token ' + options.auth_token;
+    }
+    if (options.params) {
+        let parm_str = url.indexOf('?') == -1 ? '?' : '&';
+        for (param in options.params) {
+            parm_str += param + '=' + options.params[param] + '&';
+        }
+        parm_str = parm_str.substr(0, parm_str.length - 1);
+        url = encodeURI(url + parm_str);
+    };
+
+    if (options.method.toUpperCase() != 'GET' && options.json) {
+        options.body = JSON.stringify(options.json);
+    }
+    const response = await fetch(url, options);
+    const data = response.status < 500 ? await response.json() : await response.text();
+    return {
+        ok: response.ok,
+        status: response.status,
+        data: data
+    };
+}
+
+
 function modal_dialog_show(html_text) {
 
     // Показать диалог с html_text
@@ -126,31 +195,6 @@ async function check_auth() {
     //                  имя бота
     //              -   уходим на страницу телеграма для авторизации
 
-    async function api_token_authdata (api_url, authdata_token, err_mes) {
-        try {
-            return await $.ajax({
-                url: api_url  + '/api/token/authdata/?token=' + authdata_token,
-                dataType: 'json'
-            });
-        } catch (error) {
-            alert(err_mes);
-        }
-    }
-
-    async function api_token_url (api_url, err_mes) {
-        try {
-            return await $.ajax({
-                url: api_url + '/api/token/url/',
-                type: 'POST',
-                data: JSON.stringify({ url: window.location.href }),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-            });
-        } catch (error) {
-            alert(err_mes);
-        }
-    }
-
     let result = undefined;
     let authdata_token = get_parm('authdata_token');
 
@@ -168,11 +212,15 @@ async function check_auth() {
     const api_url = get_api_url();
 
     if (authdata_token) {
-        let data = await api_token_authdata(api_url, authdata_token, err_mes);
-        if (data) {
+        const response = await api_request(
+            api_url + '/api/token/authdata/', {
+            params: { token: authdata_token }
+        });
+        if (response.ok) {
             //  - вырезать токен из адресной строки
             //  - поставить куку
             //  - уйти на window.location.href без токена
+            const data = response.data;
             let url = DOCUMENT_URL;
             url.searchParams.delete('authdata_token');
             let cookie_str  =
@@ -188,8 +236,13 @@ async function check_auth() {
             alert(err_mes);
         }
     } else {
-        let data = await api_token_url(api_url, err_mes);
-        if (data && data.bot_username) {
+        const response = await api_request(
+            api_url + '/api/token/url/', {
+            method: 'POST',
+            json: { url: window.location.href }
+        });
+        if (response.ok && response.data.bot_username) {
+            const data = response.data;
             const auth_redirect_url =
                 'https://t.me/' +
                 data.bot_username +
