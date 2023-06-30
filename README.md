@@ -1,7 +1,8 @@
 # blagodarie-site
 contrib/                    сервисные процедуры, инструкции
-blagodarie/:                blagodarie.org, благодари.рф, blagoroda.org
-genesis/:                   genesis.blagodarie.org
-map/:                       map.blagodarie.org
+blagodarie/:                blagoroda.org
+genesis/:                   genesis.blagoroda.org
+map/:                       map.blagoroda.org
+graph/:                     graph.blagoroda.org
 
-health/:                    health.blagodarie.org, health.благодари.рф
+health/:                    health.blagoroda.org
