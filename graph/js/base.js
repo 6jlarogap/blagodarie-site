@@ -333,10 +333,14 @@ $(document).ready (async function() {
             .backgroundColor("#FFFFFF")
             .nodeLabel(node => `<span style="color: darkred">${node.first_name}</span>`)
             .onNodeClick(function(node){
-                if (node.uuid && data.bot_username) {
-                    alert("Нажато на узел")
-                    window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
-                }
+                document.querySelector(".menu-wrapper").classList.add("menu-wrapper--active")
+                document.querySelector(".menu__close-wrap").addEventListener("click", function() {
+                    document.querySelector(".menu-wrapper").classList.remove("menu-wrapper--active")
+                })
+                // if (node.uuid && data.bot_username) {
+                //     alert("Нажато на узел")
+                //     window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
+                // }
             })
 
             .linkDirectionalArrowLength(10)

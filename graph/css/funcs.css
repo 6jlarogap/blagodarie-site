@@ -37,5 +37,76 @@
 }
 
 .menu {
+  padding: 40px 60px;
   background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.menu__btn {
+  background: none;
+  border: 1px solid #000;
+  font-size: 16px;
+  transition: .1s linear;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.menu__btn:hover {
+  background-color: #414141;
+  color: #fff;
+}
+
+.menu__close-wrap {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+
+.menu__close {
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
+.menu__close::before,
+.menu__close::after {
+  content: "";
+  background-color: #000;
+  width: 100%;
+  height: 2px;
+  position: absolute;
+  left: 0;
+}
+
+.menu__close::before {
+  top: calc(50% - 1px);
+  transform: rotate(45deg);
+}
+
+.menu__close::after {
+  bottom: calc(50% - 1px);
+  transform: rotate(-45deg);
+}
+
+.menu-wrapper {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, .8);
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+}
+
+.menu-wrapper--active {
+  display: flex;
 }
