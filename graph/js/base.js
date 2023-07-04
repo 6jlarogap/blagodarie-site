@@ -342,6 +342,32 @@ $(document).ready (async function() {
                         window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
                     }
                 })
+                document.querySelector(".btn--3").addEventListener("click", function() {
+                    (document.getElementById('3d-graph'))
+                    .nodeThreeObject(({ id, photo, gender, is_dead }) => {
+                        let photoTexture;
+                        if (photo) {
+                            photoTexture = new THREE.TextureLoader().load(photo);
+                        } else if (gender == 'm' && !is_dead) {
+                            photoTexture = photoTextureMale;
+                        } else if (gender == 'm' && is_dead) {
+                            photoTexture = photoTextureMaleDead;
+                        } else if (gender == 'f' && !is_dead) {
+                            photoTexture = photoTextureFemale;
+                        } else if (gender == 'f' && is_dead) {
+                            photoTexture = photoTextureFemaleDead;
+                        } else if (is_dead) {
+                            photoTexture = photoTextureNoneDead;
+                        } else {
+                            photoTexture = photoTextureNone;
+                        }
+                        const material = new THREE.SpriteMaterial({ map: photoTexture });
+                        const sprite = new THREE.Sprite(material);
+                        sprite.scale.set(25, 25);
+                        return sprite;
+                    })
+                    .nodeLabel(node => `<span style="color: darkred">${auth_data}</span>`)
+                })
             })
 
             .linkDirectionalArrowLength(10)
