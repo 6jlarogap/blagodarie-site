@@ -339,7 +339,6 @@ $(document).ready (async function() {
                 })
                 document.querySelector(".btn--4").addEventListener("click", function() {
                     if (node.uuid && data.bot_username) {
-                        alert("Нажато на узел")
                         window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
                     }
                 })
