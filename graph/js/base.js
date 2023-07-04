@@ -337,10 +337,12 @@ $(document).ready (async function() {
                 document.querySelector(".menu__close-wrap").addEventListener("click", function() {
                     document.querySelector(".menu-wrapper").classList.remove("menu-wrapper--active")
                 })
-                // if (node.uuid && data.bot_username) {
-                //     alert("Нажато на узел")
-                //     window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
-                // }
+                document.querySelector(".btn--4").addEventListener("click", function() {
+                    if (node.uuid && data.bot_username) {
+                        alert("Нажато на узел")
+                        window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
+                    }
+                })
             })
 
             .linkDirectionalArrowLength(10)
