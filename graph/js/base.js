@@ -343,7 +343,7 @@ $(document).ready (async function() {
                     }
                 })
                 document.querySelector(".btn--3").addEventListener("click", function() {
-                    Graph.addNode()
+                    Graph.addNode("новый узел")
                 })
             })
 
