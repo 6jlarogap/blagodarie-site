@@ -343,52 +343,7 @@ $(document).ready (async function() {
                     }
                 })
                 document.querySelector(".btn--3").addEventListener("click", function() {
-                    const Graph2 = ForceGraph3D()
-                    (document.getElementById('3d-graph'))
-                    .nodeThreeObject(({ id, photo, gender, is_dead }) => {
-                        let photoTexture;
-                        if (photo) {
-                            photoTexture = new THREE.TextureLoader().load(photo);
-                        } else if (gender == 'm' && !is_dead) {
-                            photoTexture = photoTextureMale;
-                        } else if (gender == 'm' && is_dead) {
-                            photoTexture = photoTextureMaleDead;
-                        } else if (gender == 'f' && !is_dead) {
-                            photoTexture = photoTextureFemale;
-                        } else if (gender == 'f' && is_dead) {
-                            photoTexture = photoTextureFemaleDead;
-                        } else if (is_dead) {
-                            photoTexture = photoTextureNoneDead;
-                        } else {
-                            photoTexture = photoTextureNone;
-                        }
-                        const material = new THREE.SpriteMaterial({ map: photoTexture });
-                        const sprite = new THREE.Sprite(material);
-                        sprite.scale.set(25, 25);
-                        return sprite;
-                    })
-                    .graphData(data)
-                    // Если есть и родственная связь, и доверие, и если задано
-                    // искать родственные связи, то показываем стрелку цвета родственной связи
-                    .linkColor(link => link_color(link, 'rgb'))
-                    .linkOpacity(0.8)
-                    .linkCurvature(0.25)
-                    .backgroundColor("#FFFFFF")
-                    .nodeLabel(node => `<span style="color: darkred">${node.first_name}</span>`)
-                    .onNodeClick(function(node){
-                        document.querySelector(".menu-wrapper").classList.add("menu-wrapper--active")
-                        document.querySelector(".menu__close-wrap").addEventListener("click", function() {
-                            document.querySelector(".menu-wrapper").classList.remove("menu-wrapper--active")
-                        })
-                        document.querySelector(".btn--4").addEventListener("click", function() {
-                            if (node.uuid && data.bot_username) {
-                                window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
-                            }
-                        })
-                        document.querySelector(".btn--3").addEventListener("click", function() {
-
-                        })
-                    })
+                    Graph.addNode()
                 })
             })
 
@@ -402,5 +357,3 @@ $(document).ready (async function() {
         }
     });
 });
-
-
