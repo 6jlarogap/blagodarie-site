@@ -342,9 +342,6 @@ $(document).ready (async function() {
                         window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
                     }
                 })
-                document.querySelector(".btn--3").addEventListener("click", function() {
-                    Graph.addNode("новый узел")
-                })
             })
 
             .linkDirectionalArrowLength(10)
@@ -354,6 +351,10 @@ $(document).ready (async function() {
             if (!parm_tg_poll_id && !parm_offer_uuid) {
                 Graph.d3Force('charge').strength(-320);
             }
+
+            document.querySelector(".btn--3").addEventListener("click", function() {
+                Graph.addNode("новый узел")
+            })
         }
     });
 });
