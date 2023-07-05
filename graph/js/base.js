@@ -337,6 +337,7 @@ $(document).ready (async function() {
                 document.querySelector(".menu__close-wrap").addEventListener("click", function() {
                     document.querySelector(".menu-wrapper").classList.remove("menu-wrapper--active")
                 })
+                document.querySelector(".menu__title-span").textContent = node.first_name
                 document.querySelector(".btn--4").addEventListener("click", function() {
                     if (node.uuid && data.bot_username) {
                         window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
@@ -352,8 +353,6 @@ $(document).ready (async function() {
                 Graph.d3Force('charge').strength(-320);
             }
             document.querySelector(".btn--3").addEventListener("click", function() {
-                Graph.graphData().nodes.push(auth_data);
-                Graph.graphData(auth_data)
             })
         }
     });
