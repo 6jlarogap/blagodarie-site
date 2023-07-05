@@ -351,31 +351,8 @@ $(document).ready (async function() {
             if (!parm_tg_poll_id && !parm_offer_uuid) {
                 Graph.d3Force('charge').strength(-320);
             }
-
             document.querySelector(".btn--3").addEventListener("click", function() {
-                Graph.nodeThreeObject(({ id, photo, gender, is_dead }) => {
-                    let photoTexture;
-                    if (photo) {
-                        photoTexture = new THREE.TextureLoader().load(photo);
-                    } else if (gender == 'm' && !is_dead) {
-                        photoTexture = photoTextureMale;
-                    } else if (gender == 'm' && is_dead) {
-                        photoTexture = photoTextureMaleDead;
-                    } else if (gender == 'f' && !is_dead) {
-                        photoTexture = photoTextureFemale;
-                    } else if (gender == 'f' && is_dead) {
-                        photoTexture = photoTextureFemaleDead;
-                    } else if (is_dead) {
-                        photoTexture = photoTextureNoneDead;
-                    } else {
-                        photoTexture = photoTextureNone;
-                    }
-                    const material = new THREE.SpriteMaterial({ map: photoTexture });
-                    const sprite = new THREE.Sprite(material);
-                    sprite.scale.set(25, 25);
-                    return sprite;
-                })
-                .graphData(auth_data)
+                Graph.graphData(auth_data);
             })
         }
     });
