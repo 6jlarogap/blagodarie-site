@@ -352,7 +352,8 @@ $(document).ready (async function() {
                 Graph.d3Force('charge').strength(-320);
             }
             document.querySelector(".btn--3").addEventListener("click", function() {
-                Graph.graphData(auth_data);
+                Graph.graphData().nodes.push(auth_data);
+                Graph.graphData(auth_data)
             })
         }
     });
