@@ -269,9 +269,13 @@ $(document).ready (async function() {
             '/api/profile_genesis/all?fmt=3d-force-graph' +
             '&withalone=' + parm_withalone +
             '&dover=' + parm_dover +
-            '&rod=' + parm_rod +
-            '&from=' + parm_f +
-            '&number=' + parm_q;
+            '&rod=' + parm_rod;
+        if (parm_f) {
+            api_get_parms += '&from=' + parm_f;
+        }
+        if (parm_q) {
+            api_get_parms += '&number=' + parm_q;
+        }
     }
     const headers = auth_data ? { 'Authorization': 'Token ' + auth_data.auth_token } : {};
     $.ajax({
