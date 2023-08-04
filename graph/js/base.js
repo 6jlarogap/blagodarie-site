@@ -256,12 +256,11 @@ $(document).ready (async function() {
             '/api/wote/vote/graph/' +
             '?videoid=' + parm_videoid +
             '&source=' + parm_source;
-        let parm_from = get_parm('f');
-        if (parm_from) {
-            api_get_parms += '&from=' + parm_from;
+        if (!isNaN(parm_f)) {
+            api_get_parms += '&from=' + parm_f;
         }
-        let parm_to = get_parm('t');
-        if (parm_to) {
+        let parm_to = parseInt(get_parm('t'));
+        if (!isNaN(parm_to)) {
             api_get_parms += '&to=' + parm_to;
         }
     } else {
@@ -270,10 +269,10 @@ $(document).ready (async function() {
             '&withalone=' + parm_withalone +
             '&dover=' + parm_dover +
             '&rod=' + parm_rod;
-        if (parm_f) {
+        if (!isNaN(parm_f)) {
             api_get_parms += '&from=' + parm_f;
         }
-        if (parm_q) {
+        if (!isNaN(parm_q)) {
             api_get_parms += '&number=' + parm_q;
         }
     }
