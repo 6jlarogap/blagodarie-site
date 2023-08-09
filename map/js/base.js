@@ -1,6 +1,7 @@
 let chat_id = '';
 let offer_id = '';
 let uuid = '';
+let uuid_trustees = '';
 let participants = '';
 let owned = '';
 let videoid = '';
@@ -19,6 +20,9 @@ $(document).ready (async function() {
     } else if (offer_id = get_parm('offer_id')) {
         $('#id_block_form').hide();
         api_get_parms.push('offer_id=' + offer_id);
+    } else if (uuid_trustees = get_parm('uuid_trustees')) {
+        $('#id_block_form').hide();
+        api_get_parms.push('uuid_trustees=' + uuid_trustees);
     } else if (videoid = get_parm('videoid')) {
         $('#id_block_form').hide();
         let source = get_parm('source') || 'yt';
@@ -115,9 +119,35 @@ $(document).ready (async function() {
                     subtitle = '<h2><big>Опрос не найден</big></h2>';
                 }
                 $('#id_subtitle_').html(subtitle);
+
             } else if (videoid) {
                 let subtitle = data.video_title ? data.video_title : 'Голосовашие по видео';
                 $('#id_subtitle_').html('<h2>' + subtitle + '</h2>')
+
+            } else if (uuid_trustees) {
+                if (data.first_name) {
+                    let him_her = data.gender == 'm' ? 'ему' : (data.gender == 'f' ? 'ей' : '');
+                    $('#id_subtitle_').html(
+                            '<h3>' +
+                                '<big>' +
+                                    '<a href="' + document.URL + '">' + data.first_name + '</a> '+
+                                '</big>' +
+                                ' (<i>и кто ' + him_her + ' доверяет, а кто нет</i>)'+
+                            '</h3>'
+                    );
+                    if (data.found_coordinates) {
+                        if (data.address) {
+                            $('#id_address_').html('<big>' + data.address + '</big><br />');
+                        } else {
+                            $('#id_address_').html('<h3>на карте</h3>');
+                        }
+                    } else {
+                        $('#id_address_').html('<h3>(Не задал(а) местоположение)</h3>');
+                    }
+                } else {
+                    $('#id_subtitle_').html('<h2>Пользователь не найден</h2>');
+                }
+
             } else {
                 num_men = '(указавших место среди выбранных: ' + data.points.length +  ')';
                 $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Наши участники</big></a>' + ' ' + num_men + '</h3>');
