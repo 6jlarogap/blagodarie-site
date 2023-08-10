@@ -45,7 +45,7 @@ $(document).ready (async function() {
             $('input[name=uuid]').remove();
         }
     }
-    if (!chat_id && !offer_id & !videoid) {
+    if (!chat_id && !offer_id & !videoid & !uuid_trustees) {
         // uuid или без uuid
         if (participants = get_parm('participants')) {
             $('#id_participants').attr('checked', 'checked');
@@ -68,8 +68,10 @@ $(document).ready (async function() {
         headers: headers,
         success: function(data) {
             let num_men = '';
+            let title_base = 'Благорода. Карта';
             if (uuid) {
                 if (data.first_name) {
+                    document.title = title_base + ': ' + data.first_name;
                     $('#id_subtitle_').html('<h2><a href="' + document.URL + '">' + data.first_name + '</a></h2>');
                     if (data.found_coordinates) {
                         if (data.address) {
@@ -93,17 +95,25 @@ $(document).ready (async function() {
                 let subtitle = '';
                 num_men = '(указавших место: ' + data.points.length +  ')';
                 if (data.chat_title) {
+                    document.title =
+                        title_base + '. Телеграм ' +
+                        (data.chat_type == 'channel' ? 'канал' : 'группа') +
+                        ': ' +
+                        data.chat_title
+                    ;
                     subtitle =
                         '<h2>Участники телеграм ' +
                         (data.chat_type == 'channel' ? 'канала' : 'группы') +
                             ' ' + num_men +
                         '</h2>' +
-                        '<h2><a href="' + document.URL + '">' + data.chat_title + '</a></h2>';
+                        '<h2><a href="' + document.URL + '">' + data.chat_title + '</a></h2>'
+                    ;
                 } else {
-                    subtitle = '<h2><big>Канал или группа не найден(а)</big></h2>';
+                    subtitle = '<h2><big>Телеграм канал или группа не найден(а)</big></h2>';
                 }
                 $('#id_subtitle_').html(subtitle);
             } else if (offer_id) {
+                document.title = title_base + '. Опрос' + (data.offer_question ? ': ' + data.offer_question : '');
                 let subtitle = '';
                 num_men = '(указавших место: ' + data.points.length +  ')';
                 if (data.offer_question) {
@@ -121,11 +131,13 @@ $(document).ready (async function() {
                 $('#id_subtitle_').html(subtitle);
 
             } else if (videoid) {
+                document.title = title_base + '. Голосование по видео';
                 let subtitle = data.video_title ? data.video_title : 'Голосовашие по видео';
                 $('#id_subtitle_').html('<h2>' + subtitle + '</h2>')
 
             } else if (uuid_trustees) {
                 if (data.first_name) {
+                    document.title = title_base + '. Доверия к: ' + data.first_name;
                     let him_her = data.gender == 'm' ? 'ему' : (data.gender == 'f' ? 'ей' : '');
                     $('#id_subtitle_').html(
                             '<h3>' +
