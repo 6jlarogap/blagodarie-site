@@ -144,7 +144,14 @@ $(document).ready (async function() {
                                 '<big>' +
                                     '<a href="' + document.URL + '">' + data.first_name + '</a> '+
                                 '</big>' +
-                                ' (<i>и кто ' + him_her + ' доверяет, а кто нет</i>)'+
+                                ' (' +
+                                    '<i>' +
+                                        him_her +
+                                        (him_her ? ' ' : '') +
+                                        'доверяют: ' + data.num_trusts_true + ', ' +
+                                        'не доверяют: ' + data.num_trusts_false +
+                                    '</i>' +
+                                ')'+
                             '</h3>'
                     );
                     if (data.found_coordinates) {
