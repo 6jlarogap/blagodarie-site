@@ -126,7 +126,23 @@ let api_response = false;
 let nodes_by_id = false;
 let root_node = false;
 
-function graph_data() {
+const get_pruned_tree = () => {
+    const visible_nodes = [];
+    const visible_links = [];
+
+    (function traverse_tree(node = nodes_by_id[root_node.id]) {
+        visible_nodes.push(node);
+        if (node.collapsed) return;
+        visible_links.push(...node.child_links);
+        node.child_links
+        .map(link => ((typeof link.t_target) === 'object') ? link.t_target : nodes_by_id[link.t_target]) // get child node
+        .forEach(traverse_tree);
+    })();
+
+    return { nodes: visible_nodes, links: visible_links };
+};
+
+const graph_data = () => {
     let result = { links: [], nodes: [] };
     if (parm_user_uuid_genesis_tree && parm_collapse && nodes_by_id && root_node) {
         // TODO collapsed tree
@@ -305,13 +321,24 @@ $(document).ready (async function() {
     }
     api_response = await api_request(api_url + api_get_parms, {auth_token: auth_data.auth_token});
     if (api_response.ok) {
-        let data = api_response.data;
+        const data = api_response.data;
         if (parm_tg_group_chat_id && data.tg_group) {
             document.title =
                 'Благо Рода, доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') + ': ' +
                 data.tg_group.title;
         } else if (parm_user_uuid_genesis_tree && data.root_node) {
             document.title = 'Благо Рода, родство: ' + data.root_node.first_name;
+            if (parm_collapse) {
+                root_node = data.root_node;
+                data.nodes.forEach((node) => {
+                    node.collapsed = node.id != root_node.id;
+                    node.child_links = []
+                });
+                nodes_by_id = Object.fromEntries(data.nodes.map(node => [node.id, node]));
+                    data.links.forEach(link => {
+                    nodes_by_id[link.t_source].child_links.push(link);
+                });
+            }
         } else if (parm_user_uuid_trusts && data.root_node) {
             document.title = 'Благо Рода, ближайшие доверия: ' + data.root_node.first_name;
         } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
