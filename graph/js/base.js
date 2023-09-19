@@ -1,4 +1,4 @@
-//
+// //
 //  graph/js/base.js
 //
 
@@ -26,11 +26,20 @@
 //                          без вяких ответвлений на дядей, двоюродных бабушек и т.п.
 //      down            поиск только к потомкам,
 //                          без вяких ответвлений на племянников, внучатых племянниц и т.п.
+//      collapse        (TODO) Показывать не всё дерево от user'a к предкам, потомкам
+//                      в соответствии с 4 возможнымии комбинациями параметров up, down,
+//                      а только user'a с ближайшими связями:
+//                          дети, если только не задан лишь up=on,
+//                          родители, если только не задан лишь down=on
+//                      По щелчку на одного из детей, родителей будут развернуты или
+//                      свернуты уже развернутые идущие от него родственные связи.
+//                      (TODO) будет диалог с предложением развернуть или свернуть
+//                      уже развернутые идущие от него родственные связи
 //
 //  user_uuid_genesis_path
 //                      uuid1,uuid2
 //                      Путь родства между user с uuid1 и user c uuid2
-//                  При этом возможен параметр:
+//                  При этом возможны параметры:
 //      depth           глубина поиска по рекурсии родства от user с uuid1 до user c uuid2
 //
 //  user_uuid_trust_path
@@ -106,11 +115,27 @@ let parm_user_uuid_genesis_tree = '';
 let parm_depth = '';
 let parm_up = '';
 let parm_down = '';
+let parm_collapse = '';
 
 let parm_videoid = '';
 let parm_source = '';
 
 let auth_data = undefined;
+
+let api_response = false;
+let nodes_by_id = false;
+let root_node = false;
+
+function graph_data() {
+    let result = { links: [], nodes: [] };
+    if (parm_user_uuid_genesis_tree && parm_collapse && nodes_by_id && root_node) {
+        // TODO collapsed tree
+        result = api_response.data;
+    } else if (api_response && api_response.ok) {
+        result = api_response.data;
+    }
+    return result;
+}
 
 function link_color(link, format) {
     const color_relation = format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc';
@@ -185,6 +210,7 @@ $(document).ready (async function() {
                 parm_depth = get_parm('depth') || '';
                 parm_up = get_parm('up') || '';
                 parm_down = get_parm('down') || '';
+                parm_collapse = get_parm('collapse') || '';
             } else {
                 parm_user_uuid_genesis_tree = '';
             }
@@ -232,7 +258,8 @@ $(document).ready (async function() {
             '&fmt=3d-force-graph' +
             '&depth=' + parm_depth +
             '&up=' + parm_up +
-            '&down=' + parm_down
+            '&down=' + parm_down +
+            '&collapse=' + parm_collapse
         ;
     } else if (is_other_site && parm_user_uuid_genesis_path) {
         document.title = 'Благо Рода: путь родства';
@@ -276,78 +303,75 @@ $(document).ready (async function() {
             api_get_parms += '&number=' + parm_q;
         }
     }
-    const headers = auth_data ? { 'Authorization': 'Token ' + auth_data.auth_token } : {};
-    $.ajax({
-        url: api_url  + api_get_parms,
-        headers: headers,
-        dataType: 'json',
-        success: function(data) {
-            if (parm_tg_group_chat_id && data.tg_group) {
-                document.title =
-                    'Благо Рода, доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') + ': ' +
-                    data.tg_group.title;
-            } else if (parm_user_uuid_genesis_tree && data.user_q_name) {
-                document.title = 'Благо Рода, родство: ' + data.user_q_name;
-            } else if (parm_user_uuid_trusts && data.user_q_name) {
-                document.title = 'Благо Рода, ближайшие доверия: ' + data.user_q_name;
-            } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
-                document.title = 'Благо Рода, опрос: ' + data.question;
-            } else if (parm_videoid && data.title) {
-                document.title = 'Благо Рода, голоса по видео: ' + data.title;
-            }
-            const photoTextureMale = new THREE.TextureLoader().load(`./images/no-photo-gender-male.jpg`);
-            const photoTextureFemale = new THREE.TextureLoader().load(`./images/no-photo-gender-female.jpg`);
-            const photoTextureNone = new THREE.TextureLoader().load(`./images/no-photo-gender-none.jpg`);
-
-            const photoTextureMaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-male-dead.jpg`);
-            const photoTextureFemaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-female-dead.jpg`);
-            const photoTextureNoneDead = new THREE.TextureLoader().load(`./images/no-photo-gender-none-dead.jpg`);
-
-            const Graph = ForceGraph3D()
-            (document.getElementById('3d-graph'))
-            .nodeThreeObject(({ id, photo, gender, is_dead }) => {
-                let photoTexture;
-                if (photo) {
-                    photoTexture = new THREE.TextureLoader().load(photo);
-                } else if (gender == 'm' && !is_dead) {
-                    photoTexture = photoTextureMale;
-                } else if (gender == 'm' && is_dead) {
-                    photoTexture = photoTextureMaleDead;
-                } else if (gender == 'f' && !is_dead) {
-                    photoTexture = photoTextureFemale;
-                } else if (gender == 'f' && is_dead) {
-                    photoTexture = photoTextureFemaleDead;
-                } else if (is_dead) {
-                    photoTexture = photoTextureNoneDead;
-                } else {
-                    photoTexture = photoTextureNone;
-                }
-                const material = new THREE.SpriteMaterial({ map: photoTexture });
-                const sprite = new THREE.Sprite(material);
-                sprite.scale.set(25, 25);
-                return sprite;
-            })
-            .graphData(data)
-            // Если есть и родственная связь, и доверие, и если задано
-            // искать родственные связи, то показываем стрелку цвета родственной связи
-            .linkColor(link => link_color(link, 'rgb'))
-            .linkOpacity(0.8)
-            .linkCurvature(0.25)
-            .backgroundColor("#FFFFFF")
-            .nodeLabel(node => `<span style="color: darkred">${node.first_name}</span>`)
-            .onNodeClick(function(node){
-                if (node.uuid && data.bot_username) {
-                    window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
-                }
-            })
-
-            .linkDirectionalArrowLength(10)
-            .linkDirectionalArrowRelPos(1)
-            .linkDirectionalArrowColor(link => link_color(link, 'rgba'))
-            ;
-            if (!parm_tg_poll_id && !parm_offer_uuid) {
-                Graph.d3Force('charge').strength(-320);
-            }
+    api_response = await api_request(api_url + api_get_parms, {auth_token: auth_data.auth_token});
+    if (api_response.ok) {
+        let data = api_response.data;
+        if (parm_tg_group_chat_id && data.tg_group) {
+            document.title =
+                'Благо Рода, доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') + ': ' +
+                data.tg_group.title;
+        } else if (parm_user_uuid_genesis_tree && data.root_node) {
+            document.title = 'Благо Рода, родство: ' + data.root_node.first_name;
+        } else if (parm_user_uuid_trusts && data.root_node) {
+            document.title = 'Благо Рода, ближайшие доверия: ' + data.root_node.first_name;
+        } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
+            document.title = 'Благо Рода, опрос: ' + data.question;
+        } else if (parm_videoid && data.title) {
+            document.title = 'Благо Рода, голоса по видео: ' + data.title;
         }
-    });
+        const photoTextureMale = new THREE.TextureLoader().load(`./images/no-photo-gender-male.jpg`);
+        const photoTextureFemale = new THREE.TextureLoader().load(`./images/no-photo-gender-female.jpg`);
+        const photoTextureNone = new THREE.TextureLoader().load(`./images/no-photo-gender-none.jpg`);
+
+        const photoTextureMaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-male-dead.jpg`);
+        const photoTextureFemaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-female-dead.jpg`);
+        const photoTextureNoneDead = new THREE.TextureLoader().load(`./images/no-photo-gender-none-dead.jpg`);
+
+        const Graph = ForceGraph3D()($('#3d-graph')[0])
+        .nodeThreeObject(({ id, photo, gender, is_dead }) => {
+            let photoTexture;
+            if (photo) {
+                photoTexture = new THREE.TextureLoader().load(photo);
+            } else if (gender == 'm' && !is_dead) {
+                photoTexture = photoTextureMale;
+            } else if (gender == 'm' && is_dead) {
+                photoTexture = photoTextureMaleDead;
+            } else if (gender == 'f' && !is_dead) {
+                photoTexture = photoTextureFemale;
+            } else if (gender == 'f' && is_dead) {
+                photoTexture = photoTextureFemaleDead;
+            } else if (is_dead) {
+                photoTexture = photoTextureNoneDead;
+            } else {
+                photoTexture = photoTextureNone;
+            }
+            const material = new THREE.SpriteMaterial({ map: photoTexture });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(25, 25);
+            return sprite;
+        })
+        .graphData(graph_data())
+        // Если есть и родственная связь, и доверие, и если задано
+        // искать родственные связи, то показываем стрелку цвета родственной связи
+        .linkColor(link => link_color(link, 'rgb'))
+        .linkOpacity(0.8)
+        .linkCurvature(0.25)
+        .backgroundColor("#FFFFFF")
+        .nodeLabel(node => `<span style="color: darkred">${node.first_name}</span>`)
+        .onNodeClick(function(node){
+            if (node.uuid && data.bot_username) {
+                window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
+            }
+        })
+
+        .linkDirectionalArrowLength(10)
+        .linkDirectionalArrowRelPos(1)
+        .linkDirectionalArrowColor(link => link_color(link, 'rgba'))
+        ;
+
+        if (!parm_tg_poll_id && !parm_offer_uuid) {
+            Graph.d3Force('charge').strength(-320);
+        }
+    }
+
 });
