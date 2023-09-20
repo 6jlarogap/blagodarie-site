@@ -1,4 +1,4 @@
-// //
+//
 //  graph/js/base.js
 //
 
@@ -26,7 +26,7 @@
 //                          без вяких ответвлений на дядей, двоюродных бабушек и т.п.
 //      down            поиск только к потомкам,
 //                          без вяких ответвлений на племянников, внучатых племянниц и т.п.
-//      collapse        (TODO) Показывать не всё дерево от user'a к предкам, потомкам
+//      collapse        Показывать не всё дерево от user'a к предкам, потомкам
 //                      в соответствии с 4 возможнымии комбинациями параметров up, down,
 //                      а только user'a с ближайшими связями:
 //                          дети, если только не задан лишь up=on,
@@ -135,8 +135,8 @@ const get_pruned_tree = () => {
         if (node.collapsed) return;
         visible_links.push(...node.child_links);
         node.child_links
-        .map(link => ((typeof link.t_target) === 'object') ? link.t_target : nodes_by_id[link.t_target]) // get child node
-        .forEach(traverse_tree);
+            .map(link => ((typeof link.t_target) === 'object') ? link.t_target : nodes_by_id[link.t_target]) // get child node
+            .forEach(traverse_tree);
     })();
 
     return { nodes: visible_nodes, links: visible_links };
@@ -145,16 +145,37 @@ const get_pruned_tree = () => {
 const graph_data = () => {
     let result = { links: [], nodes: [] };
     if (parm_user_uuid_genesis_tree && parm_collapse && nodes_by_id && root_node) {
-        // TODO collapsed tree
-        result = api_response.data;
+        result = get_pruned_tree();
     } else if (api_response && api_response.ok) {
         result = api_response.data;
     }
     return result;
 }
 
+function node_label(node) {
+    let color = 'darkred';
+    if (parm_user_uuid_genesis_tree && parm_collapse) {
+        // blue or darkred
+        color = node.child_links.length ? '#336600' : 'darkred';
+    }
+    return `<span style="color: ` + color + `">${node.first_name}</span>`;
+}
+
 function link_color(link, format) {
-    const color_relation = format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc';
+    let color_relation;
+    if (parm_user_uuid_genesis_tree && parm_collapse) {
+        const t_target = ((typeof link.t_target) === 'object') ? link.t_target : nodes_by_id[link.t_target];
+        if (t_target.child_links.length) {
+            // dark green
+            color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
+        } else {
+            // dark red
+            color_relation = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
+        }
+    } else {
+        // blue
+        color_relation = format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc';
+    }
     const color_poll = color_relation;
     const color_trust = format == 'rgba' ? 'rgba(54, 107, 13, 0.8)' : '#366b0d';
     const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
@@ -354,7 +375,8 @@ $(document).ready (async function() {
         const photoTextureFemaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-female-dead.jpg`);
         const photoTextureNoneDead = new THREE.TextureLoader().load(`./images/no-photo-gender-none-dead.jpg`);
 
-        const Graph = ForceGraph3D()($('#3d-graph')[0])
+        const graph_container = $('#3d-graph')[0];
+        const Graph = ForceGraph3D()(graph_container)
         .nodeThreeObject(({ id, photo, gender, is_dead }) => {
             let photoTexture;
             if (photo) {
@@ -384,9 +406,22 @@ $(document).ready (async function() {
         .linkOpacity(0.8)
         .linkCurvature(0.25)
         .backgroundColor("#FFFFFF")
-        .nodeLabel(node => `<span style="color: darkred">${node.first_name}</span>`)
+        .nodeLabel(node => node_label(node))
+        .onNodeHover(node => {
+            let cursor = 'pointer';
+            if (parm_user_uuid_genesis_tree && parm_collapse) {
+                cursor =  node && node.child_links.length ? 'pointer' : null;
+            }
+            graph_container.style.cursor = cursor;
+        })
         .onNodeClick(function(node){
-            if (node.uuid && data.bot_username) {
+            if (parm_user_uuid_genesis_tree && parm_collapse) {
+                if (node.child_links.length) {
+                    node.collapsed = !node.collapsed; // toggle collapse state
+                    Graph.graphData(get_pruned_tree());
+                }
+            }
+            else if (node.uuid && data.bot_username) {
                 window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
             }
         })
