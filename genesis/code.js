@@ -333,11 +333,29 @@ if (auth_token_) {
 //
 // --- let it authorize --
 
+function no_photo (d) {
+    let result = `no-photo-gender-none.jpg`;
+    if (!d.is_dead && !d.gender) {
+        // result = `no-photo-gender-none.jpg`;
+    } else if (!d.is_dead && d.gender == 'm') {
+        result = `no-photo-gender-male.jpg`;
+    } else if (!d.is_dead && d.gender == 'f') {
+        result = `no-photo-gender-female.jpg`;
+    } else if (d.is_dead && !d.gender) {
+        result = `no-photo-gender-none-dead.jpg`;
+    } else if (d.is_dead && d.gender == 'm') {
+        result = `no-photo-gender-male-dead.jpg`;
+    } else if (d.is_dead && d.gender == 'f') {
+        result = `no-photo-gender-female-dead.jpg`;
+    }
+    result = `${settings.url}images/` + result;
+    return result;
+}
+
 d3.json(apiUrl, d3_json_parms)
 	.then(async function(data) {
 
 		//добавить пользователей в вершины
-	
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
 			
@@ -358,8 +376,9 @@ d3.json(apiUrl, d3_json_parms)
 			nodes.push ({
 				id: d.uuid,
 				text: (d.first_name + " "),
-				image: d.photo == '' ? `${settings.url}images/default_avatar.png` : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
-				nodeType: nd
+				image: d.photo == '' ? no_photo(d) : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
+				nodeType: nd,
+			   is_dead: d.is_dead,
 			});
 			
 			
@@ -688,15 +707,15 @@ function initializeDisplay() {
 		.attr("style", "z-index:1;position:relative")
 		.attr("clip-path", d => {
 		if(width>900 && d.nodeType == NODE_TYPES.FRIEND){
-			return "url(#clip-circle-medium)";
+			return d.is_dead ? "" : "url(#clip-circle-medium)";
 		}else if(width<900 && d.nodeType == NODE_TYPES.FRIEND){
-			return "url(#clip-circle-small)";
+			return d.is_dead ? "" : "url(#clip-circle-small)";
 		}else if (width>900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
-			return "url(#clip-circle-large)";
+			return d.is_dead ? "" : "url(#clip-circle-large)";
 		}else if (width<900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
-			return "url(#clip-circle-medium)";
+			return d.is_dead ? "" : "url(#clip-circle-medium)";
 		}else if (d.nodeType == NODE_TYPES.FILTERED) {
-			return "url(#clip-circle-small)";
+			return d.is_dead ? "" : "url(#clip-circle-small)";
 		}
 		
 	});
