@@ -129,11 +129,64 @@ let root_node = false;
 const get_pruned_tree = () => {
     const visible_nodes = [];
     const visible_links = [];
+    const collapsed_nodes = {};
 
     (function traverse_tree(node = nodes_by_id[root_node.id]) {
         visible_nodes.push(node);
-        if (node.collapsed) return;
+
+        //  Есть проблема. При проходе по разворачиваему родственному дереву
+        //  (parm_user_uuid_genesis_tree && parm_collapse)
+        //  у свернутого (collapsed) узла может затесаться связь с другим collapsed узлом.
+        //  Но это только если идём по дереву с завихрениями типа я - папа - дед - дядя,
+        //  при проходе по прямым потомкам и/или прямым предкам (!parm_up && !parm_down)
+        //  такого быть не должно.
+        //
+        //  Решаем:
+        //
+        //  NB! 
+        //      child_links - это как идем по дереву от t_source к t_target, потом от
+        //      (previous t_target = t_source) к следующему t_target.
+        //      t_source -> t_target может быть и к родителю.
+        //      Направление родитель -> ребенок задает source -> target.
+        //
+        //  Объект collapsed_nodes, каждый ключ его: collapsed_node.id. Встретили
+        //  узел node.collapsed, посмотрели по его child_links, нет ли среди них с таким
+        //  t_target, что есть collapsed_nodes[t_target] == true.
+        //  Если нет таких, то node.id попадает в collapsed_nodes.
+        //  Если нашелся такой child_link к свернутому узлу,
+        //  то в он добавляется в visible_links
+
+        if (node.collapsed) {
+            if (!parm_up && !parm_down) {
+                let found = false;
+                if(node.id == 2317) console.log(node);
+                for (let link of node.child_links) {
+                    let t_target = ((typeof link.t_target) === 'object') ? link.t_target.id : link.t_target;
+                    if (collapsed_nodes[t_target]) {
+                        visible_links.push(link);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    collapsed_nodes[node.id] = true;
+                }
+            }
+            return;
+        }
         visible_links.push(...node.child_links);
+        if (!parm_up && !parm_down) {
+            for (let link of node.child_links) {
+                let t_target = ((typeof link.t_target) === 'object') ? link.t_target.id : link.t_target;
+                if (collapsed_nodes[t_target]) {
+                    collapsed_nodes[t_target] = false;
+                    visible_links.push(link);
+                    break;
+                } else {
+                    collapsed_nodes[node.id] = true;
+                }
+            }
+        }
         node.child_links
             .map(link => ((typeof link.t_target) === 'object') ? link.t_target : nodes_by_id[link.t_target]) // get child node
             .forEach(traverse_tree);
@@ -350,6 +403,12 @@ $(document).ready (async function() {
         } else if (parm_user_uuid_genesis_tree && data.root_node) {
             document.title = 'Благо Рода, родство: ' + data.root_node.first_name;
             if (parm_collapse) {
+
+            //  child_links - это как идем по дереву от t_source к t_target, потом от
+            //  (previous t_target = t_source) к следующему t_target.
+            //  t_source -> t_target может быть и к родителю.
+            //  Направление родитель -> ребенок задает source -> target.
+
                 root_node = data.root_node;
                 data.nodes.forEach((node) => {
                     node.collapsed = node.id != root_node.id;
