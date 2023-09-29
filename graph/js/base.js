@@ -129,56 +129,61 @@ let root_node = false;
 const get_pruned_tree = () => {
     const visible_nodes = [];
     const visible_links = [];
-    const collapsed_nodes = {};
+
+    //  При проходе по разворачиваему родственному дереву у узла
+    //  может затеряться связь с другим свернутым узлом.
+    //
+    //  Например:   развернули человека, появились его папа с мамой, оба свернутые.
+    //              Разворачиваем папу, в дереве появляется его дети,
+    //              все свернутые. Поскольку дети свернутые, то у них
+    //              не будет связи с их свернутой мамой!
+    //  Но это только если идём по дереву с завихрениями типа я - папа - дед - дядя,
+    //  при проходе по прямым потомкам и/или прямым предкам такого быть не должно.
+    //  Для этого объекты d_visible_nodes, d_visible_links, чтоб быстрее
+    //  искать потерянного родителя по видимым узлам и связям после того как
+    //  эти узлы, связи построены.
+
+    const check_collapsed_links = !parm_up && !parm_down && parm_collapse;
+    const d_visible_nodes = {};
+    const d_visible_links = {};
+    const link_sep = '~';
 
     (function traverse_tree(node = nodes_by_id[root_node.id]) {
+
         visible_nodes.push(node);
+        if (check_collapsed_links) d_visible_nodes[node.id] = true;
+        if (node.collapsed) return;
 
-        //  Есть проблема. При проходе по разворачиваему родственному дереву
-        //  (parm_user_uuid_genesis_tree && parm_collapse)
-        //  у свернутого (collapsed) узла может затесаться связь с другим collapsed узлом.
-        //  Но это только если идём по дереву с завихрениями типа я - папа - дед - дядя,
-        //  при проходе по прямым потомкам и/или прямым предкам (!parm_up && !parm_down)
-        //  такого быть не должно.
-        //
-        //  Решаем:
-        //
-        //  NB! 
-        //      child_links - это как идем по дереву от t_source к t_target, потом от
-        //      (previous t_target = t_source) к следующему t_target.
-        //      t_source -> t_target может быть и к родителю.
-        //      Направление родитель -> ребенок задает source -> target.
-        //
-        //  Объект collapsed_nodes, каждый ключ его: collapsed_node.id. Встретили
-        //  узел node.collapsed, посмотрели по его child_links, нет ли среди них с таким
-        //  t_target, что есть collapsed_nodes[t_target] == true.
-        //  Если нет таких, то node.id попадает в collapsed_nodes.
-        //  Если нашелся такой child_link к свернутому узлу,
-        //  то в он добавляется в visible_links
-
-        if (node.collapsed) {
-            if (!parm_up && !parm_down) {
-                let found = false;
-                for (let link of node.child_links) {
-                    let t_target = ((typeof link.t_target) === 'object') ? link.t_target.id : link.t_target;
-                    if (collapsed_nodes[t_target]) {
-                        visible_links.push(link);
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    collapsed_nodes[node.id] = true;
-                }
-            }
-            return;
-        }
         visible_links.push(...node.child_links);
+        if (check_collapsed_links) {
+            node.child_links.forEach(link => {
+                const source = ((typeof link.source) === 'object') ? link.source.id : link.source;
+                const target = ((typeof link.target) === 'object') ? link.target.id : link.target;
+                d_visible_links[(source).toString() + link_sep + (target).toString()] = true;
+            });
+        }
+
         node.child_links
             .map(link => ((typeof link.t_target) === 'object') ? link.t_target : nodes_by_id[link.t_target]) // get child node
             .forEach(traverse_tree);
     })();
 
+    if (check_collapsed_links) {
+        for (const node of visible_nodes) {
+            if (!node.collapsed) continue;
+            for (const parent_id of node.parent_ids) {
+                if (!d_visible_nodes[parent_id]) continue;
+                if (d_visible_links[(parent_id).toString() + link_sep + (node.id).toString()]) continue;
+                visible_links.push({
+                    source: parent_id,
+                    target: node.id,
+                    is_child: true
+                });
+                // если нашелся один потерянный родитель, то второй точно не терялся
+                break;
+            }
+        }
+    }
     return { nodes: visible_nodes, links: visible_links };
 };
 
@@ -204,7 +209,9 @@ function node_label(node) {
 function link_color(link, format) {
     let color_relation;
     if (parm_user_uuid_genesis_tree && parm_collapse) {
-        const t_target = ((typeof link.t_target) === 'object') ? link.t_target : nodes_by_id[link.t_target];
+        // Добавленные связи между свернутыми узлами. У них неоткуда взяться t_target
+        let t_target = link.t_target ? link.t_target : link.target;
+        t_target = ((typeof t_target) === 'object') ? t_target : nodes_by_id[t_target];
         if (t_target.child_links.length) {
             // dark green
             color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
