@@ -159,7 +159,6 @@ const get_pruned_tree = () => {
         if (node.collapsed) {
             if (!parm_up && !parm_down) {
                 let found = false;
-                if(node.id == 2317) console.log(node);
                 for (let link of node.child_links) {
                     let t_target = ((typeof link.t_target) === 'object') ? link.t_target.id : link.t_target;
                     if (collapsed_nodes[t_target]) {
@@ -175,18 +174,6 @@ const get_pruned_tree = () => {
             return;
         }
         visible_links.push(...node.child_links);
-        if (!parm_up && !parm_down) {
-            for (let link of node.child_links) {
-                let t_target = ((typeof link.t_target) === 'object') ? link.t_target.id : link.t_target;
-                if (collapsed_nodes[t_target]) {
-                    collapsed_nodes[t_target] = false;
-                    visible_links.push(link);
-                    break;
-                } else {
-                    collapsed_nodes[node.id] = true;
-                }
-            }
-        }
         node.child_links
             .map(link => ((typeof link.t_target) === 'object') ? link.t_target : nodes_by_id[link.t_target]) // get child node
             .forEach(traverse_tree);
