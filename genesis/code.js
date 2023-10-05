@@ -352,79 +352,66 @@ function no_photo (d) {
 
 d3.json(apiUrl, d3_json_parms)
 	.then(async function(data) {
-
-		//добавить пользователей в вершины
+	//добавить пользователей в вершины
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
-			
 			var str = d.photo;
 			var extArray = str.split(".");
 			var ext = extArray[extArray.length - 1];
-		
 			var replacement = "media"; 
 			var toReplace = "thumb"; 
 			var str1 = str.replace(replacement, toReplace);
-			
-            var nd = NODE_TYPES.USER;
-            if (all || chat_id && !d.is_in_page) {
-                nd = NODE_TYPES.FILTERED;
-            } else if (d.uuid != userIdFrom) {
-                nd = NODE_TYPES.FRIEND;
-            }
+			var nd = NODE_TYPES.USER;
+			if (all || chat_id && !d.is_in_page) {
+				nd = NODE_TYPES.FILTERED;
+			} else if (d.uuid != userIdFrom) {
+				nd = NODE_TYPES.FRIEND; }
 			nodes.push ({
 				id: d.uuid,
 				text: (d.first_name + " "),
 				image: d.photo == '' ? no_photo(d) : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
 				nodeType: nd,
-			   is_dead: d.is_dead,
+				is_dead: d.is_dead,
 			});
-			
-			
 		}
 	});
 		
 	if(!window.location.href.includes('gen')){
-	let selected_val_num = +url.searchParams.get('q');
-	let but_next = document.querySelector('#btn_next');
-
-    // Если chat_id, то число юзеров на странице может быть больше,
-    // чем заказано участников группы в выпадающем списке.
-    // Сколько всего, есть в ответе от апи: data.participants_on_page
-    //
-    data_users_length = chat_id ? data.participants_on_page : data.users.length;
-
-    if(data_users_length == selected_val_num){
-		but_next.style.background = '#8b0000';
-		but_next.style.cursor = 'pointer';
-		but_next.style.pointerEvents = 'all';
-	}
-	else if (data_users_length < selected_val_num){
-		but_next.style.background = '#aaa0a0';
-		but_next.style.cursor = 'context-menu';
-		but_next.style.pointerEvents = 'none';
-	}
-	}
-
+		let selected_val_num = +url.searchParams.get('q');
+		let but_next = document.querySelector('#btn_next');
 	
-
+		// Если chat_id, то число юзеров на странице может быть больше,
+		// чем заказано участников группы в выпадающем списке.
+		// Сколько всего, есть в ответе от апи: data.participants_on_page
+		//
+		data_users_length = chat_id ? data.participants_on_page : data.users.length;
+	
+		if(data_users_length == selected_val_num){
+			but_next.style.background = '#8b0000';
+			but_next.style.cursor = 'pointer';
+			but_next.style.pointerEvents = 'all';
+		}
+		else if (data_users_length < selected_val_num){
+			but_next.style.background = '#aaa0a0';
+			but_next.style.cursor = 'context-menu';
+			but_next.style.pointerEvents = 'none';}
+	}
 	data.connections.forEach(function(d){
-        d.is_trust = true;
-        var reverse_is_trust = d.is_trust;
-        data.connections.forEach(function(dd){
-            if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
-                reverse_is_trust = dd.is_trust;
-            }
-        });
-        links.push({
-            source: d.source,
-            target: d.target,
-            is_trust: d.is_trust,
-            reverse_is_trust: reverse_is_trust
-        });
+	        d.is_trust = true;
+	        var reverse_is_trust = d.is_trust;
+	        data.connections.forEach(function(dd){
+	            if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
+	                reverse_is_trust = dd.is_trust;
+	            }
+	        });
+		links.push({
+			source: d.source,
+			target: d.target,
+			is_trust: d.is_trust,
+			reverse_is_trust: reverse_is_trust
+		});
 	});
-	
-	
-	
+
 	//зафиксировать вершины пользователя, желаний и ключей
 	
 	nodes.forEach(function(d) {
@@ -512,7 +499,6 @@ d3.json(apiUrl, d3_json_parms)
 				d.fx = width / 2;
 				d.fy = height / 2;
 			}
-			
 			break;
 		}
 	});
