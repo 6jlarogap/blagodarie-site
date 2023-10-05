@@ -515,7 +515,7 @@ d3.json(apiUrl, d3_json_parms)
 	else{
 		simulation.force("x", d3.forceX(width / 2));
 		simulation.force("y", d3.forceY(height / 2));		
-		simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.6));
+		simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.1));
 		simulation.force("charge", d3.forceManyBody().strength(-50));
 //		simulation.force("collide", d3.forceCollide().strength(5).radius(20));//.iterations(1));//radius 80  strength(0.6)
 	}
