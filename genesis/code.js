@@ -516,7 +516,7 @@ d3.json(apiUrl, d3_json_parms)
 		simulation.force("x", d3.forceX(width / 2));
 		simulation.force("y", d3.forceY(height / 2));		
 		simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.6));
-//		simulation.force("charge", d3.forceManyBody().strength(-450));
+		simulation.force("charge", d3.forceManyBody().strength(-450));
 //		simulation.force("collide", d3.forceCollide().strength(5).radius(20));//.iterations(1));//radius 80  strength(0.6)
 	}
 
@@ -532,18 +532,15 @@ function initializeSimulation() {
 }
 
 drag = simulation => {
-  
-	function dragstarted(event, d) {
+  	function dragstarted(event, d) {
 		if (!event.active) simulation.alphaTarget(0.3).restart();
 		d.fx = d.x;
 		d.fy = d.y;
 	}
-
 	function dragged(event, d) {
 		d.fx = event.x;
 		d.fy = event.y;
 	}
-
 	function dragended(event, d) {
 		if (!event.active) simulation.alphaTarget(0);
 		//d.fx = null;
@@ -552,9 +549,7 @@ drag = simulation => {
 			d.fx = width<900 ? width/2+50 : width/2+80;
 			d.fy = height/2;
 		}*/
-		
 	}
-
 	return d3.drag()
 	  .on("start", dragstarted)
 	  .on("drag", dragged)
