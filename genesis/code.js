@@ -252,43 +252,41 @@ var url = new URL(link);
         }
 
         function prevPage() {
-			let item_plus_int = +url.searchParams.get('f');
-			let selected_val = +url.searchParams.get('q');
-			item_plus_int -= selected_val;
-			url.searchParams.set('f', item_plus_int);
-			url.searchParams.set('depth', depth);
-            if (chat_id) {
-                url.searchParams.set('q', count_);
-            }
-			window.location.href = url.href;
-        }
-
-
+		let item_plus_int = +url.searchParams.get('f');
+		let selected_val = +url.searchParams.get('q');
+		item_plus_int -= selected_val;
+		url.searchParams.set('f', item_plus_int);
+		url.searchParams.set('depth', depth);
+		if (chat_id) {
+			url.searchParams.set('q', count_);}
+		window.location.href = url.href;
+	}
+/*
 		document.querySelector('#btn_prev').style.background = '#6a2300;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
 		document.querySelector('.pagination_count').innerHTML = (chat_id ? count_ : url.searchParams.get('q'));
-			var apiUrl;
+*/
+	var apiUrl;
 		
-            if (chat_id) {
-                apiUrl = `${settings.api}api/profile_genesis/?&chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
-            } else if (userIdFrom) {
-                // apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                apiUrl = `${settings.api}api/profile_genesis/?&uuid=` + userIdFrom + '&depth=' + depth + '&up=' + up + '&down=' + down;
-                //console.log(apiUrl);
-            } else if (all) {
-                // apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                apiUrl = `${settings.api}api/profile_genesis/all/?fmt=d3js&rod=on` + (withalone ? `&withalone=on` : '');
-                //console.log(apiUrl);
-            }
+	if (chat_id) {
+		apiUrl = `${settings.api}api/profile_genesis/?&chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
+	} else if (userIdFrom) {
+		// apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
+		apiUrl = `${settings.api}api/profile_genesis/?&uuid=` + userIdFrom + '&depth=' + depth + '&up=' + up + '&down=' + down;
+		//console.log(apiUrl);
+    	} else if (all) {
+		// apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
+		apiUrl = `${settings.api}api/profile_genesis/all/?fmt=d3js&rod=on` + (withalone ? `&withalone=on` : '');
+		//console.log(apiUrl);
+	}
 
 
-
+/*
 document.addEventListener("popstate",function(e){
     alert('yeees!');
 },false);
-
+*/
 var isTrust;
-
 let map_latitude;
 let map_longitude;
 let new_map = document.querySelector('#new_map');
