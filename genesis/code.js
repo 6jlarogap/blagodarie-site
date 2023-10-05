@@ -519,24 +519,21 @@ d3.json(apiUrl, d3_json_parms)
 		}
 	});
 	
-	if(width<900){
-		simulation = d3.forceSimulation(nodes);
-	simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links)); //distance(150)
-	simulation.force("charge", d3.forceManyBody().strength(-400)); //0.5
-	//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-	simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
-	simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
-	simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))
-	}	
-	
-	else{
-
 	simulation = d3.forceSimulation(nodes);
-	simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.6));
-	simulation.force("charge", d3.forceManyBody().strength(-450));
-//	simulation.force("collide", d3.forceCollide().strength(5).radius(20));//.iterations(1));//radius 80  strength(0.6)
-	simulation.force("x", d3.forceX(width / 2));
-	simulation.force("y", d3.forceY(height / 2));		
+	if(width<900){
+		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links)); //distance(150)
+		simulation.force("charge", d3.forceManyBody().strength(-400)); //0.5
+		//simulation.force("center", d3.forceCenter(width / 2, height / 2))
+		simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
+		simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
+		simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))
+	}		
+	else{
+		simulation.force("x", d3.forceX(width / 2));
+		simulation.force("y", d3.forceY(height / 2));		
+		simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.6));
+//		simulation.force("charge", d3.forceManyBody().strength(-450));
+//		simulation.force("collide", d3.forceCollide().strength(5).radius(20));//.iterations(1));//radius 80  strength(0.6)
 	}
 
 	initializeDisplay();
