@@ -197,7 +197,7 @@ var down = url.searchParams.get("down") || '';
 var count_ = url.searchParams.get("q") || 50;
 
 if (userIdFrom || all) {
-    document.querySelector('.pagination_block').style.display = 'none';
+//    document.querySelector('.pagination_block').style.display = 'none';
 }
 
 if (userIdFrom) {
@@ -543,7 +543,7 @@ d3.json(apiUrl, d3_json_parms)
 
 function initializeSimulation() {
 	simulation.nodes(nodes);
-	simulation.alpha(1).restart();
+//	simulation.alpha(1).restart();
 	simulation.on("tick", ticked);
 }
 
@@ -578,7 +578,6 @@ drag = simulation => {
 }
 
 function initializeDisplay() {
-
 	link = svg.append("g")
 		.selectAll("g")
 		.data(links)
