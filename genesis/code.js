@@ -735,10 +735,22 @@ function ticked() {
 	node.attr("transform", d => `translate(${d.x},${d.y})`);
 
 	link.selectAll("g")
-	.attr("x1", d => d.source.x)
-	.attr("y1", d => d.source.y)
-	.attr("x2", d => d.target.x)
-	.attr("y2", d => d.target.y);
+		.attr("x1", d => d.source.x)
+		.attr("y1", d => d.source.y)
+		.attr("x2", d => d.target.x)
+		.attr("y2", d => d.target.y);
+
+	link.selectAll("linearGradient")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
+		
+	link.selectAll("line")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
 
 /*
 		node.attr("transform", d => {
