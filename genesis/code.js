@@ -505,7 +505,7 @@ d3.json(apiUrl, d3_json_parms)
 		.force("x", d3.forceX(width / 2))
 		.force("y", d3.forceY(height / 2))
 		.force("link", d3.forceLink(links).id(d => d.id).distance(10).strength(1))
-		.force("charge", d3.forceManyBody().strength(-50))
+		.force("charge", d3.forceManyBody().strength(-500))
 //		.force("collide", d3.forceCollide().strength(5).radius(20));//.iterations(1));//radius 80  strength(0.6)
 //		.force("center", d3.forceCenter(width / 2, height / 2))
 		.on("tick", ticked);
@@ -538,6 +538,60 @@ d3.json(apiUrl, d3_json_parms)
 */
 	initializeDisplay();	      
 });
+
+function ticked() {
+	node.attr("transform", d => `translate(${d.x},${d.y})`);
+
+/*	link.selectAll("g")
+		.attr("x1", d => d.source.x)
+		.attr("y1", d => d.source.y)
+		.attr("x2", d => d.target.x)
+		.attr("y2", d => d.target.y);
+
+	link.selectAll("linearGradient")
+		.attr("x1", d => d.source.x)
+		.attr("y1", d => d.source.y)
+		.attr("x2", d => d.target.x)
+		.attr("y2", d => d.target.y);
+*/		
+	link.selectAll("line")
+		.attr("x1", d => d.source.x)
+		.attr("y1", d => d.source.y)
+		.attr("x2", d => d.target.x)
+		.attr("y2", d => d.target.y);
+
+/*
+		node.attr("transform", d => {
+		var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
+		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 && width>900 ? height-70 : d.y));
+		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
+			simulation.force("x").x(x);
+			simulation.force("y").y(y);
+		}
+		return `translate(${x},${y})`;
+	});
+  
+	link.selectAll("g")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
+		
+	
+	link.selectAll("linearGradient")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
+		
+	link.selectAll("line")
+		.attr("x1", calcX1)
+		.attr("y1", calcY1)
+		.attr("x2", calcX2)
+		.attr("y2", calcY2);
+*/
+}
+
 
 /*
 function initializeSimulation() {
@@ -729,59 +783,6 @@ function initializeDisplay() {
 		.attr("font-size", d => (width<900 || d.nodeType == NODE_TYPES.FILTERED ? '12' : "20"))
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.text));
-}
-
-function ticked() {
-	node.attr("transform", d => `translate(${d.x},${d.y})`);
-
-	link.selectAll("g")
-		.attr("x1", d => d.source.x)
-		.attr("y1", d => d.source.y)
-		.attr("x2", d => d.target.x)
-		.attr("y2", d => d.target.y);
-
-	link.selectAll("linearGradient")
-		.attr("x1", d => d.source.x)
-		.attr("y1", d => d.source.y)
-		.attr("x2", d => d.target.x)
-		.attr("y2", d => d.target.y);
-		
-	link.selectAll("line")
-		.attr("x1", d => d.source.x)
-		.attr("y1", d => d.source.y)
-		.attr("x2", d => d.target.x)
-		.attr("y2", d => d.target.y);
-
-/*
-		node.attr("transform", d => {
-		var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
-		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 && width>900 ? height-70 : d.y));
-		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
-			simulation.force("x").x(x);
-			simulation.force("y").y(y);
-		}
-		return `translate(${x},${y})`;
-	});
-  
-	link.selectAll("g")
-		.attr("x1", calcX1)
-		.attr("y1", calcY1)
-		.attr("x2", calcX2)
-		.attr("y2", calcY2);
-		
-	
-	link.selectAll("linearGradient")
-		.attr("x1", calcX1)
-		.attr("y1", calcY1)
-		.attr("x2", calcX2)
-		.attr("y2", calcY2);
-		
-	link.selectAll("line")
-		.attr("x1", calcX1)
-		.attr("y1", calcY1)
-		.attr("x2", calcX2)
-		.attr("y2", calcY2);
-*/
 }
 
 function calcX1(d){
