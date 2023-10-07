@@ -734,11 +734,12 @@ function initializeDisplay() {
 function ticked() {
 	node.attr("transform", d => `translate(${d.x},${d.y})`);
 
-	link
-		.attr("x1", d => d.source.x)
-		.attr("y1", d => d.source.y)
-		.attr("x2", d => d.target.x)
-		.attr("y2", d => d.target.y);
+	link.selectAll("g")
+	.attr("x1", d => d.source.x)
+	.attr("y1", d => d.source.y)
+	.attr("x2", d => d.target.x)
+	.attr("y2", d => d.target.y);
+
 /*
 		node.attr("transform", d => {
 		var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
