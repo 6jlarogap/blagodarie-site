@@ -534,9 +534,9 @@ d3.json(apiUrl, d3_json_parms)
 //		simulation.force("collide", d3.forceCollide().strength(5).radius(20));//.iterations(1));//radius 80  strength(0.6)
 	}
 
-	initializeDisplay();
 	initializeSimulation();
 */
+	initializeDisplay();	      
 });
 
 /*
