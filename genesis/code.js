@@ -732,8 +732,16 @@ function initializeDisplay() {
 }
 
 function ticked() {
-	node.attr("transform", d => {
+	link
+		.attr("x1", d => d.source.x)
+		.attr("y1", d => d.source.y)
+		.attr("x2", d => d.target.x)
+		.attr("y2", d => d.target.y);
+	node
+		.attr("cx", d => d.x)
+		.attr("cy", d => d.y);		
 /*
+		node.attr("transform", d => {
 		var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
 		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 && width>900 ? height-70 : d.y));
 		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
@@ -741,9 +749,8 @@ function ticked() {
 			simulation.force("y").y(y);
 		}
 		return `translate(${x},${y})`;
-  */
 	});
-	
+  
 	link.selectAll("g")
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
@@ -762,6 +769,7 @@ function ticked() {
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
 		.attr("y2", calcY2);
+*/
 }
 
 function calcX1(d){
