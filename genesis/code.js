@@ -412,8 +412,7 @@ d3.json(apiUrl, d3_json_parms)
 		});
 	});
 
-	//зафиксировать вершины пользователя, желаний и ключей
-	
+/*	//зафиксировать вершины пользователя, желаний и ключей
 	nodes.forEach(function(d) {
 		switch(d.id){
 		case userIdFrom:
@@ -458,21 +457,20 @@ d3.json(apiUrl, d3_json_parms)
 			d.fy = height / 2 - 300;
 			
 			break;
-		/*case GENESIS_ID:
+		case GENESIS_ID:
 			if(!window.location.href.includes('gen')){
 			d.fx = width<900 ? 20 :width / 2+100;
 			d.fy = height / 2 - 250;
 			}
-			break;*/
-		
+			break;
 		case MAPS_ID:
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
 			d.fy = height / 2 - 300;
 			break;
-		/*case PLUS_ID:
+		case PLUS_ID:
 			d.fx = width<900 ? width/2+50 : width/2+80;
 			d.fy = height/2;
-			break;*/
+			break;
 		case TRUST_ID:
 			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
@@ -502,8 +500,17 @@ d3.json(apiUrl, d3_json_parms)
 			break;
 		}
 	});
-	
-	simulation = d3.forceSimulation(nodes);
+*/	
+	const simulation = d3.forceSimulation(nodes)
+		.force("x", d3.forceX());
+		.force("y", d3.forceY());
+		.force("link", d3.forceLink(links).id(d => d.id).distance(10).strength(1));
+		.force("charge", d3.forceManyBody().strength(-50));
+//		.force("collide", d3.forceCollide().strength(5).radius(20));//.iterations(1));//radius 80  strength(0.6)
+//		.force("center", d3.forceCenter(width / 2, height / 2))
+		.on("tick", ticked);
+
+/*
 	if(width<900){
 		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links)); //distance(150)
 		simulation.force("charge", d3.forceManyBody().strength(-400)); //0.5
@@ -529,14 +536,16 @@ d3.json(apiUrl, d3_json_parms)
 
 	initializeDisplay();
 	initializeSimulation();
+*/
 });
 
-
+/*
 function initializeSimulation() {
 	simulation.nodes(nodes);
 //	simulation.alpha(1).restart();
 	simulation.on("tick", ticked);
 }
+*/
 
 drag = simulation => {
   	function dragstarted(event, d) {
@@ -550,8 +559,8 @@ drag = simulation => {
 	}
 	function dragended(event, d) {
 		if (!event.active) simulation.alphaTarget(0);
-		//d.fx = null;
-		//d.fy = null;
+		d.fx = null;
+		d.fy = null;
 		/*if(d.nodeType == NODE_TYPES.PLUS){
 			d.fx = width<900 ? width/2+50 : width/2+80;
 			d.fy = height/2;
@@ -720,12 +729,11 @@ function initializeDisplay() {
 		.attr("font-size", d => (width<900 || d.nodeType == NODE_TYPES.FILTERED ? '12' : "20"))
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.text));
-	
-
 }
 
 function ticked() {
 	node.attr("transform", d => {
+/*
 		var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
 		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 && width>900 ? height-70 : d.y));
 		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
@@ -733,6 +741,7 @@ function ticked() {
 			simulation.force("y").y(y);
 		}
 		return `translate(${x},${y})`;
+  */
 	});
 	
 	link.selectAll("g")
@@ -836,9 +845,11 @@ function calcY2(d){
 
 
 d3.select(window).on("resize", function(){
+/*	
 	width = +svg.node().getBoundingClientRect().width;
 	height = +svg.node().getBoundingClientRect().height;
 	simulation.alpha(1).restart();
+*/
 });
 
 function initDefs(){
