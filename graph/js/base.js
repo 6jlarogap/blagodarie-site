@@ -125,6 +125,8 @@ let auth_data = undefined;
 let api_response = false;
 let nodes_by_id = false;
 let root_node = false;
+let d_visible_nodes = {};
+
 
 const get_pruned_tree = () => {
     const visible_nodes = [];
@@ -140,48 +142,45 @@ const get_pruned_tree = () => {
     //  Но это только если идём по дереву с завихрениями типа я - папа - дед - дядя,
     //  при проходе по прямым потомкам и/или прямым предкам такого быть не должно.
     //  Для этого объекты d_visible_nodes, d_visible_links, чтоб быстрее
+    //  d_visible_nodes еще потребуются, когда будем разворачивать узлы,
+    //  подчитывая их и их связи из базы.
     //  искать потерянного родителя по видимым узлам и связям после того как
     //  эти узлы, связи построены.
 
-    const check_collapsed_links = !parm_up && !parm_down && parm_collapse;
-    const d_visible_nodes = {};
     const d_visible_links = {};
     const link_sep = '~';
+    d_visible_nodes = {};
 
     (function traverse_tree(node = nodes_by_id[root_node.id]) {
 
         visible_nodes.push(node);
-        if (check_collapsed_links) d_visible_nodes[node.id] = true;
+        d_visible_nodes[node.id] = true;
         if (node.collapsed) return;
 
         visible_links.push(...node.child_links);
-        if (check_collapsed_links) {
-            node.child_links.forEach(link => {
-                const source = ((typeof link.source) === 'object') ? link.source.id : link.source;
-                const target = ((typeof link.target) === 'object') ? link.target.id : link.target;
-                d_visible_links[(source).toString() + link_sep + (target).toString()] = true;
-            });
-        }
+        node.child_links.forEach(link => {
+            const source = ((typeof link.source) === 'object') ? link.source.id : link.source;
+            const target = ((typeof link.target) === 'object') ? link.target.id : link.target;
+            d_visible_links[(source).toString() + link_sep + (target).toString()] = true;
+        });
 
         node.child_links
-            .map(link => ((typeof link.t_target) === 'object') ? link.t_target : nodes_by_id[link.t_target]) // get child node
+            .map(link => nodes_by_id[link.t_target]) // get child node
             .forEach(traverse_tree);
     })();
 
-    if (check_collapsed_links) {
-        for (const node of visible_nodes) {
-            if (!node.collapsed) continue;
-            for (const parent_id of node.parent_ids) {
-                if (!d_visible_nodes[parent_id]) continue;
-                if (d_visible_links[(parent_id).toString() + link_sep + (node.id).toString()]) continue;
-                visible_links.push({
-                    source: parent_id,
-                    target: node.id,
-                    is_child: true
-                });
-                // если нашелся один потерянный родитель, то второй точно не терялся
-                break;
-            }
+    for (const node of visible_nodes) {
+        if (!node.collapsed) continue;
+        for (const parent_id of node.parent_ids) {
+            if (!d_visible_nodes[parent_id]) continue;
+            if (d_visible_links[(parent_id).toString() + link_sep + (node.id).toString()]) continue;
+            visible_links.push({
+                source: parent_id,
+                target: node.id,
+                is_child: true
+            });
+            // если нашелся один потерянный родитель, то второй точно не терялся
+            break;
         }
     }
     return { nodes: visible_nodes, links: visible_links };
@@ -210,9 +209,9 @@ function link_color(link, format) {
     let color_relation;
     if (parm_user_uuid_genesis_tree && parm_collapse) {
         // Добавленные связи между свернутыми узлами. У них неоткуда взяться t_target
-        let t_target = link.t_target ? link.t_target : link.target;
-        t_target = ((typeof t_target) === 'object') ? t_target : nodes_by_id[t_target];
-        if (t_target.child_links.length) {
+        let obj_target = link.t_target ? link.t_target : link.target;
+        obj_target = ((typeof obj_target) === 'object') ? obj_target : nodes_by_id[obj_target];
+        if (obj_target.child_links.length) {
             // dark green
             color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
         } else {
