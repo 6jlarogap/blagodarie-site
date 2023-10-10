@@ -125,7 +125,6 @@ let auth_data = undefined;
 let api_response = false;
 let nodes_by_id = false;
 let root_node = false;
-let d_visible_nodes = {};
 
 
 const get_pruned_tree = () => {
@@ -144,12 +143,10 @@ const get_pruned_tree = () => {
     //  Для этого объекты d_visible_nodes, d_visible_links, чтоб быстрее
     //  искать потерянного родителя по видимым узлам и связям после того как
     //  эти узлы, связи построены.
-    //  d_visible_nodes еще потребуются, когда будем разворачивать узлы,
-    //  подчитывая их и их связи из базы.
 
     const d_visible_links = {};
+    const d_visible_nodes = {};
     const link_sep = '~';
-    d_visible_nodes = {};
 
     (function traverse_tree(node = nodes_by_id[root_node.id]) {
 
