@@ -502,8 +502,8 @@ d3.json(apiUrl, d3_json_parms)
 	});
 */	
 	const simulation = d3.forceSimulation(nodes)
-		.force("x", d3.forceX(width / 2).strength(0.1))
-		.force("y", d3.forceY(height / 2).strength(0.1))
+		.force("x", d3.forceX(width / 2).strength(1))
+		.force("y", d3.forceY(height / 2).strength(0.01))
 		.force("link", d3.forceLink(links).id(d => d.id).iterations(100).distance(300).strength(1))
 		.force("charge", d3.forceManyBody().strength(-10000).distanceMax(100))
 		.force("collide", d3.forceCollide().strength(1).radius(64))//.iterations(1))
