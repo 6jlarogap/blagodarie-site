@@ -154,15 +154,17 @@ const get_pruned_tree = () => {
         d_visible_nodes[node.id] = true;
         if (node.collapsed) return;
 
-        visible_links.push(...node.child_links);
-        node.child_links.forEach(link => {
+        // tree_links: направление развертывания по дереву от корня к окраинам
+        //
+        visible_links.push(...node.tree_links);
+        node.tree_links.forEach(link => {
             const source = ((typeof link.source) === 'object') ? link.source.id : link.source;
             const target = ((typeof link.target) === 'object') ? link.target.id : link.target;
             d_visible_links[(source).toString() + link_sep + (target).toString()] = true;
         });
 
-        node.child_links
-            .map(link => nodes_by_id[link.t_target]) // get child node
+        node.tree_links
+            .map(link => nodes_by_id[link.t_target])
             .forEach(traverse_tree);
     })();
 
@@ -197,7 +199,7 @@ function node_label(node) {
     let color = 'darkred';
     if (parm_user_uuid_genesis_tree && parm_collapse) {
         // blue or darkred
-        color = node.child_links.length ? '#336600' : 'darkred';
+        color = node.tree_links.length ? '#336600' : 'darkred';
     }
     return `<span style="color: ` + color + `">${node.first_name}</span>`;
 }
@@ -208,7 +210,7 @@ function link_color(link, format) {
         // Добавленные связи между свернутыми узлами. У них неоткуда взяться t_target
         let obj_target = link.t_target ? link.t_target : link.target;
         obj_target = ((typeof obj_target) === 'object') ? obj_target : nodes_by_id[obj_target];
-        if (obj_target.child_links.length) {
+        if (obj_target.tree_links.length) {
             // dark green
             color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
         } else {
@@ -394,7 +396,7 @@ $(document).ready (async function() {
             document.title = 'Благо Рода, родство: ' + data.root_node.first_name;
             if (parm_collapse) {
 
-            //  child_links - это как идем по дереву от t_source к t_target, потом от
+            //  tree_links - это как идем по дереву от t_source к t_target, потом от
             //  (previous t_target = t_source) к следующему t_target.
             //  t_source -> t_target может быть и к родителю.
             //  Направление родитель -> ребенок задает source -> target.
@@ -402,11 +404,11 @@ $(document).ready (async function() {
                 root_node = data.root_node;
                 data.nodes.forEach((node) => {
                     node.collapsed = node.id != root_node.id;
-                    node.child_links = []
+                    node.tree_links = []
                 });
                 nodes_by_id = Object.fromEntries(data.nodes.map(node => [node.id, node]));
                     data.links.forEach(link => {
-                    nodes_by_id[link.t_source].child_links.push(link);
+                    nodes_by_id[link.t_source].tree_links.push(link);
                 });
             }
         } else if (parm_user_uuid_trusts && data.root_node) {
@@ -459,13 +461,13 @@ $(document).ready (async function() {
         .onNodeHover(node => {
             let cursor = 'pointer';
             if (parm_user_uuid_genesis_tree && parm_collapse) {
-                cursor =  node && node.child_links.length ? 'pointer' : null;
+                cursor =  node && node.tree_links.length ? 'pointer' : null;
             }
             graph_container.style.cursor = cursor;
         })
         .onNodeClick(function(node){
             if (parm_user_uuid_genesis_tree && parm_collapse) {
-                if (node.child_links.length) {
+                if (node.tree_links.length) {
                     node.collapsed = !node.collapsed; // toggle collapse state
                     Graph.graphData(get_pruned_tree());
                 }
