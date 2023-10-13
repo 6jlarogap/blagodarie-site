@@ -198,7 +198,7 @@ const graph_data = () => {
 function node_label(node) {
     let color = 'darkred';
     if (parm_user_uuid_genesis_tree && parm_collapse) {
-        // blue or darkred
+        // green or darkred
         color = node.tree_links.length ? '#336600' : 'darkred';
     }
     return `<span style="color: ` + color + `">${node.first_name}</span>`;
