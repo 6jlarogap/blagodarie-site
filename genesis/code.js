@@ -603,7 +603,7 @@ function initializeSimulation() {
 
 drag = simulation => {
   	function dragstarted(event, d) {
-		if (!event.active) simulation.alphaTarget(0.3).restart();
+//		if (!event.active) simulation.alphaTarget(0.3).restart();
 		d.fx = d.x;
 		d.fy = d.y;
 	}
@@ -612,7 +612,7 @@ drag = simulation => {
 		d.fy = event.y;
 	}
 	function dragended(event, d) {
-		if (!event.active) simulation.alphaTarget(0);
+//		if (!event.active) simulation.alphaTarget(0);
 		d.fx = null;
 		d.fy = null;
 		/*if(d.nodeType == NODE_TYPES.PLUS){
