@@ -502,9 +502,9 @@ d3.json(apiUrl, d3_json_parms)
 	});
 */	
 	const simulation = d3.forceSimulation(nodes)
-		.force("x", d3.forceX(width / 2).strength(0.05))
-		.force("y", d3.forceY(height / 2).strength(0.05))
-		.force("link", d3.forceLink(links).id(d => d.id).iterations(100).distance(200).strength(0.1))
+		.force("x", d3.forceX(width / 2).strength(0.03))
+		.force("y", d3.forceY(height / 2).strength(0.03))
+		.force("link", d3.forceLink(links).id(d => d.id).iterations(100).distance(300).strength(0.1))
 		.force("charge", d3.forceManyBody().strength(-800)) //.distanceMax(500))
 		.force("collide", d3.forceCollide().strength(1).radius(200))//.iterations(1))
 //		.force("center", d3.forceCenter(width / 2, height / 2))
