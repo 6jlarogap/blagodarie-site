@@ -21,20 +21,23 @@
 //                      uuid
 //                      Дерево родства
 //                  При этом возможны параметры:
-//      depth           глубина поиска по рекурсии родства от user с uuid
+//      depth           начальная глубина глубина поиска по рекурсии родства от user с uuid,
+//                      по умолчанию 3, до прадедов, правнуков
 //      up              поиск только к предкам,
 //                          без вяких ответвлений на дядей, двоюродных бабушек и т.п.
 //      down            поиск только к потомкам,
 //                          без вяких ответвлений на племянников, внучатых племянниц и т.п.
-//      collapse        Показывать не всё дерево от user'a к предкам, потомкам
-//                      в соответствии с 4 возможнымии комбинациями параметров up, down,
-//                      а только user'a с ближайшими связями:
-//                          дети, если только не задан лишь up=on,
-//                          родители, если только не задан лишь down=on
-//                      По щелчку на одного из детей, родителей будут развернуты или
-//                      свернуты уже развернутые идущие от него родственные связи.
-//                      (TODO) будет диалог с предложением развернуть или свернуть
-//                      уже развернутые идущие от него родственные связи
+//                      По щелчку на родственников будут развернуты
+//                      считанные по начальной глубине узлы
+//                      TODO    или разворачиваться новые узлы вне начальной глубины или
+//                              идущие от линии прямого родства боковые связи (мама сына
+//                              при движении вниз по прямому родству /down/,
+//                              брат при движении вверх /up/.
+//                              При показе прямого родства (up и/или down) линия прямого
+//                              родства с узлами всегда будет на экране.
+//                              При любых up/down линия прямого родтсва и узлы в ней
+//                              выделяются другим цветом.
+//                      или сворачиваться уже развернутые от узов родственные связи.
 //
 //  user_uuid_genesis_path
 //                      uuid1,uuid2
@@ -84,183 +87,147 @@
 //          q           (quantity). Сколько выбирать на странице, по умолчанию всё после f.
 //
 
-function get_blagoroda_host() {
-
-    // Можно переопределить в local_settings.js,
-    // который стоит раньше других js скриптов в .html
-
-    if (typeof BLAGORODA_HOST === 'undefined') {
-        return 'blagoroda.org';
-    } else {
-        return BLAGORODA_HOST;
-    }
-}
-
-let parm_f = '';
-let parm_q = '';
-
-let parm_tg_group_chat_id = '';
-
-let parm_rod = '';
-let parm_dover = '';
-let parm_withalone = '';
-
-let parm_tg_poll_id = '';
-let parm_offer_uuid = '';
-let parm_user_uuid_trusts = '';
-let parm_user_uuid_genesis_path = '';
-let parm_user_uuid_trust_path = '';
-
-let parm_user_uuid_genesis_tree = '';
-let parm_depth = '';
-let parm_up = '';
-let parm_down = '';
-let parm_collapse = '';
-
-let parm_videoid = '';
-let parm_source = '';
-
-let auth_data = undefined;
-
-let api_response = false;
-let nodes_by_id = false;
-let root_node = false;
-
-
-const get_pruned_tree = () => {
-    const visible_nodes = [];
-    const visible_links = [];
-
-    //  При проходе по разворачиваему родственному дереву у узла
-    //  может затеряться связь с другим свернутым узлом.
-    //
-    //  Например:   развернули человека, появились его папа с мамой, оба свернутые.
-    //              Разворачиваем папу, в дереве появляется его дети,
-    //              все свернутые. Поскольку дети свернутые, то у них
-    //              не будет связи с их свернутой мамой!
-    //  Но это только если идём по дереву с завихрениями типа я - папа - дед - дядя,
-    //  при проходе по прямым потомкам и/или прямым предкам такого быть не должно.
-    //  Для этого объекты d_visible_nodes, d_visible_links, чтоб быстрее
-    //  искать потерянного родителя по видимым узлам и связям после того как
-    //  эти узлы, связи построены.
-
-    const d_visible_links = {};
-    const d_visible_nodes = {};
-    const link_sep = '~';
-
-    (function traverse_tree(node = nodes_by_id[root_node.id]) {
-
-        visible_nodes.push(node);
-        d_visible_nodes[node.id] = true;
-        if (node.collapsed) return;
-
-        // tree_links: направление развертывания по дереву от корня к окраинам
-        //
-        visible_links.push(...node.tree_links);
-        node.tree_links.forEach(link => {
-            const source = ((typeof link.source) === 'object') ? link.source.id : link.source;
-            const target = ((typeof link.target) === 'object') ? link.target.id : link.target;
-            d_visible_links[(source).toString() + link_sep + (target).toString()] = true;
-        });
-
-        node.tree_links
-            .map(link => nodes_by_id[link.t_target])
-            .forEach(traverse_tree);
-    })();
-
-    for (const node of visible_nodes) {
-        if (!node.collapsed) continue;
-        for (const parent_id of node.parent_ids) {
-            if (!d_visible_nodes[parent_id]) continue;
-            if (d_visible_links[(parent_id).toString() + link_sep + (node.id).toString()]) continue;
-            visible_links.push({
-                source: parent_id,
-                target: node.id,
-                is_child: true
-            });
-            // если нашелся один потерянный родитель, то второй точно не терялся
-            break;
-        }
-    }
-    return { nodes: visible_nodes, links: visible_links };
-};
-
-const graph_data = () => {
-    let result = { links: [], nodes: [] };
-    if (parm_user_uuid_genesis_tree && parm_collapse && nodes_by_id && root_node) {
-        result = get_pruned_tree();
-    } else if (api_response && api_response.ok) {
-        result = api_response.data;
-    }
-    return result;
-}
-
-function node_label(node) {
-    let color = 'darkred';
-    if (parm_user_uuid_genesis_tree && parm_collapse) {
-        // green or darkred
-        color = node.tree_links.length ? '#336600' : 'darkred';
-    }
-    return `<span style="color: ` + color + `">${node.first_name}</span>`;
-}
-
-function link_color(link, format) {
-    let color_relation;
-    if (parm_user_uuid_genesis_tree && parm_collapse) {
-        // Добавленные связи между свернутыми узлами. У них неоткуда взяться t_target
-        let obj_target = link.t_target ? link.t_target : link.target;
-        obj_target = ((typeof obj_target) === 'object') ? obj_target : nodes_by_id[obj_target];
-        if (obj_target.tree_links.length) {
-            // dark green
-            color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
-        } else {
-            // dark red
-            color_relation = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
-        }
-    } else {
-        // blue
-        color_relation = format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc';
-    }
-    const color_poll = color_relation;
-    const color_trust = format == 'rgba' ? 'rgba(54, 107, 13, 0.8)' : '#366b0d';
-    const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
-    if (link.is_poll || link.is_offer || link.is_video_vote) {
-        return color_poll;
-    } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path || parm_user_uuid_genesis_tree)) {
-        return color_relation;
-    } else if (link.is_trust) {
-        return color_trust;
-    } else {
-        return color_not_trust;
-    }
-}
 
 $(document).ready (async function() {
 
-    auth_data = await check_auth();
-    if (!auth_data) { return; };
+    function get_blagoroda_host() {
+
+        // Можно переопределить в local_settings.js,
+        // который стоит раньше других js скриптов в .html
+
+        if (typeof BLAGORODA_HOST === 'undefined') {
+            return 'blagoroda.org';
+        } else {
+            return BLAGORODA_HOST;
+        }
+    }
+
+    function get_pruned_tree() {
+        const visible_nodes = [];
+        const visible_links = [];
+
+        //  При проходе по разворачиваему родственному дереву у узла
+        //  может затеряться связь с другим свернутым узлом.
+        //
+        //  Например:   развернули человека, появились его папа с мамой, оба свернутые.
+        //              Разворачиваем папу, в дереве появляется его дети,
+        //              все свернутые. Поскольку дети свернутые, то у них
+        //              не будет связи с их свернутой мамой!
+        //  Но это только если идём по дереву с завихрениями типа я - папа - дед - дядя,
+        //  при проходе по прямым потомкам и/или прямым предкам такого быть не должно.
+        //  Для этого объекты d_visible_nodes, d_visible_links, чтоб быстрее
+        //  искать потерянного родителя по видимым узлам и связям после того как
+        //  эти узлы, связи построены.
+
+        const d_visible_links = {};
+        const d_visible_nodes = {};
+        const link_sep = '~';
+
+        (function traverse_tree(node = nodes_by_id[root_node.id]) {
+
+            if (node.id in d_visible_nodes) return;
+            visible_nodes.push(node);
+            d_visible_nodes[node.id] = true;
+            if (node.collapsed) return;
+
+            // tree_links: направление развертывания по дереву от корня к окраинам
+
+            visible_links.push(...node.tree_links);
+            node.tree_links.forEach(link => {
+                const source = ((typeof link.source) === 'object') ? link.source.id : link.source;
+                const target = ((typeof link.target) === 'object') ? link.target.id : link.target;
+                d_visible_links[(source).toString() + link_sep + (target).toString()] = true;
+            });
+
+            node.tree_links
+                .map(link => nodes_by_id[link.t_target])
+                .forEach(traverse_tree);
+        })();
+
+        for (const node of visible_nodes) {
+            if (!node.collapsed) continue;
+            for (const parent_id of node.parent_ids) {
+                if (!d_visible_nodes[parent_id]) continue;
+                if (d_visible_links[(parent_id).toString() + link_sep + (node.id).toString()]) continue;
+                visible_links.push({
+                    source: parent_id,
+                    target: node.id,
+                    is_child: true
+                });
+                // если нашелся один потерянный родитель, то второй точно не терялся
+                break;
+            }
+        }
+        return { nodes: visible_nodes, links: visible_links };
+    };
+
+    function node_label(node) {
+        let color = 'darkred';
+        if (parm_user_uuid_genesis_tree) {
+            // green or darkred
+            color = node.tree_links.length ? '#336600' : 'darkred';
+        }
+        return `<span style="color: ` + color + `">${node.first_name}</span>`;
+    }
+
+    function link_color(link, format) {
+        let color_relation;
+        if (parm_user_uuid_genesis_tree) {
+            // Добавленные связи между свернутыми узлами. У них неоткуда взяться t_target
+            let obj_target = link.t_target ? link.t_target : link.target;
+            obj_target = ((typeof obj_target) === 'object') ? obj_target : nodes_by_id[obj_target];
+            if (obj_target.tree_links.length) {
+                // dark green
+                color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
+            } else {
+                // dark red
+                color_relation = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
+            }
+        } else {
+            // blue
+            color_relation = format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc';
+        }
+        const color_poll = color_relation;
+        const color_trust = format == 'rgba' ? 'rgba(54, 107, 13, 0.8)' : '#366b0d';
+        const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
+        if (link.is_poll || link.is_offer || link.is_video_vote) {
+            return color_poll;
+        } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path || parm_user_uuid_genesis_tree)) {
+            return color_relation;
+        } else if (link.is_trust) {
+            return color_trust;
+        } else {
+            return color_not_trust;
+        }
+    }
+
+    const auth_data = await check_auth();
+    if (!auth_data) return;
+
+    let nodes_by_id = false;
+    let root_node = false;
 
     const is_blagoroda_host = get_blagoroda_host() == window.location.host;
     const is_other_site = !is_blagoroda_host;
-    parm_tg_group_chat_id = parseInt(get_parm('tg_group_chat_id'));
-    parm_f = parseInt(get_parm('f'));
-    parm_q = parseInt(get_parm('q'));
+    const parm_tg_group_chat_id = parseInt(get_parm('tg_group_chat_id'));
+    const parm_f = parseInt(get_parm('f'));
+    const parm_q = parseInt(get_parm('q'));
 
-    parm_rod = get_parm('rod') || '';
-    parm_dover=get_parm('dover') || '';;
-    parm_withalone = get_parm('withalone') || '';
+    let parm_rod = get_parm('rod') || '';
+    let parm_dover=get_parm('dover') || '';;
+    let parm_withalone = get_parm('withalone') || '';
 
-    parm_user_uuid_genesis_tree = get_parm('user_uuid_genesis_tree') || '';
-    parm_user_uuid_genesis_path = get_parm('user_uuid_genesis_path') || '';
-    parm_user_uuid_trust_path = get_parm('user_uuid_trust_path') || '';
-    parm_tg_poll_id = get_parm('tg_poll_id') || '';
-    parm_offer_uuid = get_parm('offer_uuid') || '';
-    parm_user_uuid_trusts = get_parm('user_uuid_trusts') || '';
+    let parm_user_uuid_genesis_tree = get_parm('user_uuid_genesis_tree') || '';
+    let parm_user_uuid_genesis_path = get_parm('user_uuid_genesis_path') || '';
+    let parm_user_uuid_trust_path = get_parm('user_uuid_trust_path') || '';
+    let parm_user_uuid_trusts = get_parm('user_uuid_trusts') || '';
 
-    parm_videoid = get_parm('videoid') || '';
-    if (parm_videoid) {
-        parm_source = get_parm('source') || 'yt';
-    }
+    const parm_tg_poll_id = get_parm('tg_poll_id') || '';
+    const parm_offer_uuid = get_parm('offer_uuid') || '';
+
+    const parm_videoid = get_parm('videoid') || '';
+    let parm_source = '';
+    if (parm_videoid) parm_source = get_parm('source') || 'yt';
 
     if (
         !window.location.href.match(/\?/) ||
@@ -285,14 +252,15 @@ $(document).ready (async function() {
 
     const r_uuid = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i;
     const r_uuid1_uuid2 = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}\,[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i;
-
+    let parm_depth = '';
+    let parm_up = '';
+    let parm_down = '';
     if (is_other_site) {
         if (parm_user_uuid_genesis_tree) {
             if (r_uuid.test(parm_user_uuid_genesis_tree)) {
-                parm_depth = get_parm('depth') || '';
+                parm_depth = get_parm('depth') || 3;
                 parm_up = get_parm('up') || '';
                 parm_down = get_parm('down') || '';
-                parm_collapse = get_parm('collapse') || '';
             } else {
                 parm_user_uuid_genesis_tree = '';
             }
@@ -340,8 +308,7 @@ $(document).ready (async function() {
             '&fmt=3d-force-graph' +
             '&depth=' + parm_depth +
             '&up=' + parm_up +
-            '&down=' + parm_down +
-            '&collapse=' + parm_collapse
+            '&down=' + parm_down + '&new=on'
         ;
     } else if (is_other_site && parm_user_uuid_genesis_path) {
         document.title = 'Благо Рода: путь родства';
@@ -385,49 +352,16 @@ $(document).ready (async function() {
             api_get_parms += '&number=' + parm_q;
         }
     }
-    api_response = await api_request(api_url + api_get_parms, {auth_token: auth_data.auth_token});
-    if (api_response.ok) {
-        const data = api_response.data;
-        if (parm_tg_group_chat_id && data.tg_group) {
-            document.title =
-                'Благо Рода, доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') + ': ' +
-                data.tg_group.title;
-        } else if (parm_user_uuid_genesis_tree && data.root_node) {
-            document.title = 'Благо Рода, родство: ' + data.root_node.first_name;
-            if (parm_collapse) {
+    const photoTextureMale = new THREE.TextureLoader().load(`./images/no-photo-gender-male.jpg`);
+    const photoTextureFemale = new THREE.TextureLoader().load(`./images/no-photo-gender-female.jpg`);
+    const photoTextureNone = new THREE.TextureLoader().load(`./images/no-photo-gender-none.jpg`);
 
-            //  tree_links - это как идем по дереву от t_source к t_target, потом от
-            //  (previous t_target = t_source) к следующему t_target.
-            //  t_source -> t_target может быть и к родителю.
-            //  Направление родитель -> ребенок задает source -> target.
+    const photoTextureMaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-male-dead.jpg`);
+    const photoTextureFemaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-female-dead.jpg`);
+    const photoTextureNoneDead = new THREE.TextureLoader().load(`./images/no-photo-gender-none-dead.jpg`);
 
-                root_node = data.root_node;
-                data.nodes.forEach((node) => {
-                    node.collapsed = node.id != root_node.id;
-                    node.tree_links = []
-                });
-                nodes_by_id = Object.fromEntries(data.nodes.map(node => [node.id, node]));
-                    data.links.forEach(link => {
-                    nodes_by_id[link.t_source].tree_links.push(link);
-                });
-            }
-        } else if (parm_user_uuid_trusts && data.root_node) {
-            document.title = 'Благо Рода, ближайшие доверия: ' + data.root_node.first_name;
-        } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
-            document.title = 'Благо Рода, опрос: ' + data.question;
-        } else if (parm_videoid && data.title) {
-            document.title = 'Благо Рода, голоса по видео: ' + data.title;
-        }
-        const photoTextureMale = new THREE.TextureLoader().load(`./images/no-photo-gender-male.jpg`);
-        const photoTextureFemale = new THREE.TextureLoader().load(`./images/no-photo-gender-female.jpg`);
-        const photoTextureNone = new THREE.TextureLoader().load(`./images/no-photo-gender-none.jpg`);
-
-        const photoTextureMaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-male-dead.jpg`);
-        const photoTextureFemaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-female-dead.jpg`);
-        const photoTextureNoneDead = new THREE.TextureLoader().load(`./images/no-photo-gender-none-dead.jpg`);
-
-        const graph_container = $('#3d-graph')[0];
-        const Graph = ForceGraph3D()(graph_container)
+    const graph_container = $('#3d-graph')[0];
+    const Graph = ForceGraph3D()
         .nodeThreeObject(({ id, photo, gender, is_dead }) => {
             let photoTexture;
             if (photo) {
@@ -450,9 +384,11 @@ $(document).ready (async function() {
             sprite.scale.set(25, 25);
             return sprite;
         })
-        .graphData(graph_data())
-        // Если есть и родственная связь, и доверие, и если задано
-        // искать родственные связи, то показываем стрелку цвета родственной связи
+
+        // Если не дерево родства: если есть и родственная связь, и доверие, и если задано
+        // искать родственные связи, то показываем стрелку цвета родственной связи.
+        // В дереве родства своя цветовая гамма для оконченых узлов и т.п.
+
         .linkColor(link => link_color(link, 'rgb'))
         .linkOpacity(0.8)
         .linkCurvature(0.25)
@@ -460,15 +396,15 @@ $(document).ready (async function() {
         .nodeLabel(node => node_label(node))
         .onNodeHover(node => {
             let cursor = 'pointer';
-            if (parm_user_uuid_genesis_tree && parm_collapse) {
+            if (parm_user_uuid_genesis_tree) {
                 cursor =  node && node.tree_links.length ? 'pointer' : null;
             }
             graph_container.style.cursor = cursor;
         })
         .onNodeClick(function(node){
-            if (parm_user_uuid_genesis_tree && parm_collapse) {
+            if (parm_user_uuid_genesis_tree) {
                 if (node.tree_links.length) {
-                    node.collapsed = !node.collapsed; // toggle collapse state
+                    node.collapsed = !node.collapsed;
                     Graph.graphData(get_pruned_tree());
                 }
             }
@@ -476,15 +412,42 @@ $(document).ready (async function() {
                 window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
             }
         })
-
         .linkDirectionalArrowLength(10)
         .linkDirectionalArrowRelPos(1)
         .linkDirectionalArrowColor(link => link_color(link, 'rgba'))
-        ;
+    ;
 
-        if (!parm_tg_poll_id && !parm_offer_uuid) {
-            Graph.d3Force('charge').strength(-320);
+    let data;
+    const api_response = await api_request(api_url + api_get_parms, {auth_token: auth_data.auth_token});
+    if (api_response.ok) {
+        data = api_response.data;
+        if (parm_user_uuid_genesis_tree) {
+            root_node = data.root_node;
+            nodes_by_id = data.nodes_by_id;
+        }
+        if (parm_tg_group_chat_id && data.tg_group) {
+            document.title =
+                'Благо Рода, доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') + ': ' +
+                data.tg_group.title;
+        } else if (parm_user_uuid_genesis_tree && data.root_node) {
+            document.title = 'Благо Рода, родство: ' + data.root_node.first_name;
+        } else if (parm_user_uuid_trusts && data.root_node) {
+            document.title = 'Благо Рода, ближайшие доверия: ' + data.root_node.first_name;
+        } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
+            document.title = 'Благо Рода, опрос: ' + data.question;
+        } else if (parm_videoid && data.title) {
+            document.title = 'Благо Рода, голоса по видео: ' + data.title;
+        }
+        if (parm_user_uuid_genesis_tree) {
+            // if (!parm_up && !parm_down) {
+                // nodes_by_id[root_node.id].collapsed = true;
+                // for (const [id, node] of Object.entries(nodes_by_id)) {
+                //     node.collapsed = node.id != root_node.id;
+                // }
+            // }
+            Graph(graph_container).graphData(get_pruned_tree());
+        } else {
+            Graph(graph_container).graphData(data);
         }
     }
-
 });
