@@ -102,25 +102,44 @@ $(document).ready (async function() {
         }
     }
 
+    const c_nfa = ' ';
+    const c_collapsed = '+';
+    const c_expanded = '-';
+
+    function name_plus (node) {
+        let result;
+        let do_up = parm_up && node.up && 'lateral_links' in node && node.lateral_links.length == 0;
+        let do_down = parm_down && node.down && 'lateral_links' in node && node.lateral_links.length == 0;
+        if      (do_up || do_down)              result = c_nfa;
+        else if (node.tree_links.length == 0)   result = c_nfa;
+        else if (node.collapsed)                result = c_collapsed;
+        else                                    result = c_expanded;
+        return result;
+    }
+
+    //  При проходе по разворачиваему родственному дереву у узла
+    //  может затеряться связь с другим свернутым узлом.
+    //
+    //  Например:   развернули человека, появились его папа с мамой, оба свернутые.
+    //              Разворачиваем папу, в дереве появляется его дети,
+    //              все свернутые. Поскольку дети свернутые, то у них
+    //              не будет связи с их свернутой мамой!
+    //  Но это только если идём по дереву с завихрениями типа я - папа - дед - дядя,
+    //  при проходе по прямым потомкам и/или прямым предкам такого быть не должно.
+    //  Для этого объекты d_visible_nodes, d_visible_links, чтоб быстрее
+    //  искать потерянного родителя по видимым узлам и связям после того как
+    //  эти узлы, связи построены.
+
+    let d_visible_links = {};
+    let d_visible_nodes = {};
+    const link_sep = '~';
+
     function get_pruned_tree() {
         const visible_nodes = [];
         const visible_links = [];
 
-        //  При проходе по разворачиваему родственному дереву у узла
-        //  может затеряться связь с другим свернутым узлом.
-        //
-        //  Например:   развернули человека, появились его папа с мамой, оба свернутые.
-        //              Разворачиваем папу, в дереве появляется его дети,
-        //              все свернутые. Поскольку дети свернутые, то у них
-        //              не будет связи с их свернутой мамой!
-        //  Но это только если идём по дереву с завихрениями типа я - папа - дед - дядя,
-        //  при проходе по прямым потомкам и/или прямым предкам такого быть не должно.
-        //  Для этого объекты d_visible_nodes, d_visible_links, чтоб быстрее
-        //  искать потерянного родителя по видимым узлам и связям после того как
-        //  эти узлы, связи построены.
-
-        const d_visible_links = {};
-        const d_visible_nodes = {};
+        d_visible_links = {};
+        d_visible_nodes = {};
         const link_sep = '~';
 
         (function traverse_tree(node = nodes_by_id[root_node.id]) {
@@ -128,7 +147,9 @@ $(document).ready (async function() {
             if (node.id in d_visible_nodes) return;
             visible_nodes.push(node);
             d_visible_nodes[node.id] = true;
-            if (node.collapsed) return;
+            let do_up = parm_up && node.up && 'lateral_links' in node;
+            let do_down = parm_down && node.down && 'lateral_links' in node;
+            if (node.collapsed && !do_up && !do_down) return;
 
             // tree_links: направление развертывания по дереву от корня к окраинам
 
@@ -145,7 +166,7 @@ $(document).ready (async function() {
         })();
 
         for (const node of visible_nodes) {
-            if (!node.collapsed) continue;
+            node.first_name = node.first_name_orig + ' (' + name_plus(node) + ')';
             for (const parent_id of node.parent_ids) {
                 if (!d_visible_nodes[parent_id]) continue;
                 if (d_visible_links[(parent_id).toString() + link_sep + (node.id).toString()]) continue;
@@ -164,28 +185,30 @@ $(document).ready (async function() {
     function node_label(node) {
         let color = 'darkred';
         if (parm_user_uuid_genesis_tree) {
-            // green or darkred
-            color = node.tree_links.length ? '#336600' : 'darkred';
+            // green or darkred or blue if up or down
+            color = (node.up || node.down) ? '#0033cc' : (node.tree_links.length ? '#336600' : 'darkred');
         }
         return `<span style="color: ` + color + `">${node.first_name}</span>`;
     }
 
     function link_color(link, format) {
-        let color_relation;
+        // blue
+        let color_relation = format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc';
         if (parm_user_uuid_genesis_tree) {
-            // Добавленные связи между свернутыми узлами. У них неоткуда взяться t_target
-            let obj_target = link.t_target ? link.t_target : link.target;
-            obj_target = ((typeof obj_target) === 'object') ? obj_target : nodes_by_id[obj_target];
-            if (obj_target.tree_links.length) {
-                // dark green
-                color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
-            } else {
-                // dark red
-                color_relation = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
+            const source = ((typeof link.source) === 'object') ? link.source : nodes_by_id[link.source];
+            const target = ((typeof link.target) === 'object') ? link.target : nodes_by_id[link.target];
+            if (!(source.up && target.up || source.down && target.down)) {
+                // Добавленные связи между свернутыми узлами. У них неоткуда взяться t_target
+                let obj_target = link.t_target ? link.t_target : link.target;
+                obj_target = ((typeof obj_target) === 'object') ? obj_target : nodes_by_id[obj_target];
+                if (obj_target.tree_links.length) {
+                    // dark green
+                    color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
+                } else {
+                    // dark red
+                    color_relation = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
+                }
             }
-        } else {
-            // blue
-            color_relation = format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc';
         }
         const color_poll = color_relation;
         const color_trust = format == 'rgba' ? 'rgba(54, 107, 13, 0.8)' : '#366b0d';
@@ -395,14 +418,27 @@ $(document).ready (async function() {
         .backgroundColor("#FFFFFF")
         .nodeLabel(node => node_label(node))
         .onNodeHover(node => {
-            let cursor = 'pointer';
+            let cursor = null;
             if (parm_user_uuid_genesis_tree) {
-                cursor =  node && node.tree_links.length ? 'pointer' : null;
+                if (node) {
+                    const what = name_plus(node);
+                    if   (what == c_nfa)               cursor = null;
+                    else /* c_collapsed/expanded */    cursor = 'pointer';
+                }
             }
             graph_container.style.cursor = cursor;
         })
         .onNodeClick(function(node){
             if (parm_user_uuid_genesis_tree) {
+                if ('lateral_links' in node) {
+                    if(node.lateral_links.length > 0) {
+                        if (node.collapsed) {
+                            node.tree_links = node.lateral_links.concat(node.tree_links);
+                        } else {
+                            for (let i = 0; i < node.lateral_links.length; i++) node.tree_links.shift();
+                        }
+                    }
+                }
                 if (node.tree_links.length) {
                     node.collapsed = !node.collapsed;
                     Graph.graphData(get_pruned_tree());
@@ -441,10 +477,13 @@ $(document).ready (async function() {
         if (parm_user_uuid_genesis_tree) {
             // if (!parm_up && !parm_down) {
                 // nodes_by_id[root_node.id].collapsed = true;
-                // for (const [id, node] of Object.entries(nodes_by_id)) {
+                //  {
                 //     node.collapsed = node.id != root_node.id;
                 // }
             // }
+            for (const [id, node] of Object.entries(nodes_by_id)) {
+                node.first_name_orig = node.first_name;
+            }
             Graph(graph_container).graphData(get_pruned_tree());
         } else {
             Graph(graph_container).graphData(data);
