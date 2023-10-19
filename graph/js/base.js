@@ -182,13 +182,20 @@ $(document).ready (async function() {
         return { nodes: visible_nodes, links: visible_links };
     };
 
-    function node_label(node) {
-        let color = 'darkred';
+    function node_text_color(node, format) {
+        // dark red
+        let color = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
         if (parm_user_uuid_genesis_tree) {
             // green or darkred or blue if up or down
-            color = (node.up || node.down) ? '#0033cc' : (node.tree_links.length ? '#336600' : 'darkred');
+            color = (node.up || node.down)
+                ?   (format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc')
+                :   (
+                        node.tree_links.length
+                            ? (format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600')
+                            : (format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000')
+                    );
         }
-        return `<span style="color: ` + color + `">${node.first_name}</span>`;
+        return color;
     }
 
     function link_color(link, format) {
@@ -385,19 +392,19 @@ $(document).ready (async function() {
 
     const graph_container = $('#3d-graph')[0];
     const Graph = ForceGraph3D()
-        .nodeThreeObject(({ id, photo, gender, is_dead }) => {
+        .nodeThreeObject((node) => {
             let photoTexture;
-            if (photo) {
-                photoTexture = new THREE.TextureLoader().load(photo);
-            } else if (gender == 'm' && !is_dead) {
+            if (node.photo) {
+                photoTexture = new THREE.TextureLoader().load(node.photo);
+            } else if (node.gender == 'm' && !node.is_dead) {
                 photoTexture = photoTextureMale;
-            } else if (gender == 'm' && is_dead) {
+            } else if (node.gender == 'm' && node.is_dead) {
                 photoTexture = photoTextureMaleDead;
-            } else if (gender == 'f' && !is_dead) {
+            } else if (node.gender == 'f' && !node.is_dead) {
                 photoTexture = photoTextureFemale;
-            } else if (gender == 'f' && is_dead) {
+            } else if (node.gender == 'f' && node.is_dead) {
                 photoTexture = photoTextureFemaleDead;
-            } else if (is_dead) {
+            } else if (node.is_dead) {
                 photoTexture = photoTextureNoneDead;
             } else {
                 photoTexture = photoTextureNone;
@@ -405,25 +412,35 @@ $(document).ready (async function() {
             const material = new THREE.SpriteMaterial({ map: photoTexture });
             const sprite = new THREE.Sprite(material);
             sprite.scale.set(25, 25);
+
+            const label = new SpriteText();
+            // label.material.depthWrite = false; // make sprite background transparent
+            label.text = node.first_name;
+            label.textHeight = 0.2;
+            label.color = node_text_color(node, 'rgba');
+            sprite.add(label)
+
+            sprite.center.set(0.5, -0.1);
+
             return sprite;
         })
 
         // Если не дерево родства: если есть и родственная связь, и доверие, и если задано
         // искать родственные связи, то показываем стрелку цвета родственной связи.
-        // В дереве родства своя цветовая гамма для оконченых узлов и т.п.
+        // В дереве родства своя цветовая гамма для оконченых узлов
 
         .linkColor(link => link_color(link, 'rgb'))
         .linkOpacity(0.8)
         .linkCurvature(0.25)
         .backgroundColor("#FFFFFF")
-        .nodeLabel(node => node_label(node))
+        .nodeLabel(node => `<span style="color: ${node_text_color(node, 'rgb')}">${node.first_name}</span>`)
         .onNodeHover(node => {
             let cursor = null;
             if (parm_user_uuid_genesis_tree) {
                 if (node) {
                     const what = name_plus(node);
-                    if   (what == c_nfa)               cursor = null;
-                    else /* c_collapsed/expanded */    cursor = 'pointer';
+                    if   (what == c_nfa)                cursor = null;
+                    else /* c_collapsed или expanded */ cursor = 'pointer';
                 }
             }
             graph_container.style.cursor = cursor;
