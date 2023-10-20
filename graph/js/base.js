@@ -106,7 +106,7 @@ $(document).ready (async function() {
     const c_collapsed = '+';
     const c_expanded = '-';
 
-    function name_plus (node) {
+    function expand_collapse_sign (node) {
         let result;
         let do_up = parm_up && node.up && 'lateral_links' in node && node.lateral_links.length == 0;
         let do_down = parm_down && node.down && 'lateral_links' in node && node.lateral_links.length == 0;
@@ -166,7 +166,8 @@ $(document).ready (async function() {
         })();
 
         for (const node of visible_nodes) {
-            node.first_name = node.first_name_orig + ' (' + name_plus(node) + ')';
+            const what = expand_collapse_sign(node);
+            node.first_name = node.first_name_orig + (what != c_nfa ? ' (' + what + ')' : '');
             for (const parent_id of node.parent_ids) {
                 if (!d_visible_nodes[parent_id]) continue;
                 if (d_visible_links[(parent_id).toString() + link_sep + (node.id).toString()]) continue;
@@ -438,7 +439,7 @@ $(document).ready (async function() {
             let cursor = null;
             if (parm_user_uuid_genesis_tree) {
                 if (node) {
-                    const what = name_plus(node);
+                    const what = expand_collapse_sign(node);
                     if   (what == c_nfa)                cursor = null;
                     else /* c_collapsed или expanded */ cursor = 'pointer';
                 }
