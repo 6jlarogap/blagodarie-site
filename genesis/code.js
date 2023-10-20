@@ -872,7 +872,7 @@ function calcY2(d){
 d3.select(window).on("resize", function(){
 	width = +svg.node().getBoundingClientRect().width;
 	height = +svg.node().getBoundingClientRect().height;
-	simulation.alpha(1).restart();
+//	simulation.alpha(1).restart();
 });
 
 function initDefs(){
