@@ -195,10 +195,11 @@ var depth = url.searchParams.get("depth") || 10;
 var up = url.searchParams.get("up") || '';
 var down = url.searchParams.get("down") || '';
 var count_ = url.searchParams.get("q") || 50;
-
+/*
 if (userIdFrom || all) {
     document.querySelector('.pagination_block').style.display = 'none';
 }
+*/
 
 if (userIdFrom) {
     if (depth <= 0 || depth > 100 ) {
