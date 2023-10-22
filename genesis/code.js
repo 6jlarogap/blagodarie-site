@@ -538,11 +538,11 @@ d3.json(apiUrl, d3_json_parms)
 	}
 	else{
 		simulation = d3.forceSimulation(nodes);
-		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(110).strength(1));
+		simulation.force("link", d3.forceLink(links).id(d => d.id).iterations(100).distance(100).strength(1));
 		simulation.force("charge", d3.forceManyBody().strength(-1880));
 		simulation.force("x", d3.forceX(width / 2));//.strength(0.025));
 		simulation.force("y", d3.forceY(height / 2));//.strength(0.025));		
-		simulation.force("collide", d3.forceCollide().strength(1).radius(95).iterations(100))
+		simulation.force("collide", d3.forceCollide().strength(1).radius(95))
 /*
 		simulation.force("x", d3.forceX(width / 2).strength(0.03))
 		simulation.force("y", d3.forceY(height / 2).strength(0.03))
