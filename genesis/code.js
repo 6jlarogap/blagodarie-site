@@ -538,7 +538,7 @@ d3.json(apiUrl, d3_json_parms)
 	}
 	else{
 		simulation = d3.forceSimulation(nodes);
-		simulation.force("link", d3.forceLink(links).id(d => d.id).iterations(200).strength(0.1).distance(300));
+		simulation.force("link", d3.forceLink(links).id(d => d.id).iterations(200).strength(1).distance(300));
 //		simulation.force("charge", d3.forceManyBody().strength(-980));
 		simulation.force("x", d3.forceX(width / 2));//.strength(0.025));
 		simulation.force("y", d3.forceY(height / 2));//.strength(0.025));		
