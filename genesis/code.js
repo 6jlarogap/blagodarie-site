@@ -428,7 +428,7 @@ d3.json(apiUrl, d3_json_parms)
 	
 	
 	//зафиксировать вершины пользователя, желаний и ключей
-	
+/*	
 	nodes.forEach(function(d) {
 		switch(d.id){
 		case userIdFrom:
@@ -473,21 +473,21 @@ d3.json(apiUrl, d3_json_parms)
 			d.fy = height / 2 - 300;
 			
 			break;
-		/*case GENESIS_ID:
+		case GENESIS_ID:
 			if(!window.location.href.includes('gen')){
 			d.fx = width<900 ? 20 :width / 2+100;
 			d.fy = height / 2 - 250;
 			}
-			break;*/
+			break;
 		
 		case MAPS_ID:
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
 			d.fy = height / 2 - 300;
 			break;
-		/*case PLUS_ID:
+		case PLUS_ID:
 			d.fx = width<900 ? width/2+50 : width/2+80;
 			d.fy = height/2;
-			break;*/
+			break;
 		case TRUST_ID:
 			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
@@ -518,7 +518,7 @@ d3.json(apiUrl, d3_json_parms)
 			break;
 		}
 	});
-	
+*/
 	if(width<900){
 		simulation = d3.forceSimulation(nodes);
 		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links)); //distance(150)
