@@ -391,40 +391,42 @@ $(document).ready (async function() {
     const photoTextureFemaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-female-dead.jpg`);
     const photoTextureNoneDead = new THREE.TextureLoader().load(`./images/no-photo-gender-none-dead.jpg`);
 
+    function node_draw(node) {
+        let photoTexture;
+        if (node.photo) {
+            photoTexture = new THREE.TextureLoader().load(node.photo);
+        } else if (node.gender == 'm' && !node.is_dead) {
+            photoTexture = photoTextureMale;
+        } else if (node.gender == 'm' && node.is_dead) {
+            photoTexture = photoTextureMaleDead;
+        } else if (node.gender == 'f' && !node.is_dead) {
+            photoTexture = photoTextureFemale;
+        } else if (node.gender == 'f' && node.is_dead) {
+            photoTexture = photoTextureFemaleDead;
+        } else if (node.is_dead) {
+            photoTexture = photoTextureNoneDead;
+        } else {
+            photoTexture = photoTextureNone;
+        }
+        const material = new THREE.SpriteMaterial({ map: photoTexture });
+        const sprite = new THREE.Sprite(material);
+        sprite.scale.set(25, 25);
+
+        const label = new SpriteText();
+        // label.material.depthWrite = false; // make sprite background transparent
+        label.text = node.first_name;
+        label.textHeight = 0.2;
+        label.color = node_text_color(node, 'rgba');
+        sprite.add(label)
+
+        sprite.center.set(0.5, -0.1);
+
+        return sprite;
+    }
+
     const graph_container = $('#3d-graph')[0];
     const Graph = ForceGraph3D()
-        .nodeThreeObject((node) => {
-            let photoTexture;
-            if (node.photo) {
-                photoTexture = new THREE.TextureLoader().load(node.photo);
-            } else if (node.gender == 'm' && !node.is_dead) {
-                photoTexture = photoTextureMale;
-            } else if (node.gender == 'm' && node.is_dead) {
-                photoTexture = photoTextureMaleDead;
-            } else if (node.gender == 'f' && !node.is_dead) {
-                photoTexture = photoTextureFemale;
-            } else if (node.gender == 'f' && node.is_dead) {
-                photoTexture = photoTextureFemaleDead;
-            } else if (node.is_dead) {
-                photoTexture = photoTextureNoneDead;
-            } else {
-                photoTexture = photoTextureNone;
-            }
-            const material = new THREE.SpriteMaterial({ map: photoTexture });
-            const sprite = new THREE.Sprite(material);
-            sprite.scale.set(25, 25);
-
-            const label = new SpriteText();
-            // label.material.depthWrite = false; // make sprite background transparent
-            label.text = node.first_name;
-            label.textHeight = 0.2;
-            label.color = node_text_color(node, 'rgba');
-            sprite.add(label)
-
-            sprite.center.set(0.5, -0.1);
-
-            return sprite;
-        })
+        .nodeThreeObject(node => node_draw(node))
 
         // Если не дерево родства: если есть и родственная связь, и доверие, и если задано
         // искать родственные связи, то показываем стрелку цвета родственной связи.
@@ -459,6 +461,12 @@ $(document).ready (async function() {
                 }
                 if (node.tree_links.length) {
                     node.collapsed = !node.collapsed;
+                    //  node_draw(node):
+                    //      иначе не перерисовывается фио со значком +/-,
+                    //      особенно при сворачивании узла!
+                    //  https://github.com/vasturiano/3d-force-graph/issues/61#issuecomment-901611382
+                    //
+                    Graph.nodeThreeObject(node => node_draw(node));
                     Graph.graphData(get_pruned_tree());
                 }
             }
