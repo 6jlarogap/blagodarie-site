@@ -476,41 +476,52 @@ $(document).ready (async function() {
                             const sources_by_id = {};
                             for (let i = 0; i < from_where.length; i++) {
                                 const id = from_where[i].t_target;
-                                sources_by_id[id] = {
-                                    up: nodes_by_id[id].up,
-                                    down: nodes_by_id[id].down,
-                                };
-                            }
-                            const api_response = await api_request(
-                                api_url + '/api/profile_genesis/',
-                                {
-                                    method: 'POST',
-                                    json: { fan_source: {
-                                        node_id: node.id,
-                                        sources_by_id: sources_by_id},
-                                        parm_up: parm_up,
-                                        parm_down: parm_down,
-                                    },
-                                    auth_token: auth_data.auth_token
+                                // теперь надо глянуть, не идет ли от того id к этому ноду связь
+                                let found = false;
+                                for (let i = 0; i < nodes_by_id[id].tree_links.length; i++) {
+                                    if (nodes_by_id[id].tree_links[i].t_target == node.id) {
+                                        found = true;
+                                        break;
+                                    }
                                 }
-                            );
-                            if (api_response.ok) {
-                                for (const [id, node_] of Object.entries(api_response.data.targets_by_id)) {
-                                    node.complete = true;
-                                    if (node_.id) {
-                                        if (!(id in nodes_by_id)) {
-                                            nodes_by_id[id] = node_;
-                                            nodes_by_id[id].first_name_orig = nodes_by_id[id].first_name;
+                                if (!found) {
+                                    sources_by_id[id] = {
+                                        up: nodes_by_id[id].up,
+                                        down: nodes_by_id[id].down,
+                                    };
+                                }
+                            }
+                            if (Object.keys(sources_by_id).length != 0) {
+                                const api_response = await api_request(
+                                    api_url + '/api/profile_genesis/', {
+                                        method: 'POST',
+                                        json: {
+                                            fan_source: {
+                                                node_id: node.id,
+                                                sources_by_id: sources_by_id
+                                            },
+                                            auth_token: auth_data.auth_token
                                         }
-                                    } else {
-                                        if (id in nodes_by_id) {
-                                            if (!(nodes_by_id[id].complete)) nodes_by_id[id].complete = node_.complete;
-                                            nodes_by_id[id].parent_ids = node_.parent_ids;
-                                            nodes_by_id[id].tree_links = node_.tree_links;
+                                    }
+                                );
+                                if (api_response.ok) {
+                                    for (const [id, node_] of Object.entries(api_response.data.targets_by_id)) {
+                                        node.complete = true;
+                                        if (node_.id) {
+                                            if (!(id in nodes_by_id)) {
+                                                nodes_by_id[id] = node_;
+                                                nodes_by_id[id].first_name_orig = nodes_by_id[id].first_name;
+                                            }
+                                        } else {
+                                            if (id in nodes_by_id) {
+                                                if (!(nodes_by_id[id].complete)) nodes_by_id[id].complete = node_.complete;
+                                                nodes_by_id[id].parent_ids = node_.parent_ids;
+                                                nodes_by_id[id].tree_links = node_.tree_links;
+                                            }
                                         }
                                     }
                                 }
-                            }
+                            } else { node.complete = true;}
                         }
                     }
 
