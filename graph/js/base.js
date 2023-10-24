@@ -448,7 +448,7 @@ $(document).ready (async function() {
             }
             graph_container.style.cursor = cursor;
         })
-        .onNodeClick(function(node){
+        .onNodeClick(async function(node){
             if (parm_user_uuid_genesis_tree) {
                 if ('lateral_links' in node) {
                     if(node.lateral_links.length > 0) {
@@ -461,8 +461,61 @@ $(document).ready (async function() {
                 }
                 if (node.tree_links.length) {
                     node.collapsed = !node.collapsed;
+
+                    if (!node.collapsed && !node.complete) {
+                        // подчитываем из базы по путям от node.tree_links t_target's
+                        // сначала fool proof
+                        if ('lateral_links' in node && node.lateral_links.length == 0) {
+                            node.complete = true;
+                        }
+                        if (!('lateral_links' in node) && node.tree_links.length == 0) {
+                            node.complete = true;
+                        }
+                        if (!node.complete) {
+                            const from_where = 'lateral_links' in node ? node.lateral_links : node.tree_links;
+                            const sources_by_id = {};
+                            for (let i = 0; i < from_where.length; i++) {
+                                const id = from_where[i].t_target;
+                                sources_by_id[id] = {
+                                    up: nodes_by_id[id].up,
+                                    down: nodes_by_id[id].down,
+                                };
+                            }
+                            const api_response = await api_request(
+                                api_url + '/api/profile_genesis/',
+                                {
+                                    method: 'POST',
+                                    json: { fan_source: {
+                                        node_id: node.id,
+                                        sources_by_id: sources_by_id},
+                                        parm_up: parm_up,
+                                        parm_down: parm_down,
+                                    },
+                                    auth_token: auth_data.auth_token
+                                }
+                            );
+                            if (api_response.ok) {
+                                for (const [id, node_] of Object.entries(api_response.data.targets_by_id)) {
+                                    node.complete = true;
+                                    if (node_.id) {
+                                        if (!(id in nodes_by_id)) {
+                                            nodes_by_id[id] = node_;
+                                            nodes_by_id[id].first_name_orig = nodes_by_id[id].first_name;
+                                        }
+                                    } else {
+                                        if (id in nodes_by_id) {
+                                            if (!(nodes_by_id[id].complete)) nodes_by_id[id].complete = node_.complete;
+                                            nodes_by_id[id].parent_ids = node_.parent_ids;
+                                            nodes_by_id[id].tree_links = node_.tree_links;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     //  node_draw(node):
-                    //      иначе не перерисовывается фио со значком +/-,
+                    //      иначе не перерисовывается фио со значком +/-, точнее значок
                     //      особенно при сворачивании узла!
                     //  https://github.com/vasturiano/3d-force-graph/issues/61#issuecomment-901611382
                     //
