@@ -530,7 +530,7 @@ d3.json(apiUrl, d3_json_parms)
 	}	
 	else if(width < 3000) {
 		simulation = d3.forceSimulation(nodes);
-		simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.6));
+		simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.3));
 		simulation.force("charge", d3.forceManyBody().strength(-5950));
 		simulation.force("x", d3.forceX(width / 2));
 		simulation.force("y", d3.forceY(height / 2));		
