@@ -206,12 +206,15 @@ $(document).ready (async function() {
             const source = ((typeof link.source) === 'object') ? link.source : nodes_by_id[link.source];
             const target = ((typeof link.target) === 'object') ? link.target : nodes_by_id[link.target];
             if (!(source.up && target.up || source.down && target.down)) {
-                if (source.tree_links.length == 0 || target.tree_links.length == 0) {
-                    // dark red
-                    color_relation = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
-                } else {
+                // Добавленные связи между свернутыми узлами. У них неоткуда взяться t_target
+                let obj_target = link.t_target ? link.t_target : link.target;
+                obj_target = ((typeof obj_target) === 'object') ? obj_target : nodes_by_id[obj_target];
+                if (obj_target.tree_links.length) {
                     // dark green
                     color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
+                } else {
+                    // dark red
+                    color_relation = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
                 }
             }
         }
@@ -473,14 +476,22 @@ $(document).ready (async function() {
                             const sources_by_id = {};
                             for (let i = 0; i < from_where.length; i++) {
                                 const id = from_where[i].t_target;
-                                if (!(id in d_visible_nodes)) {
+                                // теперь надо глянуть, не идет ли от того id к этому ноду связь
+                                let found = false;
+                                for (let i = 0; i < nodes_by_id[id].tree_links.length; i++) {
+                                    if (nodes_by_id[id].tree_links[i].t_target == node.id) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found) {
                                     sources_by_id[id] = {
                                         up: nodes_by_id[id].up,
                                         down: nodes_by_id[id].down,
                                     };
                                 }
                             }
-                            if (Object.keys(from_where).length != 0) {
+                            if (Object.keys(sources_by_id).length != 0) {
                                 graph_container.style.cursor = 'wait';
                                 const api_response = await api_request(
                                     api_url + '/api/profile_genesis/', {
@@ -488,41 +499,25 @@ $(document).ready (async function() {
                                         auth_token: auth_data.auth_token,
                                         json: {
                                             fan_source: {
-                                                nodes: [node.id],  // А так что-то не получается!: Object.keys(nodes_by_id),
+                                                nodes: [node.id],
                                                 sources_by_id: sources_by_id
                                             }
                                         }
                                     }
                                 );
                                 if (api_response.ok) {
-                                    node.complete = true;
                                     for (const [id, node_] of Object.entries(api_response.data.targets_by_id)) {
-                                        // узлы, следующие за node. Они сначала, чтоб не путались добавленные узлы
-                                        if (
-                                            // В узле, следующем за node, не заполняются данные юзера, например, id
-                                            !('id' in node_) &&
-                                            // Иначе не может быть, но все таки...
-                                            (id in nodes_by_id)
-                                           ) {
-                                            nodes_by_id[id].parent_ids = node_.parent_ids;
-                                            let tree_links = [];
-                                            for (let i = 0; i < node_.tree_links.length; i++) {
-                                                if (!(node_.tree_links[i].t_target in nodes_by_id)) {
-                                                    tree_links.push(node_.tree_links[i]);
-                                                }
-                                            }
-                                            nodes_by_id[id].complete = tree_links.length == 0 ? true : false;
-                                            nodes_by_id[id].tree_links = tree_links;
-                                        }
-                                    }
-                                    for (const [id, node_] of Object.entries(api_response.data.targets_by_id)) {
+                                        node.complete = true;
                                         if (node_.id) {
-                                            // узлы, следующие за теми из sources_by_id. Это добавляемые узлы,
-                                            // в которых апи подставялет данные юзера.
-                                            // Если добавляемый узел уже в есть, то не трогаем его.
                                             if (!(id in nodes_by_id)) {
                                                 nodes_by_id[id] = node_;
                                                 nodes_by_id[id].first_name_orig = nodes_by_id[id].first_name;
+                                            }
+                                        } else {
+                                            if (id in nodes_by_id) {
+                                                if (!(nodes_by_id[id].complete)) nodes_by_id[id].complete = node_.complete;
+                                                nodes_by_id[id].parent_ids = node_.parent_ids;
+                                                nodes_by_id[id].tree_links = node_.tree_links;
                                             }
                                         }
                                     }
