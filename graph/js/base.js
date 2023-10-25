@@ -499,15 +499,15 @@ $(document).ready (async function() {
                                         auth_token: auth_data.auth_token,
                                         json: {
                                             fan_source: {
-                                                nodes: [node.id],
+                                                nodes: [node.id], // Object.keys(nodes_by_id) ?
                                                 sources_by_id: sources_by_id
                                             }
                                         }
                                     }
                                 );
                                 if (api_response.ok) {
+                                    node.complete = true;
                                     for (const [id, node_] of Object.entries(api_response.data.targets_by_id)) {
-                                        node.complete = true;
                                         if (node_.id) {
                                             if (!(id in nodes_by_id)) {
                                                 nodes_by_id[id] = node_;
