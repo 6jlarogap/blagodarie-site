@@ -488,7 +488,7 @@ $(document).ready (async function() {
                                         auth_token: auth_data.auth_token,
                                         json: {
                                             fan_source: {
-                                                nodes: Object.keys(nodes_by_id),
+                                                nodes: [node.id],  // А так что-то не получается!: Object.keys(nodes_by_id),
                                                 sources_by_id: sources_by_id
                                             }
                                         }
@@ -505,8 +505,6 @@ $(document).ready (async function() {
                                             (id in nodes_by_id)
                                            ) {
                                             nodes_by_id[id].parent_ids = node_.parent_ids;
-                                            // не надо оставлять связи на уже существующий узел
-                                            // Вообще-то из апи не должно такое прийти, но fool proof
                                             let tree_links = [];
                                             for (let i = 0; i < node_.tree_links.length; i++) {
                                                 if (!(node_.tree_links[i].t_target in nodes_by_id)) {
