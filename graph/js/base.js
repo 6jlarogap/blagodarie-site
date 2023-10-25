@@ -481,11 +481,10 @@ $(document).ready (async function() {
                                         break;
                                     }
                                 }
-                                if (!found) {
+                                if (!found && !nodes_by_id[id].complete) {
                                     sources_by_id[id] = {
                                         up: nodes_by_id[id].up,
                                         down: nodes_by_id[id].down,
-                                        complete: nodes_by_id[id].complete,
                                     };
                                 }
                             }
@@ -515,9 +514,8 @@ $(document).ready (async function() {
                                         } else {
                                             // Запрошенные в sources_by_id. В targets_by_id все их связи,
                                             // включая лишние
-                                            if (id in nodes_by_id && !nodes_by_id[id].complete) {
+                                            if (id in nodes_by_id) {
                                                 nodes_by_id[id].parent_ids = node_.parent_ids;
-
                                                 let tree_links = [];
                                                 // По каждой связи: нет ли "взаимной", например,
                                                 // у сына нешли связь на маму, а у мамы уже есть связь на него
