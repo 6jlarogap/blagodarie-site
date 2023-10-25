@@ -56,7 +56,7 @@ var node;
 var nodes = [];
 var links = [];
 var simulation;
-
+var zoom;
 
 
 // all dialog elements
@@ -599,21 +599,22 @@ drag = simulation => {
 
 function initializeDisplay() {
 
+	zoom = d3.zoom().on("zoom", zoomed));	
+
+//		.extent([[0, 0], [width, height]])
+//		.scaleExtent([1, 8])
 	node = svg.append("g")
 		.selectAll("g")
 		.data(nodes)
 		.join("g")
 		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
 		.call(drag(simulation))
-		.call(d3.zoom()
-			.extent([[0, 0], [width, height]])
-			.scaleExtent([1, 8])
-			.on("zoom", zoomed))
+		.call(zoom)
 		.attr('class', 'svg_elem')
 		.attr('style', "cursor:pointer"); 
 		
 	function zoomed({transform}) {
-		g.attr("transform", transform);
+		svg.attr("transform", transform);
 	}
 
 	link = svg.append("g")
