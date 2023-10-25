@@ -206,15 +206,12 @@ $(document).ready (async function() {
             const source = ((typeof link.source) === 'object') ? link.source : nodes_by_id[link.source];
             const target = ((typeof link.target) === 'object') ? link.target : nodes_by_id[link.target];
             if (!(source.up && target.up || source.down && target.down)) {
-                // Добавленные связи между свернутыми узлами. У них неоткуда взяться t_target
-                let obj_target = link.t_target ? link.t_target : link.target;
-                obj_target = ((typeof obj_target) === 'object') ? obj_target : nodes_by_id[obj_target];
-                if (obj_target.tree_links.length) {
-                    // dark green
-                    color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
-                } else {
+                if (source.tree_links.length == 0 || target.tree_links.length == 0) {
                     // dark red
                     color_relation = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
+                } else {
+                    // dark green
+                    color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
                 }
             }
         }
@@ -476,7 +473,7 @@ $(document).ready (async function() {
                             const sources_by_id = {};
                             for (let i = 0; i < from_where.length; i++) {
                                 const id = from_where[i].t_target;
-                                // теперь надо глянуть, не идет ли от того id к этому ноду связь
+                                // Не идет ли от того id к этому ноду связь
                                 let found = false;
                                 for (let i = 0; i < nodes_by_id[id].tree_links.length; i++) {
                                     if (nodes_by_id[id].tree_links[i].t_target == node.id) {
@@ -488,6 +485,7 @@ $(document).ready (async function() {
                                     sources_by_id[id] = {
                                         up: nodes_by_id[id].up,
                                         down: nodes_by_id[id].down,
+                                        complete: nodes_by_id[id].complete,
                                     };
                                 }
                             }
@@ -499,7 +497,7 @@ $(document).ready (async function() {
                                         auth_token: auth_data.auth_token,
                                         json: {
                                             fan_source: {
-                                                nodes: [node.id], // Object.keys(nodes_by_id) ?
+                                                nodes:  [node.id],
                                                 sources_by_id: sources_by_id
                                             }
                                         }
@@ -508,16 +506,38 @@ $(document).ready (async function() {
                                 if (api_response.ok) {
                                     node.complete = true;
                                     for (const [id, node_] of Object.entries(api_response.data.targets_by_id)) {
-                                        if (node_.id) {
+                                        if ('id' in node_) {
+                                            // Следующие после запрошенных в sources_by_id
                                             if (!(id in nodes_by_id)) {
                                                 nodes_by_id[id] = node_;
                                                 nodes_by_id[id].first_name_orig = nodes_by_id[id].first_name;
                                             }
                                         } else {
-                                            if (id in nodes_by_id) {
-                                                if (!(nodes_by_id[id].complete)) nodes_by_id[id].complete = node_.complete;
+                                            // Запрошенные в sources_by_id. В targets_by_id все их связи,
+                                            // включая лишние
+                                            if (id in nodes_by_id && !nodes_by_id[id].complete) {
                                                 nodes_by_id[id].parent_ids = node_.parent_ids;
-                                                nodes_by_id[id].tree_links = node_.tree_links;
+
+                                                let tree_links = [];
+                                                // По каждой связи: нет ли "взаимной", например,
+                                                // у сына нешли связь на маму, а у мамы уже есть связь на него
+                                                for (let i = 0; i < node_.tree_links.length; i++) {
+                                                    let t_source = node_.tree_links[i].t_source;
+                                                    let t_target = node_.tree_links[i].t_target;
+                                                    let found = false;
+                                                    if (t_target in nodes_by_id) {
+                                                        for (let j = 0; j < nodes_by_id[t_target].tree_links.length; j++) {
+                                                            let link = nodes_by_id[t_target].tree_links[j];
+                                                            if (link.t_source == t_target && link.t_target == t_source) {
+                                                                found = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    if (!found) tree_links.push(node_.tree_links[i]);
+                                                }
+                                                nodes_by_id[id].tree_links = tree_links;
+                                                nodes_by_id[id].complete = tree_links.length == 0 ? true : false;
                                             }
                                         }
                                     }
