@@ -481,6 +481,7 @@ $(document).ready (async function() {
                                 }
                             }
                             if (Object.keys(from_where).length != 0) {
+                                graph_container.style.cursor = 'wait';
                                 const api_response = await api_request(
                                     api_url + '/api/profile_genesis/', {
                                         method: 'POST',
@@ -536,6 +537,7 @@ $(document).ready (async function() {
                                         }
                                     }
                                 }
+                                graph_container.style.cursor = null;
                             } else { node.complete = true;}
                         }
                     }
