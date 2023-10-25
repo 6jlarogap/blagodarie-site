@@ -597,11 +597,6 @@ drag = simulation => {
 	  .on("end", dragended);
 }
 
-function zoomed({transform}) {
-	g.attr("transform", transform);
-}
-
-
 function initializeDisplay() {
 
 	node = svg.append("g")
@@ -616,7 +611,11 @@ function initializeDisplay() {
 			.on("zoom", zoomed))
 		.attr('class', 'svg_elem')
 		.attr('style', "cursor:pointer"); 
-	
+		
+	function zoomed({transform}) {
+		g.attr("transform", transform);
+	}
+
 	link = svg.append("g")
 		.selectAll("g")
 		.data(links)
