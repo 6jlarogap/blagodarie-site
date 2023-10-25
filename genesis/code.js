@@ -599,7 +599,7 @@ drag = simulation => {
 
 function initializeDisplay() {
 
-	zoom = d3.zoom().on("zoom", zoomed));	
+	zoom = d3.zoom().on("zoom", zoomed);	
 
 //		.extent([[0, 0], [width, height]])
 //		.scaleExtent([1, 8])
