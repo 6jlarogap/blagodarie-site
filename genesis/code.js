@@ -607,7 +607,7 @@ function initializeDisplay() {
 		.call(drag(simulation))
 		.call(d3.zoom()
 			.extent([[0, 0], [width, height]])
-			.scaleExtent([1, 8]);
+			.scaleExtent([1, 8])
 			.on("zoom", function () {svg.attr("transform", d3.event.transform)
 		}))
 		.attr('class', 'svg_elem')
