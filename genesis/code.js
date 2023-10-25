@@ -597,6 +597,11 @@ drag = simulation => {
 	  .on("end", dragended);
 }
 
+function zoomed({transform}) {
+	g.attr("transform", transform);
+}
+
+
 function initializeDisplay() {
 
 	node = svg.append("g")
@@ -608,8 +613,7 @@ function initializeDisplay() {
 		.call(d3.zoom()
 			.extent([[0, 0], [width, height]])
 			.scaleExtent([1, 8])
-			.on("zoom", function () {svg.attr("transform", d3.event.transform)
-		}))
+			.on("zoom", zoomed)
 		.attr('class', 'svg_elem')
 		.attr('style', "cursor:pointer"); 
 	
