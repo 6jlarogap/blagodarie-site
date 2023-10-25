@@ -682,6 +682,9 @@ function initializeDisplay() {
 		.join("g")
 		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
 		.call(drag(simulation))
+		.call(d3.zoom().on("zoom", function () {
+			svg.attr("transform", d3.event.transform)
+		}
 		.attr('class', 'svg_elem')
 		.attr('style', "cursor:pointer");
 	 
