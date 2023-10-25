@@ -601,8 +601,6 @@ function initializeDisplay() {
 
 	zoom = d3.zoom().on("zoom", zoomed);	
 
-//		.extent([[0, 0], [width, height]])
-//		.scaleExtent([1, 8])
 	node = svg.append("g")
 		.selectAll("g")
 		.data(nodes)
