@@ -599,6 +599,20 @@ drag = simulation => {
 
 function initializeDisplay() {
 
+	node = svg.append("g")
+		.selectAll("g")
+		.data(nodes)
+		.join("g")
+		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
+		.call(drag(simulation))
+		.call(d3.zoom()
+			.extent([[0, 0], [width, height]])
+			.scaleExtent([1, 8]);
+			.on("zoom", function () {svg.attr("transform", d3.event.transform)
+		}))
+		.attr('class', 'svg_elem')
+		.attr('style', "cursor:pointer"); 
+	
 	link = svg.append("g")
 		.selectAll("g")
 		.data(links)
@@ -676,18 +690,6 @@ function initializeDisplay() {
 			}
 		});
 
-	node = svg.append("g")
-		.selectAll("g")
-		.data(nodes)
-		.join("g")
-		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
-		.call(drag(simulation))
-		.call(d3.zoom().on("zoom", function () {
-			svg.attr("transform", d3.event.transform)
-		}))
-		.attr('class', 'svg_elem')
-		.attr('style', "cursor:pointer");
-	 
 	
 	var defs = node.append("defs").attr("id", "imgdefs")
 	
@@ -886,7 +888,7 @@ function calcY2(d){
 d3.select(window).on("resize", function(){
 	width = +svg.node().getBoundingClientRect().width;
 	height = +svg.node().getBoundingClientRect().height;
-//	simulation.alpha(1).restart();
+	simulation.alpha(1).restart();
 });
 
 function initDefs(){
