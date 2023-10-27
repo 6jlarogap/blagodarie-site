@@ -22,7 +22,7 @@
 //                      Дерево родства
 //                  При этом возможны параметры:
 //      depth           начальная глубина глубина поиска по рекурсии родства от user с uuid,
-//                      по умолчанию 3, до прадедов, правнуков
+//                      по умолчанию 2, до дедов, внуков
 //      up              поиск только к предкам,
 //                          без вяких ответвлений на дядей, двоюродных бабушек и т.п.
 //      down            поиск только к потомкам,
@@ -286,7 +286,7 @@ $(document).ready (async function() {
     if (is_other_site) {
         if (parm_user_uuid_genesis_tree) {
             if (r_uuid.test(parm_user_uuid_genesis_tree)) {
-                parm_depth = get_parm('depth') || 3;
+                parm_depth = get_parm('depth') || 2;
                 parm_up = get_parm('up') || '';
                 parm_down = get_parm('down') || '';
             } else {
