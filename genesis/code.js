@@ -542,7 +542,7 @@ d3.json(apiUrl, d3_json_parms)
 //		simulation.force("charge", d3.forceManyBody().strength(-13280).distanceMax(10050));
 		simulation.force("x", d3.forceX(width / 2).strength(0.1));
 		simulation.force("y", d3.forceY(height / 2).strength(0.1));		
-		simulation.force("collide", d3.forceCollide().strength(1).radius(25));
+		simulation.force("collide", d3.forceCollide().strength(1).radius(55));
 		//simulation.force("center", d3.forceCenter(width / 2, height / 2))
 		
 /* окружности		
