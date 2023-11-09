@@ -455,7 +455,7 @@ $(document).ready (async function() {
 
         .onNodeRightClick(function(node) {
             node_current = node;
-                if (node.uuid) {
+            if (node.uuid) {
                 menu__title_span.textContent =
                     ('first_name_orig' in node_current) ? node_current.first_name_orig : node_current.first_name;
                 menu_wrapper.classList.add("menu-wrapper--active");
@@ -471,7 +471,7 @@ $(document).ready (async function() {
                     }
                 }
             }
-        });
+        })
 
         .onNodeClick(async function(node) {
             node_current = node;
