@@ -453,23 +453,25 @@ $(document).ready (async function() {
             graph_container.style.cursor = cursor;
         })
 
-        .onNodeRightClick(async function(node) {
+        .onNodeRightClick(function(node) {
             node_current = node;
-            menu__title_span.textContent =
-                ('first_name_orig' in node_current) ? node_current.first_name_orig : node_current.first_name;
-            menu_wrapper.classList.add("menu-wrapper--active");
-            if (parm_user_uuid_genesis_tree) {
-                const what = expand_collapse_sign(node);
-                btn_collapse = document.querySelector(".btn--collapse");
-                if (what == c_expanded || what == c_collapsed) {
-                    document.querySelector(".btn--collapse--caption").textContent = 
-                        node.collapsed ? 'Развернуть' : 'Свернуть';
-                    btn_collapse.classList.remove("display--none");
-                } else {
-                    btn_collapse.classList.add("display--none");
+                if (node.uuid) {
+                menu__title_span.textContent =
+                    ('first_name_orig' in node_current) ? node_current.first_name_orig : node_current.first_name;
+                menu_wrapper.classList.add("menu-wrapper--active");
+                if (parm_user_uuid_genesis_tree) {
+                    const what = expand_collapse_sign(node);
+                    btn_collapse = document.querySelector(".btn--collapse");
+                    if (what == c_expanded || what == c_collapsed) {
+                        document.querySelector(".btn--collapse--caption").textContent = 
+                            node.collapsed ? 'Развернуть' : 'Свернуть';
+                        btn_collapse.classList.remove("display--none");
+                    } else {
+                        btn_collapse.classList.add("display--none");
+                    }
                 }
             }
-        })
+        });
 
         .onNodeClick(async function(node) {
             node_current = node;
