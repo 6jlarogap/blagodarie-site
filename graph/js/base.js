@@ -423,6 +423,11 @@ $(document).ready (async function() {
         return sprite;
     }
 
+    let data = null;
+    let node_current = null;
+    const menu__title_span = document.querySelector(".menu__title-span");
+    const menu_wrapper = document.querySelector(".menu-wrapper");
+
     const graph_container = $('#3d-graph')[0];
     const Graph = ForceGraph3D()
         .nodeThreeObject(node => node_draw(node))
@@ -447,117 +452,33 @@ $(document).ready (async function() {
             }
             graph_container.style.cursor = cursor;
         })
-        .onNodeClick(async function(node){
+
+        .onNodeRightClick(async function(node) {
+            node_current = node;
+            menu__title_span.textContent =
+                ('first_name_orig' in node_current) ? node_current.first_name_orig : node_current.first_name;
+            menu_wrapper.classList.add("menu-wrapper--active");
             if (parm_user_uuid_genesis_tree) {
-                if ('lateral_links' in node) {
-                    if(node.lateral_links.length > 0) {
-                        if (node.collapsed) {
-                            node.tree_links = node.lateral_links.concat(node.tree_links);
-                        } else {
-                            for (let i = 0; i < node.lateral_links.length; i++) node.tree_links.shift();
-                        }
-                    }
-                }
-                if (node.tree_links.length) {
-                    node.collapsed = !node.collapsed;
-
-                    if (!node.collapsed && !node.complete) {
-                        // подчитываем из базы по путям от node.tree_links t_target's
-                        // сначала fool proof
-                        if ('lateral_links' in node && node.lateral_links.length == 0) {
-                            node.complete = true;
-                        }
-                        if (!('lateral_links' in node) && node.tree_links.length == 0) {
-                            node.complete = true;
-                        }
-                        if (!node.complete) {
-                            const from_where = 'lateral_links' in node ? node.lateral_links : node.tree_links;
-                            const sources_by_id = {};
-                            for (let i = 0; i < from_where.length; i++) {
-                                const id = from_where[i].t_target;
-                                // Не идет ли от того id к этому ноду связь
-                                let found = false;
-                                for (let i = 0; i < nodes_by_id[id].tree_links.length; i++) {
-                                    if (nodes_by_id[id].tree_links[i].t_target == node.id) {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                                if (!found && !nodes_by_id[id].complete) {
-                                    sources_by_id[id] = {
-                                        up: nodes_by_id[id].up,
-                                        down: nodes_by_id[id].down,
-                                    };
-                                }
-                            }
-                            if (Object.keys(sources_by_id).length != 0) {
-                                graph_container.style.cursor = 'wait';
-                                const api_response = await api_request(
-                                    api_url + '/api/profile_genesis/', {
-                                        method: 'POST',
-                                        auth_token: auth_data ? auth_data.auth_token : null,
-                                        json: {
-                                            fan_source: {
-                                                nodes:  [node.id],
-                                                sources_by_id: sources_by_id
-                                            }
-                                        }
-                                    }
-                                );
-                                if (api_response.ok) {
-                                    node.complete = true;
-                                    for (const [id, node_] of Object.entries(api_response.data.targets_by_id)) {
-                                        if ('id' in node_) {
-                                            // Следующие после запрошенных в sources_by_id
-                                            if (!(id in nodes_by_id)) {
-                                                nodes_by_id[id] = node_;
-                                                nodes_by_id[id].first_name_orig = nodes_by_id[id].first_name;
-                                            }
-                                        } else {
-                                            // Запрошенные в sources_by_id. В targets_by_id все их связи,
-                                            // включая лишние
-                                            if (id in nodes_by_id) {
-                                                nodes_by_id[id].parent_ids = node_.parent_ids;
-                                                let tree_links = [];
-                                                // По каждой связи: нет ли "взаимной", например,
-                                                // у сына нешли связь на маму, а у мамы уже есть связь на него
-                                                for (let i = 0; i < node_.tree_links.length; i++) {
-                                                    let t_source = node_.tree_links[i].t_source;
-                                                    let t_target = node_.tree_links[i].t_target;
-                                                    let found = false;
-                                                    if (t_target in nodes_by_id) {
-                                                        for (let j = 0; j < nodes_by_id[t_target].tree_links.length; j++) {
-                                                            let link = nodes_by_id[t_target].tree_links[j];
-                                                            if (link.t_source == t_target && link.t_target == t_source) {
-                                                                found = true;
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    if (!found) tree_links.push(node_.tree_links[i]);
-                                                }
-                                                nodes_by_id[id].tree_links = tree_links;
-                                                nodes_by_id[id].complete = tree_links.length == 0 ? true : false;
-                                            }
-                                        }
-                                    }
-                                }
-                                graph_container.style.cursor = null;
-                            } else { node.complete = true;}
-                        }
-                    }
-
-                    //  node_draw(node):
-                    //      иначе не перерисовывается фио со значком +/-, точнее значок
-                    //      особенно при сворачивании узла!
-                    //  https://github.com/vasturiano/3d-force-graph/issues/61#issuecomment-901611382
-                    //
-                    Graph.nodeThreeObject(node => node_draw(node));
-                    Graph.graphData(get_pruned_tree());
+                const what = expand_collapse_sign(node);
+                btn_collapse = document.querySelector(".btn--collapse");
+                if (what == c_expanded || what == c_collapsed) {
+                    document.querySelector(".btn--collapse--caption").textContent = 
+                        node.collapsed ? 'Развернуть' : 'Свернуть';
+                    btn_collapse.classList.remove("display--none");
+                } else {
+                    btn_collapse.classList.add("display--none");
                 }
             }
-            else if (node.uuid && data.bot_username) {
-                window.location.href = "https://t.me/" + data.bot_username + '?start=' + node.uuid;
+        })
+
+        .onNodeClick(async function(node) {
+            node_current = node;
+            if (parm_user_uuid_genesis_tree) {
+                await collapse_expand(node);
+            } else if (node.uuid && data && data.bot_username) {
+                menu__title_span.textContent =
+                    ('first_name_orig' in node_current) ? node_current.first_name_orig : node_current.first_name;
+                menu_wrapper.classList.add("menu-wrapper--active");
             }
         })
         .linkDirectionalArrowLength(10)
@@ -565,7 +486,130 @@ $(document).ready (async function() {
         .linkDirectionalArrowColor(link => link_color(link, 'rgba'))
     ;
 
-    let data;
+    async function collapse_expand(node) {
+        if (!node) return;
+        if ('lateral_links' in node) {
+            if(node.lateral_links.length > 0) {
+                if (node.collapsed) {
+                    node.tree_links = node.lateral_links.concat(node.tree_links);
+                } else {
+                    for (let i = 0; i < node.lateral_links.length; i++) node.tree_links.shift();
+                }
+            }
+        }
+        if (node.tree_links.length) {
+            node.collapsed = !node.collapsed;
+
+            if (!node.collapsed && !node.complete) {
+                // подчитываем из базы по путям от node.tree_links t_target's
+                // сначала fool proof
+                if ('lateral_links' in node && node.lateral_links.length == 0) {
+                    node.complete = true;
+                }
+                if (!('lateral_links' in node) && node.tree_links.length == 0) {
+                    node.complete = true;
+                }
+                if (!node.complete) {
+                    const from_where = 'lateral_links' in node ? node.lateral_links : node.tree_links;
+                    const sources_by_id = {};
+                    for (let i = 0; i < from_where.length; i++) {
+                        const id = from_where[i].t_target;
+                        // Не идет ли от того id к этому ноду связь
+                        let found = false;
+                        for (let i = 0; i < nodes_by_id[id].tree_links.length; i++) {
+                            if (nodes_by_id[id].tree_links[i].t_target == node.id) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found && !nodes_by_id[id].complete) {
+                            sources_by_id[id] = {
+                                up: nodes_by_id[id].up,
+                                down: nodes_by_id[id].down,
+                            };
+                        }
+                    }
+                    if (Object.keys(sources_by_id).length != 0) {
+                        graph_container.style.cursor = 'wait';
+                        const api_response = await api_request(
+                            api_url + '/api/profile_genesis/', {
+                                method: 'POST',
+                                auth_token: auth_data ? auth_data.auth_token : null,
+                                json: {
+                                    fan_source: {
+                                        nodes:  [node.id],
+                                        sources_by_id: sources_by_id
+                                    }
+                                }
+                            }
+                        );
+                        if (api_response.ok) {
+                            node.complete = true;
+                            for (const [id, node_] of Object.entries(api_response.data.targets_by_id)) {
+                                if ('id' in node_) {
+                                    // Следующие после запрошенных в sources_by_id
+                                    if (!(id in nodes_by_id)) {
+                                        nodes_by_id[id] = node_;
+                                        nodes_by_id[id].first_name_orig = nodes_by_id[id].first_name;
+                                    }
+                                } else {
+                                    // Запрошенные в sources_by_id. В targets_by_id все их связи,
+                                    // включая лишние
+                                    if (id in nodes_by_id) {
+                                        nodes_by_id[id].parent_ids = node_.parent_ids;
+                                        let tree_links = [];
+                                        // По каждой связи: нет ли "взаимной", например,
+                                        // у сына нешли связь на маму, а у мамы уже есть связь на него
+                                        for (let i = 0; i < node_.tree_links.length; i++) {
+                                            let t_source = node_.tree_links[i].t_source;
+                                            let t_target = node_.tree_links[i].t_target;
+                                            let found = false;
+                                            if (t_target in nodes_by_id) {
+                                                for (let j = 0; j < nodes_by_id[t_target].tree_links.length; j++) {
+                                                    let link = nodes_by_id[t_target].tree_links[j];
+                                                    if (link.t_source == t_target && link.t_target == t_source) {
+                                                        found = true;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            if (!found) tree_links.push(node_.tree_links[i]);
+                                        }
+                                        nodes_by_id[id].tree_links = tree_links;
+                                        nodes_by_id[id].complete = tree_links.length == 0 ? true : false;
+                                    }
+                                }
+                            }
+                        }
+                        graph_container.style.cursor = null;
+                    } else { node.complete = true;}
+                }
+            }
+
+            //  node_draw(node):
+            //      иначе не перерисовывается фио со значком +/-, точнее значок
+            //      особенно при сворачивании узла!
+            //  https://github.com/vasturiano/3d-force-graph/issues/61#issuecomment-901611382
+            //
+            Graph.nodeThreeObject(node => node_draw(node));
+            Graph.graphData(get_pruned_tree());
+        }
+    }
+
+    document.querySelector(".menu__close-wrap").addEventListener("click", function() {
+        menu_wrapper.classList.remove("menu-wrapper--active")
+    });
+    document.querySelector(".btn--profile").addEventListener("click", function() {
+        if (node_current.uuid && data.bot_username) {
+            window.location.href = "https://t.me/" + data.bot_username + '?start=' + node_current.uuid;
+        }
+        menu_wrapper.classList.remove("menu-wrapper--active");
+    });
+    document.querySelector(".btn--collapse").addEventListener("click", async function() {
+        menu_wrapper.classList.remove("menu-wrapper--active");
+        await collapse_expand(node_current);
+    });
+
     const api_response = await api_request(
         api_url + api_get_parms,
         {auth_token: auth_data ? auth_data.auth_token : null}
