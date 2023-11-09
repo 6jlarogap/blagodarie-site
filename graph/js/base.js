@@ -229,8 +229,10 @@ $(document).ready (async function() {
         }
     }
 
-    const auth_data = await check_auth();
-    if (!auth_data) return;
+    // Временно отключено
+    const auth_data = null;
+    // const auth_data = await check_auth();
+    // if (!auth_data) return;
 
     let nodes_by_id = false;
     let root_node = false;
@@ -493,7 +495,7 @@ $(document).ready (async function() {
                                 const api_response = await api_request(
                                     api_url + '/api/profile_genesis/', {
                                         method: 'POST',
-                                        auth_token: auth_data.auth_token,
+                                        auth_token: auth_data ? auth_data.auth_token : null,
                                         json: {
                                             fan_source: {
                                                 nodes:  [node.id],
@@ -564,7 +566,10 @@ $(document).ready (async function() {
     ;
 
     let data;
-    const api_response = await api_request(api_url + api_get_parms, {auth_token: auth_data.auth_token});
+    const api_response = await api_request(
+        api_url + api_get_parms,
+        {auth_token: auth_data ? auth_data.auth_token : null}
+    );
     if (api_response.ok) {
         data = api_response.data;
         if (parm_user_uuid_genesis_tree) {
