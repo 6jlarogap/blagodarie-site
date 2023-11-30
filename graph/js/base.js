@@ -168,7 +168,8 @@ $(document).ready (async function() {
         for (const node of visible_nodes) {
             const what = expand_collapse_sign(node);
             node.first_name = node.first_name_orig + (what != c_nfa ? ' (' + what + ')' : '');
-            for (const parent_id of node.parent_ids) {
+            for (const moth_or_fath in node.parents) {
+                const parent_id = node.parents[moth_or_fath];
                 if (!d_visible_nodes[parent_id]) continue;
                 if (d_visible_links[(parent_id).toString() + link_sep + (node.id).toString()]) continue;
                 visible_links.push({
@@ -560,7 +561,7 @@ $(document).ready (async function() {
                                     // Запрошенные в sources_by_id. В targets_by_id все их связи,
                                     // включая лишние
                                     if (id in nodes_by_id) {
-                                        nodes_by_id[id].parent_ids = node_.parent_ids;
+                                        nodes_by_id[id].parents = node_.parents;
                                         let tree_links = [];
                                         // По каждой связи: нет ли "взаимной", например,
                                         // у сына нешли связь на маму, а у мамы уже есть связь на него
