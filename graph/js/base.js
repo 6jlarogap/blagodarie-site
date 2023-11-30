@@ -229,10 +229,12 @@ $(document).ready (async function() {
         }
     }
 
-    // Временно отключено
-    const auth_data = null;
-    // const auth_data = await check_auth();
-    // if (!auth_data) return;
+    // С отключенной авторизацией:
+    // const auth_data = null;
+    //
+    // С включенной авторизацией:
+    const auth_data = await check_auth();
+    if (!auth_data) return;
 
     let nodes_by_id = false;
     let root_node = false;
