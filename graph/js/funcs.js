@@ -104,8 +104,9 @@ async function api_request(url, options={}) {
     //          Если заданы, то будут добавлены к url.
     //  json:
     //          Заменит options.body на строку того json
-    //          Если для get запроса здесь сдуру будет задан, то в fetch не пойдет
-    //          (fool proof)
+    //  form_data:
+    //          Заменит options.body на строку типа x=1&y=2 из объекта {x:1, y:2}
+    //      ! что-то одно надо задавать: или json, или form_data
     //  auth_token:
     //          Поставит в headers:
     //              'Authorization': 'Token <auth_token>'
@@ -126,8 +127,14 @@ async function api_request(url, options={}) {
 
     if (!options.method) options.method = 'GET';
     if (!options.headers) options.headers = {};
-    if (!options.headers['Content-Type']) {
-        options.headers['Content-Type'] = 'application/json; charset=utf-8';
+    if (!options.headers['Content-Type'] && options.method.toUpperCase() != 'GET') {
+        if (options.form_data) {
+            // для post запросов с данными типа формы
+            options.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
+        } else {
+            // остальное по умолчанию: для json входных данных
+            options.headers['Content-Type'] = 'application/json; charset=utf-8';
+        }
     }
     if (options.auth_token) {
         options.headers.Authorization = 'Token ' + options.auth_token;
@@ -141,8 +148,16 @@ async function api_request(url, options={}) {
         url = encodeURI(url + parm_str);
     };
 
-    if (options.method.toUpperCase() != 'GET' && options.json) {
-        options.body = JSON.stringify(options.json);
+    if (options.method.toUpperCase() != 'GET') {
+        if (options.json) {
+            options.body = JSON.stringify(options.json);
+        } else if (options.form_data) {
+            const form_data = new URLSearchParams();
+            for (const key in options.form_data) {
+                form_data.append(key, options.form_data[key]);
+            }
+            options.body = form_data;
+        }
     }
     const response = await fetch(url, options);
     const data = response.status < 500 ? await response.json() : await response.text();
