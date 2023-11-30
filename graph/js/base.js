@@ -231,21 +231,6 @@ $(document).ready (async function() {
     const auth_data = await check_auth();
     if (!auth_data) return;
 
-    /*
-    const api_test_response = await api_request(
-        get_api_url() + '/api/test/form/parser/', {
-            method: 'POST',
-            auth_token: auth_data ? auth_data.auth_token : null,
-            form_data: {
-                x: 1,
-                y: 2
-            }
-        }
-    );
-    console.log('api_test_response');
-    console.log(api_test_response);
-    */
-
     let nodes_by_id = false;
     let root_node = false;
 
