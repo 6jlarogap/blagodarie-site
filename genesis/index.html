@@ -1,11 +1,11 @@
 <html>
 
 <head>
-	<meta property="og:title" content="Благодарие"/>
-	<meta property="og:description" content="Благодарие"/>
+	<meta property="og:title" content="БлагоРода"/>
+	<meta property="og:description" content="БлагоРода"/>
 	<meta property="og:image" content="/images/ic_launcher.png" />
 	<meta property="og:type" content="page"/>
-	<meta property="og:url" content= "https://dev.blagodarie.org/" />
+	<meta property="og:url" content= "https://genesis.blagoroda.org/" />
 	<link rel="shortcut icon" href="/images/ic_launcher.png" type="image/x-icon">
 	<meta name="http-equiv" content="Content-type: text/html;">
 	<meta charset="utf-8">
@@ -24,18 +24,6 @@
 <body>
 	<svg id="main">
 	</svg>
-	<button id="install_button" class="btn btn-danger" hidden>Установить БлагоДари</button>
-
-	<dialog id="authDialog">
-		<button class="close btn btn-danger close_auth_dialog"><i class="fas fa-times"></i></button>
-
-		<div class="form-check">
-			<input class="form-check-input inp" type="checkbox" value="" checked id="agreementCheck">
-			<label class="form-check-label" for="flexCheckDefault">
-				Я принимаю <a href="./agreement/index.html" target="_blank" rel="noopener noreferrer" id="agreementLink">Условия Пользования</a>
-			</label>
-		</div>
-	</dialog>
 	<div class="pagination_block">
         	<div style="display: flex;align-items: center"><a href="javascript:prevPage()" id="btn_prev"><</a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a></div>
 		<div style='display:flex;flex-direction:column;align-items:center;justify-content:center;'>
@@ -48,112 +36,16 @@
 		</select>
 			<p class="pagination_count" style="margin:0;font-weight: 500;"></p>
 			</div>
-    	</div>
-	<div class="map_container">
-	<div id="mapid"></div>
-	<button class="close btn btn-danger mapid_close"><i class="fas fa-times"></i></button> 
-	<div class="mapid_send">Опубликовать</div>
-	<div class="mapid_clean">Очистить</div>
-	<p class="mapid_alert">Ваше местоположение<br>закреплено здесь!</p>
-	<div class="mapid_whereI">Где я?</div>
 	</div>
-	<div class="new_map_container">
-		<div id="new_map"></div>
-		<button class="close btn btn-danger new_map_close"><i class="fas fa-times"></i></button>
-	</div>
-	<dialog id="rootDialog">
-		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<ul id="rootList">
-
-		</ul>
-		<button class="btn btn-success" id="rootAddElementMenu">Добавить</button>
-	</dialog>
-
-	<dialog id="addElementDialog">
-		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<input class="form-control inp" id="elementAddInput" type="text">
-		<div class="btn-group" role="group" aria-label="First group" id="keyTypesBtns" style="display: flex;">
-			<button type="button" class="keytype btn btn-secondary" id="1"><img src="./images/phone.png" alt="1"></button>
-			<button type="button" class="keytype btn btn-secondary" id="2"><img src="./images/at.png" alt="2"></button>
-			<button type="button" class="keytype btn btn-secondary" id="4"><img src="./images/credit-card.png" alt="4"></button>
-			<button type="button" class="keytype btn btn-secondary" id="5"><img src="./images/link.png" alt="5"></button>
-		  </div>
-		<button class="btn btn-success" id="addElement">ОК</button>
-	</dialog>
-
-	<dialog id="optionsDialog">
-		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<button class="btn btn-primary" id="keys">Контакты</button>
-		<button class="btn btn-primary" id="abilities">Возможности</button>
-		<button class="btn btn-primary" id="wishes">Потребности</button>
-		<button class="btn btn-primary" id="get_position">Местоположение</button>
-		<button class="btn btn-primary" id="my_family_profiles">Мои профили</button>
-		<button class="btn btn-primary" id="optionsAgreement" onclick="window.open('./agreement/index.html', '_blank')">
-			<p>Условия Пользования</p>
-			<i class="far fa-file-alt"></i>
-		</button>
-		<div id="logout">
-			<button class="btn btn-danger" id="logOut"><p>Выйти</p><i class="fas fa-sign-out-alt"></i></button>
-			<button class="btn btn-dark" id="deleteProfile"><p>Обезличить профиль</p><i class="fas fa-user-times"></i></button>
-		</div>
-	</dialog>
-
-	<dialog id="inviteDialog">
-
-	</dialog>
-
-	<dialog id="filterDialog">
-		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<div id="filter">
-			<input class="form-control inp" type="text" placeholder="Фильтр" id="filterInput">
-			<button class="btn btn-success" id="filterSearch"><i class="fas fa-filter"></i></button>
-			<button class="btn btn-danger" id="filterNullify"><i class="far fa-trash-alt"></i></button>
-		</div>
-	</dialog>
-
-	<dialog id="shareDialog">
-		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<div id="shareGroup" class="ya-share2" data-curtain data-url="https://google.com" data-size="l" data-shape="round" data-services="telegram,viber,whatsapp,vkontakte,odnoklassniki">
-		</div>
-		<div class="custom-share">
-			<img src="./images/email.png" alt="Loading..." class="share" id="mail-button">
-			<img src="./images/sms.png" alt="Loading..." class="share" id="sms-button">
-			<img src="./images/qr-code.png" alt="Loading..." class="share" id="qrcode-button">
-		</div>
-	</dialog>
-
-	<dialog id="qrDialog">
-		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<div id="qrcode"></div>
-	</dialog>
-
-	<dialog id="mailDialog">
-		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<div id="mailForm">
-			<input type="email" class="form-control inp" id="mailInput" placeholder="name@example.com">
-			<button id="confrim-mail" class="submit-form btn btn-primary">Отправить</button>
-			<a id="mailLink" href="mailto:kowalchuck1337@mail.ru" style="display: none;"></a>
-		</div>
-	</dialog>
-
-	<dialog id="smsDialog">
-		<button class="close btn btn-danger"><i class="fas fa-times"></i></button>
-		<div id="smsForm" action="" method="post">
-			<input type="tel" class="form-control inp" id="smsInput" placeholder="+79998887766">
-			<button id="confrim-sms" class="submit-form btn btn-primary">Отправить</button>
-			<a id="smsLink" href=""></a>
-		</div>
-	</dialog>
 
 	<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
-
 	<script src="https://d3js.org/d3.v6.min.js"></script>
 
-	<script src="qrcode.min.js"></script>
-
-	<script src="settings.js"></script>
-
-	<script src="code.js" charset="utf-8"></script>
+    <!--    local_settings.js может и не быть (ничего страшного)
+    -->
+    <script defer src="local_settings.js"></script>
+    <script defer src="funcs.js" charset="utf-8"></script>
+	<script defer src="code.js" charset="utf-8"></script>
 
 </body>
 

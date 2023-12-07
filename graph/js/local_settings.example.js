@@ -4,12 +4,9 @@
 
 // Пример для local_settings.js
 
-// Что, возможно, надо изменить для другого 
-// домена
+// Что, возможно, надо изменить для другого домена
 
-// Это вряд ли надо изменять для другого домена.
-//
-API_URL = 'https://api.blagoroda.bsuir.by';
+API_URL = 'https://api.org.com';
 
 // Домен для куки.
 
@@ -18,4 +15,4 @@ API_URL = 'https://api.blagoroda.bsuir.by';
 // можем обращаться к page.org.com, а куку надо ставить
 // на org.com
 
-ROOT_DOMAIN = 'blagoroda.bsuir.by';
+ROOT_DOMAIN = 'org.com';

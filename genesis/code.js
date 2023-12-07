@@ -4,11 +4,6 @@ const NODE_TYPES = Object.freeze({
 	"FRIEND":"friend",
 	"WISH_ROOT": "wish_root",
 	"WISH":"wish",
-	"KEY_ROOT":"key_root",
-	"KEY":"key",
-	"ABILITY_ROOT":"ability_root",
-	"ABILITY":"ability",
-	"AUTH": "auth_root",
 	"SHARE": "share_root",
 	"TRUST": "trust_btn",
 	"MISTRUST" : "mistrust_btn",
@@ -23,10 +18,7 @@ const NODE_TYPES = Object.freeze({
 	//"PLUS": "plus"
 });
 const WISHES_ROOT_ID = "WISHES_ROOT";
-const KEYS_ROOT_ID = "KEYS_ROOT";
 const ABILITIES_ROOT_ID = "ABILITIES_ROOT";
-const ABILITY_ID = "ABILITY";
-const AUTH_ID = "AUTH_ROOT";
 const SHARE_ID = "SHARE_ROOT";
 const OPTIONS_ID = "OPTIONS_ROOT";
 const TRUST_ID = "TRUST_ROOT";
@@ -61,111 +53,18 @@ var simulation;
 
 // all dialog elements
 var rootDialog = document.getElementById("rootDialog");
-var addElementDialog = document.getElementById("addElementDialog");
-var filterDialog = document.getElementById("filterDialog");
 
 //root stuff
 var rootList = document.getElementById("rootList");
-var rootAddElementMenu = document.getElementById("rootAddElementMenu");
-var addElement = document.getElementById("addElement");
-var elementAddInput = document.getElementById("elementAddInput");
-
-var keyTypesBtns = document.getElementById("keyTypesBtns");
-
 
 //filter stuff
 var filterInput = document.getElementById("filterInput");
-var settings;
-settingSets.forEach((setting, i) => {
-	if (setting.url.substr(0, setting.url.length - 1) == window.location.origin) {
-		settings = setting;
-	}
-});
-
-
-
-
-// register sw
-window.addEventListener('load', async () => {
-	if ('serviceWorker' in navigator) {
-		if (url == settings.url) {
-			await navigator.serviceWorker.register('./sw.js')
-		}
-	}
-})
-
+var settings = { api: get_api_url(), url: new URL(window.location.href) };
 
 setTimeout(() => {
 	if(false){
     }
 }, 2000)
-
-
-// add wish menu button
-rootAddElementMenu.addEventListener("click", () => {
-	elementAddInput.value = "";
-	elementAddInput.id = "elementAddInput";
-	addElementDialog.style.display = "flex";
-})
-
-// add wish
-addElement.addEventListener("click", async () => {
-	var fetchSettings
-	if (elementAddInput.getAttribute(`category`) == 'keys') {
-		fetchSettings = {
-			apiurl: "",
-			body: {
-				value: elementAddInput.value,
-				type_id: elementAddInput.getAttribute("keytype")
-			}
-		}
-		if (elementAddInput.getAttribute("operation")) {
-			fetchSettings.apiurl = "updatekey"
-			fetchSettings.body['id'] = elementAddInput.id
-		} else {
-			fetchSettings.apiurl = "addkey"
-		}
-	}
-	else if (elementAddInput.getAttribute(`category`) == 'wishes') {
-		fetchSettings = {
-			apiurl: "addorupdatewish",
-			body: {
-				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
-				"text": elementAddInput.value,
-				"last_edit": Math.floor(new Date().getTime()/1000)
-			}
-		}
-	}
-	else if (elementAddInput.getAttribute(`category`) == 'abilities') {
-		fetchSettings = {
-			apiurl: "addorupdateability",
-			body: {
-				"uuid": elementAddInput.id != "elementAddInput" ? elementAddInput.id : uuidv4(),
-				"text": elementAddInput.value,
-				"last_edit": Math.floor(new Date().getTime()/1000)
-			}
-		}
-	}
-
-});
-
-
-//filter
-document.getElementById("filterSearch").addEventListener("click", () => {
-	if (filterInput.value != "") {
-		url.searchParams.set('f', 0);
-		url.searchParams.set('q', 5);
-		localStorage.setItem("filter", filterInput.value);
-		window.location.href = url.href;
-	}
-});
-
-document.getElementById("filterNullify").addEventListener("click", () => {
-	if (localStorage.getItem("filter") != null) {
-		localStorage.removeItem("filter")
-		window.location.reload()
-	}
-})
 
 function uuidv4() {
 	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -214,7 +113,6 @@ if (userIdFrom) {
 }
 
 var link = window.location.href;
-var url = new URL(link);
 
         if (chat_id) {
             if(!url.searchParams.has('q') && !url.searchParams.has('f')){
@@ -270,18 +168,12 @@ var url = new URL(link);
 			var apiUrl;
 		
             if (chat_id) {
-                apiUrl = `${settings.api}api/profile_genesis/?&chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
+                apiUrl = `${settings.api}/api/profile_genesis/?chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
             } else if (userIdFrom) {
-                // apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                apiUrl = `${settings.api}api/profile_genesis/?&uuid=` + userIdFrom + '&depth=' + depth + '&up=' + up + '&down=' + down;
-                //console.log(apiUrl);
+                apiUrl = `${settings.api}/api/profile_genesis/?uuid=` + userIdFrom + '&depth=' + depth + '&up=' + up + '&down=' + down;
             } else if (all) {
-                // apiUrl = `${settings.api}api/profile_graph?from=${url.searchParams.get('f')}&number=${url.searchParams.get('q')}&uuid=` + userIdFrom;
-                apiUrl = `${settings.api}api/profile_genesis/all/?fmt=d3js&rod=on` + (withalone ? `&withalone=on` : '');
-                //console.log(apiUrl);
+                apiUrl = `${settings.api}/api/profile_genesis/all/?fmt=d3js&rod=on` + (withalone ? `&withalone=on` : '');
             }
-
-
 
 document.addEventListener("popstate",function(e){
     alert('yeees!');
@@ -439,17 +331,9 @@ d3.json(apiUrl, d3_json_parms)
 			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
 			d.fy = width<900 ? height/2+50 : height / 2 + 200;
 			break;
-		case KEYS_ROOT_ID:
-			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
-			d.fy = width<900 ? height/2-70 : height / 2 - 200;
-			break;
 		case ABILITIES_ROOT_ID:
 			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
 			d.fy = width<900 ? height/2-10 : height / 2;
-			break;
-		case ABILITY_ID:
-			d.fx = width / 2 + 500;
-			d.fy = height / 2;
 			break;
 		case SHARE_ID:
 			d.fx = width<900 ? width/2+80 : width / 2 + 300;
@@ -495,16 +379,6 @@ d3.json(apiUrl, d3_json_parms)
 		case MISTRUST_ID:
 			d.fx = width<900 ? width / 2 - 30 :  width / 2 - 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
-			break;
-		case AUTH_ID:
-			if (!userIdFrom) {
-				d.fx = width / 2;
-				d.fy = height / 2;
-			}
-			else {
-				d.fx = width / 2 - 200;
-				d.fy = height / 2;
-			}
 			break;
 		case PROFILE.id:
 			if (userIdFrom && userIdFrom != PROFILE.id) {
@@ -693,7 +567,7 @@ function initializeDisplay() {
 		node.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
-			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE) {
+			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE) {
 				return "userPortrait";
 			}
 			else if (d.nodeType == NODE_TYPES.FILTERED) {
@@ -716,9 +590,9 @@ function initializeDisplay() {
 			return d.is_dead ? "" : "url(#clip-circle-medium)";
 		}else if(width<900 && d.nodeType == NODE_TYPES.FRIEND){
 			return d.is_dead ? "" : "url(#clip-circle-small)";
-		}else if (width>900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
+		}else if (width>900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE)) {
 			return d.is_dead ? "" : "url(#clip-circle-large)";
-		}else if (width<900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE)) {
+		}else if (width<900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE)) {
 			return d.is_dead ? "" : "url(#clip-circle-medium)";
 		}else if (d.nodeType == NODE_TYPES.FILTERED) {
 			return d.is_dead ? "" : "url(#clip-circle-small)";
@@ -729,20 +603,20 @@ function initializeDisplay() {
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
 		.attr("font-size", width<900 ? "15" : "20")
-		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
+		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.tspan));
 	
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20  : 47))
 		.attr("font-size", d => (width<900 || d.nodeType == NODE_TYPES.FILTERED ? '12' : "20"))
-		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
+		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
 		.text(d => (d.text));
 	
 	  
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47))
 		.attr("font-size", d => (width<900 || d.nodeType == NODE_TYPES.FILTERED ? '12' : "20"))
-		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.AUTH || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
+		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.text));
 	
 
@@ -968,22 +842,10 @@ function initDefs(){
 		.attr("fill", "#ff0000");
 }
 
-var tgIframe;
 async function onNodeClick(nodeType, uuid, txt){
-	if(nodeType == NODE_TYPES.KEY){
-		copyToClipboard(txt);
-	} else if (nodeType == NODE_TYPES.PROFILE || nodeType == NODE_TYPES.FRIEND || nodeType == NODE_TYPES.FILTERED) {
-        url.searchParams.set('f', 0);
-        window.location.href = `${settings.url}?id=` + uuid + "&q=" + url.searchParams.get('q') + "&f=" +url.searchParams.get('f') + '&depth=' + (chat_id ? 1 : 3) + '&up=' + up + '&down=' + down;
+	if (nodeType == NODE_TYPES.PROFILE || nodeType == NODE_TYPES.FRIEND || nodeType == NODE_TYPES.FILTERED) {
+        window.location.href = 
+			`${settings.url.protocol}//${settings.url.host}${settings.url.pathname}?id=` +
+			uuid + '&depth=' + (chat_id ? 1 : 2) + '&up=' + up + '&down=' + down;
     }
-}
-
-function copyToClipboard(txt){
-	navigator.clipboard.writeText(txt)
-	.then(() => {
-		alert('Скопировано в буффер обмена');
-	})
-	.catch(err => {
-		console.log('Something went wrong', err);
-	});
 }
