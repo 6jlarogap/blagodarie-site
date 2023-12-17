@@ -17,4 +17,4 @@
           что при обращении, например, к settings.e8fa8ead84442467.js
           клиенту отдавался settings.js
 
-Подробнее см. webhook-scrips/blagodari.rf/readme.txt
+Подробнее см. webhook-scrips/blagodarie.org/readme.txt
