@@ -3,17 +3,10 @@
 //
 // Функции и проч., применяемые на разных страницах сайта
 
-function get_api_url() {
+// API_URL можно переопределить в local_settings.js,
+// который стоит раньше других js скриптов в .html
 
-    // API_URL можно переопределить в local_settings.js,
-    // который стоит раньше других js скриптов в .html
-
-    if (typeof API_URL === 'undefined') {
-        return 'https://api.blagoroda.org';
-    } else {
-        return API_URL;
-    }
-}
+const get_api_url = () => API_URL || 'https://api.blagoroda.org';
 
 function get_root_domain() {
 
@@ -33,20 +26,19 @@ function get_root_domain() {
     //      -   если сайт на github.io, то домен для куки: window.location.host
     //      -   иначе домен для куки: 'blagoroda.org'
 
-    if (typeof ROOT_DOMAIN === 'undefined') {
-        const developer_domain_regexps = [
-            "github\\.io$"
-        ];
-        const location_host = window.location.host;
-        for (let reg of developer_domain_regexps) {
-            if (location_host.match(new RegExp(reg))) {
-                return location_host;
-            }
+    if (ROOT_DOMAIN) return ROOT_DOMAIN;
+
+    const developer_domain_regexps = [
+        "github\\.io$"
+    ];
+    const location_host = window.location.host;
+    for (let reg of developer_domain_regexps) {
+        if (location_host.match(new RegExp(reg))) {
+            return location_host;
         }
-        return 'blagoroda.org';
-    } else {
-        return ROOT_DOMAIN;
     }
+
+    return 'blagoroda.org';
 }
 
 const DOCUMENT_URL = new URL(window.location.href);
