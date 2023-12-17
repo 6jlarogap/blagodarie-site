@@ -3,7 +3,7 @@
 # --- configurable parameters ------------------------
 VER_="prod"
 GIT_BRANCH_="master"
-FOLDERS_='blagodarie map genesis graph group_3djs auth_telegram'
+FOLDERS_='blagodarie map genesis graph'
 # --- end of configurable parameters -----------------
 
 root_dir_="/home/www-data/blagodari.rf.busted"
