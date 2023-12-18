@@ -188,7 +188,7 @@ function modal_dialog_show(html_text) {
 }
 
 
-async function check_auth() {
+async function check_auth(mandatory=false) {
 
     // Проверяем, есть ли кука авторизации auth_data
     // Если есть кука, то:
@@ -205,12 +205,17 @@ async function check_auth() {
     //              строку куки авторизации, ставим эту куку,
     //              запускаем URL, без [?&]authdata_token=<authdata_token>
     //              в get параметрах
-    //          -   если нет параметра [?&]authdata_token=<authdata_token>:
-    //              -   в апи получаем token для window.location.href, заодно
-    //                  имя бота
-    //              -   уходим на страницу телеграма для авторизации
+    //          -   если нет параметра [?&]authdata_token=<authdata_token>
+    //              -   если параметр mandatory == true:
+    //                      -   в апи получаем token для window.location.href, заодно
+    //                          имя бота
+    //                      -   уходим на страницу телеграма для авторизации
+    //              -   если параметр mandatory == false:
+    //                      - возвращается null. Это должно учитываться потом,
+    //                        отправлять ли запросы в апи с заголовком авторизации
+    //                        или без этого заголовка.
 
-    let result = undefined;
+    let result = null;
     let authdata_token = get_parm('authdata_token');
 
     if (result = getCookie('auth_data')) {
@@ -250,7 +255,7 @@ async function check_auth() {
         } else {
             alert(err_mes);
         }
-    } else {
+    } else if (mandatory) {
         const response = await api_request(
             api_url + '/api/token/url/', {
             method: 'POST',
