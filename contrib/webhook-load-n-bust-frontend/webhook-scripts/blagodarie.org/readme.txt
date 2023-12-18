@@ -5,7 +5,7 @@
 
 Действия процедуры, на примере master/update.sh, версии prod благодари.рф:
 
-(ниже ... : /home/www-data/blagodari.rf.busted)
+(ниже ... : /home/www-data/blagodarie.org.busted)
 
     - обновляет git репозиторий в .../git/prod
     - копирует оттуда папки blagodarie, map, genesis в .../busted/prod/tempo_/

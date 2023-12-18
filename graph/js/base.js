@@ -2,7 +2,7 @@
 //  graph/js/base.js
 //
 
-// Доступ требует авторизации, см. funcs.js:check_auth()
+// Доступ к странице может быть авторизован, см. funcs.js:check_auth()
 //
 // Возможные параметры (?параметр1&параметр2 ...), по группам параметров,
 // в порядке их рассмотрения:
@@ -224,12 +224,7 @@ $(document).ready (async function() {
         }
     }
 
-    // С отключенной авторизацией:
-    // const auth_data = null;
-    //
-    // С включенной авторизацией:
     const auth_data = await check_auth();
-    if (!auth_data) return;
 
     let nodes_by_id = false;
     let root_node = false;

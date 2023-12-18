@@ -4,7 +4,7 @@
 
 // Карта участников
 
-// Доступ требует авторизации, см. funcs.js:check_auth()
+// Доступ к странице может быть авторизован, см. funcs.js:check_auth()
 //
 // Возможные параметры в порядке их рассмотрения:
 //
@@ -45,7 +45,6 @@ let videoid = '';
 $(document).ready (async function() {
 
     let auth_data = await check_auth();
-    if (!auth_data) { return; };
 
     const api_url = get_api_url();
     let api_get_parms = [];
