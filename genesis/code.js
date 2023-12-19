@@ -37,19 +37,19 @@ const PROFILE = {
 	count: "",
 	nodeType: NODE_TYPES.PROFILE
 }
-let w = window.innerWidth;
-let h = window.innerHeight;
-var svg = d3.select("#main").attr("viewBox", "0 0 " + w + " " + h )
-			.attr("preserveAspectRatio", "xMidYMid meet");
+
+var svg = d3.select('#main').attr('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
+svg.attr('preserveAspectRatio', 'xMidYMid meet').attr('pointer-events', 'all');
+
 var width = +svg.node().getBoundingClientRect().width;
 var height = +svg.node().getBoundingClientRect().height;
-var link;
-var node;
+
+var link, node;
+
 var nodes = [];
 var links = [];
+
 var simulation;
-
-
 
 // all dialog elements
 var rootDialog = document.getElementById("rootDialog");
@@ -59,6 +59,7 @@ var rootList = document.getElementById("rootList");
 
 //filter stuff
 var filterInput = document.getElementById("filterInput");
+
 var settings = { api: get_api_url(), url: new URL(window.location.href) };
 
 setTimeout(() => {
@@ -136,7 +137,7 @@ var link = window.location.href;
                 }
             }
         }
-	
+
         function nextPage() {
 			let item_plus_int = +url.searchParams.get('f');
 			let selected_val = +url.searchParams.get('q');
@@ -161,12 +162,11 @@ var link = window.location.href;
 			window.location.href = url.href;
         }
 
-
 		document.querySelector('#btn_prev').style.background = '#6a2300;';
 		document.querySelector('#btn_prev').style.cursor = 'pointer;';
 		document.querySelector('.pagination_count').innerHTML = (chat_id ? count_ : url.searchParams.get('q'));
 			var apiUrl;
-		
+
             if (chat_id) {
                 apiUrl = `${settings.api}/api/profile_genesis/?chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
             } else if (userIdFrom) {
@@ -250,15 +250,15 @@ d3.json(apiUrl, d3_json_parms)
 		//добавить пользователей в вершины
 	data.users.forEach(function(d){
 		if (!nodes.some(user => user.id == d.uuid)) {
-			
+
 			var str = d.photo;
 			var extArray = str.split(".");
 			var ext = extArray[extArray.length - 1];
-		
-			var replacement = "media"; 
-			var toReplace = "thumb"; 
+
+			var replacement = "media";
+			var toReplace = "thumb";
 			var str1 = str.replace(replacement, toReplace);
-			
+
             var nd = NODE_TYPES.USER;
             if (all || chat_id && !d.is_in_page) {
                 nd = NODE_TYPES.FILTERED;
@@ -272,11 +272,10 @@ d3.json(apiUrl, d3_json_parms)
 				nodeType: nd,
 			   is_dead: d.is_dead,
 			});
-			
-			
+
 		}
 	});
-		
+
 	if(!window.location.href.includes('gen')){
 	let selected_val_num = +url.searchParams.get('q');
 	let but_next = document.querySelector('#btn_next');
@@ -299,8 +298,6 @@ d3.json(apiUrl, d3_json_parms)
 	}
 	}
 
-	
-
 	data.connections.forEach(function(d){
         d.is_trust = true;
         var reverse_is_trust = d.is_trust;
@@ -316,11 +313,9 @@ d3.json(apiUrl, d3_json_parms)
             reverse_is_trust: reverse_is_trust
         });
 	});
-	
-	
-	
+
 	//зафиксировать вершины пользователя, желаний и ключей
-	
+
 	nodes.forEach(function(d) {
 		switch(d.id){
 		case userIdFrom:
@@ -345,17 +340,17 @@ d3.json(apiUrl, d3_json_parms)
 			break;
 		case OPTIONS_ID:
 			d.fx = width<900 ? 10 : width / 2 - 400;
-			d.fy = height / 2 - 300;	
+			d.fy = height / 2 - 300;
 			break;
 		case INVITE_ID:
 				d.fx = width<900 ? width/2-20 : width / 2 - 200;
-				d.fy = height / 2 - 300;	
+				d.fy = height / 2 - 300;
 				break;
 		case HOME_ID:
 
 			d.fx = width<900 ? width/2-81 :width / 2 - 300;
 			d.fy = height / 2 - 300;
-			
+
 			break;
 		/*case GENESIS_ID:
 			if(!window.location.href.includes('gen')){
@@ -363,7 +358,7 @@ d3.json(apiUrl, d3_json_parms)
 			d.fy = height / 2 - 250;
 			}
 			break;*/
-		
+
 		case MAPS_ID:
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
 			d.fy = height / 2 - 300;
@@ -388,11 +383,11 @@ d3.json(apiUrl, d3_json_parms)
 				d.fx = width / 2;
 				d.fy = height / 2;
 			}
-			
+
 			break;
 		}
 	});
-	
+
 	if(width<900){
 		simulation = d3.forceSimulation(nodes);
 		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links)); //distance(150)
@@ -401,14 +396,14 @@ d3.json(apiUrl, d3_json_parms)
 		simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
 		simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
 		simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))
-	}	
+	}
 	else if(width < 3000) {
 		simulation = d3.forceSimulation(nodes);
 		simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.6));
 		simulation.force("charge", d3.forceManyBody().strength(-450));
 	//	simulation.force("collide", d3.forceCollide().strength(5).radius(20));//.iterations(1));//radius 80  strength(0.6)
 		simulation.force("x", d3.forceX(width / 2));
-		simulation.force("y", d3.forceY(height / 2));		
+		simulation.force("y", d3.forceY(height / 2));
 	}
 	else{
 		simulation = d3.forceSimulation(nodes);
@@ -423,44 +418,39 @@ d3.json(apiUrl, d3_json_parms)
 	initializeSimulation();
 });
 
-
 function initializeSimulation() {
-	simulation.nodes(nodes);
-	simulation.alpha(1).restart();
-	simulation.on("tick", ticked);
+  simulation.nodes(nodes);
+  simulation.alpha(1).restart();
+  simulation.on("tick", ticked);
 }
 
-drag = simulation => {
-  
-	function dragstarted(event, d) {
-		if (!event.active) simulation.alphaTarget(0.3).restart();
-		d.fx = d.x;
-		d.fy = d.y;
-	}
+const ZOOM_MIN = 0.2;
+const ZOOM_MAX = 4;
 
-	function dragged(event, d) {
-		d.fx = event.x;
-		d.fy = event.y;
-	}
+var zoom = d3.zoom().scaleExtent([ZOOM_MIN, ZOOM_MAX]);
+zoom.on('zoom', ({transform: {x, y, k}}) => svg.attr('transform', `translate(${x}, ${y}) scale(${k})`));
 
-	function dragended(event, d) {
-		if (!event.active) simulation.alphaTarget(0);
-		//d.fx = null;
-		//d.fy = null;
-		/*if(d.nodeType == NODE_TYPES.PLUS){
-			d.fx = width<900 ? width/2+50 : width/2+80;
-			d.fy = height/2;
-		}*/
-		
-	}
+function drag(simulation) {
+  function dragstarted(e, d) {
+    !e.active && simulation.alphaTarget(0.3).restart();
 
-	return d3.drag()
-	  .on("start", dragstarted)
-	  .on("drag", dragged)
-	  .on("end", dragended);
+    dragged(e, d);
+  }
+
+  const dragged = ({x, y}, d) => { d.fx = x; d.fy = y; };
+
+  const dragended = ({active}) => { !active && simulation.alphaTarget(0); };
+
+  let behavior = d3.drag();
+  behavior.on('start', dragstarted);
+  behavior.on('drag', dragged);
+  behavior.on('end', dragended);
+
+  return behavior;
 }
 
 function initializeDisplay() {
+        svg = svg.call(zoom).append('g');
 
 	link = svg.append("g")
 		.selectAll("g")
@@ -471,7 +461,7 @@ function initializeDisplay() {
 		.attr("x2", calcX2)
 		.attr("y2", calcY2);
 		//.attr("id", "lallaal");
-		
+
 	link.append("svg:defs")
 		.append("linearGradient")
 		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
@@ -497,7 +487,7 @@ function initializeDisplay() {
 				return "stop-color:rgb(255,0,0);stop-opacity:1";
 			}
 		});
-		
+
 	link.append("svg:line")
 		.attr("class", "link")
 		.attr("x1", calcX1)
@@ -539,31 +529,29 @@ function initializeDisplay() {
 			}
 		});
 
-	node = svg.append("g")
-		.selectAll("g")
+	node = svg.append('g')
+		.selectAll('g')
 		.data(nodes)
-		.join("g")
-		.attr("onclick", d => `onNodeClick("${d.nodeType}", "${d.id}", "${d.text}")`)
-		.call(drag(simulation))
-		.attr('class', 'svg_elem')
-		.attr('style', "cursor:pointer");
-	 
-	
+		.join('g')
+		.attr('onclick', (d) => `onNodeClick('${d.nodeType}', '${d.id}', '${d.text}')`)
+	        .attr('class', 'svg_elem')
+		.attr('style', 'cursor: pointer')
+        	.call(drag(simulation));
+
 	var defs = node.append("defs").attr("id", "imgdefs")
-	
-	
+
 	clipPath = defs.append('clipPath').attr('id', "clip-circle-medium");
 			clipPath.append("circle")
     		.attr("r", 32)
-	
+
 	clipPath1 = defs.append('clipPath').attr('id', "clip-circle-small");
 			clipPath1.append("circle")
     		.attr("r", 16)
-	
+
 	clipPath2 = defs.append('clipPath').attr('id', "clip-circle-large");
 			clipPath2.append("circle")
     		.attr("r", 64)
-	
+
 		node.append("image")
 		.attr("xlink:href", d => d.image)
 		.attr("class", d => {
@@ -579,7 +567,7 @@ function initializeDisplay() {
 			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FILTER){
         			return "friendPortrait active_filer_icon";
     			}
-    			
+
 			else {
 				return "friendPortrait";
 			}
@@ -597,156 +585,244 @@ function initializeDisplay() {
 		}else if (d.nodeType == NODE_TYPES.FILTERED) {
 			return d.is_dead ? "" : "url(#clip-circle-small)";
 		}
-		
+
 	});
-	
+
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
 		.attr("font-size", width<900 ? "15" : "20")
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.tspan));
-	
+
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20  : 47))
 		.attr("font-size", d => (width<900 || d.nodeType == NODE_TYPES.FILTERED ? '12' : "20"))
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
 		.text(d => (d.text));
-	
-	  
+
 	node.append("text")
 		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47))
 		.attr("font-size", d => (width<900 || d.nodeType == NODE_TYPES.FILTERED ? '12' : "20"))
 		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
 		.text(d => (d.text));
-	
-
 }
 
-function ticked() {
-/*	
-	node.attr("transform", d => `translate(${d.x},${d.y})`);
-	link.selectAll("line")
-		.attr("x1", d => d.source.x)
-		.attr("y1", d => d.source.y)
-		.attr("x2", d => d.target.x)
-		.attr("y2", d => d.target.y);
-*/
+const isUserOrProfile = (nodeType) => nodeType === NODE_TYPES.USER || nodeType === NODE_TYPES.PROFILE;
 
-	node.attr("transform", d => {
-		var x = (d.x < 30 ? 30 : (d.x > width-30 ? width-30 : d.x));
-		var y = (d.y < 15 && width<900 ? 15 : d.y < 0 ? 0 : (d.y > height-20 && width<900 ? height-20 : d.y > height-70 && width>900 ? height-70 : d.y));
-		if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE){
-			simulation.force("x").x(x);
-			simulation.force("y").y(y);
-		}
-		return `translate(${x},${y})`;
-	});
-	
-	link.selectAll("g")
-		.attr("x1", calcX1)
-		.attr("y1", calcY1)
-		.attr("x2", calcX2)
-		.attr("y2", calcY2);
-		
-	
-	link.selectAll("linearGradient")
-		.attr("x1", calcX1)
-		.attr("y1", calcY1)
-		.attr("x2", calcX2)
-		.attr("y2", calcY2);
-		
-	link.selectAll("line")
-		.attr("x1", calcX1)
-		.attr("y1", calcY1)
-		.attr("x2", calcX2)
-		.attr("y2", calcY2);
+const degree = (nodeType) => width < 900 && isUserOrProfile(nodeType) ? 30 : isUserOrProfile(nodeType) ? 64 : nodeType === NODE_TYPES.FILTERED && width < 900 ? 16 : 32;
 
+const length = (lWidth, lHeight) => Math.sqrt(lWidth * lWidth + lHeight * lHeight);
+
+function relativeX({source: {nodeType}, source, target}) {
+  const sourceX = source.x, targetX = target.x;
+  
+  const lWidth = Math.abs(targetX - sourceX);
+  const lLength = length(lWidth, Math.abs(target.y - source.y));
+  
+  if (!lLength) return [sourceX, targetX, 0, 0];
+  
+  const cosA = lWidth / lLength;
+  const relX = cosA * degree(nodeType);
+  
+  return [sourceX, targetX, lLength, relX];
 }
 
-function calcX1(d){
+function relativeY({source: {nodeType}, source, target}) {
+  const sourceY = source.y, targetY = target.y;
+  
+  const lHeight = Math.abs(targetY - sourceY);
+  const lLength = length(Math.abs(target.x - source.x), lHeight);
+  
+  if (!lLength) return [sourceY, targetY, 0, 0];
+  
+  const sinA = lHeight / lLength;
+  const relY = sinA * degree(nodeType);
+  
+  return [sourceY, targetY, lLength, relY];
+}
+
+const sign = (left, right) => left > right ? 1 : -1;
+
+function fullTransform() {
+  node.attr('transform', ({x, y}) => `translate(${x}, ${y})`);
+
+  const x1 = (d) => {
+    const [sourceX, targetX, lLength, relX] = relativeX(d);
+
+    if (!lLength) return 0;
+
+    const x1 = sourceX + sign(targetX, sourceX) * relX;
+
+    return x1;
+  };
+
+  const y1 = (d) => {
+    const [sourceY, targetY, lLength, relY] = relativeY(d);
+
+    if (!lLength) return 0;
+
+    const y1 = sourceY + sign(targetY, sourceY) * relY;
+
+    return y1;
+  };
+
+  const x2 = (d) => {
+    const [sourceX, targetX, lLength, relX] = relativeX(d);
+
+    if (!lLength) return 0;
+
+    const x2 = targetX + -sign(targetX, sourceX) * relX;
+
+    return x2;
+  };
+
+  const y2 = (d) => {
+    const [sourceY, targetY, lLength, relY] = relativeY(d);
+
+    if (!lLength) return 0;
+
+    const y2 = targetY + -sign(targetY, sourceY) * relY;
+
+    return y2;
+  };
+
+  let g = link.selectAll('g');
+  g.attr('x1', x1);
+  g.attr('y1', y1);
+  g.attr('x2', x2);
+  g.attr('y2', y2);
+
+  let linearGradient = link.selectAll('linearGradient');
+  linearGradient.attr('x1', x1);
+  linearGradient.attr('y1', y1);
+  linearGradient.attr('x2', x2);
+  linearGradient.attr('y2', y2);
+
+  let line = link.selectAll('line');
+  line.attr('x1', x1);
+  line.attr('y1', y1);
+  line.attr('x2', x2);
+  line.attr('y2', y2);
+
+  let newLink = link.selectAll('line');
+  newLink.attr('x1', x1);
+  newLink.attr('y1', y1);
+  newLink.attr('x2', x2);
+  newLink.attr('y2', y2);
+}
+
+function boundedNodeTransform({nodeType, x, y}) {
+  const newX = Math.min(Math.max(30, x), width - 30);
+  const newY = y < 15 && width < 900 ? 15 : y < 0 ? 0 : (y > height - 20 && width < 900 ? height - 20 : y > height - 70 && width > 900 ? height - 70 : y);
+
+  if (isUserOrProfile(nodeType)) {
+    simulation.force('x').x(newX);
+    simulation.force('y').y(newY);
+  }
+
+  return `translate(${newX}, ${newY})`;
+}
+
+function boundedTransform() {
+  node.attr('transform', boundedNodeTransform);
+
+  let g = link.selectAll('g');
+  g.attr('x1', calcX1);
+  g.attr('y1', calcY1);
+  g.attr('x2', calcX2);
+  g.attr('y2', calcY2);
+
+  let linearGradient = link.selectAll('linearGradient');
+  linearGradient.attr('x1', calcX1);
+  linearGradient.attr('y1', calcY1);
+  linearGradient.attr('x2', calcX2);
+  linearGradient.attr('y2', calcY2);
+
+  let line = link.selectAll("line");
+  line.attr('x1', calcX1);
+  line.attr('y1', calcY1);
+  line.attr('x2', calcX2);
+  line.attr('y2', calcY2);
+}
+
+const ticked = fullTransform;
+
+function calcX1(d) {
 	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
 	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
 	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
 	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
-	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
+        var lLength = Math.sqrt(lWidth * lWidth + lHeight * lHeight);
+
+        if (!lLength) return 0;
+
 	var cosA = lWidth / lLength;
 	var relX = (d.source.nodeType == NODE_TYPES.USER && width<900 || d.source.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.source.nodeType == NODE_TYPES.USER || d.source.nodeType == NODE_TYPES.PROFILE ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : width<900 ? 16 :  32) * cosA;//64
-	var x;
-	if (targetX > sourceX){
-		x = sourceX + relX;
-	} else {
-		x = sourceX - relX;
-	}
+	var x = targetX > sourceX ? sourceX + relX : sourceX - relX;
+
 	return x;
 }
 
-function calcY1(d){
+function calcY1(d) {
 	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
 	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
 	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
 	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
-	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
+        var lLength = Math.sqrt(lWidth * lWidth + lHeight * lHeight);
+
+        if (!lLength) return 0;
+
 	var sinA = lHeight / lLength;
 	var relY = (d.source.nodeType == NODE_TYPES.USER && width<900 || d.source.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.source.nodeType == NODE_TYPES.USER || d.source.nodeType == NODE_TYPES.PROFILE  ? 64 : d.source.nodeType == NODE_TYPES.FILTERED ? 16 : width<900 ? 16 : 32) * sinA;
-	var y;
-	if (targetY > sourceY){
-		y = sourceY + relY;
-	} else {
-		y = sourceY - relY;
-	}
-	return y;
+        var y = targetY > sourceY ? sourceY + relY : sourceY - relY;
 
+	return y;
 }
 
-function calcX2(d){
+function calcX2(d) {
 	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
 	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
 	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
 	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
-	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
+	var lLength = Math.sqrt(lWidth * lWidth + lHeight * lHeight);
+
+        if (!lLength) return 0;
+
 	var cosA = lWidth / lLength;
 	var relX = (d.target.nodeType == NODE_TYPES.USER && width<900 || d.target.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.PROFILE ? 64 : d.target.nodeType == NODE_TYPES.FILTERED ? 16 : width<900 ? 16 : 32) * cosA;
-	var x;
-	if (targetX > sourceX){
-		x = targetX - relX;
-	} else {
-		x = targetX + relX;
-	}
-	return x;
+        var x = targetX > sourceX ? targetX - relX : targetX + relX;
 
+	return x;
 }
 
-function calcY2(d){
+function calcY2(d) {
 	const sourceX = (d.source.x < 30 && width<900 ? 30 : d.source.x < 0 ? 0 : (d.source.x > width-30 && width<900 ? width-30 : d.source.x > width ? width : d.source.x)); //везде нули
 	const targetX = (d.target.x < 30 && width<900 ? 30 : d.target.x < 0 ? 0 : (d.target.x > width-30 && width<900 ? width-30 : d.target.x > width ? width : d.target.x));
 	const sourceY = (d.source.y < 15 && width<900 ? 15 : d.source.y < 0 ? 0 : (d.source.y > height-20 && width<900 ? height-20 : d.source.y > height ? height : d.source.y));
 	const targetY = (d.target.y < 15 && width<900 ? 15 : d.target.y < 0 ? 0 : (d.target.y > height-20 && width<900 ? height-20 : d.target.y > height ? height : d.target.y));
 	var lWidth = Math.abs(targetX - sourceX);
 	var lHeight = Math.abs(targetY - sourceY);
-	var lLength = Math.sqrt((lWidth * lWidth) + (lHeight * lHeight));
+        var lLength = Math.sqrt(lWidth * lWidth + lHeight * lHeight);
+
+        if (!lLength) return 0;
+
 	var sinA = lHeight / lLength;
 	var relY = (d.target.nodeType == NODE_TYPES.USER && width<900 || d.target.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.PROFILE ? 64 : d.target.nodeType == NODE_TYPES.FILTERED ? 16 : width<900 ? 16 : 32) * sinA;
-	var y;
-	if (targetY > sourceY){
-		y = targetY - relY;
-	} else {
-		y = targetY + relY;
-	}
-	
+	var y = targetY > sourceY ? targetY - relY : targetY + relY;
+
 	return y;
-}
+} 
 
-
-d3.select(window).on("resize", function(){
-	width = +svg.node().getBoundingClientRect().width;
-	height = +svg.node().getBoundingClientRect().height;
-	simulation.alpha(1).restart();
+d3.select(window).on('resize', () => {
+  width = +svg.node().getBoundingClientRect().width;
+  height = +svg.node().getBoundingClientRect().height;
+  simulation.alpha(1).restart();
 });
 
 function initDefs(){
@@ -764,7 +840,7 @@ function initDefs(){
 		.append("path")
 		.attr("fill", "#345334")
 		.attr("d", "M0,-5 L10,0 L0,5");
-	
+
 	defs.append("marker")
 		.attr("xmlns", "http://www.w3.org/2000/svg")
 		.attr("id", "arrow-trust")
@@ -777,7 +853,7 @@ function initDefs(){
 		.append("path")
 		.attr("fill", "#1c8401")
 		.attr("d", "M0,-5 L10,0 L0,5");
-	
+
 	defs.append("marker")
 		.attr("xmlns", "http://www.w3.org/2000/svg")
 		.attr("id", "arrow-gen")
@@ -790,7 +866,7 @@ function initDefs(){
 		.append("path")
 		.attr("fill", "#3b59d6")
 		.attr("d", "M0,-5 L10,0 L0,5");
-		
+
 	defs.append("marker")
 		.attr("xmlns", "http://www.w3.org/2000/svg")
 		.attr("id", "arrow-mistrust")
@@ -803,7 +879,7 @@ function initDefs(){
 		.append("path")
 		.attr("fill", "#ff0000")
 		.attr("d", "M0,-5 L10,0 L0,5");
-		
+
 	defs.append("marker")
 		.attr("xmlns", "http://www.w3.org/2000/svg")
 		.attr("id", "arrow-other")
@@ -816,7 +892,7 @@ function initDefs(){
 		.append("path")
 		.attr("fill", "#345334")
 		.attr("d", "M0,-5 L10,0 L0,5");
-		
+
 	defs.append("clipPath")
 		.attr("id", "friendCircle")
 		.append("circle")
@@ -824,7 +900,7 @@ function initDefs(){
 		.attr("cy", "0")
 		.attr("r", "32")
 		.attr("fill", "#ff0000");
-		
+
 	defs.append("clipPath")
 		.attr("id", "userCircle")
 		.append("circle")
@@ -844,7 +920,7 @@ function initDefs(){
 
 async function onNodeClick(nodeType, uuid, txt){
 	if (nodeType == NODE_TYPES.PROFILE || nodeType == NODE_TYPES.FRIEND || nodeType == NODE_TYPES.FILTERED) {
-        window.location.href = 
+        window.location.href =
 			`${settings.url.protocol}//${settings.url.host}${settings.url.pathname}?id=` +
 			uuid + '&depth=' + (chat_id ? 1 : 2) + '&up=' + up + '&down=' + down;
     }

@@ -3,17 +3,12 @@
 //
 // Функции и проч., применяемые на разных страницах сайта
 
-function get_api_url() {
+// API_URL можно переопределить в local_settings.js,
+// который стоит раньше других js скриптов в .html
 
-    // API_URL можно переопределить в local_settings.js,
-    // который стоит раньше других js скриптов в .html
+var API_URL, ROOT_DOMAIN;
 
-    if (typeof API_URL === 'undefined') {
-        return 'https://api.blagoroda.org';
-    } else {
-        return API_URL;
-    }
-}
+const get_api_url = () => API_URL || 'https://api.blagoroda.org';
 
 function get_root_domain() {
 
@@ -33,23 +28,23 @@ function get_root_domain() {
     //      -   если сайт на github.io, то домен для куки: window.location.host
     //      -   иначе домен для куки: 'blagoroda.org'
 
-    if (typeof ROOT_DOMAIN === 'undefined') {
-        const developer_domain_regexps = [
-            "github\\.io$"
-        ];
-        const location_host = window.location.host;
-        for (let reg of developer_domain_regexps) {
-            if (location_host.match(new RegExp(reg))) {
-                return location_host;
-            }
-        }
-        return 'blagoroda.org';
-    } else {
-        return ROOT_DOMAIN;
-    }
+    if (ROOT_DOMAIN) return ROOT_DOMAIN;
+
+    const developer_domain_regexps = [
+      /github\.io$/
+    ];
+
+    const location_host = window.location.host;
+
+    for (const regex of developer_domain_regexps)
+      if (location_host.match(regex))
+        return location_host;
+
+    return 'blagoroda.org';
 }
 
 const DOCUMENT_URL = new URL(window.location.href);
+
 function get_parm(parm) {
         
     // Получить get parameter, уже раскодированный!
@@ -168,7 +163,6 @@ async function api_request(url, options={}) {
     };
 }
 
-
 function modal_dialog_show(html_text) {
 
     // Показать диалог с html_text
@@ -186,7 +180,6 @@ function modal_dialog_show(html_text) {
 
     $('#dialogModal').css("display", "block");
 }
-
 
 async function check_auth(mandatory=false) {
 

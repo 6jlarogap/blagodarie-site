@@ -3,10 +3,10 @@
 <head>
 	<meta property="og:title" content="БлагоРода"/>
 	<meta property="og:description" content="БлагоРода"/>
-	<meta property="og:image" content="/images/ic_launcher.png" />
+	<meta property="og:image" content="./images/ic_launcher.png" />
 	<meta property="og:type" content="page"/>
 	<meta property="og:url" content= "https://genesis.blagoroda.org/" />
-	<link rel="shortcut icon" href="/images/ic_launcher.png" type="image/x-icon">
+	<link rel="shortcut icon" href="./images/ic_launcher.png" type="image/x-icon">
 	<meta name="http-equiv" content="Content-type: text/html;">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
@@ -22,31 +22,29 @@
 </head>
 
 <body>
-	<svg id="main">
-	</svg>
+        <svg id="main"></svg>
 	<div class="pagination_block">
-        	<div style="display: flex;align-items: center"><a href="javascript:prevPage()" id="btn_prev"><</a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a></div>
+        	<div style="display: flex;align-items: center"><a href="javascript:prevPage()" id="btn_prev"></a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a></div>
 		<div style='display:flex;flex-direction:column;align-items:center;justify-content:center;'>
-        	<select class='pagination_select' onchange="url.searchParams.set('q', this.value);url.searchParams.set('f', 0);window.location.href = url.href;">
-			<option>Профилей из чата на странице</option>
-    			<option value="5">5</option>
-    			<option value="10">10</option>
-    			<option value="20">20</option>
-    			<option value="50">50</option>
-		</select>
-			<p class="pagination_count" style="margin:0;font-weight: 500;"></p>
-			</div>
+        	  <select class='pagination_select' onchange="url.searchParams.set('q', this.value);url.searchParams.set('f', 0);window.location.href = url.href;">
+		    <option>Профилей из чата на странице</option>
+    		    <option value="5">5</option>
+    		    <option value="10">10</option>
+    		    <option value="20">20</option>
+    		    <option value="50">50</option>
+  		  </select>
+                  <p class="pagination_count" style="margin:0;font-weight: 500;"></p>
+		</div>
 	</div>
 
 	<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
-	<script src="https://d3js.org/d3.v6.min.js"></script>
+	<script src="https://d3js.org/d3.v7.min.js"></script>
 
     <!--    local_settings.js может и не быть (ничего страшного)
     -->
     <script defer src="local_settings.js"></script>
     <script defer src="funcs.js" charset="utf-8"></script>
-	<script defer src="code.js" charset="utf-8"></script>
-
+    <script defer src="code.js" charset="utf-8"></script>
 </body>
 
 </html>
