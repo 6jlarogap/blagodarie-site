@@ -173,7 +173,9 @@ $(document).ready (async function() {
             } else if (uuid_trustees) {
                 if (data.first_name) {
                     document.title = title_base + '. Доверия к: ' + data.first_name;
-                    let him_her = data.gender == 'm' ? 'ему' : (data.gender == 'f' ? 'ей' : '');
+                    let him_her = data.is_org ? '' : (
+                        data.gender == 'm' ? 'ему' : (data.gender == 'f' ? 'ей' : '')
+                    );
                     $('#id_subtitle_').html(
                             '<h3>' +
                                 '<big>' +
