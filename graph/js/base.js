@@ -420,6 +420,20 @@ $(document).ready (async function() {
     const menu__title_span = document.querySelector(".menu__title-span");
     const menu_wrapper = document.querySelector(".menu-wrapper");
 
+    function show_trust_buttons() {
+        const btn_trust = document.querySelector(".btn--trust");
+        if (
+                is_other_site && parm_user_uuid_trusts &&
+                btn_trust && node_current.uuid &&  data.bot_username
+           ) {
+            if (!auth_data || auth_data.user_uuid != node_current.uuid) {
+                btn_trust.classList.remove("display--none");
+            } else if (!btn_trust.classList.contains("display--none")) {
+                btn_trust.classList.add("display--none");
+            }
+        }
+    }
+
     const graph_container = $('#3d-graph')[0];
     const Graph = ForceGraph3D()
         .nodeThreeObject(node => node_draw(node))
@@ -462,6 +476,7 @@ $(document).ready (async function() {
                         btn_collapse.classList.add("display--none");
                     }
                 }
+                show_trust_buttons();
             }
         })
 
@@ -473,6 +488,7 @@ $(document).ready (async function() {
                 menu__title_span.textContent =
                     ('first_name_orig' in node_current) ? node_current.first_name_orig : node_current.first_name;
                 menu_wrapper.classList.add("menu-wrapper--active");
+                show_trust_buttons();
             }
         })
         .linkDirectionalArrowLength(10)
@@ -594,10 +610,16 @@ $(document).ready (async function() {
         menu_wrapper.classList.remove("menu-wrapper--active")
     });
     document.querySelector(".btn--profile").addEventListener("click", function() {
+        menu_wrapper.classList.remove("menu-wrapper--active");
         if (node_current.uuid && data.bot_username) {
             window.location.href = "https://t.me/" + data.bot_username + '?start=' + node_current.uuid;
         }
+    });
+    document.querySelector(".btn--trust").addEventListener("click", function() {
         menu_wrapper.classList.remove("menu-wrapper--active");
+        if (node_current.uuid && data.bot_username) {
+            window.location.href = "https://t.me/" + data.bot_username + '?start=t-' + node_current.uuid;
+        }
     });
     document.querySelector(".btn--collapse").addEventListener("click", async function() {
         menu_wrapper.classList.remove("menu-wrapper--active");
