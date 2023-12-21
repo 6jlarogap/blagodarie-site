@@ -100,6 +100,12 @@ $(document).ready (async function() {
     const c_collapsed = '+';
     const c_expanded = '-';
 
+    const trust_operations = {
+        mistrust: { op: 2, start_prefix: 'n' },
+        nullify_trust:  { op: 4, start_prefix: 'f' },
+        trust_and_thank: { op: 5, start_prefix: 't' }
+    }
+
     function expand_collapse_sign (node) {
         let result;
         let do_up = parm_up && node.up && 'lateral_links' in node && node.lateral_links.length == 0;
@@ -416,7 +422,7 @@ $(document).ready (async function() {
     }
 
     let data = null;
-    let node_current = null;
+    let node_current = {};
     const menu__title_span = document.querySelector(".menu__title-span");
     const menu_wrapper = document.querySelector(".menu-wrapper");
 
@@ -606,6 +612,78 @@ $(document).ready (async function() {
         }
     }
 
+    async function make_trust_operation(operation) {
+        menu_wrapper.classList.remove("menu-wrapper--active");
+        if (!(operation in trust_operations)) return;
+        const d_op = trust_operations[operation];
+        if (!auth_data && node_current.uuid && data.bot_username) {
+            window.location.href =
+                `https://t.me/${data.bot_username}?start=${d_op.start_prefix}-${node_current.uuid}`;
+            return;
+        }
+        if (auth_data && node_current.uuid && auth_data.user_uuid != node_current.uuid) {
+            const auth_user_id =
+                // TODO. К 10.01.24, когда все поймают новую куку, auth_data.user_id будет всегда и
+                //       'auth_user_id' in data не будет нужен как здесь, так и в апи
+                ('user_id' in auth_data) && auth_data.user_id ||
+                ('auth_user_id' in data) && data.auth_user_id ||
+                null;
+            if (!auth_user_id) return;
+            graph_container.style.cursor = 'wait';
+            const api_response = await api_request(
+                api_url + '/api/addoperation', {
+                    method: 'POST',
+                    auth_token: auth_data.auth_token,
+                    json: {
+                        operation_type_id: d_op.op,
+                        user_id_from: auth_data.user_uuid,
+                        user_id_to: node_current.uuid,
+                    }
+                }
+            );
+            if (api_response.ok) {
+                // Найти связи, идущие от авторизованного и выполнить необходимое
+                let i_found = -1;
+                for (let i = 0; i < data.links.length; i++) {
+                    const link = data.links[i];
+                    const source_id = ((typeof link.source) === 'object') ? link.source.id : link.source;
+                    const target_id = ((typeof link.target) === 'object') ? link.target.id : link.target;
+                    if (source_id != auth_user_id || target_id != node_current.id) continue;
+                    if (operation == 'trust_and_thank') {
+                        link.thanks_count = api_response.data.currentstate.thanks_count;
+                        link.is_trust = true;
+                    } else if (operation == 'mistrust') {
+                        link.is_trust = false;
+                    } else if (operation == 'nullify_trust') {
+                        link.is_trust = null;
+                    }
+                    i_found = i;
+                    break;
+                }
+                if (i_found == -1 && operation != 'nullify_trust') {
+                    // не найден link
+                    // учет nullify_trust здесь: fool-proof
+                    data.links.push({
+                        source: auth_user_id,
+                        target: node_current.id,
+                        is_trust: !(operation == 'mistrust'),
+                    });
+                } else {
+                    // найден link. Если забываем, но есть родственная связь,
+                    // то не надо удалять связь.
+                    if (operation == 'nullify_trust' && !link.is_child) {
+                        data.links.splice(i_found, 1);
+                    }
+                }
+                Graph.graphData(data);
+                graph_container.style.cursor = null;
+            } else {
+                graph_container.style.cursor = null;
+                alert('Ошибка доступа к системе')
+            }
+        }
+    }
+
     document.querySelector(".menu__close-wrap").addEventListener("click", function() {
         menu_wrapper.classList.remove("menu-wrapper--active")
     });
@@ -615,11 +693,8 @@ $(document).ready (async function() {
             window.location.href = "https://t.me/" + data.bot_username + '?start=' + node_current.uuid;
         }
     });
-    document.querySelector(".btn--trust").addEventListener("click", function() {
-        menu_wrapper.classList.remove("menu-wrapper--active");
-        if (node_current.uuid && data.bot_username) {
-            window.location.href = "https://t.me/" + data.bot_username + '?start=t-' + node_current.uuid;
-        }
+    document.querySelector(".btn--trust").addEventListener("click", async function() {
+        await make_trust_operation('trust_and_thank');
     });
     document.querySelector(".btn--collapse").addEventListener("click", async function() {
         menu_wrapper.classList.remove("menu-wrapper--active");
