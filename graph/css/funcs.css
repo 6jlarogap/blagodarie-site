@@ -50,10 +50,10 @@
 
 .menu__btn {
   background: none;
-  border: 1px solid #000;
-  font-size: 16px;
+  border: 2px solid #000;
+  font-size: 32px;
   transition: .1s linear;
-  padding: 10px 15px;
+  padding: 20px 30px;
   cursor: pointer;
 }
 
@@ -70,8 +70,8 @@
 }
 
 .menu__close {
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   position: relative;
 }
 
@@ -110,6 +110,7 @@
 
 .menu__title {
   text-align: center;
+  font-size: 32px;
 }
 
 .menu-wrapper--active {
