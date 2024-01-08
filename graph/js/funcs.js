@@ -8,7 +8,11 @@
 
 var API_URL, ROOT_DOMAIN;
 
+// Могут быть переопределены в local_settings.js или где-то еще
+//
 const get_api_url = () => API_URL || 'https://api.blagoroda.org';
+const get_graph_url = () => GRAPH_URL || 'https://graph.blagoroda.org';
+const get_map_url = () => MAP_URL || 'https://map.blagoroda.org';
 
 function get_root_domain() {
 
@@ -29,17 +33,13 @@ function get_root_domain() {
     //      -   иначе домен для куки: 'blagoroda.org'
 
     if (ROOT_DOMAIN) return ROOT_DOMAIN;
-
     const developer_domain_regexps = [
       /github\.io$/
     ];
-
     const location_host = window.location.host;
-
     for (const regex of developer_domain_regexps)
-      if (location_host.match(regex))
-        return location_host;
-
+        if (location_host.match(regex))
+            return location_host;
     return 'blagoroda.org';
 }
 
