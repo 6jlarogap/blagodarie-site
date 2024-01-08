@@ -24,7 +24,7 @@
 <body>
         <svg id="main"></svg>
 	<div class="pagination_block">
-        	<div style="display: flex;align-items: center"><a href="javascript:prevPage()" id="btn_prev"></a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a></div>
+		<div style="display: flex;align-items: center"><a href="javascript:prevPage()" id="btn_prev"><</a>Страница: <span id="page"></span><a href="javascript:nextPage()" id="btn_next">></a></div>
 		<div style='display:flex;flex-direction:column;align-items:center;justify-content:center;'>
         	  <select class='pagination_select' onchange="url.searchParams.set('q', this.value);url.searchParams.set('f', 0);window.location.href = url.href;">
 		    <option>Профилей из чата на странице</option>
