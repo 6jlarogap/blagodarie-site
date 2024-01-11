@@ -3,10 +3,11 @@
 //
 // Функции и проч., применяемые на разных страницах сайта
 
-// API_URL можно переопределить в local_settings.js,
+// API_URL API_URL, ROOT_DOMAIN, GRAPH_URL, MAP_URL
+// можно переопределить в local_settings.js,
 // который стоит раньше других js скриптов в .html
 
-var API_URL, ROOT_DOMAIN;
+var API_URL, ROOT_DOMAIN, GRAPH_URL, MAP_URL;
 
 // Могут быть переопределены в local_settings.js или где-то еще
 //
