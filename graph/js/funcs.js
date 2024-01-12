@@ -263,15 +263,16 @@ async function check_auth(mandatory=false) {
                 '?start=auth_redirect-' + data.token
             ;
             const bot_url = 'https://t.me/' + data.bot_username;
+            console.log('HERE');
             modal_dialog_show(
                 '<p>' +
                     'Для продолжения - нажмите ' +
                     '<a ' +
                         'href="' + auth_redirect_url + '">' +
-                        '<button>Перейти</button>' +
-                    '</a>' +
+                        '<button class="d-modal-button">Перейти</button>' +
+                    '</a> ' +
                     'или ' +
-                    '<button id="button-copy" data-clipboard-text="' + auth_redirect_url + '">Cкопируйте</button> ' +
+                    '<button class="d-modal-button" id="button-copy" data-clipboard-text="' + auth_redirect_url + '">Cкопируйте</button> ' +
                     ' и отправьте ссылку: ' +
                     '<a ' +
                         'href="' + bot_url + '">' +

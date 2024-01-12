@@ -230,7 +230,9 @@ $(document).ready (async function() {
         }
     }
 
-    const auth_data = await check_auth();
+    // Параметр: требуется ли авторизация
+    //
+    const auth_data = await check_auth(false);
 
     let nodes_by_id = false;
     let root_node = false;

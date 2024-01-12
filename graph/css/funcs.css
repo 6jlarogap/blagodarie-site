@@ -16,15 +16,20 @@
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-/* Modal Content/Box */
+/* Authorization Content/Box */
 .d-modal-content {
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
+  font-size: 20px;
 }
 
+.d-modal-button {
+  font-size: 20px;
+  cursor: pointer;
+}
 /* The Close Button */
 .d-modal-close {
   color: #aaa;
@@ -39,6 +44,7 @@
   text-decoration: none;
   cursor: pointer;
 }
+/* End of Authorization Content/Box */
 
 .menu {
   padding: 40px 60px;
