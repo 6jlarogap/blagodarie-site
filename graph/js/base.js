@@ -250,7 +250,8 @@ $(document).ready (async function() {
     let parm_user_uuid_genesis_tree = get_parm('user_uuid_genesis_tree') || '';
     let parm_user_uuid_genesis_path = get_parm('user_uuid_genesis_path') || '';
     let parm_user_uuid_trust_path = get_parm('user_uuid_trust_path') || '';
-    let parm_user_uuid_trusts = get_parm('user_uuid_trusts') || '';
+    const parm_user_uuid_trusts_name = 'user_uuid_trusts';
+    let parm_user_uuid_trusts = get_parm(parm_user_uuid_trusts_name) || '';
 
     const parm_tg_poll_id = get_parm('tg_poll_id') || '';
     const parm_offer_uuid = get_parm('offer_uuid') || '';
@@ -428,17 +429,25 @@ $(document).ready (async function() {
     const menu__title_span = document.querySelector(".menu__title-span");
     const menu_wrapper = document.querySelector(".menu-wrapper");
 
-    function show_trust_buttons() {
-        const btn_trust = document.querySelector(".btn--trust");
+    function show_trust_button() {
+        const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
         if (
                 is_other_site && parm_user_uuid_trusts &&
-                btn_trust && node_current.uuid &&  data.bot_username
+                btn_trust_wrap && node_current.uuid &&  data.bot_username
            ) {
             if (!auth_data || auth_data.user_uuid != node_current.uuid) {
-                btn_trust.classList.remove("display--none");
-            } else if (!btn_trust.classList.contains("display--none")) {
-                btn_trust.classList.add("display--none");
+                btn_trust_wrap.classList.remove("display--none");
+            } else if (!btn_trust_wrap.classList.contains("display--none")) {
+                btn_trust_wrap.classList.add("display--none");
             }
+        }
+    }
+
+    function show_goto_trust_button() {
+        const btn_goto_trust_wrap = document.querySelector(".btn--goto-trust--wrap");
+        const graph_url = DOCUMENT_URL.origin;
+        if (graph_url && btn_goto_trust_wrap && is_other_site && parm_user_uuid_trusts) {
+            btn_goto_trust_wrap.classList.remove("display--none");
         }
     }
 
@@ -475,16 +484,17 @@ $(document).ready (async function() {
                 menu_wrapper.classList.add("menu-wrapper--active");
                 if (parm_user_uuid_genesis_tree) {
                     const what = expand_collapse_sign(node);
-                    btn_collapse = document.querySelector(".btn--collapse");
+                    const btn_collapse_wrap = document.querySelector(".btn--collapse--wrap");
                     if (what == c_expanded || what == c_collapsed) {
                         document.querySelector(".btn--collapse--caption").textContent = 
                             node.collapsed ? 'Развернуть' : 'Свернуть';
-                        btn_collapse.classList.remove("display--none");
+                        btn_collapse_wrap.classList.remove("display--none");
                     } else {
-                        btn_collapse.classList.add("display--none");
+                        btn_collapse_wrap.classList.add("display--none");
                     }
                 }
-                show_trust_buttons();
+                show_trust_button();
+                show_goto_trust_button();
             }
         })
 
@@ -496,7 +506,8 @@ $(document).ready (async function() {
                 menu__title_span.textContent =
                     ('first_name_orig' in node_current) ? node_current.first_name_orig : node_current.first_name;
                 menu_wrapper.classList.add("menu-wrapper--active");
-                show_trust_buttons();
+                show_trust_button();
+                show_goto_trust_button();
             }
         })
         .linkDirectionalArrowLength(10)
@@ -701,6 +712,13 @@ $(document).ready (async function() {
     document.querySelector(".btn--collapse").addEventListener("click", async function() {
         menu_wrapper.classList.remove("menu-wrapper--active");
         await collapse_expand(node_current);
+    });
+    document.querySelector(".btn--goto-trust").addEventListener("click", function() {
+        menu_wrapper.classList.remove("menu-wrapper--active");
+        const graph_url = DOCUMENT_URL.origin;
+        if (node_current.uuid && graph_url) {
+            window.location.href = `${graph_url}/?${parm_user_uuid_trusts_name}=${node_current.uuid}`;
+        }
     });
 
     const api_response = await api_request(
