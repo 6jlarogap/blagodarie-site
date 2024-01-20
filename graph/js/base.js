@@ -517,7 +517,7 @@ $(document).ready (async function() {
 
     const linkForce = Graph
           .d3Force('link')
-          .distance(95);       
+          .distance(195);       
     
     async function collapse_expand(node) {
         if (!node) return;
