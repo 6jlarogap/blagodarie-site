@@ -515,6 +515,10 @@ $(document).ready (async function() {
         .linkDirectionalArrowColor(link => link_color(link, 'rgba'))
     ;
 
+    const linkForce = Graph
+          .d3Force('link')
+          .distance(95);       
+    
     async function collapse_expand(node) {
         if (!node) return;
         if ('lateral_links' in node) {
