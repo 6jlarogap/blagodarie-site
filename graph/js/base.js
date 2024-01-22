@@ -446,8 +446,7 @@ $(document).ready (async function() {
 
     function show_goto_trust_button() {
         const btn_goto_trust_wrap = document.querySelector(".btn--goto-trust--wrap");
-        const graph_url = DOCUMENT_URL.origin;
-        if (graph_url && btn_goto_trust_wrap && is_other_site && parm_user_uuid_trusts) {
+        if (btn_goto_trust_wrap && is_other_site && parm_user_uuid_trusts) {
             btn_goto_trust_wrap.classList.remove("display--none");
         }
     }
@@ -456,7 +455,7 @@ $(document).ready (async function() {
         /*
             Если при тапе на узел задержал палец или на ПК нечаянно double click,
             а под узлом кнопка, то последующий тап (клик) приведет к срабатыванию
-            кнопки, а это надо изжать.
+            кнопки, а это надо избежать.
             Функция вызывается в начале каждого обработчика клика на кнопку
         */
         const t = new Date().getTime();
@@ -735,9 +734,9 @@ $(document).ready (async function() {
     document.querySelector(".btn--goto-trust").addEventListener("click", function() {
         if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
-        const graph_url = DOCUMENT_URL.origin;
-        if (node_current.uuid && graph_url) {
-            window.location.href = `${graph_url}/?${parm_user_uuid_trusts_name}=${node_current.uuid}`;
+        if (node_current.uuid) {
+            const url_origin_ = url_origin();
+            window.location.href = `${url_origin_}?${parm_user_uuid_trusts_name}=${node_current.uuid}`;
         }
     });
 
