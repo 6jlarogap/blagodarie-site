@@ -457,6 +457,7 @@ $(document).ready (async function() {
             Если при тапе на узел задержал палец или на ПК нечаянно double click,
             а под узлом кнопка, то последующий тап (клик) приведет к срабатыванию
             кнопки, а это надо изжать.
+            Функция вызывается в начале каждого обработчика клика на кнопку
         */
         const t = new Date().getTime();
         return t - last_click_node_time < 500;
@@ -526,11 +527,10 @@ $(document).ready (async function() {
         .linkDirectionalArrowRelPos(1)
         .linkDirectionalArrowColor(link => link_color(link, 'rgba'))
     ;
+    Graph
+        .d3Force('link')
+        .distance(195);
 
-    const linkForce = Graph
-          .d3Force('link')
-          .distance(195);       
-    
     async function collapse_expand(node) {
         if (!node) return;
         if ('lateral_links' in node) {
