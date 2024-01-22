@@ -426,6 +426,7 @@ $(document).ready (async function() {
 
     let data = null;
     let node_current = {};
+    let last_click_node_time = 0;
     const menu__title_span = document.querySelector(".menu__title-span");
     const menu_wrapper = document.querySelector(".menu-wrapper");
 
@@ -449,6 +450,16 @@ $(document).ready (async function() {
         if (graph_url && btn_goto_trust_wrap && is_other_site && parm_user_uuid_trusts) {
             btn_goto_trust_wrap.classList.remove("display--none");
         }
+    }
+
+    function is_double_clicked() {
+        /*
+            Если при тапе на узел задержал палец или на ПК нечаянно double click,
+            а под узлом кнопка, то последующий тап (клик) приведет к срабатыванию
+            кнопки, а это надо изжать.
+        */
+        const t = new Date().getTime();
+        return t - last_click_node_time < 500;
     }
 
     const graph_container = $('#3d-graph')[0];
@@ -500,6 +511,7 @@ $(document).ready (async function() {
 
         .onNodeClick(async function(node) {
             node_current = node;
+            last_click_node_time = new Date().getTime();
             if (parm_user_uuid_genesis_tree) {
                 await collapse_expand(node);
             } else if (node.uuid && data && data.bot_username) {
@@ -705,19 +717,23 @@ $(document).ready (async function() {
         menu_wrapper.classList.remove("menu-wrapper--active")
     });
     document.querySelector(".btn--profile").addEventListener("click", function() {
+        if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
         if (node_current.uuid && data.bot_username) {
             window.location.href = "https://t.me/" + data.bot_username + '?start=' + node_current.uuid;
         }
     });
     document.querySelector(".btn--trust").addEventListener("click", async function() {
+        if (is_double_clicked()) return;
         await make_trust_operation('trust_and_thank');
     });
     document.querySelector(".btn--collapse").addEventListener("click", async function() {
+        if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
         await collapse_expand(node_current);
     });
     document.querySelector(".btn--goto-trust").addEventListener("click", function() {
+        if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
         const graph_url = DOCUMENT_URL.origin;
         if (node_current.uuid && graph_url) {
