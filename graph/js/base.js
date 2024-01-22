@@ -735,8 +735,7 @@ $(document).ready (async function() {
         if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
         if (node_current.uuid) {
-            const url_origin_ = url_origin();
-            window.location.href = `${url_origin_}?${parm_user_uuid_trusts_name}=${node_current.uuid}`;
+            window.location.href = `${url_path()}?${parm_user_uuid_trusts_name}=${node_current.uuid}`;
         }
     });
 

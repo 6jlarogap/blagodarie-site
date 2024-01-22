@@ -46,9 +46,9 @@ function get_root_domain() {
 
 const DOCUMENT_URL = new URL(window.location.href);
 
-function url_origin() {
-    const origin = (DOCUMENT_URL.protocol == 'file:') ? 'file://' : DOCUMENT_URL.origin;
-    return origin + DOCUMENT_URL.pathname;
+function url_path() {
+    const path = (DOCUMENT_URL.protocol == 'file:') ? 'file://' : DOCUMENT_URL.origin;
+    return path + DOCUMENT_URL.pathname;
 }
 
 function get_parm(parm) {
