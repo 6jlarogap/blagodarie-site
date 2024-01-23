@@ -247,7 +247,8 @@ $(document).ready (async function() {
     let parm_dover=get_parm('dover') || '';;
     let parm_withalone = get_parm('withalone') || '';
 
-    let parm_user_uuid_genesis_tree = get_parm('user_uuid_genesis_tree') || '';
+    const parm_user_uuid_genesis_name = 'user_uuid_genesis_tree';
+    let parm_user_uuid_genesis_tree = get_parm(parm_user_uuid_genesis_name) || '';
     let parm_user_uuid_genesis_path = get_parm('user_uuid_genesis_path') || '';
     let parm_user_uuid_trust_path = get_parm('user_uuid_trust_path') || '';
     const parm_user_uuid_trusts_name = 'user_uuid_trusts';
@@ -430,27 +431,6 @@ $(document).ready (async function() {
     const menu__title_span = document.querySelector(".menu__title-span");
     const menu_wrapper = document.querySelector(".menu-wrapper");
 
-    function show_trust_button() {
-        const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
-        if (
-                is_other_site && parm_user_uuid_trusts &&
-                btn_trust_wrap && node_current.uuid &&  data.bot_username
-           ) {
-            if (!auth_data || auth_data.user_uuid != node_current.uuid) {
-                btn_trust_wrap.classList.remove("display--none");
-            } else if (!btn_trust_wrap.classList.contains("display--none")) {
-                btn_trust_wrap.classList.add("display--none");
-            }
-        }
-    }
-
-    function show_goto_trust_button() {
-        const btn_goto_trust_wrap = document.querySelector(".btn--goto-trust--wrap");
-        if (btn_goto_trust_wrap && is_other_site && parm_user_uuid_trusts) {
-            btn_goto_trust_wrap.classList.remove("display--none");
-        }
-    }
-
     function is_double_clicked() {
         /*
             Если при тапе на узел задержал палец или на ПК нечаянно double click,
@@ -460,6 +440,37 @@ $(document).ready (async function() {
         */
         const t = new Date().getTime();
         return t - last_click_node_time < 500;
+    }
+
+    function show_popup(node) {
+        node_current = node;
+        if (node.uuid) {
+            menu__title_span.textContent =
+                ('first_name_orig' in node) ? node.first_name_orig : node.first_name;
+            menu_wrapper.classList.add("menu-wrapper--active");
+            if (parm_user_uuid_genesis_tree) {
+                const btn_collapse = document.querySelector(".btn--collapse");
+                const btn_goto_gen = document.querySelector(".btn--goto-gen")
+                const what = expand_collapse_sign(node);
+                if (what == c_expanded || what == c_collapsed) {
+                    document.querySelector(".btn--collapse--caption").textContent = 
+                        node.collapsed ? 'Развернуть' : 'Свернуть';
+                    btn_collapse.classList.remove("display--none");
+                } else {
+                    btn_collapse.classList.add("display--none");
+                }
+                btn_goto_gen.classList.remove("display--none")
+            } else if (parm_user_uuid_trusts) {
+                const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
+                if (!auth_data && data.bot_username || auth_data && auth_data.user_uuid != node.uuid) {
+                    btn_trust_wrap.classList.remove("display--none");
+                } else if (!btn_trust_wrap.classList.contains("display--none")) {
+                    btn_trust_wrap.classList.add("display--none");
+                }
+                const btn_goto_trust_wrap = document.querySelector(".btn--goto-trust--wrap");
+                btn_goto_trust_wrap.classList.remove("display--none");
+            }
+        }
     }
 
     const graph_container = $('#3d-graph')[0];
@@ -486,49 +497,26 @@ $(document).ready (async function() {
             }
             graph_container.style.cursor = cursor;
         })
-
-        .onNodeRightClick(function(node) {
-            node_current = node;
-            if (node.uuid) {
-                menu__title_span.textContent =
-                    ('first_name_orig' in node_current) ? node_current.first_name_orig : node_current.first_name;
-                menu_wrapper.classList.add("menu-wrapper--active");
-                if (parm_user_uuid_genesis_tree) {
-                    const what = expand_collapse_sign(node);
-                    const btn_collapse_wrap = document.querySelector(".btn--collapse--wrap");
-                    if (what == c_expanded || what == c_collapsed) {
-                        document.querySelector(".btn--collapse--caption").textContent = 
-                            node.collapsed ? 'Развернуть' : 'Свернуть';
-                        btn_collapse_wrap.classList.remove("display--none");
-                    } else {
-                        btn_collapse_wrap.classList.add("display--none");
-                    }
-                }
-                show_trust_button();
-                show_goto_trust_button();
-            }
-        })
-
         .onNodeClick(async function(node) {
-            node_current = node;
             last_click_node_time = new Date().getTime();
+            node_current = node;
             if (parm_user_uuid_genesis_tree) {
                 await collapse_expand(node);
-            } else if (node.uuid && data && data.bot_username) {
-                menu__title_span.textContent =
-                    ('first_name_orig' in node_current) ? node_current.first_name_orig : node_current.first_name;
-                menu_wrapper.classList.add("menu-wrapper--active");
-                show_trust_button();
-                show_goto_trust_button();
+            } else {
+                show_popup(node);
             }
+        })
+        .onNodeRightClick(function(node) {
+            node_current = node;
+            show_popup(node);
         })
         .linkDirectionalArrowLength(10)
         .linkDirectionalArrowRelPos(1)
         .linkDirectionalArrowColor(link => link_color(link, 'rgba'))
     ;
-    Graph
-        .d3Force('link')
-        .distance(195);
+    if (!parm_user_uuid_genesis_tree) {
+        Graph.d3Force('link').distance(195);
+    }
 
     async function collapse_expand(node) {
         if (!node) return;
@@ -736,6 +724,15 @@ $(document).ready (async function() {
         menu_wrapper.classList.remove("menu-wrapper--active");
         if (node_current.uuid) {
             window.location.href = `${url_path()}?${parm_user_uuid_trusts_name}=${node_current.uuid}`;
+        }
+    });
+    document.querySelector(".btn--goto-gen").addEventListener("click", function() {
+        if (is_double_clicked()) return;
+        menu_wrapper.classList.remove("menu-wrapper--active");
+        if (node_current.uuid) {
+            window.location.href =
+                `${url_path()}?${parm_user_uuid_genesis_name}=${node_current.uuid}` +
+                '&up=on&down=on&depth=2';
         }
     });
 
