@@ -501,7 +501,11 @@ $(document).ready (async function() {
             last_click_node_time = new Date().getTime();
             node_current = node;
             if (parm_user_uuid_genesis_tree) {
-                await collapse_expand(node);
+                if (node.is_my) {
+                    show_popup(node);
+                } else {
+                    await collapse_expand(node);
+                }
             } else {
                 show_popup(node);
             }
