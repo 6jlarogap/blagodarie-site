@@ -2423,7 +2423,7 @@ function add_context_new_parents(us_id_from, type_of_user){
 		form.append("dod", dd_new_user.value);
 	}
 	if(type_of_user == "child"){
-		form.append("link_uuid", us_id_from);
+		form.append("link_id", us_id_from);
 		for(let i=0; i<dataResponse.users.length; i++){
 			if(dataResponse.users[i].uuid == us_id_from && dataResponse.users[i].gender == 'm'){
 				form.append("link_relation", 'link_is_father');
@@ -2438,11 +2438,11 @@ function add_context_new_parents(us_id_from, type_of_user){
 		}
 	}
 	if(type_of_user == "father"){
-		form.append("link_uuid", us_id_from);
+		form.append("link_id", us_id_from);
 		form.append("link_relation", 'new_is_father');
 	}
 	if(type_of_user == "mother"){
-		form.append("link_uuid", us_id_from);
+		form.append("link_id", us_id_from);
 		form.append("link_relation", 'new_is_mother');
 	}
 	if(gender_value==undefined){
