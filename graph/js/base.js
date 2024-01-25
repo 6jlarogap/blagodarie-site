@@ -105,6 +105,10 @@ $(document).ready (async function() {
         nullify_trust:  { op: 4, start_prefix: 'f' },
         trust_and_thank: { op: 5, start_prefix: 't' }
     }
+    const genesis_operations = {
+        set_father: { op:  9},
+        set_mother: { op: 10}
+    }
 
     function expand_collapse_sign (node) {
         let result;
@@ -238,8 +242,7 @@ $(document).ready (async function() {
     let root_node = false;
 
     const is_blagoroda_host = get_blagoroda_host() == window.location.host;
-    const is_other_site = !is_blagoroda_host;
-    const parm_tg_group_chat_id = parseInt(get_parm('tg_group_chat_id'));
+    let parm_tg_group_chat_id = parseInt(get_parm('tg_group_chat_id'));
     const parm_f = parseInt(get_parm('f'));
     const parm_q = parseInt(get_parm('q'));
 
@@ -254,10 +257,10 @@ $(document).ready (async function() {
     const parm_user_uuid_trusts_name = 'user_uuid_trusts';
     let parm_user_uuid_trusts = get_parm(parm_user_uuid_trusts_name) || '';
 
-    const parm_tg_poll_id = get_parm('tg_poll_id') || '';
-    const parm_offer_uuid = get_parm('offer_uuid') || '';
+    let parm_tg_poll_id = get_parm('tg_poll_id') || '';
+    let parm_offer_uuid = get_parm('offer_uuid') || '';
 
-    const parm_videoid = get_parm('videoid') || '';
+    let parm_videoid = get_parm('videoid') || '';
     let parm_source = '';
     if (parm_videoid) parm_source = get_parm('source') || 'yt';
 
@@ -265,7 +268,7 @@ $(document).ready (async function() {
         !window.location.href.match(/\?/) ||
         window.location.href.match(/\?$/) ||
         is_blagoroda_host && (isNaN(parm_f) || isNaN(parm_q) || parm_f < 0 || parm_q <= 0) ||
-        is_other_site && 
+        !is_blagoroda_host &&
             !parm_tg_group_chat_id &&
             !parm_user_uuid_genesis_tree &&
             !parm_user_uuid_genesis_path &&
@@ -287,31 +290,29 @@ $(document).ready (async function() {
     let parm_depth = '';
     let parm_up = '';
     let parm_down = '';
-    if (is_other_site) {
-        if (parm_user_uuid_genesis_tree) {
-            if (r_uuid.test(parm_user_uuid_genesis_tree)) {
-                parm_depth = get_parm('depth') || 2;
-                parm_up = get_parm('up') || '';
-                parm_down = get_parm('down') || '';
-            } else {
-                parm_user_uuid_genesis_tree = '';
-            }
+    if (parm_user_uuid_genesis_tree) {
+        if (r_uuid.test(parm_user_uuid_genesis_tree)) {
+            parm_depth = get_parm('depth') || 2;
+            parm_up = get_parm('up') || '';
+            parm_down = get_parm('down') || '';
+        } else {
+            parm_user_uuid_genesis_tree = '';
         }
+    }
 
-        if (parm_user_uuid_genesis_path) {
-            if (r_uuid1_uuid2.test(parm_user_uuid_genesis_path)) {
-                parm_depth = get_parm('depth') || '';
-            } else {
-                parm_user_uuid_genesis_path = '';
-            }
+    if (parm_user_uuid_genesis_path) {
+        if (r_uuid1_uuid2.test(parm_user_uuid_genesis_path)) {
+            parm_depth = get_parm('depth') || '';
+        } else {
+            parm_user_uuid_genesis_path = '';
         }
+    }
 
-        if (parm_user_uuid_trust_path) {
-            if (r_uuid1_uuid2.test(parm_user_uuid_trust_path)) {
-                parm_depth = get_parm('depth') || '';
-            } else {
-                parm_user_uuid_trust_path = '';
-            }
+    if (parm_user_uuid_trust_path) {
+        if (r_uuid1_uuid2.test(parm_user_uuid_trust_path)) {
+            parm_depth = get_parm('depth') || '';
+        } else {
+            parm_user_uuid_trust_path = '';
         }
     }
 
@@ -329,12 +330,27 @@ $(document).ready (async function() {
             '&from=' + parm_f +
             '&number=' + parm_q
         ;
+        parm_tg_group_chat_id = '';
+        parm_user_uuid_genesis_tree = '';
+        parm_user_uuid_genesis_path = '';
+        parm_user_uuid_trust_path = '';
+        parm_user_uuid_trusts = '';
+        parm_offer_uuid = '';
+        parm_tg_poll_id = '';
+        parm_videoid = '';
     } else if (parm_tg_group_chat_id) {
         api_get_parms =
             '/api/getstats/user_connections_graph?fmt=3d-force-graph' +
             '&number=0' +
             '&tg_group_chat_id=' + parm_tg_group_chat_id;
-    } else if (is_other_site && parm_user_uuid_genesis_tree) {
+        parm_user_uuid_genesis_tree = '';
+        parm_user_uuid_genesis_path = '';
+        parm_user_uuid_trust_path = '';
+        parm_user_uuid_trusts = '';
+        parm_offer_uuid = '';
+        parm_tg_poll_id = '';
+        parm_videoid = '';
+    } else if (parm_user_uuid_genesis_tree) {
         api_get_parms =
             '/api/profile_genesis?uuid=' + parm_user_uuid_genesis_tree +
             '&fmt=3d-force-graph' +
@@ -342,24 +358,66 @@ $(document).ready (async function() {
             '&up=' + parm_up +
             '&down=' + parm_down + '&new=on'
         ;
-    } else if (is_other_site && parm_user_uuid_genesis_path) {
+        parm_tg_group_chat_id = '';
+        parm_user_uuid_genesis_path = '';
+        parm_user_uuid_trust_path = '';
+        parm_user_uuid_trusts = '';
+        parm_offer_uuid = '';
+        parm_tg_poll_id = '';
+        parm_videoid = '';
+    } else if (parm_user_uuid_genesis_path) {
         document.title = 'Благо Рода: путь родства';
         api_get_parms =
             '/api/profile_genesis?uuid=' + parm_user_uuid_genesis_path + '&fmt=3d-force-graph&depth=' + parm_depth;
-    } else if (is_other_site && parm_user_uuid_trust_path) {
+        parm_tg_group_chat_id = '';
+        parm_user_uuid_genesis_tree = '';
+        parm_user_uuid_trust_path = '';
+        parm_user_uuid_trusts = '';
+        parm_offer_uuid = '';
+        parm_tg_poll_id = '';
+        parm_videoid = '';
+    } else if (parm_user_uuid_trust_path) {
         document.title = 'Благо Рода: путь доверий';
         api_get_parms =
             '/api/profile_trust?uuid=' + parm_user_uuid_trust_path + '&fmt=3d-force-graph&depth=' + parm_depth;
-    } else if (is_other_site && parm_user_uuid_trusts) {
+        parm_tg_group_chat_id = '';
+        parm_user_uuid_genesis_tree = '';
+        parm_user_uuid_genesis_path = '';
+        parm_user_uuid_trusts = '';
+        parm_offer_uuid = '';
+        parm_tg_poll_id = '';
+        parm_videoid = '';
+    } else if (parm_user_uuid_trusts) {
         api_get_parms =
             '/api/profile_graph?fmt=3d-force-graph&uuid=' + parm_user_uuid_trusts;
-    } else if (is_other_site && parm_offer_uuid) {
+        parm_tg_group_chat_id = '';
+        parm_user_uuid_genesis_tree = '';
+        parm_user_uuid_genesis_path = '';
+        parm_user_uuid_trust_path = '';
+        parm_offer_uuid = '';
+        parm_tg_poll_id = '';
+        parm_videoid = '';
+    } else if (parm_offer_uuid) {
         api_get_parms =
             '/api/offer/results/?offer_uuid=' + parm_offer_uuid;
-    } else if (is_other_site && parm_tg_poll_id) {
+        parm_tg_group_chat_id = '';
+        parm_user_uuid_genesis_tree = '';
+        parm_user_uuid_genesis_path = '';
+        parm_user_uuid_trust_path = '';
+        parm_user_uuid_trusts = '';
+        parm_tg_poll_id = '';
+        parm_videoid = '';
+    } else if (parm_tg_poll_id) {
         api_get_parms =
             '/api/bot/poll/results/?tg_poll_id=' + parm_tg_poll_id;
-    } else if (is_other_site && parm_videoid) {
+        parm_tg_group_chat_id = '';
+        parm_user_uuid_genesis_tree = '';
+        parm_user_uuid_genesis_path = '';
+        parm_user_uuid_trust_path = '';
+        parm_user_uuid_trusts = '';
+        parm_offer_uuid = '';
+        parm_videoid = '';
+    } else if (parm_videoid) {
         api_get_parms =
             '/api/wote/vote/graph/' +
             '?videoid=' + parm_videoid +
@@ -371,6 +429,13 @@ $(document).ready (async function() {
         if (!isNaN(parm_to)) {
             api_get_parms += '&to=' + parm_to;
         }
+        parm_tg_group_chat_id = '';
+        parm_user_uuid_genesis_tree = '';
+        parm_user_uuid_genesis_path = '';
+        parm_user_uuid_trust_path = '';
+        parm_user_uuid_trusts = '';
+        parm_offer_uuid = '';
+        parm_tg_poll_id = '';
     } else {
         api_get_parms =
             '/api/profile_genesis/all?fmt=3d-force-graph' +
@@ -419,7 +484,6 @@ $(document).ready (async function() {
         label.textHeight = 0.2;
         label.color = node_text_color(node, 'rgba');
         sprite.add(label)
-
         sprite.center.set(0.5, -0.1);
 
         return sprite;
@@ -450,7 +514,7 @@ $(document).ready (async function() {
             menu_wrapper.classList.add("menu-wrapper--active");
             if (parm_user_uuid_genesis_tree) {
                 const btn_collapse = document.querySelector(".btn--collapse");
-                const btn_goto_gen = document.querySelector(".btn--goto-gen")
+                const btn_goto_gen = document.querySelector(".btn--goto-gen");
                 const what = expand_collapse_sign(node);
                 if (what == c_expanded || what == c_collapsed) {
                     document.querySelector(".btn--collapse--caption").textContent = 
@@ -460,6 +524,45 @@ $(document).ready (async function() {
                     btn_collapse.classList.add("display--none");
                 }
                 btn_goto_gen.classList.remove("display--none")
+                const add_relatives_br = document.querySelector(".add--relatives-br");
+                const btn_parents = document.querySelector(".btn--parents");
+                const btn_child = document.querySelector(".btn--child");
+                const btn_brosis = document.querySelector(".btn--brosis");
+                add_relatives_br.classList.add("display--none");
+                btn_parents.classList.add("display--none");
+                btn_child.classList.add("display--none");
+                btn_brosis.classList.add("display--none");
+                if (node.is_my) {
+                    let his_her = 'Его (её)';
+                    let show_brosis = false;
+                    if (node.gender) { his_her = (node.gender == 'm') ? 'Его' : 'Её'; }
+                    document.querySelector(".his-her-span").textContent = his_her;
+                    add_relatives_br.classList.remove("display--none");
+                    if ('parents' in node) {
+                        let btn_parents_caption = '';
+                        if (!node.parents.father && node.parents.mother) {
+                            btn_parents_caption = 'Папа';
+                            show_brosis = true;
+                        } else if (node.parents.father && !node.parents.mother) {
+                            btn_parents_caption = 'Мама';
+                            show_brosis = true;
+                        } else if (!node.parents.father && !node.parents.mother) {
+                            btn_parents_caption = 'Папа/Мама';
+                        } else /* if (node.parents.father && node.parents.mother) */ {
+                            show_brosis = true;
+                        }
+                        if (btn_parents_caption) {
+                            document.querySelector(".btn--parents--caption").textContent = btn_parents_caption;
+                            btn_parents.classList.remove("display--none");
+                        }
+                        if (show_brosis) {
+                            btn_brosis.classList.remove("display--none");
+                        }
+                    }
+                    if (node.gender) {
+                        btn_child.classList.remove("display--none");
+                    }
+                }
             } else if (parm_user_uuid_trusts) {
                 const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
                 if (!auth_data && data.bot_username || auth_data && auth_data.user_uuid != node.uuid) {
@@ -500,15 +603,15 @@ $(document).ready (async function() {
         .onNodeClick(async function(node) {
             last_click_node_time = new Date().getTime();
             node_current = node;
-            if (parm_user_uuid_genesis_tree) {
-                if (node.is_my) {
-                    show_popup(node);
-                } else {
-                    await collapse_expand(node);
-                }
-            } else {
+            // if (parm_user_uuid_genesis_tree) {
+            //     if (node.is_my) {
+            //         show_popup(node);
+            //     } else {
+            //         await collapse_expand(node);
+            //     }
+            // } else {
                 show_popup(node);
-            }
+            // }
         })
         .onNodeRightClick(function(node) {
             node_current = node;
@@ -642,13 +745,6 @@ $(document).ready (async function() {
             return;
         }
         if (auth_data && node_current.uuid && auth_data.user_uuid != node_current.uuid) {
-            const auth_user_id =
-                // TODO. К 10.01.24, когда все поймают новую куку, auth_data.user_id будет всегда и
-                //       'auth_user_id' in data не будет нужен как здесь, так и в апи
-                ('user_id' in auth_data) && auth_data.user_id ||
-                ('auth_user_id' in data) && data.auth_user_id ||
-                null;
-            if (!auth_user_id) return;
             graph_container.style.cursor = 'wait';
             const api_response = await api_request(
                 api_url + '/api/addoperation', {
@@ -668,7 +764,7 @@ $(document).ready (async function() {
                     const link = data.links[i];
                     const source_id = ((typeof link.source) === 'object') ? link.source.id : link.source;
                     const target_id = ((typeof link.target) === 'object') ? link.target.id : link.target;
-                    if (source_id != auth_user_id || target_id != node_current.id) continue;
+                    if (source_id != auth_data.user_id || target_id != node_current.id) continue;
                     if (operation == 'trust_and_thank') {
                         link.thanks_count = api_response.data.currentstate.thanks_count;
                         link.is_trust = true;
@@ -684,7 +780,7 @@ $(document).ready (async function() {
                     // не найден link
                     // учет nullify_trust здесь: fool-proof
                     data.links.push({
-                        source: auth_user_id,
+                        source: auth_data.user_id,
                         target: node_current.id,
                         is_trust: !(operation == 'mistrust'),
                     });
@@ -738,6 +834,181 @@ $(document).ready (async function() {
                 `${url_path()}?${parm_user_uuid_genesis_name}=${node_current.uuid}` +
                 '&up=on&down=on&depth=2';
         }
+    });
+
+    document.querySelector(".btn--parents").addEventListener("click", function() {
+        if (is_double_clicked()) return;
+        menu_wrapper.classList.remove("menu-wrapper--active");
+        const node = node_current;
+        if (node.parents.father && node.parents.mother) return;
+        $('#id_caption_relative_m').html('Папа');
+        $('#id_caption_relative_f').html('Мама');
+        let whom = 'родитель';
+        if (node.parents.father && !node.parents.mother) {
+            whom = 'мама';
+            $('#id_p_relative_m').css("display", "none");
+            $('#id_p_relative_f').css("display", "block");
+            $("input:radio[name=parent_gender][value='f']").prop('checked',true);
+        } else if (!node.parents.father && node.parents.mother) {
+            whom = 'папа';
+            $('#id_p_relative_f').css("display", "none");
+            $('#id_p_relative_m').css("display", "block");
+            $("input:radio[name=parent_gender][value='m']").prop('checked',true);
+        } else /* if (!node.parents.father && !node.parents.mother) */{
+            $('#id_p_relative_f').css("display", "block");
+            $('#id_p_relative_m').css("display", "block");
+            $("input:radio[name=parent_gender][value='m']").prop('checked',true);
+        }
+        $('#id_form_parent_caption').html(
+            `Создать <big style="color:red;">новый</big> профиль: ${whom} для <span style="color:blue;">${node.first_name_orig}<span/>`
+        );
+        $('input[name=parent_name]').val('');
+        $('input[name=parent_what]').val('parent');
+        $("#id_form_parent_btn_ok").attr('disabled', true);
+        $('#id_form_parent_wrap').css("display", "block");
+    });
+
+    document.querySelector(".btn--child").addEventListener("click", function() {
+        if (is_double_clicked()) return;
+        menu_wrapper.classList.remove("menu-wrapper--active");
+        const node = node_current;
+        $('#id_caption_relative_m').html('Сын');
+        $('#id_caption_relative_f').html('Дочь');
+        $('#id_p_relative_m').css("display", "block");
+        $('#id_p_relative_f').css("display", "block");
+        $("input:radio[name=parent_gender][value='m']").prop('checked',true);
+        $('#id_form_parent_caption').html(
+            `Создать <big style="color:red;">новый</big> профиль: сын или дочь для <span style="color:blue;">${node.first_name_orig}<span/>`
+        );
+        $('input[name=parent_name]').val('');
+        $('input[name=parent_what]').val('child');
+        $("#id_form_parent_btn_ok").attr('disabled', true);
+        $('#id_form_parent_wrap').css("display", "block");
+    });
+
+    document.querySelector(".btn--brosis").addEventListener("click", function() {
+        if (is_double_clicked()) return;
+        menu_wrapper.classList.remove("menu-wrapper--active");
+        const node = node_current;
+        if (!('parents' in node)) return;
+        $('#id_caption_relative_m').html('Брат');
+        $('#id_caption_relative_f').html('Сестра');
+        if (!node.parents.father && !node.parents.mother) return;
+        $('#id_p_relative_f').css("display", "block");
+        $('#id_p_relative_m').css("display", "block");
+        $("input:radio[name=parent_gender][value='m']").prop('checked',true);
+        $('#id_form_parent_caption').html(
+            `Создать <big style="color:red;">новый</big> профиль: Брат или сестра для <span style="color:blue;">${node.first_name_orig}<span/>`
+        );
+        $('input[name=parent_name]').val('');
+        $('input[name=parent_what]').val('brosis');
+        $("#id_form_parent_btn_ok").attr('disabled', true);
+        $('#id_form_parent_wrap').css("display", "block");
+    });
+
+    $('.f-modal-close').click(function() {
+        $('#id_form_parent_wrap').css("display", "none");
+    });
+
+    $('#id_form_parent_btn_cancel').click(function() {
+        $('#id_form_parent_wrap').css("display", "none");
+    });
+
+
+    $('#id_form_parent_btn_ok').click(async function() {
+        if (!auth_data) return;
+        const node = node_current;
+        const first_name = $('input[name=parent_name]').val().trim();
+        if (first_name.length < 5) return;
+        const what =  $('input[name=parent_what]').val();
+        const gender =  $('input[name=parent_gender]:checked').val();
+
+        let link_id = node.id;
+        let link_relation;
+        if  (what == 'parent' && gender == 'm') {
+            link_relation = 'new_is_father';
+        } else if (what == 'parent' && gender == 'f') {
+            link_relation = 'new_is_mother';
+        } else if (what == 'child' && !node.gender) {
+            alert(`${node.first_name}: Не задан пол!`);
+            return;
+        } else if (what == 'child' && node.gender == 'm') {
+            link_relation = 'link_is_father';
+        } else if (what == 'child' && node.gender == 'f') {
+            link_relation = 'link_is_mother';
+        } else if (what == 'brosis') {
+            if (node.parents.father && node.parents.mother) {
+                link_id = node.parents.father;
+                link_relation = 'link_is_father';
+                // маму потОм!
+            } else if (!node.parents.father && node.parents.mother) {
+                link_id = node.parents.mother;
+                link_relation = 'link_is_mother';
+            }  else if (node.parents.father && !node.parents.mother) {
+                link_id = node.parents.father;
+                link_relation = 'link_is_father';
+            }
+        }
+        if (!link_relation) {
+            alert("Ошибка! Какой-то вариант родственной связи не учтён. Ивините.");
+            return;
+        }
+        for (const id in nodes_by_id) {
+            if (nodes_by_id[id].first_name_orig.toLowerCase() == first_name.toLowerCase()) {
+                alert("Есть уже человек с таким ФИО в родственном дереве. Вы наверняка ошиблись!");
+                return;
+            }
+        }
+        graph_container.style.cursor = 'wait';
+        const url = new URL(api_url + '/api/profile');
+        url.searchParams.set('uuid_owner', auth_data.user_uuid);
+        url.searchParams.set('name_iexact', first_name);
+        let api_response = await api_request(url, {auth_token: auth_data.auth_token});
+        if (api_response.ok  && api_response.data.length) {
+            graph_container.style.cursor = null;
+            alert("Есть уже человек с таким ФИО среди Ваших собственных профилей. Вы наверняка ошиблись!");
+            return;
+        }
+        api_response = await api_request(api_url + '/api/profile/', {
+            method: 'POST',
+            auth_token: auth_data.auth_token,
+            form_data: {
+                first_name: first_name,
+                link_relation: link_relation,
+                link_id: link_id,
+                gender: gender,
+        }});
+        if (api_alert(api_response)) {
+            graph_container.style.cursor = null;
+            return;
+        }
+        const new_relative_uuid = api_response.data.uuid;
+        if (what == 'brosis' && node.parents.father && node.parents.mother) {
+            api_response = await api_request(api_url + '/api/addoperation/', {
+                method: 'POST',
+                auth_token: auth_data.auth_token,
+                json: {
+                    operation_type_id: genesis_operations.set_mother.op,
+                    user_id_from: new_relative_uuid,
+                    user_id_to: node.parents.mother,
+            }});
+        }
+        if (api_alert(api_response, 'Ошибка. Профиль создан, задан его папа, а с мамой возникла проблема')) {
+            graph_container.style.cursor = null;
+            return;
+        }
+        graph_container.style.cursor = null;
+        $('#id_form_parent_wrap').css("display", "none");
+
+        // Идем на нового родственника. Если это брат, то надо не только прямое дерево
+        const up_down = (what == 'brosis') ? '' : 'on'
+        window.location.href =
+            `${url_path()}?${parm_user_uuid_genesis_name}=${new_relative_uuid}` +
+            `&up=${up_down}&down=${up_down}&depth=2`;
+    });
+
+    $('#id_parent_name').on('input', function() {
+        $("#id_form_parent_btn_ok").attr('disabled', $(this).val().trim().length < 5)
     });
 
     const api_response = await api_request(

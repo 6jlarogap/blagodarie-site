@@ -161,12 +161,26 @@ async function api_request(url, options={}) {
         }
     }
     const response = await fetch(url, options);
-    const data = response.status < 500 ? await response.json() : await response.text();
+    const data = response.status <= 400 ? await response.json() : await response.text();
     return {
         ok: response.ok,
         status: response.status,
         data: data
     };
+}
+
+function api_alert(api_response, message='Ошибка с данными') {
+    // Сообщение после неверного вызова
+    // возвращает false, если всё OK, иначе true
+    if (api_response.ok) return false;
+    let msg = message;
+    if (api_response.status == 400 && api_response.data.message) {
+        msg += `: ${api_response.data.message}`
+    } else {
+        console.log(`Ошибка API. Status = ${api_response.status}, Data: ${api_response.data}`);
+    }
+    alert(msg);
+    return true;
 }
 
 function modal_dialog_show(html_text) {

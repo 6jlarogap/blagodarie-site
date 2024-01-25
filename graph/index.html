@@ -40,6 +40,43 @@
     </div>
     <!-- Для авторизации страницы через телеграм бот: html (конец) -->
 
+    <!-- Для формы задания нового родственника -->
+    <div id="id_form_parent_wrap" class="f-modal">
+        <div class="f-modal-content">
+            <span class="f-modal-close">&times;</span>
+            <h3><span id="id_form_parent_caption"></span></h3>
+            <table width="100%" cellspacing="2" cellpadding="5">
+                <col width="70%" />
+                <col width="5%" />
+                <col />
+                <tr>
+                    <td>
+                        <p>ФИО:<p/>
+                        <p><input type="text" id="id_parent_name" name="parent_name" style="width:100%;font-size:24px;"><p/>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <p id="id_p_relative_m"><input name="parent_gender" type="radio" value="m" id="id_relative_m" /> <span id="id_caption_relative_m">Father</span></p>
+                        <p id="id_p_relative_f"><input name="parent_gender" type="radio" value="f" id="id_relative_f" /> <span id="id_caption_relative_f">Mother</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p><input type="button" class="f-modal-button" id="id_form_parent_btn_ok" value="OK" /><p/>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <p><input type="button" class="f-modal-button" id="id_form_parent_btn_cancel" value="Отмена" /><p/>
+                    </td>
+                </tr>
+            </table>
+            <input type="hidden" name="parent_what" value="smth" />
+        </div>
+    </div>
+    <!-- Для формы задания нового родственника (конец) -->
+
     <!-- Меню с кнопками -->
     <div class="menu-wrapper">
         <div class="menu">
@@ -56,11 +93,20 @@
                 <button class="menu__btn btn--collapse  display--none"><span class="btn--collapse--caption">Свернуть/Развернуть</span></button>
                 <button class="menu__btn btn--goto-gen display--none">Перейти</button>
                 <button class="menu__btn btn--profile">Профиль</button>
+                <div class="add--relatives-br display--none">
+                    <br /><span style="font-size:24px;"><span class="his-her-span">Его (её)</span><big> <u>новый</u></big> родственник:</span><br /><br />
+                </div>
+                <button class="menu__btn btn--parents display--none"><span class="btn--parents--caption">Родители</span></button>
+                <button class="menu__btn btn--child display--none">Сын/Дочь</button>
+                <button class="menu__btn btn--brosis display--none">Брат/Сестра</button>
             </div>
             <div class="menu__close-wrap">
                 <div class="menu__close"></div>
             </div>
         </div>
     </div>
-    <!-- Меню с кнопками (конец) -->
+    <!-- Форма папа/мама/ребенок... -->
+    <div class="new-relative">
+    </div>
+    <!-- Форма папа/мама/ребенок... конец -->
 </body>

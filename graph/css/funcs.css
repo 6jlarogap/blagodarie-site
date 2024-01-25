@@ -3,7 +3,8 @@
 }
 
 /* The Modal (background) */
-.d-modal {
+.d-modal,
+.f-modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -17,21 +18,24 @@
 }
 
 /* Authorization Content/Box */
-.d-modal-content {
+.d-modal-content,
+.f-modal-content {
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
-  font-size: 20px;
+  font-size: 24px;
 }
 
-.d-modal-button {
-  font-size: 20px;
+.d-modal-button,
+.f-modal-button {
+  font-size: 24px;
   cursor: pointer;
 }
 /* The Close Button */
-.d-modal-close {
+.d-modal-close,
+.f-modal-close {
   color: #aaa;
   float: right;
   font-size: 28px;
@@ -39,12 +43,14 @@
 }
 
 .d-modal-close:hover,
-.d-modal-close:focus {
+.d-modal-close:focus,
+.f-modal-close:hover,
+.f-modal-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
-/* End of Authorization Content/Box */
+/* End of Authorization & Form Dialog Content/Box */
 
 .menu {
   padding: 40px 60px;
