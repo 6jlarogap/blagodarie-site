@@ -1047,6 +1047,12 @@ $(document).ready (async function() {
             Graph(graph_container).graphData(get_pruned_tree());
         } else {
             Graph(graph_container).graphData(data);
+            if (
+                parm_user_uuid_trusts && auth_data && data.root_node &&
+                data.root_node.id != auth_data.user_id
+               ) {
+                show_popup(data.root_node);
+            }
         }
     }
 });

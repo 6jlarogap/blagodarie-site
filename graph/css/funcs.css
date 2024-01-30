@@ -69,9 +69,25 @@
   cursor: pointer;
 }
 
-.menu__btn:hover {
+.menu__btn__trust {
+  color: black;
+  background-color: #04AA6D;
+  border: 2px solid #000;
+  font-size: 24px;
+  transition: .1s linear;
+  padding: 20px 30px;
+  cursor: pointer;
+}
+
+.menu__btn:hover,
+.menu__btn__trust:hover {
   background-color: #414141;
   color: #fff;
+}
+
+.menu__btn__trust:hover {
+  background-color: #04AA6D;
+  color: white;
 }
 
 .menu__close-wrap {
@@ -82,8 +98,8 @@
 }
 
 .menu__close {
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   position: relative;
 }
 
