@@ -563,11 +563,11 @@ $(document).ready (async function() {
                         btn_child.classList.remove("display--none");
                     }
                 }
-            } else if (parm_user_uuid_trusts) {
+            } else if (parm_user_uuid_trusts || is_blagoroda_host) {
                 const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
-                if (!auth_data && data.bot_username || auth_data && auth_data.user_uuid != node.uuid) {
+                if (auth_data && auth_data.user_uuid != node.uuid) {
                     btn_trust_wrap.classList.remove("display--none");
-                } else if (!btn_trust_wrap.classList.contains("display--none")) {
+                } else {
                     btn_trust_wrap.classList.add("display--none");
                 }
                 const btn_goto_trust_wrap = document.querySelector(".btn--goto-trust--wrap");
@@ -823,7 +823,7 @@ $(document).ready (async function() {
         if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
         if (node_current.uuid) {
-            window.location.href = `${url_path()}?${parm_user_uuid_trusts_name}=${node_current.uuid}`;
+            window.location.href = `${get_graph_url()}?${parm_user_uuid_trusts_name}=${node_current.uuid}`;
         }
     });
     document.querySelector(".btn--goto-gen").addEventListener("click", function() {
