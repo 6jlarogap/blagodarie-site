@@ -424,29 +424,35 @@ function initializeSimulation() {
   simulation.on("tick", ticked);
 }
 
-const ZOOM_MIN = 0.2;
-const ZOOM_MAX = 4;
+const ZOOM_MIN = 0.08;
+const ZOOM_MAX = 2;
 
 var zoom = d3.zoom().scaleExtent([ZOOM_MIN, ZOOM_MAX]);
 zoom.on('zoom', ({transform: {x, y, k}}) => svg.attr('transform', `translate(${x}, ${y}) scale(${k})`));
 
 function drag(simulation) {
-  function dragstarted(e, d) {
-    !e.active && simulation.alphaTarget(0.3).restart();
+	function dragstarted(e, d) {
+		!e.active && simulation.alphaTarget(0.3).restart();
+	}
+	
+	const dragged = ({x, y}, d) => { d.fx = x; d.fy = y; };
+	
+	var bstop = false
+	const dragended = ({}) => { 
+		if (bstop) { 
+			simulation.alphaTarget(1).restart()
+			bstop = false } 
+			else { 
+				simulation.stop() 
+				bstop = true } 
+	};
 
-    dragged(e, d);
-  }
-
-  const dragged = ({x, y}, d) => { d.fx = x; d.fy = y; };
-
-  const dragended = ({active}) => { !active && simulation.alphaTarget(0); };
-
-  let behavior = d3.drag();
-  behavior.on('start', dragstarted);
-  behavior.on('drag', dragged);
-  behavior.on('end', dragended);
-
-  return behavior;
+	let behavior = d3.drag();
+	behavior.on('start', dragstarted);
+	behavior.on('drag', dragged);
+	behavior.on('end', dragended);
+	
+	return behavior;
 }
 
 function initializeDisplay() {
