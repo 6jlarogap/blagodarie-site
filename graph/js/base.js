@@ -1,5 +1,5 @@
 //
-//  graph/main.js
+//  graph/js/base.js
 //
 
 // Доступ к странице может быть авторизован, см. funcs.js:check_auth()
@@ -82,12 +82,8 @@
 //
 
 
-import * as THREE from 'three';
-import SpriteText from 'three-spritetext';
-import ForceGraph3D from '3d-force-graph';
+$(document).ready (async function() {
 
-(async function() {
-// ----------    
     function get_blagoroda_host() {
 
         // Можно переопределить в local_settings.js,
@@ -1076,5 +1072,4 @@ import ForceGraph3D from '3d-force-graph';
             }
         }
     }
-// ----------    
-})();
+});

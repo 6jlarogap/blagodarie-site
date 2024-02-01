@@ -1,9 +1,13 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!DOCTYPE html>
+<head>
+    <style> body { margin: 0; } </style>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
+    <script type="text/javascript" src="https://unpkg.com/three@0.156.1"></script>
+    <script type="text/javascript" src="https://unpkg.com/3d-force-graph"></script>
+    <script type="text/javascript" src="https://unpkg.com/three-spritetext"></script>
+
     <!-- Для авторизации страницы через телеграм бот: js, css (начало) -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
     <link type="text/css" rel="stylesheet" href="css/funcs.css" />
@@ -14,16 +18,17 @@
     <script type="text/javascript" defer src="js/funcs.js"></script>
     <!-- Для авторизации страницы через телеграм бот: js, css (конец) -->
 
+    <script type="text/javascript" defer src="js/base.js"></script>
+
     <title>Благо Рода</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <style>
         .clickable { cursor: unset !important }
     </style>
-  </head>
-  <body>
-    <script type="module" src="/main.js"></script>
+</head>
 
+<body>
     <div id="3d-graph" style="margin: 0;width: 100%;height: 100%"></div>
 
     <!-- Для авторизации страницы через телеграм бот: html (начало) -->
@@ -104,7 +109,4 @@
     <div class="new-relative">
     </div>
     <!-- Форма папа/мама/ребенок... конец -->
-
-
-  </body>
-</html>
+</body>
