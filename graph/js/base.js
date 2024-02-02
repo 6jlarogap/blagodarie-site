@@ -205,27 +205,33 @@ $(document).ready (async function() {
     }
 
     function link_color(link, format) {
-        // blue
+        // blue, для прямого родства
         let color_relation = format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc';
         if (parm_user_uuid_genesis_tree) {
             const source = ((typeof link.source) === 'object') ? link.source : nodes_by_id[link.source];
             const target = ((typeof link.target) === 'object') ? link.target : nodes_by_id[link.target];
             if (!(source.up && target.up || source.down && target.down)) {
-                if (source.tree_links.length == 0 || target.tree_links.length == 0) {
+                // не прямое родство
+                // dark green
+                color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
+                // if (source.tree_links.length == 0 || target.tree_links.length == 0) {
+                    // ветвь в тупик
                     // dark red
-                    color_relation = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
-                } else {
+                    // color_relation = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
+                // } else {
+                    // дальше что-то есть
                     // dark green
-                    color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
-                }
+                    // color_relation = format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600';
+                // }
             }
+            return color_relation;
         }
         const color_poll = color_relation;
         const color_trust = format == 'rgba' ? 'rgba(54, 107, 13, 0.8)' : '#366b0d';
         const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
         if (link.is_poll || link.is_offer || link.is_video_vote) {
             return color_poll;
-        } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path || parm_user_uuid_genesis_tree)) {
+        } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path)) {
             return color_relation;
         } else if (link.is_trust) {
             return color_trust;
