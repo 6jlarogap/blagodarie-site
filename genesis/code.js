@@ -387,7 +387,7 @@ d3.json(apiUrl, d3_json_parms)
 			break;
 		}
 	});
-
+/*
 	if(width<900){
 		simulation = d3.forceSimulation(nodes);
 		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links)); //distance(150)
@@ -413,7 +413,15 @@ d3.json(apiUrl, d3_json_parms)
 		simulation.force("charge", d3.forceManyBody().strength(-800)) //.distanceMax(500))
 		simulation.force("collide", d3.forceCollide().strength(1).radius(300))//.iterations(1))
 	}
+*/
 
+	simulation = d3.forceSimulation(nodes);
+	simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.6));
+	simulation.force("charge", d3.forceManyBody().strength(-1450));
+	simulation.force("x", d3.forceX(width / 2));
+	simulation.force("y", d3.forceY(height / 2));
+
+		
 	initializeDisplay();
 	initializeSimulation();
 });
