@@ -376,13 +376,13 @@ $(document).ready (async function() {
     } else {
         window.location.assign(url_path() + '?f=0&q=25');
     }
-    const photoTextureMale = new THREE.TextureLoader().load(`./images/no-photo-gender-male.jpg`);
-    const photoTextureFemale = new THREE.TextureLoader().load(`./images/no-photo-gender-female.jpg`);
-    const photoTextureNone = new THREE.TextureLoader().load(`./images/no-photo-gender-none.jpg`);
-
-    const photoTextureMaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-male-dead.jpg`);
-    const photoTextureFemaleDead = new THREE.TextureLoader().load(`./images/no-photo-gender-female-dead.jpg`);
-    const photoTextureNoneDead = new THREE.TextureLoader().load(`./images/no-photo-gender-none-dead.jpg`);
+    const api_images = `${api_url}/media/images`;
+    const photoTextureMale = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-male.jpg`);
+    const photoTextureFemale = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-female.jpg`);
+    const photoTextureNone = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-none.jpg`);
+    const photoTextureMaleDead = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-male-dead.jpg`);
+    const photoTextureFemaleDead = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-female-dead.jpg`);
+    const photoTextureNoneDead = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-none-dead.jpg`);
 
     function node_draw(node) {
         let photoTexture;
