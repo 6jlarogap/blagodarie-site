@@ -240,7 +240,7 @@ function no_photo (d) {
     } else if (d.is_dead && d.gender == 'f') {
         result = `no-photo-gender-female-dead.jpg`;
     }
-    result = './images/' + result;
+    result = `${settings.api}/media/images/${result}`;
     return result;
 }
 
