@@ -4,21 +4,12 @@
 
 // Доступ к странице может быть авторизован, см. funcs.js:check_auth()
 //
-// Возможные параметры (?параметр1&параметр2 ...), по группам параметров,
-// в порядке их рассмотрения:
-//
-//  запрос к сайту BLAGORODA_HOST
-//      показать страницу пользователей с их родственными и сязями доверия.
-//      Порядок выборки пользователей: начиная с последнего присоединившегося
-//      к сообществу.
-//      Параметры такой страницы:
-//          f           (from). Начало выборки, по умолчанию 0
-//          q           (quantity). Сколько выбирать на странице, по умолчанию 25.
+// Возможные параметры (?параметр1=...&параметр2= ...), в порядке их рассмотрения
+// (если задан параметр выше, то идущие ниже вслед за ним игнорируются):
 //
 //  tg_group_chat_id    ид группы/канала в телеграме, показ связей доверия участников группы.
 //
-//  user_uuid_genesis_tree
-//                      uuid
+//  user_uuid_genesis_tree=<uuid>
 //                      Дерево родства
 //                  При этом возможны параметры:
 //      depth           начальная глубина глубина поиска по рекурсии родства от user с uuid,
@@ -27,74 +18,56 @@
 //                          без вяких ответвлений на дядей, двоюродных бабушек и т.п.
 //      down            поиск только к потомкам,
 //                          без вяких ответвлений на племянников, внучатых племянниц и т.п.
-//                      По щелчку на родственников будут разворачиваться новые узлы
+//                      По щелчку на родственников из меню можно разворачиваться новые узлы
 //                      вне начальной глубины или идущие от линии прямого родства боковые
 //                      связи (мама сына при движении вниз по прямому родству /down/,
 //                      брат при движении вверх /up/).
 //                      При любых up/down линия прямого родства выделяется другим цветом.
 //
-//  user_uuid_genesis_path
-//                      uuid1,uuid2
-//                      Путь родства между user с uuid1 и user c uuid2
-//                  При этом возможны параметры:
+//  user_uuid_genesis_path=<uuid1>,<uuid2>
+//                      Путь родства между user с <uuid1> и user c <uuid2>
+//                  При этом возможен параметр:
 //      depth           глубина поиска по рекурсии родства от user с uuid1 до user c uuid2
 //
-//  user_uuid_trust_path
-//                      uuid1,uuid2
+//  user_uuid_trust_path=<uuid1>,<uuid2>
 //                      Путь доверия между user с uuid1 и user c uuid2
-//      При этом возможен параметр:
-//              depth   глубина поиска по рекурсии доверия от user с uuid1 до user c uuid2
+//                  При этом возможен параметр:
+//      depth           глубина поиска по рекурсии доверия от user с uuid1 до user c uuid2
 //
-//  user_uuid_trusts    uuid пользователя
-//                      Все его (ее) связи доверия, а также связи доверия тех,
-//                      кто ему (ей) доверял или не доверял
+//  user_uuid_trusts=<uuid>
+//                      Все связи доверия от пользователя с <uuid>,
+//                      а также связи доверия тех, кто ему (ей) доверял или не доверял
 //
-//  offer_uuid          ид опроса- предложения (offer) в телеграме, показ ответов,
+//  offer_uuid=<ид опроса- предложения (offer) в телеграме>
 //                      Показ того, кто на что отвечал, связей доверия среди отвечавших
 //
-//  tg_poll_id          ид опроса телеграма, показ ответов,
+//  tg_poll_id=<ид опроса телеграма>
 //                      Показ того, кто на что отвечал, связей доверия среди отвечавших
 //
-//  videoid             Ид видео.
+//  videoid=<Ид видео>
 //                      Показ того, кто какие лайки ставил на видео
-//      Параметр такой страницы:
-//  source              Источник видео, по умолчанию 'yt' (Youtube)
-//      При этом возможны еще параметры:
-//              f:  с такой секунды видео начинать
-//              t:  по какую секунду видео показывать
+//                  Еще параметр такой страницы:
+//      source          Источник видео, по умолчанию 'yt' (Youtube)
+//                  При этом возможны еще параметры:
+//      f:              с такой секунды видео начинать
+//      t:              по какую секунду видео показывать
 //
+//  rod=<не_пусто> или dover=<не_пусто>
+//                      показ всех родственных связей и/или связей доверия
+//      rod=<не_пусто>          показ родственных связей, от родителя к потомку
+//      dover=<не_пусто>        показ связей доверия
+//      withalone=<не_пусто>    показ людей, у которых нет родственных связей (если задан rod)
+//                              и/или нет связей доверия (если задан dover)
+//                  Параметры такой страницы:
+//      f               (from). Начало выборки, по умолчанию 0
+//      q               (quantity). Сколько выбирать на странице, по умолчанию всё после f.
 //
-//  Если не задан ни один из перечисленных выше параметров, в том числе в url нет параметров,
-//  то это соответствует вызову с /?rod=on&dover=&withalone=
+//  Если не задан ни один из перечисленных выше параметров,
+//  в том числе если в url нет параметров, то это соответствует вызову с
+//      ?rod=on&dover=&withalone=&f=0&q=25
 //
-//  rod, dover, withalone
-//      показ всех родственных связей и связей доверия
-//          rod         (что-то не пустое)
-//                      показ родственных связей, от родителя к потомку
-//          dover       (что-то не пустое)
-//                      показ связей доверия
-//          withalone   (что-то не пустое)
-//                      показ людей, у которых нет родственных связей (если задан rod) и/или
-//                      нет связей доверия (если задан dover)
-//      Параметры такой страницы:
-//          f           (from). Начало выборки, по умолчанию 0
-//          q           (quantity). Сколько выбирать на странице, по умолчанию всё после f.
-//
-
 
 $(document).ready (async function() {
-
-    function get_blagoroda_host() {
-
-        // Можно переопределить в local_settings.js,
-        // который стоит раньше других js скриптов в .html
-
-        if (typeof BLAGORODA_HOST === 'undefined') {
-            return 'blagoroda.org';
-        } else {
-            return BLAGORODA_HOST;
-        }
-    }
 
     const c_nfa = ' ';
     const c_collapsed = '+';
@@ -247,7 +220,6 @@ $(document).ready (async function() {
     let nodes_by_id = false;
     let root_node = false;
 
-    const is_blagoroda_host = get_blagoroda_host() == window.location.host;
     let parm_tg_group_chat_id = parseInt(get_parm('tg_group_chat_id'));
     const parm_f = parseInt(get_parm('f'));
     const parm_q = parseInt(get_parm('q'));
@@ -270,27 +242,6 @@ $(document).ready (async function() {
     let parm_source = '';
     if (parm_videoid) parm_source = get_parm('source') || 'yt';
 
-    if (
-        !window.location.href.match(/\?/) ||
-        window.location.href.match(/\?$/) ||
-        is_blagoroda_host && (isNaN(parm_f) || isNaN(parm_q) || parm_f < 0 || parm_q <= 0) ||
-        !is_blagoroda_host &&
-            !parm_tg_group_chat_id &&
-            !parm_user_uuid_genesis_tree &&
-            !parm_user_uuid_genesis_path &&
-            !parm_user_uuid_trust_path &&
-            !parm_tg_poll_id &&
-            !parm_offer_uuid &&
-            !parm_user_uuid_trusts &&
-            !parm_videoid &&
-            !parm_rod && !parm_dover
-       ) {
-        window.location.assign(
-            window.location.protocol + '//' +
-            window.location.host +
-            window.location.pathname + (is_blagoroda_host ? '?f=0&q=25' : '?rod=on&dover=&withalone='));
-    }
-
     const r_uuid = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i;
     const r_uuid1_uuid2 = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}\,[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i;
     let parm_depth = '';
@@ -305,7 +256,6 @@ $(document).ready (async function() {
             parm_user_uuid_genesis_tree = '';
         }
     }
-
     if (parm_user_uuid_genesis_path) {
         if (r_uuid1_uuid2.test(parm_user_uuid_genesis_path)) {
             parm_depth = get_parm('depth') || '';
@@ -313,7 +263,6 @@ $(document).ready (async function() {
             parm_user_uuid_genesis_path = '';
         }
     }
-
     if (parm_user_uuid_trust_path) {
         if (r_uuid1_uuid2.test(parm_user_uuid_trust_path)) {
             parm_depth = get_parm('depth') || '';
@@ -324,27 +273,7 @@ $(document).ready (async function() {
 
     const api_url = get_api_url();
     let api_get_parms;
-    if (is_blagoroda_host) {
-        parm_rod = 'on';
-        parm_dover = 'on';
-        parm_withalone = 'on';
-        api_get_parms =
-            '/api/profile_genesis/all?fmt=3d-force-graph' +
-            '&withalone=' + parm_withalone +
-            '&dover=' + parm_dover +
-            '&rod=' + parm_rod +
-            '&from=' + parm_f +
-            '&number=' + parm_q
-        ;
-        parm_tg_group_chat_id = '';
-        parm_user_uuid_genesis_tree = '';
-        parm_user_uuid_genesis_path = '';
-        parm_user_uuid_trust_path = '';
-        parm_user_uuid_trusts = '';
-        parm_offer_uuid = '';
-        parm_tg_poll_id = '';
-        parm_videoid = '';
-    } else if (parm_tg_group_chat_id) {
+    if (parm_tg_group_chat_id) {
         api_get_parms =
             '/api/getstats/user_connections_graph?fmt=3d-force-graph' +
             '&number=0' +
@@ -356,6 +285,7 @@ $(document).ready (async function() {
         parm_offer_uuid = '';
         parm_tg_poll_id = '';
         parm_videoid = '';
+        parm_rod = ''; parm_dover = '';
     } else if (parm_user_uuid_genesis_tree) {
         api_get_parms =
             '/api/profile_genesis?uuid=' + parm_user_uuid_genesis_tree +
@@ -364,65 +294,50 @@ $(document).ready (async function() {
             '&up=' + parm_up +
             '&down=' + parm_down + '&new=on'
         ;
-        parm_tg_group_chat_id = '';
         parm_user_uuid_genesis_path = '';
         parm_user_uuid_trust_path = '';
         parm_user_uuid_trusts = '';
         parm_offer_uuid = '';
         parm_tg_poll_id = '';
         parm_videoid = '';
+        parm_rod = ''; parm_dover = '';
     } else if (parm_user_uuid_genesis_path) {
         document.title = 'Благо Рода: путь родства';
         api_get_parms =
             '/api/profile_genesis?uuid=' + parm_user_uuid_genesis_path + '&fmt=3d-force-graph&depth=' + parm_depth;
-        parm_tg_group_chat_id = '';
-        parm_user_uuid_genesis_tree = '';
         parm_user_uuid_trust_path = '';
         parm_user_uuid_trusts = '';
         parm_offer_uuid = '';
         parm_tg_poll_id = '';
         parm_videoid = '';
+        parm_rod = ''; parm_dover = '';
     } else if (parm_user_uuid_trust_path) {
         document.title = 'Благо Рода: путь доверий';
         api_get_parms =
             '/api/profile_trust?uuid=' + parm_user_uuid_trust_path + '&fmt=3d-force-graph&depth=' + parm_depth;
-        parm_tg_group_chat_id = '';
-        parm_user_uuid_genesis_tree = '';
-        parm_user_uuid_genesis_path = '';
         parm_user_uuid_trusts = '';
         parm_offer_uuid = '';
         parm_tg_poll_id = '';
         parm_videoid = '';
+        parm_rod = ''; parm_dover = '';
     } else if (parm_user_uuid_trusts) {
         api_get_parms =
             '/api/profile_graph?fmt=3d-force-graph&uuid=' + parm_user_uuid_trusts;
-        parm_tg_group_chat_id = '';
-        parm_user_uuid_genesis_tree = '';
-        parm_user_uuid_genesis_path = '';
-        parm_user_uuid_trust_path = '';
         parm_offer_uuid = '';
         parm_tg_poll_id = '';
         parm_videoid = '';
+        parm_rod = ''; parm_dover = '';
     } else if (parm_offer_uuid) {
         api_get_parms =
             '/api/offer/results/?offer_uuid=' + parm_offer_uuid;
-        parm_tg_group_chat_id = '';
-        parm_user_uuid_genesis_tree = '';
-        parm_user_uuid_genesis_path = '';
-        parm_user_uuid_trust_path = '';
-        parm_user_uuid_trusts = '';
         parm_tg_poll_id = '';
         parm_videoid = '';
+        parm_rod = ''; parm_dover = '';
     } else if (parm_tg_poll_id) {
         api_get_parms =
             '/api/bot/poll/results/?tg_poll_id=' + parm_tg_poll_id;
-        parm_tg_group_chat_id = '';
-        parm_user_uuid_genesis_tree = '';
-        parm_user_uuid_genesis_path = '';
-        parm_user_uuid_trust_path = '';
-        parm_user_uuid_trusts = '';
-        parm_offer_uuid = '';
         parm_videoid = '';
+        parm_rod = ''; parm_dover = '';
     } else if (parm_videoid) {
         api_get_parms =
             '/api/wote/vote/graph/' +
@@ -435,25 +350,31 @@ $(document).ready (async function() {
         if (!isNaN(parm_to)) {
             api_get_parms += '&to=' + parm_to;
         }
-        parm_tg_group_chat_id = '';
-        parm_user_uuid_genesis_tree = '';
-        parm_user_uuid_genesis_path = '';
-        parm_user_uuid_trust_path = '';
-        parm_user_uuid_trusts = '';
-        parm_offer_uuid = '';
-        parm_tg_poll_id = '';
-    } else {
+        parm_rod = ''; parm_dover = '';
+    } else if (parm_rod || parm_dover) {
         api_get_parms =
             '/api/profile_genesis/all?fmt=3d-force-graph' +
-            '&withalone=' + parm_withalone +
             '&dover=' + parm_dover +
-            '&rod=' + parm_rod;
+            '&rod=' + parm_rod +
+            '&withalone=' + parm_withalone;
         if (!isNaN(parm_f)) {
             api_get_parms += '&from=' + parm_f;
         }
         if (!isNaN(parm_q)) {
             api_get_parms += '&number=' + parm_q;
         }
+    } else if (!isNaN(parm_q)) {
+        api_get_parms =
+            '/api/profile_genesis/all?fmt=3d-force-graph' +
+            '&rod=on&dover=' +
+            '&withalone=' + parm_withalone;
+        if (!isNaN(parm_f)) {
+            api_get_parms += '&from=' + parm_f;
+        }
+        api_get_parms += '&number=' + parm_q;
+        parm_rod = 'on';
+    } else {
+        window.location.assign(url_path() + '?f=0&q=25');
     }
     const photoTextureMale = new THREE.TextureLoader().load(`./images/no-photo-gender-male.jpg`);
     const photoTextureFemale = new THREE.TextureLoader().load(`./images/no-photo-gender-female.jpg`);
@@ -569,7 +490,7 @@ $(document).ready (async function() {
                         btn_child.classList.remove("display--none");
                     }
                 }
-            } else if (parm_user_uuid_trusts || is_blagoroda_host) {
+            } else if (parm_user_uuid_trusts || parm_rod || parm_dover) {
                 const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
                 if (auth_data && auth_data.user_uuid != node.uuid) {
                     btn_trust_wrap.classList.remove("display--none");
@@ -829,7 +750,7 @@ $(document).ready (async function() {
         if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
         if (node_current.uuid) {
-            window.location.href = `${get_graph_url()}?${parm_user_uuid_trusts_name}=${node_current.uuid}`;
+            window.location.href = `${url_path()}?${parm_user_uuid_trusts_name}=${node_current.uuid}`;
         }
     });
     document.querySelector(".btn--goto-gen").addEventListener("click", function() {
