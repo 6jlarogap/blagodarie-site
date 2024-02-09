@@ -453,6 +453,8 @@ $(document).ready (async function() {
     }
 
     function show_popup(node) {
+        const menu__btns = document.querySelector(".menu__btns");
+        menu__btns.classList.remove('text-align--center');
         node_current = node;
         if (node.uuid) {
             menu__title_span.textContent =
@@ -510,14 +512,27 @@ $(document).ready (async function() {
                     }
                 }
             } else if (parm_user_uuid_trusts || parm_dover) {
+                menu__btns.classList.add('text-align--center');
+                const buttons = ['#id_btn_trust_goto', '#id_btn_profile'];
                 const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
                 if (auth_data && auth_data.user_uuid != node.uuid) {
                     btn_trust_wrap.classList.remove("display--none");
+                    buttons.push('#id_btn_trust');
                 } else {
                     btn_trust_wrap.classList.add("display--none");
                 }
                 const btn_goto_trust_wrap = document.querySelector(".btn--goto-trust--wrap");
                 btn_goto_trust_wrap.classList.remove("display--none");
+                let max_width = 0;
+                for (const id of buttons) {
+                    let width = $(id).css('width');
+                    width = parseFloat(width.replace('px', ''));
+                    if (isNaN(width)) { max_width = 0; break}
+                    if (width > max_width) max_width = width;
+                }
+                if (max_width) {
+                    for (const id of buttons) $(id).css('width', max_width);
+                }
             }
         }
     }
