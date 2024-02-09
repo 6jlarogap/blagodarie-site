@@ -509,7 +509,7 @@ $(document).ready (async function() {
                         btn_child.classList.remove("display--none");
                     }
                 }
-            } else if (parm_user_uuid_trusts || parm_rod || parm_dover) {
+            } else if (parm_user_uuid_trusts || parm_dover) {
                 const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
                 if (auth_data && auth_data.user_uuid != node.uuid) {
                     btn_trust_wrap.classList.remove("display--none");
