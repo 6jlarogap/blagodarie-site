@@ -12,7 +12,7 @@ var API_URL, ROOT_DOMAIN, GRAPH_URL, MAP_URL;
 // Могут быть переопределены в local_settings.js или где-то еще
 //
 const get_api_url = () => API_URL || 'https://api.blagoroda.org';
-const get_graph_url = () => GRAPH_URL || 'https://graph.blagoroda.org';
+const get_graph_url = () => GRAPH_URL || 'https://blagoroda.org';
 const get_map_url = () => MAP_URL || 'https://map.blagoroda.org';
 
 function get_root_domain() {
