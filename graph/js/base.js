@@ -54,17 +54,21 @@
 //
 //  rod=<не_пусто> или dover=<не_пусто>
 //                      показ всех родственных связей и/или связей доверия
-//      rod=<не_пусто>          показ родственных связей, от родителя к потомку
-//      dover=<не_пусто>        показ связей доверия
-//      withalone=<не_пусто>    показ людей, у которых нет родственных связей (если задан rod)
+//      rod=<(не)пусто>          показ родственных связей, от родителя к потомку
+//      dover=<(не)пусто>        показ связей доверия
+//      withalone=<(не)пусто>    показ людей, у которых нет родственных связей (если задан rod)
 //                              и/или нет связей доверия (если задан dover)
+//                              Параметр действует, если не указаны ни q, ни f, т.е
+//                              при просмотре всех! Тогда можно выбрать, показывать ли всех
+//                              только со связями (withalone= или отсутствует withalone)
+//                              или вообще всех (withalone=on).
 //                  Параметры такой страницы:
 //      f               (from). Начало выборки, по умолчанию 0
 //      q               (quantity). Сколько выбирать на странице, по умолчанию всё после f.
 //
 //  Если не задан ни один из перечисленных выше параметров,
 //  в том числе если в url нет параметров, то это соответствует вызову с
-//      ?rod=on&dover=&withalone=&f=0&q=25
+//      ?rod=on&dover=on&withalone=on&f=0&q=25
 //
 
 $(document).ready (async function() {
@@ -82,6 +86,7 @@ $(document).ready (async function() {
         set_father: { op:  9},
         set_mother: { op: 10}
     }
+    const paginate_users_count = 25;
 
     function expand_collapse_sign (node) {
         let result;
@@ -221,8 +226,8 @@ $(document).ready (async function() {
     let root_node = false;
 
     let parm_tg_group_chat_id = parseInt(get_parm('tg_group_chat_id'));
-    const parm_f = parseInt(get_parm('f'));
-    const parm_q = parseInt(get_parm('q'));
+    let parm_f = parseInt(get_parm('f'));
+    let parm_q = parseInt(get_parm('q'));
 
     let parm_rod = get_parm('rod') || '';
     let parm_dover=get_parm('dover') || '';;
@@ -358,23 +363,37 @@ $(document).ready (async function() {
             '&rod=' + parm_rod +
             '&withalone=' + parm_withalone;
         if (!isNaN(parm_f)) {
+            if (parm_f < 0) parm_f = Math.abs(parm_f);
             api_get_parms += '&from=' + parm_f;
         }
         if (!isNaN(parm_q)) {
+            if (parm_q < 0) parm_q = Math.abs(parm_q);
             api_get_parms += '&number=' + parm_q;
         }
-    } else if (!isNaN(parm_q)) {
+    } else if (!isNaN(parm_f) || !isNaN(parm_q)) {
+        parm_rod = 'on';
+        parm_dover = 'on';
+        parm_withalone = 'on';
         api_get_parms =
             '/api/profile_genesis/all?fmt=3d-force-graph' +
-            '&rod=on&dover=' +
+            '&dover=' + parm_dover +
+            '&rod=' + parm_rod +
             '&withalone=' + parm_withalone;
         if (!isNaN(parm_f)) {
-            api_get_parms += '&from=' + parm_f;
+            if (parm_f < 0) parm_f = Math.abs(parm_f);
+        } else {
+            parm_f = 0;
+        }
+        api_get_parms += '&from=' + parm_f;
+        if (!isNaN(parm_q)) {
+            if (parm_q < 0) parm_q = Math.abs(parm_q);
+        } else {
+            parm_q = paginate_users_count;
         }
         api_get_parms += '&number=' + parm_q;
-        parm_rod = 'on';
     } else {
-        window.location.assign(url_path() + '?f=0&q=25');
+        window.location.assign(url_path() + '?f=0&q=' + paginate_users_count);
+        return;
     }
     const api_images = `${api_url}/media/images`;
     const photoTextureMale = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-male.jpg`);
