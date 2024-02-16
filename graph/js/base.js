@@ -984,16 +984,16 @@ $(document).ready (async function() {
         }
         if (parm_tg_group_chat_id && data.tg_group) {
             document.title =
-                'Благо Рода, доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') + ': ' +
-                data.tg_group.title;
+                'Доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') + ': ' +
+                data.tg_group.title + ', благо Рода';
         } else if (parm_user_uuid_genesis_tree && data.root_node) {
-            document.title = 'Благо Рода, родство: ' + data.root_node.first_name;
+            document.title = `${data.root_node.first_name}, родство, благо Рода`;
         } else if (parm_user_uuid_trusts && data.root_node) {
-            document.title = 'Благо Рода, ближайшие доверия: ' + data.root_node.first_name;
+            document.title = `${data.root_node.first_name}, доверия, благо Рода`;
         } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
-            document.title = 'Благо Рода, опрос: ' + data.question;
+            document.title = 'Опрос: ' + data.question + ', благо Рода';
         } else if (parm_videoid && data.title) {
-            document.title = 'Благо Рода, голоса по видео: ' + data.title;
+            document.title = 'Голоса по видео: ' + data.title + ', благо Рода';
         }
         if (parm_user_uuid_genesis_tree) {
             // if (!parm_up && !parm_down) {
