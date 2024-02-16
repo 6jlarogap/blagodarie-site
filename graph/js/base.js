@@ -515,7 +515,7 @@ $(document).ready (async function() {
                 menu__btns.classList.add('text-align--center');
                 const buttons = ['#id_btn_trust_goto', '#id_btn_profile'];
                 const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
-                if (auth_data && auth_data.user_uuid != node.uuid) {
+                if (!auth_data || auth_data && auth_data.user_uuid != node.uuid) {
                     btn_trust_wrap.classList.remove("display--none");
                     buttons.push('#id_btn_trust');
                 } else {
@@ -1009,8 +1009,8 @@ $(document).ready (async function() {
         } else {
             Graph(graph_container).graphData(data);
             if (
-                parm_user_uuid_trusts && auth_data && data.root_node &&
-                data.root_node.uuid != auth_data.user_uuid
+                parm_user_uuid_trusts && data.root_node &&
+                (auth_data && data.root_node.uuid != auth_data.user_uuid || !auth_data)
                ) {
                 const node = data.root_node
                 /*
