@@ -511,9 +511,9 @@ $(document).ready (async function() {
                         btn_child.classList.remove("display--none");
                     }
                 }
-            } else if (parm_user_uuid_trusts || parm_dover) {
+            } else if (parm_user_uuid_trusts || parm_dover || parm_tg_group_chat_id) {
                 menu__btns.classList.add('text-align--center');
-                const buttons = ['#id_btn_trust_goto', '#id_btn_profile'];
+                const buttons = ['#id_btn_profile'];
                 const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
                 if (!auth_data || auth_data && auth_data.user_uuid != node.uuid) {
                     btn_trust_wrap.classList.remove("display--none");
@@ -522,7 +522,10 @@ $(document).ready (async function() {
                     btn_trust_wrap.classList.add("display--none");
                 }
                 const btn_goto_trust_wrap = document.querySelector(".btn--goto-trust--wrap");
-                btn_goto_trust_wrap.classList.remove("display--none");
+                if (parm_user_uuid_trusts || parm_dover) {
+                    btn_goto_trust_wrap.classList.remove("display--none");
+                    buttons.push('#id_btn_trust_goto');
+                }
                 let max_width = 0;
                 for (const id of buttons) {
                     let width = $(id).css('width');
@@ -984,8 +987,9 @@ $(document).ready (async function() {
         }
         if (parm_tg_group_chat_id && data.tg_group) {
             document.title =
-                'Доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') + ': ' +
-                data.tg_group.title + ', благо Рода';
+                data.tg_group.title + 
+                ': доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') +
+                ', благо Рода';
         } else if (parm_user_uuid_genesis_tree && data.root_node) {
             document.title = `${data.root_node.first_name}, родство, благо Рода`;
         } else if (parm_user_uuid_trusts && data.root_node) {
