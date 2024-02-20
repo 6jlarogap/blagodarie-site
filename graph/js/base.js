@@ -521,11 +521,8 @@ $(document).ready (async function() {
                 } else {
                     btn_trust_wrap.classList.add("display--none");
                 }
-                const btn_goto_trust_wrap = document.querySelector(".btn--goto-trust--wrap");
-                if (parm_user_uuid_trusts || parm_dover) {
-                    btn_goto_trust_wrap.classList.remove("display--none");
-                    buttons.push('#id_btn_trust_goto');
-                }
+                document.querySelector(".btn--goto-trust--wrap").classList.remove("display--none");
+                buttons.push('#id_btn_trust_goto');
                 let max_width = 0;
                 for (const id of buttons) {
                     let width = $(id).css('width');
