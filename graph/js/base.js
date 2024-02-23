@@ -8,6 +8,7 @@
 // (если задан параметр выше, то идущие ниже вслед за ним игнорируются):
 //
 //  tg_group_chat_id    ид группы/канала в телеграме, показ связей доверия участников группы.
+//  tgr
 //
 //  user_uuid_genesis_tree=<uuid>
 //                      Дерево родства
@@ -225,7 +226,7 @@ $(document).ready (async function() {
     let nodes_by_id = false;
     let root_node = false;
 
-    let parm_tg_group_chat_id = parseInt(get_parm('tg_group_chat_id'));
+    let parm_tg_group_chat_id = parseInt(get_parm('tg_group_chat_id') || get_parm('tgr'));
     let parm_f = parseInt(get_parm('f'));
     let parm_q = parseInt(get_parm('q'));
 
