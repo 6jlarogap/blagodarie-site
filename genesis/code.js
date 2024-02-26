@@ -594,10 +594,10 @@ function prepareSvg(id) {
 }
 
 // https://observablehq.com/@shan/save-high-resolution-png-with-imported-image
-const PNG_PRECISION = 4;
+const PNG_PRECISION = 5;
 
 const PNG_PRECISION_LIMITS = Object.freeze({
-    MIN: 1,
+    MIN: 2,
     MAX: 8
 });
 
@@ -617,8 +617,10 @@ function context2d(w, h, dpi) {
     return context;
 }
 
-function makePngBlob(precision, callback, saveAspectRatio=true) {
-    let pngBlob = {};
+function makePngBlob(callback, precision, saveAspectRatio=true) {
+    let pngBlob = {}; precision ||= 1;
+
+    const { width, height } = d3.select('g').node().getBBox();
 
     const outWidth = width * precision;
     const outHeight = saveAspectRatio ? outWidth : height * precision;
@@ -649,8 +651,10 @@ function makePngBlob(precision, callback, saveAspectRatio=true) {
     return pngBlob;
 }
 
+window.URL = window.URL || window.webkitURL;
+
 function download(object, format, callback) {
-    object = object instanceof Blob ? URL.createObjectURL(object) : object;
+    object = object instanceof Blob ? window.URL.createObjectURL(object) : object;
 
     const link = document.createElement('a');
     link.href = object;
@@ -659,16 +663,16 @@ function download(object, format, callback) {
     // some browser needs the anchor to be in the doc
     document.body.append(link);
 
-    link.click(); link.remove();
+    link.click();
 
     // in case the Blob uses a lot of memory
-    setTimeout(() => URL.revokeObjectURL(link.href), 7000);
+    setTimeout(() => { link.remove(); window.URL.revokeObjectURL(link.href); }, 7000);
 
     return callback && callback();
 }
 
 const EXPORTS = {
-    [EXPORT_FORMATS.PNG]: (cb) => makePngBlob(PNG_PRECISION, cb),
+    [EXPORT_FORMATS.PNG]: makePngBlob,
 };
 
 function makeBlob(format, callback) {
@@ -879,20 +883,8 @@ function initializeDisplay() {
                     return is_dead ? '' : `url(#clip-circle-${size})`;
         	});
 
-	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 5 : 10))
-		.attr('font-size', width < 900 ? 15 : 20)
-		.attr('class', ({nodeType}) => [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(nodeType) ? 'userName' : 'friendName')
-		.text(({tspan}) => tspan);
-
-	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width < 900 || d.nodeType == NODE_TYPES.PROFILE && width < 900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47))
-		.attr('font-size', ({nodeType}) => (width < 900 || nodeType == NODE_TYPES.FILTERED) ? 12 : 20)
-		.attr('class', ({nodeType}) => [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(nodeType) ? 'userNameShadow' : 'friendNameShadow')
-		.text(({text}) => text);
-
-	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width < 900 || d.nodeType == NODE_TYPES.PROFILE && width < 900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47))
+	node.append('text')
+		.attr('y', ({nodeType}) => nodeType == NODE_TYPES.USER && width < 900 || nodeType == NODE_TYPES.PROFILE && width < 900 ? 30 : nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.PROFILE ? 64: nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47)
 		.attr('font-size', ({nodeType}) => (width < 900 || nodeType == NODE_TYPES.FILTERED) ? 12 : 20)
 		.attr('class', ({nodeType}) => [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(nodeType) ? 'userName' : 'friendName')
 		.text(({text}) => text);

@@ -112,16 +112,10 @@ text{
 			y: -16px;
 		}
 
-		.userName, .friendName, .userNameShadow, .friendNameShadow {
+		.userName, .friendName {
 			text-anchor: middle;
 		}
  
-		.userNameShadow, .friendNameShadow {
-			fill: none;
-			stroke: white;
-			stroke-width: 1px;
-		}
-
 		.close_auth_icon{
 			color: #8b0000;
 			font-size: 21px;
