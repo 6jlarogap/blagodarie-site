@@ -1,4 +1,3 @@
-
 const NODE_TYPES = Object.freeze({
 	"USER":"user",
 	"FRIEND":"friend",
@@ -17,6 +16,7 @@ const NODE_TYPES = Object.freeze({
 	"MAPS": "maps"
 	//"PLUS": "plus"
 });
+
 const WISHES_ROOT_ID = "WISHES_ROOT";
 const ABILITIES_ROOT_ID = "ABILITIES_ROOT";
 const SHARE_ID = "SHARE_ROOT";
@@ -29,17 +29,20 @@ const GENESIS_ID = "GENESIS_ROOT";
 const MAPS_ID = "MAPS_ROOT";
 const INVITE_ID = "INVITE_ROOT";
 //const PLUS_ID = "PLUS_ROOT";
+
 const PROFILE = {
-	id: "",
-	text: "",
-	tabil: " ",
-	image: "",
-	count: "",
-	nodeType: NODE_TYPES.PROFILE
-}
+	id: '',
+	nodeType: NODE_TYPES.PROFILE,
+	image: '',
+        base64Url: '',
+	text: '',
+	tabil: ' ',
+	count: ''
+};
 
 var svg = d3.select('#main').attr('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
 svg.attr('preserveAspectRatio', 'xMidYMid meet').attr('pointer-events', 'all');
+svg.attr('baseProfile', 'full');
 
 var width = +svg.node().getBoundingClientRect().width;
 var height = +svg.node().getBoundingClientRect().height;
@@ -197,6 +200,7 @@ function getCookieObject(name) {
     let matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
+
     if (matches) {
         let value = decodeURIComponent(matches[1]);
         if (value.match(new RegExp(`^[\"\'\`].+[\"\'\`]$`))) {
@@ -210,108 +214,141 @@ function getCookieObject(name) {
             console.log(error);
         }
     }
+
     return result;
 }
+
 var auth_data_ = getCookieObject('auth_data');
 var auth_token_ = auth_data_ ? auth_data_.auth_token : '';
-var d3_json_parms = {};
+var d3_json_params = {};
+
 if (auth_token_) {
-    d3_json_parms = {
+    d3_json_params = {
         headers: new Headers({
-            'Authorization': 'Token ' + auth_token_
+            'Authorization': `Token ${auth_token_}`
         })
     };
 }
 //
 // --- let it authorize --
 
-function no_photo (d) {
-    let result = `no-photo-gender-none.jpg`;
-    if (!d.is_dead && !d.gender) {
-        // result = `no-photo-gender-none.jpg`;
-    } else if (!d.is_dead && d.gender == 'm') {
-        result = `no-photo-gender-male.jpg`;
-    } else if (!d.is_dead && d.gender == 'f') {
-        result = `no-photo-gender-female.jpg`;
-    } else if (d.is_dead && !d.gender) {
-        result = `no-photo-gender-none-dead.jpg`;
-    } else if (d.is_dead && d.gender == 'm') {
-        result = `no-photo-gender-male-dead.jpg`;
-    } else if (d.is_dead && d.gender == 'f') {
-        result = `no-photo-gender-female-dead.jpg`;
+function nodeType({uuid, is_in_page}) {
+    let nodeType = NODE_TYPES.USER;
+
+    if (all || chat_id && !is_in_page) {
+        nodeType = NODE_TYPES.FILTERED;
+    } else if (uuid !== userIdFrom) {
+        nodeType = NODE_TYPES.FRIEND;
     }
+
+    return nodeType;
+}
+
+function no_photo({gender, is_dead}) {
+    const leftPattern = 'no-photo-gender';
+
+    let sex = 'none';
+
+    switch (gender) {
+        case 'm':
+            sex = 'male';
+            break;
+        case 'f':
+            sex = 'female';
+            break;
+    }
+
+    let result = `${leftPattern}-${sex}${is_dead ? '-dead' : ''}.jpg`;
     result = `${settings.api}/media/images/${result}`;
+
     return result;
 }
 
-d3.json(apiUrl, d3_json_parms)
-	.then(async function(data) {
+const image = d => d.photo || no_photo(d);
 
-		//добавить пользователей в вершины
-	data.users.forEach(function(d){
-		if (!nodes.some(user => user.id == d.uuid)) {
+function cacheBase64Url(afunc) {
+    const cache = new Map();
 
-			var str = d.photo;
-			var extArray = str.split(".");
-			var ext = extArray[extArray.length - 1];
+    async function awrapper(url, callback) {
+        if (cache.has(url)) {
+            const cached = cache.get(url);
 
-			var replacement = "media";
-			var toReplace = "thumb";
-			var str1 = str.replace(replacement, toReplace);
+            return callback ? callback(cached) : cached;
+        }
 
-            var nd = NODE_TYPES.USER;
-            if (all || chat_id && !d.is_in_page) {
-                nd = NODE_TYPES.FILTERED;
-            } else if (d.uuid != userIdFrom) {
-                nd = NODE_TYPES.FRIEND;
-            }
-			nodes.push ({
-				id: d.uuid,
-				text: (d.first_name + " "),
-				image: d.photo == '' ? no_photo(d) : width<900 && d.photo.includes('media') ? str1+"/35x35~crop~12."+ext : width>900 && d.photo.includes('media') ? str1+"/64x64~crop~12."+ext : d.photo,
-				nodeType: nd,
-			   is_dead: d.is_dead,
-			});
+        const base64Url = await afunc(url, callback);
 
-		}
+        cache.set(url, base64Url);
+
+        return base64Url;
+    }
+
+    return awrapper;
+}
+
+const noPhotoBase64Url = cacheBase64Url(urlAsBase64);
+
+d3.json(apiUrl, d3_json_params)
+    .then(async (data) => {
+	//добавить пользователей в вершины
+        const filterUser = ({uuid}) => !nodes.some(({id}) => id === uuid);
+        const updateUrl = node => dataUrl => (node.base64Url = dataUrl);
+
+	data.users.filter(filterUser).forEach(d => {
+            const node = {
+                id: d.uuid,
+                nodeType: nodeType(d),
+                image: image(d),
+                base64Url: '',
+                text: `${d.first_name} `,
+                is_dead: d.is_dead
+            };
+
+            const base64UrlSetter = d.photo ? urlAsBase64 : noPhotoBase64Url;
+
+            base64UrlSetter(node.image, updateUrl(node));
+
+            nodes.push(node);
 	});
 
-	if(!window.location.href.includes('gen')){
-	let selected_val_num = +url.searchParams.get('q');
-	let but_next = document.querySelector('#btn_next');
+	if (!window.location.href.includes('gen')) {
+            let selected_val_num = +url.searchParams.get('q');
+            let but_next = document.querySelector('#btn_next');
 
-    // Если chat_id, то число юзеров на странице может быть больше,
-    // чем заказано участников группы в выпадающем списке.
-    // Сколько всего, есть в ответе от апи: data.participants_on_page
-    //
-    data_users_length = chat_id ? data.participants_on_page : data.users.length;
+            // Если chat_id, то число юзеров на странице может быть больше,
+            // чем заказано участников группы в выпадающем списке.
+            // Сколько всего, есть в ответе от апи: data.participants_on_page
 
-    if(data_users_length == selected_val_num){
-		but_next.style.background = '#8b0000';
-		but_next.style.cursor = 'pointer';
-		but_next.style.pointerEvents = 'all';
-	}
-	else if (data_users_length < selected_val_num){
-		but_next.style.background = '#aaa0a0';
-		but_next.style.cursor = 'context-menu';
-		but_next.style.pointerEvents = 'none';
-	}
-	}
+            data_users_length = chat_id ? data.participants_on_page : data.users.length;
 
-	data.connections.forEach(function(d){
-        d.is_trust = true;
-        var reverse_is_trust = d.is_trust;
-        data.connections.forEach(function(dd){
-            if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
-                reverse_is_trust = dd.is_trust;
+            if (data_users_length == selected_val_num) {
+                but_next.style.background = '#8b0000';
+                but_next.style.cursor = 'pointer';
+                but_next.style.pointerEvents = 'all';
             }
-        });
-        links.push({
-            source: d.source,
-            target: d.target,
-            is_trust: d.is_trust,
-            reverse_is_trust: reverse_is_trust
-        });
+            else if (data_users_length < selected_val_num){
+                but_next.style.background = '#aaa0a0';
+                but_next.style.cursor = 'context-menu';
+                but_next.style.pointerEvents = 'none';
+            }
+	}
+
+	data.connections.forEach(d => {
+            d.is_trust = true;
+            let reverse_is_trust = d.is_trust;
+
+            data.connections.forEach(dd => {
+                if (d.source == dd.target && d.target == dd.source && dd.is_trust != null){
+                    reverse_is_trust = dd.is_trust;
+                }
+            });
+
+            links.push({
+                source: d.source,
+                target: d.target,
+                is_trust: d.is_trust,
+                reverse_is_trust: reverse_is_trust
+            });
 	});
 
 	//зафиксировать вершины пользователя, желаний и ключей
@@ -421,7 +458,6 @@ d3.json(apiUrl, d3_json_parms)
 	simulation.force("x", d3.forceX(width / 2));
 	simulation.force("y", d3.forceY(height / 2));
 
-		
 	initializeDisplay();
 	initializeSimulation();
 });
@@ -459,12 +495,285 @@ function drag(simulation) {
 	behavior.on('start', dragstarted);
 	behavior.on('drag', dragged);
 	behavior.on('end', dragended);
-	
+
 	return behavior;
 }
 
+const EXPORT_ID = 'export';
+
+const EXPORT_FORMATS = Object.freeze({
+    PNG: 'png',
+});
+
+const selectSvg = (id) => d3.select(`#${id}`);
+
+function serializeSvg(repr) {
+    const XMLNS = 'http://www.w3.org/2000/xmlns/';
+    const XLINKNS = 'http://www.w3.org/1999/xlink';
+    const SVGNS = 'http://www.w3.org/2000/svg';
+
+    const replaceFragments = true;
+
+    function replacingFragments(walker, fragment) {
+        while (walker.nextNode())
+            for (const attr of walker.currentNode.attributes) {
+                if (!attr.value.includes(fragment)) continue;
+
+                attr.value = attr.value.replace(fragment, '#');
+            }
+    }
+
+    const node = typeof repr === 'string' ? selectSvg(repr).node() : repr.node();
+
+    const fragment = `${window.location.href}#`;
+    const walker = document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT);
+
+    replaceFragments && replacingFragments(walker, fragment);
+
+    node.setAttributeNS(XMLNS, 'xmlns', SVGNS);
+    node.setAttributeNS(XMLNS, 'xmlns:xlink', XLINKNS);
+
+    return (new XMLSerializer).serializeToString(node);
+}
+
+const asBase64 = string => btoa(unescape(encodeURIComponent(string)));
+
+async function blobAsBase64(blob, callback) {
+    const arrayBuffer = await blob.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
+
+    const base64 = btoa(String.fromCharCode(...uint8Array));
+    const base64DataUrl = `data:${blob.type};base64,${base64}`;
+
+    return callback ? callback(base64DataUrl) : base64DataUrl;
+}
+
+async function urlAsBase64(url, callback) {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    return await blobAsBase64(blob, callback);
+}
+
+SVGRect.prototype.toString = function() {
+    return `${this.x} ${this.y} ${this.width} ${this.height}`;
+};
+
+function prepareSvg(id) {
+    // hide context menu
+    d3.select('body').node().click();
+
+    const full = d3.select('g').node().getBBox();
+
+    const prepared = selectSvg('main').clone([true])
+        .attr('id', EXPORT_ID).attr('display', 'none');
+
+    prepared.attr('viewBox', full.toString());
+
+    const svg_elem = prepared.selectAll('.svg_elem').data(nodes);
+
+    svg_elem.select('image').attr('href', ({base64Url}) => base64Url);
+
+    const userXY = width < 900 ? '-32px' : '-64px';
+    const userWH = width < 900 ? '64px' : '128px';
+
+    const friendXY = width < 900 ? '-18px' : '-32px';
+    const friendWH = width < 900 ? '35px' : '64px';
+
+    svg_elem.select('.userPortrait')
+        .attr('x', userXY).attr('y', userXY)
+        .attr('width', userWH).attr('height', userWH);
+
+    svg_elem.selectAll('.friendPortrait')
+        .attr('x', friendXY).attr('y', friendXY)
+        .attr('width', friendWH).attr('height', friendWH);
+
+    svg_elem.selectAll('text').attr('text-anchor', 'middle');
+
+    return prepared;
+}
+
+// https://observablehq.com/@shan/save-high-resolution-png-with-imported-image
+const PNG_PRECISION = 4;
+
+const PNG_PRECISION_LIMITS = Object.freeze({
+    MIN: 1,
+    MAX: 8
+});
+
+console.assert(PNG_PRECISION_LIMITS.MIN <= PNG_PRECISION <= PNG_PRECISION_LIMITS.MAX);
+
+function context2d(w, h, dpi) {
+    !dpi && (dpi = devicePixelRatio);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = w * dpi;
+    canvas.height = h * dpi;
+    canvas.style.width = `${w}px`;
+
+    const context = canvas.getContext('2d');
+    context.scale(dpi, dpi);
+
+    return context;
+}
+
+function makePngBlob(precision, callback, saveAspectRatio=true) {
+    let pngBlob = {};
+
+    const outWidth = width * precision;
+    const outHeight = saveAspectRatio ? outWidth : height * precision;
+
+    const ctx = context2d(outWidth, outHeight);
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, outWidth, outHeight);
+
+    const png = new Image();
+
+    function maker() {
+        ctx.drawImage(png, 0, 0, outWidth, outHeight);
+
+        ctx.canvas.toBlob(blob => {
+            pngBlob = blob;
+
+            return callback && callback(pngBlob);
+        });
+    }
+
+    const prepared = prepareSvg('main');
+    const base64 = asBase64(serializeSvg(prepared));
+
+    png.src = `data:image/svg+xml;base64,${base64}`;
+
+    png.complete ? maker() : png.onload = maker;
+
+    return pngBlob;
+}
+
+function download(object, format, callback) {
+    object = object instanceof Blob ? URL.createObjectURL(object) : object;
+
+    const link = document.createElement('a');
+    link.href = object;
+    link.download = `Название.${format.toLowerCase()}`;
+
+    // some browser needs the anchor to be in the doc
+    document.body.append(link);
+
+    link.click(); link.remove();
+
+    // in case the Blob uses a lot of memory
+    setTimeout(() => URL.revokeObjectURL(link.href), 7000);
+
+    return callback && callback();
+}
+
+const EXPORTS = {
+    [EXPORT_FORMATS.PNG]: (cb) => makePngBlob(PNG_PRECISION, cb),
+};
+
+function makeBlob(format, callback) {
+    if (!EXPORTS.hasOwnProperty(format))
+        throw new Error('Unknown format');
+
+    return EXPORTS[format](callback);
+}
+
+function exporting(to) {
+    const afterDownload = () => selectSvg(EXPORT_ID).remove();
+
+    const callDownload = (blob) => download(blob, to, afterDownload);
+
+    return makeBlob(to, callDownload);
+}
+
+const menuItems = [
+    {
+        title: 'Экспорт в PNG',
+        action: () => exporting(EXPORT_FORMATS.PNG)
+    },
+];
+
+const MENU_LAYOUT = Object.freeze({
+    FILL: 'white',
+    STROKE: '#00557d',
+    BORDERRADIUS: '2px',
+    ENTRY: {
+        WIDTH: 158,
+        HEIGHT: 30,
+        OFFSET: {
+            RX: 2,
+            X: 0,
+            Y: 30
+        },
+        CURSOR: 'pointer'
+    },
+    TEXT: {
+        FILL: '#00557d',
+        STROKE: '#00557d',
+        FONTSIZE: '20px',
+        DX: 11,
+        DY: 21,
+        OFFSET: {
+            X: 0,
+            Y: 30
+        },
+        CURSOR: 'pointer'
+    }
+});
+
+function menuFactory(svgId, x, y, items) {
+    const hide = () => d3.select('#contextMenu').remove();
+    const callAction = (d, {action}) => action();
+
+    const offset = (src, value) => (d, i) => src + i * value;
+
+    hide();
+
+    selectSvg(svgId)
+        .append('g').attr('id', 'contextMenu')
+        .attr('fill', MENU_LAYOUT.FILL)
+        .attr('stroke', MENU_LAYOUT.STROKE)
+        .attr('border-radius', MENU_LAYOUT.BORDERRADIUS)
+        .selectAll('tmp')
+        .data(items).enter()
+        .append('g').attr('class', 'menuEntry');
+
+    d3.selectAll('.menuEntry')
+        .append('rect')
+        .attr('x', offset(x, MENU_LAYOUT.ENTRY.OFFSET.X))
+        .attr('y', offset(y, MENU_LAYOUT.ENTRY.OFFSET.Y))
+        .attr('rx', MENU_LAYOUT.ENTRY.OFFSET.RX)
+        .attr('width', MENU_LAYOUT.ENTRY.WIDTH)
+        .attr('height', MENU_LAYOUT.ENTRY.HEIGHT)
+        .attr('cursor', MENU_LAYOUT.ENTRY.CURSOR)
+        .on('click', callAction);
+
+    d3.selectAll('.menuEntry')
+        .append('text')
+        .text(({title}) => title)
+        .attr('x', offset(x, MENU_LAYOUT.TEXT.OFFSET.X))
+        .attr('y', offset(y, MENU_LAYOUT.TEXT.OFFSET.Y))
+        .attr('dx', MENU_LAYOUT.TEXT.DX)
+        .attr('dy', MENU_LAYOUT.TEXT.DY)
+        .attr('fill', MENU_LAYOUT.TEXT.FILL)
+        .attr('stroke', MENU_LAYOUT.TEXT.STROKE)
+        .attr('font-size', MENU_LAYOUT.TEXT.FONTSIZE)
+        .attr('cursor', MENU_LAYOUT.TEXT.CURSOR)
+        .on('click', callAction);
+
+    d3.select('body').on('click', hide);
+}
+
+function createContextMenu(d, svgId, items) {
+    d.preventDefault();
+
+    return menuFactory(svgId, d.pageX, d.pageY, items);
+}
+
 function initializeDisplay() {
-        svg = svg.call(zoom).append('g');
+        svg = svg.call(zoom)
+                .on('contextmenu', (d) => createContextMenu(d, 'main', menuItems))
+                .append('g');
 
 	link = svg.append("g")
 		.selectAll("g")
@@ -474,32 +783,23 @@ function initializeDisplay() {
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
 		.attr("y2", calcY2);
-		//.attr("id", "lallaal");
 
 	link.append("svg:defs")
 		.append("linearGradient")
-		.attr("id", d => ("grad_from_" + d.source.id + "_to_" + d.target.id))
+		.attr('id', d => `grad_from_${d.source.id}_to_${d.target.id}`)
 		.attr("gradientUnits", "userSpaceOnUse")
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
 		.selectAll("stop")
-		.data(d => {
-			return [[1,d.reverse_is_trust], [2,d.is_trust]/*, [3, d.fam_link]*/];
-		})
+		.data(d => [[1, d.reverse_is_trust], [2, d.is_trust]])
 		.join("stop")
-		.attr("offset", d => (d[0] == 1 ? "0%" : "100%"))
-		.attr("style", d => {
-			if (d[1]){
-				return "stop-color:rgb(0,255,0);stop-opacity:1";
-			}
-		else if(d[3]){
-			return "stop-color:rgb(0,255,0);stop-opacity:1";
-		}
-		else {
-				return "stop-color:rgb(255,0,0);stop-opacity:1";
-			}
+		.attr('offset', d => d[0] == 1 ? '0%' : '100%')
+		.attr('style', d => {
+                    const color = d[1] || d[3] ? 'green' : 'red';
+
+                    return `stop-color: ${color}; stop-opacity: 1`;
 		});
 
 	link.append("svg:line")
@@ -521,7 +821,7 @@ function initializeDisplay() {
 						return "#ff0000";
 					}
 				} else {
-					return "url(#grad_from_" + d.source.id + "_to_" + d.target.id + ")";
+					return `url(#grad_from_${d.source.id}_to_${d.target.id})`;
 				}
 			} else {
 				return "#345334";
@@ -547,78 +847,55 @@ function initializeDisplay() {
 		.selectAll('g')
 		.data(nodes)
 		.join('g')
-		.attr('onclick', (d) => `onNodeClick('${d.nodeType}', '${d.id}', '${d.text}')`)
+		.attr('onclick', d => `onNodeClick('${d.id}', '${d.nodeType}')`)
 	        .attr('class', 'svg_elem')
 		.attr('style', 'cursor: pointer')
         	.call(drag(simulation));
 
-	var defs = node.append("defs").attr("id", "imgdefs")
+	const defs = node.append('defs').attr('id', 'imgdefs');
 
-	clipPath = defs.append('clipPath').attr('id', "clip-circle-medium");
-			clipPath.append("circle")
-    		.attr("r", 32)
+        initDefClipPaths(defs, node);
 
-	clipPath1 = defs.append('clipPath').attr('id', "clip-circle-small");
-			clipPath1.append("circle")
-    		.attr("r", 16)
+	node.append('image').attr('href', ({image}) => image)
+		.attr('class', ({nodeType}) => imageClass(nodeType))
+		.attr('style', 'z-index: 1; position: relative;')
+		.attr('clip-path', ({nodeType, is_dead}) => {
+                    let size = '';
 
-	clipPath2 = defs.append('clipPath').attr('id', "clip-circle-large");
-			clipPath2.append("circle")
-    		.attr("r", 64)
+                    (nodeType == NODE_TYPES.FILTERED) && (size = 'small');
 
-		node.append("image")
-		.attr("xlink:href", d => d.image)
-		.attr("class", d => {
-			if (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE) {
-				return "userPortrait";
-			}
-			else if (d.nodeType == NODE_TYPES.FILTERED) {
-				return "filtered";
-			}
-			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FRIEND){
-        			return "friendPortrait friend";
-    			}
-			else if(localStorage.getItem('filter') && d.nodeType == NODE_TYPES.FILTER){
-        			return "friendPortrait active_filer_icon";
-    			}
+                    switch (nodeType) {
+                        case NODE_TYPES.FRIEND: {
+                            size = width < 900 ? 'small' : 'medium';
+                            break;
+                        }
+                        case NODE_TYPES.USER:
+                        case NODE_TYPES.PROFILE: {
+                            size = width < 900 ? 'medium': 'large';
+                            break;
+                        }
+                    }
 
-			else {
-				return "friendPortrait";
-			}
-		})
-		.attr("style", "z-index:1;position:relative")
-		.attr("clip-path", d => {
-		if(width>900 && d.nodeType == NODE_TYPES.FRIEND){
-			return d.is_dead ? "" : "url(#clip-circle-medium)";
-		}else if(width<900 && d.nodeType == NODE_TYPES.FRIEND){
-			return d.is_dead ? "" : "url(#clip-circle-small)";
-		}else if (width>900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE)) {
-			return d.is_dead ? "" : "url(#clip-circle-large)";
-		}else if (width<900 && (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE)) {
-			return d.is_dead ? "" : "url(#clip-circle-medium)";
-		}else if (d.nodeType == NODE_TYPES.FILTERED) {
-			return d.is_dead ? "" : "url(#clip-circle-small)";
-		}
-
-	});
+                    return is_dead ? '' : `url(#clip-circle-${size})`;
+        	});
 
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width<900 ? 5 : 10))
-		.attr("font-size", width<900 ? "15" : "20")
-		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
-		.text(d => (d.tspan));
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 5 : 10))
+		.attr('font-size', width < 900 ? 15 : 20)
+		.attr('class', ({nodeType}) => [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(nodeType) ? 'userName' : 'friendName')
+		.text(({tspan}) => tspan);
 
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ?  64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20  : 47))
-		.attr("font-size", d => (width<900 || d.nodeType == NODE_TYPES.FILTERED ? '12' : "20"))
-		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? "userNameShadow" : "friendNameShadow"))
-		.text(d => (d.text));
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width < 900 || d.nodeType == NODE_TYPES.PROFILE && width < 900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64 : d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47))
+		.attr('font-size', ({nodeType}) => (width < 900 || nodeType == NODE_TYPES.FILTERED) ? 12 : 20)
+		.attr('class', ({nodeType}) => [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(nodeType) ? 'userNameShadow' : 'friendNameShadow')
+		.text(({text}) => text);
 
 	node.append("text")
-		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width<900 || d.nodeType == NODE_TYPES.PROFILE && width<900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47))
-		.attr("font-size", d => (width<900 || d.nodeType == NODE_TYPES.FILTERED ? '12' : "20"))
-		.attr("class", d => (d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? "userName" : "friendName"))
-		.text(d => (d.text));
+		.attr("y", d => (d.nodeType == NODE_TYPES.USER && width < 900 || d.nodeType == NODE_TYPES.PROFILE && width < 900 ? 30 : d.nodeType == NODE_TYPES.USER || d.nodeType == NODE_TYPES.PROFILE ? 64: d.nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47))
+		.attr('font-size', ({nodeType}) => (width < 900 || nodeType == NODE_TYPES.FILTERED) ? 12 : 20)
+		.attr('class', ({nodeType}) => [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(nodeType) ? 'userName' : 'friendName')
+		.text(({text}) => text);
 }
 
 const isUserOrProfile = (nodeType) => nodeType === NODE_TYPES.USER || nodeType === NODE_TYPES.PROFILE;
@@ -839,7 +1116,7 @@ d3.select(window).on('resize', () => {
   simulation.alpha(1).restart();
 });
 
-function initDefs(){
+function initDefs() {
 	const defs = svg.append("defs");
 
 	defs.append("marker")
@@ -932,10 +1209,65 @@ function initDefs(){
 		.attr("fill", "#ff0000");
 }
 
-async function onNodeClick(nodeType, uuid, txt){
-	if (nodeType == NODE_TYPES.PROFILE || nodeType == NODE_TYPES.FRIEND || nodeType == NODE_TYPES.FILTERED) {
-        window.location.href =
-			`${settings.url.protocol}//${settings.url.host}${settings.url.pathname}?id=` +
-			uuid + '&depth=' + (chat_id ? 1 : 2) + '&up=' + up + '&down=' + down;
+function initDefClipPaths(defs, node) {
+    const sizes = ['small', 'medium', 'large'];
+    let radius = 16;
+    const idPattern = 'clip-circle-';
+
+    for (const size of sizes) {
+        const id = `${idPattern}${size}`;
+
+        const clipPath = defs.append('clipPath').attr('id', id);
+        clipPath.append('circle').attr('r', radius);
+
+        node.append('use').attr('href', `#${id}`);
+
+        radius *= 2;
     }
+}
+
+function imageClass(nodeType) {
+    const hasFilter = localStorage.getItem('filter');
+
+    let nodeClass = 'friendPortrait';
+
+    switch (nodeType) {
+        case NODE_TYPES.USER:
+        case NODE_TYPES.PROFILE: {
+            nodeClass = 'userPortrait';
+            break;
+        }
+        case NODE_TYPES.FILTERED: {
+            nodeClass = 'filtered';
+            break;
+        }
+        case NODE_TYPES.FRIEND: {
+            hasFilter && (nodeClass += ' friend');
+            break;
+        }
+        case NODE_TYPES.FILTER: {
+            hasFilter && (nodeClass += ' active_filer_icon');
+            break;
+        }
+    }
+
+    return nodeClass;
+}
+
+function onNodeClick(uuid, nodeType) {
+    const allowed = [NODE_TYPES.PROFILE, NODE_TYPES.FRIEND, NODE_TYPES.FILTERED];
+    if (!allowed.includes(nodeType)) return;
+
+    const protocol = settings.url.protocol;
+    const host = settings.url.host;
+    const pathname = settings.url.pathname;
+
+    const newUrl = new URL(`${protocol}//${host}${pathname}`);
+
+    newUrl.searchParams.append('id', uuid);
+    newUrl.searchParams.append('depth', chat_id ? 1 : 2);
+    newUrl.searchParams.append('up', up);
+    newUrl.searchParams.append('down', down);
+
+    window.location.href = newUrl.href;
 }
