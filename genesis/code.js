@@ -65,6 +65,14 @@ var filterInput = document.getElementById("filterInput");
 
 var settings = { api: get_api_url(), url: new URL(window.location.href) };
 
+window.onerror = (msg, file, line, col, error) => {
+    const log = (stackframes) => console.error(stackframes.map(String).join('\n'));
+    const errback = ({message}) => console.error(message);
+
+    // callback is called with an Array[StackFrame]
+    StackTrace.fromError(error).then(log).catch(errback);
+};
+
 setTimeout(() => {
 	if(false){
     }
@@ -617,8 +625,8 @@ function context2d(w, h, dpi) {
     return context;
 }
 
-function makePngBlob(callback, precision, saveAspectRatio=true) {
-    let pngBlob = {}; precision ||= 1;
+function makePngBlob(callback, precision=1, saveAspectRatio=true) {
+    let pngBlob = {};
 
     const { width, height } = d3.select('g').node().getBBox();
 
@@ -630,6 +638,8 @@ function makePngBlob(callback, precision, saveAspectRatio=true) {
     ctx.fillRect(0, 0, outWidth, outHeight);
 
     const png = new Image();
+
+    png.onerror = () => console.error('Problem with PNG:', png)
 
     function maker() {
         ctx.drawImage(png, 0, 0, outWidth, outHeight);
@@ -714,9 +724,15 @@ function exporting(to) {
     function afterDownload() {
         success('Проверьте папку загрузок');
         selectSvg(EXPORT_ID).remove();
+        console.log('PNG export complete');
     }
 
-    const callDownload = blob => download(blob, to, afterDownload);
+    const callDownload = blob => {
+        console.log('PNG download');
+        download(blob, to, afterDownload);
+    };
+
+    console.log('PNG export started');
 
     return makeBlob(to, callDownload);
 }
