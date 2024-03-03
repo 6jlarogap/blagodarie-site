@@ -651,14 +651,27 @@ function makePngBlob(callback, precision, saveAspectRatio=true) {
     return pngBlob;
 }
 
-window.URL = window.URL || window.webkitURL;
+function suggestFilename(extension) {
+    const project = 'blagodarie';
 
-function download(object, format, callback) {
-    object = object instanceof Blob ? window.URL.createObjectURL(object) : object;
+    let userName = d3.select('.userName').text();
+    userName = userName.trimRight().replace(' ', '_');
+
+    const url = new URL(document.location);
+    const userId = `id${url.searchParams.get('id')}`;
+
+    return `${project}-${userName}-${userId}.${extension}`;
+}
+
+function download(object, format, callback, suggestedName=suggestFilename) {
+    const isFunc = param => typeof param === 'function';
+
+    object = object instanceof Blob ? URL.createObjectURL(object) : object;
+    const extension = format.toLowerCase();
 
     const link = document.createElement('a');
     link.href = object;
-    link.download = `Название.${format.toLowerCase()}`;
+    link.download = isFunc(suggestedName) ? suggestedName(extension) : suggestedName;
 
     // some browser needs the anchor to be in the doc
     document.body.append(link);
@@ -666,7 +679,7 @@ function download(object, format, callback) {
     link.click();
 
     // in case the Blob uses a lot of memory
-    setTimeout(() => { link.remove(); window.URL.revokeObjectURL(link.href); }, 7000);
+    setTimeout(() => { URL.revokeObjectURL(object); link.remove(); }, 7000);
 
     return callback && callback();
 }
@@ -682,18 +695,39 @@ function makeBlob(format, callback) {
     return EXPORTS[format](callback);
 }
 
-function exporting(to) {
-    const afterDownload = () => selectSvg(EXPORT_ID).remove();
+function success(text, delay=2000, duration=5000) {
+    const message = d3.select('body')
+        .append('div').attr('id', 'export-success')
+        .attr('class', 'container-fluid d-flex justify-content-center')
+        .style('position', 'absolute');
 
-    const callDownload = (blob) => download(blob, to, afterDownload);
+    message.append('div')
+        .attr('class', 'alert alert-success mt-5')
+        .text(text);
+
+    message.transition().style('opacity', 0)
+        .delay(delay).duration(duration)
+        .remove();
+}
+
+function exporting(to) {
+    function afterDownload() {
+        success('Проверьте папку загрузок');
+        selectSvg(EXPORT_ID).remove();
+    }
+
+    const callDownload = blob => download(blob, to, afterDownload);
 
     return makeBlob(to, callDownload);
 }
 
+const export2png = () => exporting(EXPORT_FORMATS.PNG);
+
 const menuItems = [
     {
+        id: 'png-export',
         title: 'Экспорт в PNG',
-        action: () => exporting(EXPORT_FORMATS.PNG)
+        action: export2png
     },
 ];
 
@@ -733,17 +767,16 @@ function menuFactory(svgId, x, y, items) {
 
     hide();
 
-    selectSvg(svgId)
+    const menuEntry = selectSvg(svgId)
         .append('g').attr('id', 'contextMenu')
         .attr('fill', MENU_LAYOUT.FILL)
         .attr('stroke', MENU_LAYOUT.STROKE)
         .attr('border-radius', MENU_LAYOUT.BORDERRADIUS)
         .selectAll('tmp')
         .data(items).enter()
-        .append('g').attr('class', 'menuEntry');
+        .append('g').attr('id', ({id}) => id).attr('class', 'menuEntry');
 
-    d3.selectAll('.menuEntry')
-        .append('rect')
+    menuEntry.append('rect')
         .attr('x', offset(x, MENU_LAYOUT.ENTRY.OFFSET.X))
         .attr('y', offset(y, MENU_LAYOUT.ENTRY.OFFSET.Y))
         .attr('rx', MENU_LAYOUT.ENTRY.OFFSET.RX)
@@ -752,8 +785,7 @@ function menuFactory(svgId, x, y, items) {
         .attr('cursor', MENU_LAYOUT.ENTRY.CURSOR)
         .on('click', callAction);
 
-    d3.selectAll('.menuEntry')
-        .append('text')
+    menuEntry.append('text')
         .text(({title}) => title)
         .attr('x', offset(x, MENU_LAYOUT.TEXT.OFFSET.X))
         .attr('y', offset(y, MENU_LAYOUT.TEXT.OFFSET.Y))
