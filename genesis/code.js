@@ -515,10 +515,34 @@ const EXPORT_FORMATS = Object.freeze({
 
 const selectSvg = (id) => d3.select(`#${id}`);
 
+function encodeSvg(svgXML) {
+    const extra = char => `%${char.charCodeAt(0).toString(16)}`;
+
+    svgXML = svgXML.replace(/[<>#%{}"]/g, extra);
+    svgXML = svgXML.replace(/\s+/g, ' ');
+
+    //  The maybe list (add on documented fail)
+    //  svgXML = svgXML.replace(/&/g, '%26');
+    //  svgXML = svgXML.replace('|', '%7C');
+    //  svgXML = svgXML.replace('[', '%5B');
+    //  svgXML = svgXML.replace(']', '%5D');
+    //  svgXML = svgXML.replace('^', '%5E');
+    //  svgXML = svgXML.replace('`', '%60');
+    //  svgXML = svgXML.replace(';', '%3B');
+    //  svgXML = svgXML.replace('?', '%3F');
+    //  svgXML = svgXML.replace(':', '%3A');
+    //  svgXML = svgXML.replace('@', '%40');
+    //  svgXML = svgXML.replace('=', '%3D');
+
+    return svgXML;
+}
+
 function serializeSvg(repr) {
     const XMLNS = 'http://www.w3.org/2000/xmlns/';
     const XLINKNS = 'http://www.w3.org/1999/xlink';
     const SVGNS = 'http://www.w3.org/2000/svg';
+
+    const FRAGMENT = `${window.location.href}#`;
 
     const replaceFragments = true;
 
@@ -533,18 +557,20 @@ function serializeSvg(repr) {
 
     const node = typeof repr === 'string' ? selectSvg(repr).node() : repr.node();
 
-    const fragment = `${window.location.href}#`;
     const walker = document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT);
 
-    replaceFragments && replacingFragments(walker, fragment);
+    replaceFragments && replacingFragments(walker, FRAGMENT);
 
     node.setAttributeNS(XMLNS, 'xmlns', SVGNS);
     node.setAttributeNS(XMLNS, 'xmlns:xlink', XLINKNS);
 
-    return (new XMLSerializer).serializeToString(node);
+    const serialized = (new XMLSerializer).serializeToString(node);
+
+    return encodeSvg(serialized);
 }
 
 const asBase64 = string => btoa(unescape(encodeURIComponent(string)));
+const fromBase64 = base64 => decodeURIComponent(escape(atob(base64)));
 
 async function blobAsBase64(blob, callback) {
     const arrayBuffer = await blob.arrayBuffer();
@@ -625,13 +651,85 @@ function context2d(w, h, dpi) {
     return context;
 }
 
+function validateSVG(svgXML, outErrors) {
+    const xmlDoc = (new DOMParser).parseFromString(svgXML, 'image/svg+xml');
+
+    const errors = xmlDoc.querySelectorAll('parsererror div');
+
+    if (errors.length === 0) return true;
+
+    Object.assign(outErrors, Array.from(errors).map(({innerText}) => innerText));
+
+    return false;
+}
+
+const DATA_URL_PREFIX = /^data:[a-z]+\/[a-z\d\+\-\.]+,?/;
+const dataFromDataURL = (dataURL) => dataURL.replace(DATA_URL_PREFIX, '')
+
+const BASE64_DATA_URL_PREFIX = new RegExp(`${DATA_URL_PREFIX.source};base64,`);
+
+const base64FromDataURL = (dataURL) => dataURL.replace(BASE64_DATA_URL_PREFIX, '');
+const validateBase64 = (base64) => validator.isBase64(base64);
+
+function onImageError() {
+    selectSvg(EXPORT_ID).remove();
+
+    console.error('PNG problems');
+
+    const source = this.src;
+
+    if (!source) return console.error('Source is empty');
+
+    console.error('Width:', this.width);
+    console.error('Height:', this.height);
+
+    if (validator.isURL(source))
+        return console.error('Check PNG source link');
+
+    const isDataUrlValid = validator.isDataURI(source);
+    let message = `The PNG data URL is${isDataUrlValid ? ' ' : ' not '}valid`;
+
+    isDataUrlValid ? console.log(message) : console.error(message);
+
+    if (!source.match(BASE64_DATA_URL_PREFIX)) {
+        let errors = [];
+
+        const serializedSvg = dataFromDataURL(source);
+
+        if (validateSVG(serializedSvg, errors))
+            return console.log('The SVG is valid');
+
+        console.error('The SVG is not valid:');
+
+        return errors.forEach(error => console.error(error));
+    }
+
+    const base64 = base64FromDataURL(source);
+
+    if (!validateBase64(base64))
+        return console.error('The Base64 string is not valid:', base64);
+
+    console.log('The Base64 string is valid');
+
+    let errors = [];
+
+    const base64SVG = fromBase64(base64);
+
+    if (validateSVG(base64SVG, errors))
+        return console.log('The Base64 SVG is valid');
+
+    console.error('The Base64 SVG is not valid:');
+
+    return errors.forEach(error => console.error(error));
+}
+
 function makePngBlob(callback, precision=1, saveAspectRatio=true) {
     let pngBlob = {};
 
     const { width, height } = d3.select('g').node().getBBox();
 
     const outWidth = width * precision;
-    const outHeight = saveAspectRatio ? outWidth : height * precision;
+    const outHeight = precision > 1 && saveAspectRatio ? outWidth : height * precision;
 
     const ctx = context2d(outWidth, outHeight);
     ctx.fillStyle = 'white';
@@ -639,22 +737,22 @@ function makePngBlob(callback, precision=1, saveAspectRatio=true) {
 
     const png = new Image();
 
-    png.onerror = () => console.error('Problem with PNG:', png)
+    png.onerror = onImageError;
 
     function maker() {
         ctx.drawImage(png, 0, 0, outWidth, outHeight);
 
         ctx.canvas.toBlob(blob => {
-            pngBlob = blob;
+            Object.assign(pngBlob, blob);
 
             return callback && callback(pngBlob);
         });
     }
 
     const prepared = prepareSvg('main');
-    const base64 = asBase64(serializeSvg(prepared));
+    const serialized = serializeSvg(prepared);
 
-    png.src = `data:image/svg+xml;base64,${base64}`;
+    png.src = `data:image/svg+xml,${serialized}`;
 
     png.complete ? maker() : png.onload = maker;
 
@@ -721,18 +819,28 @@ function success(text, delay=2000, duration=5000) {
 }
 
 function exporting(to) {
+    const logger = (func) => (...args) => console.log(func(...args));
+
+    let exportStarted = () => `${to.toUpperCase()} export started`;
+    let downloading = () => `${to.toUpperCase()} download`;
+    let exportComplete = () => `${to.toUpperCase()} export complete`;
+
+    exportStarted = logger(exportStarted);
+    downloading = logger(downloading);
+    exportComplete = logger(exportComplete);
+
     function afterDownload() {
         success('Проверьте папку загрузок');
         selectSvg(EXPORT_ID).remove();
-        console.log('PNG export complete');
+        exportComplete();
     }
 
     const callDownload = blob => {
-        console.log('PNG download');
+        downloading();
         download(blob, to, afterDownload);
     };
 
-    console.log('PNG export started');
+    exportStarted();
 
     return makeBlob(to, callDownload);
 }
