@@ -131,10 +131,9 @@ $(document).ready (async function() {
                 num_men = '(указавших место: ' + data.points.length +  ')';
                 if (data.chat_title) {
                     document.title =
-                        title_base + '. Телеграм ' +
-                        (data.chat_type == 'channel' ? 'канал' : 'группа') +
-                        ': ' +
-                        data.chat_title
+                        data.chat_title + ': карта участников ' +
+                        (data.chat_type == 'channel' ? 'канала' : 'группы') +
+                        ', благо Рода'
                     ;
                     subtitle =
                         '<h2>Участники телеграм ' +
