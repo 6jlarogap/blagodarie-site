@@ -515,29 +515,31 @@ const EXPORT_FORMATS = Object.freeze({
 
 const selectSvg = (id) => d3.select(`#${id}`);
 
-function encodeSvg(svgXML) {
-    const extra = char => `%${char.charCodeAt(0).toString(16)}`;
+function encodeSvg(svgXML, toHex) {
+    const hexer = char => `%${char.charCodeAt(0).toString(16)}`;
 
-    svgXML = svgXML.replace(/[<>#%{}"]/g, extra);
-    svgXML = svgXML.replace(/\s+/g, ' ');
+    !isStr(toHex) && (toHex = toHex.join(''));
+
+    svgXML = svgXML.replaceAll(new RegExp(`[${toHex}]`, 'g'), hexer);
+    svgXML = svgXML.replaceAll(/\s+/g, ' ');
 
     //  The maybe list (add on documented fail)
-    //  svgXML = svgXML.replace(/&/g, '%26');
-    //  svgXML = svgXML.replace('|', '%7C');
-    //  svgXML = svgXML.replace('[', '%5B');
-    //  svgXML = svgXML.replace(']', '%5D');
-    //  svgXML = svgXML.replace('^', '%5E');
-    //  svgXML = svgXML.replace('`', '%60');
-    //  svgXML = svgXML.replace(';', '%3B');
-    //  svgXML = svgXML.replace('?', '%3F');
-    //  svgXML = svgXML.replace(':', '%3A');
-    //  svgXML = svgXML.replace('@', '%40');
-    //  svgXML = svgXML.replace('=', '%3D');
+    //  svgXML = svgXML.replaceAll('&', '%26');
+    //  svgXML = svgXML.replaceAll('|', '%7C');
+    //  svgXML = svgXML.replaceAll('[', '%5B');
+    //  svgXML = svgXML.replaceAll(']', '%5D');
+    //  svgXML = svgXML.replaceAll('^', '%5E');
+    //  svgXML = svgXML.replaceAll('`', '%60');
+    //  svgXML = svgXML.replaceAll(';', '%3B');
+    //  svgXML = svgXML.replaceAll('?', '%3F');
+    //  svgXML = svgXML.replaceAll(':', '%3A');
+    //  svgXML = svgXML.replaceAll('@', '%40');
+    //  svgXML = svgXML.replaceAll('=', '%3D');
 
     return svgXML;
 }
 
-function serializeSvg(repr) {
+function serializeSvg(repr, toBase64=false) {
     const XMLNS = 'http://www.w3.org/2000/xmlns/';
     const XLINKNS = 'http://www.w3.org/1999/xlink';
     const SVGNS = 'http://www.w3.org/2000/svg';
@@ -555,7 +557,10 @@ function serializeSvg(repr) {
             }
     }
 
-    const node = typeof repr === 'string' ? selectSvg(repr).node() : repr.node();
+    const isSvgId = typeof repr === 'string';
+    const isXmlDoc = repr instanceof XMLDocument;
+
+    const node = isSvgId ? selectSvg(repr).node() : isXmlDoc ? repr.rootElement : repr.node();
 
     const walker = document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT);
 
@@ -564,10 +569,16 @@ function serializeSvg(repr) {
     node.setAttributeNS(XMLNS, 'xmlns', SVGNS);
     node.setAttributeNS(XMLNS, 'xmlns:xlink', XLINKNS);
 
-    const serialized = (new XMLSerializer).serializeToString(node);
+    const serialized = new XMLSerializer().serializeToString(node);
 
-    return encodeSvg(serialized);
+    const TO_HEX = [/*'<', '>', '"', */ '%', '{', '}'];
+
+    const encoded = encodeSvg(serialized, toBase64 ? TO_HEX : [...TO_HEX, '#']);
+
+    return toBase64 ? asBase64(encoded) : encoded;
 }
+
+const deserializeSvg = svgXML => new DOMParser().parseFromString(svgXML, 'image/svg+xml');
 
 const asBase64 = string => btoa(unescape(encodeURIComponent(string)));
 const fromBase64 = base64 => decodeURIComponent(escape(atob(base64)));
@@ -599,10 +610,14 @@ function prepareSvg(id) {
 
     const full = d3.select('g').node().getBBox();
 
-    const prepared = selectSvg('main').clone([true])
+    const prepared = selectSvg(id).clone([true])
         .attr('id', EXPORT_ID).attr('display', 'none');
 
     prepared.attr('viewBox', full.toString());
+
+    // stackoverflow.com/a/28692538
+    prepared.attr('width', full.width);
+    prepared.attr('height', full.height);
 
     const svg_elem = prepared.selectAll('.svg_elem').data(nodes);
 
@@ -651,17 +666,25 @@ function context2d(w, h, dpi) {
     return context;
 }
 
-function validateSVG(svgXML, outErrors) {
-    const xmlDoc = (new DOMParser).parseFromString(svgXML, 'image/svg+xml');
+function validateSVG(svgXML) {
+    const xmlDoc = new DOMParser().parseFromString(svgXML, 'image/svg+xml');
 
-    const errors = xmlDoc.querySelectorAll('parsererror div');
+    let errors = xmlDoc.querySelectorAll('parsererror div');
 
-    if (errors.length === 0) return true;
+    const dispatch = (resolve, reject) => {
+        if (errors.length === 0)
+            return resolve();
 
-    Object.assign(outErrors, Array.from(errors).map(({innerText}) => innerText));
+        errors = Array.from(errors);
+        errors = errors.map(({innerText}) => innerText);
 
-    return false;
+        return reject(errors);
+    };
+
+    return new Promise(dispatch);
 }
+
+const validateBase64SVG = base64SVG => validateSVG(fromBase64(base64SVG));
 
 const DATA_URL_PREFIX = /^data:[a-z]+\/[a-z\d\+\-\.]+,?/;
 const dataFromDataURL = (dataURL) => dataURL.replace(DATA_URL_PREFIX, '')
@@ -671,56 +694,125 @@ const BASE64_DATA_URL_PREFIX = new RegExp(`${DATA_URL_PREFIX.source};base64,`);
 const base64FromDataURL = (dataURL) => dataURL.replace(BASE64_DATA_URL_PREFIX, '');
 const validateBase64 = (base64) => validator.isBase64(base64);
 
+const isStr = param => typeof param === 'string';
+const isObj = param => typeof param === 'object';
+const isFunc = param => typeof param === 'function';
+
+class StyledConsole {
+    #content;
+    #styles;
+    #styler;
+
+    constructor(content, styles, styler) {
+        this.#content = content;
+        this.#styles = styles;
+        this.#styler = styler;
+    }
+
+    static SCHEMA = Object.freeze({
+        styles: styles => Array.isArray(styles) && styles.every(isStr),
+        styler: styler => !styler || isFunc(styler)
+    });
+
+    static isStyledConsole = (object) => {
+        const schemaFields = Object.keys(StyledConsole.SCHEMA);
+
+        return schemaFields.some(prop => prop in object);
+    };
+
+    static validate(object) {
+        const invalidField = field => new Error(`${field} is invalid.`);
+
+        const schema = StyledConsole.SCHEMA;
+        const isValid = field => schema[field](object[field]);
+
+        const schemaFields = Object.keys(schema);
+        const invalid = schemaFields.filter(field => !isValid(field));
+
+        const dispatch = (resolve, reject) => {
+            if (invalid.length === 0)
+                return resolve();
+
+            const errors = invalid.map(invalidField);
+
+            return reject(errors);
+        };
+
+        return new Promise(dispatch);
+    }
+
+    static withDirective = arg => arg.includes('%c') ? arg : `%c${arg}`;
+
+    styled() {
+        let [first, ...rest] = this.#content;
+
+        if (this.#styles) {
+            first = StyledConsole.withDirective(first);
+            first = [first, this.#styles].flat();
+        } else {
+            first = styler(first);
+        }
+
+        return console.log(...first, ...rest);
+    }
+
+    static #make = (...args) => new StyledConsole(...args);
+
+    static success = (...content) => StyledConsole.#make(content, ['color: green;']).styled();
+    static warning = (...content) => StyledConsole.#make(content, ['color: orange;']).styled();
+    static error = (...content) => StyledConsole.#make(content, ['color: red;']).styled();
+};
+
+const svgValid = (isBase64=false) => {
+    const msg = `The${isBase64 ? ' Base64 ' : ' '}SVG is valid`;
+
+    return StyledConsole.success(msg);
+};
+
+const svgInvalid = (errors, isBase64=false) => {
+    StyledConsole.error(`The${isBase ? ' Base64 ' : ' '}SVG is invalid`);
+
+    errors.forEach(StyledConsole.error);
+};
+
 function onImageError() {
+    const success = StyledConsole.success;
+    const error = StyledConsole.error;
+
     selectSvg(EXPORT_ID).remove();
 
-    console.error('PNG problems');
+    error('PNG problems');
 
     const source = this.src;
 
-    if (!source) return console.error('Source is empty');
+    if (!source) return error('Source is empty');
 
-    console.error('Width:', this.width);
-    console.error('Height:', this.height);
+    error('Width:', this.width);
+    error('Height:', this.height);
 
     if (validator.isURL(source))
-        return console.error('Check PNG source link');
+        return error('Check PNG source link');
 
     const isDataUrlValid = validator.isDataURI(source);
-    let message = `The PNG data URL is${isDataUrlValid ? ' ' : ' not '}valid`;
+    const out = isDataUrlValid ? success : error;
 
-    isDataUrlValid ? console.log(message) : console.error(message);
+    out(`The PNG data URL is${isDataUrlValid ? ' ' : ' not '}valid`);
 
-    if (!source.match(BASE64_DATA_URL_PREFIX)) {
-        let errors = [];
+    const isBase64DataUrl = !!source.match(BASE64_DATA_URL_PREFIX);
 
-        const serializedSvg = dataFromDataURL(source);
+    let sourceSVG = '';
 
-        if (validateSVG(serializedSvg, errors))
-            return console.log('The SVG is valid');
-
-        console.error('The SVG is not valid:');
-
-        return errors.forEach(error => console.error(error));
+    if (isBase64DataUrl) {
+        const base64 = base64FromDataURL(source);
+        sourceSVG = fromBase64(base64);
+    } else {
+        sourceSVG = dataFromDataURL(source);
     }
 
-    const base64 = base64FromDataURL(source);
+    const callback = () => svgValid(isBase64DataUrl);
+    const errback = errors => svgInvalid(errors, isBase64DataUrl);
 
-    if (!validateBase64(base64))
-        return console.error('The Base64 string is not valid:', base64);
-
-    console.log('The Base64 string is valid');
-
-    let errors = [];
-
-    const base64SVG = fromBase64(base64);
-
-    if (validateSVG(base64SVG, errors))
-        return console.log('The Base64 SVG is valid');
-
-    console.error('The Base64 SVG is not valid:');
-
-    return errors.forEach(error => console.error(error));
+    return validateSVG(sourceSVG).then(callback).catch(errback);
 }
 
 function makePngBlob(callback, precision=1, saveAspectRatio=true) {
@@ -743,7 +835,7 @@ function makePngBlob(callback, precision=1, saveAspectRatio=true) {
         ctx.drawImage(png, 0, 0, outWidth, outHeight);
 
         ctx.canvas.toBlob(blob => {
-            Object.assign(pngBlob, blob);
+            pngBlob = blob;
 
             return callback && callback(pngBlob);
         });
@@ -763,7 +855,7 @@ function suggestFilename(extension) {
     const project = 'blagodarie';
 
     let userName = d3.select('.userName').text();
-    userName = userName.trimRight().replace(' ', '_');
+    userName = userName.trimRight().replaceAll(' ', '_');
 
     const url = new URL(document.location);
     const userId = `id${url.searchParams.get('id')}`;
@@ -772,13 +864,10 @@ function suggestFilename(extension) {
 }
 
 function download(object, format, callback, suggestedName=suggestFilename) {
-    const isFunc = param => typeof param === 'function';
-
-    object = object instanceof Blob ? URL.createObjectURL(object) : object;
     const extension = format.toLowerCase();
 
     const link = document.createElement('a');
-    link.href = object;
+    link.href = object instanceof Blob ? URL.createObjectURL(object) : object;
     link.download = isFunc(suggestedName) ? suggestedName(extension) : suggestedName;
 
     // some browser needs the anchor to be in the doc
@@ -789,7 +878,7 @@ function download(object, format, callback, suggestedName=suggestFilename) {
     // in case the Blob uses a lot of memory
     setTimeout(() => { URL.revokeObjectURL(object); link.remove(); }, 7000);
 
-    return callback && callback();
+    return callback && callback(object);
 }
 
 const EXPORTS = {
@@ -803,41 +892,67 @@ function makeBlob(format, callback) {
     return EXPORTS[format](callback);
 }
 
-function success(text, delay=2000, duration=5000) {
-    const message = d3.select('body')
-        .append('div').attr('id', 'export-success')
+function message(text, id='', cssClass='', delay=2000, duration=5000) {
+    const msg = d3.select('body').append('div').attr('id', id)
         .attr('class', 'container-fluid d-flex justify-content-center')
         .style('position', 'absolute');
 
-    message.append('div')
-        .attr('class', 'alert alert-success mt-5')
-        .text(text);
+    msg.append('div').attr('class', cssClass).text(text);
 
-    message.transition().style('opacity', 0)
-        .delay(delay).duration(duration)
+    msg.transition().style('opacity', 0).delay(delay).duration(duration)
         .remove();
 }
+
+const success = (text, id='export-success') => message(text, id, 'alert alert-success mt-5');
+const warning = (text, id='export-empty') => message(text, id, 'alert alert-warning mt-5');
 
 function exporting(to) {
     const logger = (func) => (...args) => console.log(func(...args));
 
-    let exportStarted = () => `${to.toUpperCase()} export started`;
-    let downloading = () => `${to.toUpperCase()} download`;
-    let exportComplete = () => `${to.toUpperCase()} export complete`;
+    const formatUpperCase = to.toUpperCase();
+
+    let exportStarted = () => `${formatUpperCase} export started`;
+    let downloading = () => `${formatUpperCase} download`;
+    let exportComplete = () => `${formatUpperCase} export complete`;
 
     exportStarted = logger(exportStarted);
     downloading = logger(downloading);
     exportComplete = logger(exportComplete);
 
-    function afterDownload() {
-        success('Проверьте папку загрузок');
-        selectSvg(EXPORT_ID).remove();
-        exportComplete();
+    const isPngEmpty = blob => to === EXPORT_FORMATS.PNG && blob.size < 1e6;
+
+    const dispatch = blob => (resolve, reject) => {
+        return isPngEmpty(blob) ? reject() : resolve();
+    };
+
+    function afterDownload(blob) {
+        const pngEmpty = () => warning('Изображение PNG пустое');
+
+        const resolved = () => success('Проверьте папку загрузок');
+        const rejected = () => pngEmpty();
+
+        const settled = () => {
+            selectSvg(EXPORT_ID).remove();
+            exportComplete();
+        };
+
+        return new Promise(dispatch(blob)).then(resolved).catch(rejected).finally(settled);
     }
 
     const callDownload = blob => {
+        const pngEmpty = () => {
+            const msg = `The ${formatUpperCase} image has no content`;
+
+            return StyledConsole.warning(msg);
+        };
+
+        const rejected = () => pngEmpty();
+
+        const settled = () => download(blob, to, afterDownload);
+
         downloading();
-        download(blob, to, afterDownload);
+
+        return new Promise(dispatch(blob)).catch(rejected).finally(settled);
     };
 
     exportStarted();
