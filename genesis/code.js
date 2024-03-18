@@ -663,6 +663,14 @@ function context2d(w, h, options={}) {
     } = options;
 
     const canvas = document.createElement('canvas');
+
+    Object.defineProperty(canvas, 'blank', {
+        writable: true,
+        enumerable: false
+    });
+
+    canvas.isEmpty = () => canvas.toDataURL() === canvas.blank;
+
     canvas.width = w * dpi;
     canvas.height = h * dpi;
     canvas.style.width = `${canvas.width}px`;
@@ -871,7 +879,7 @@ function makePngBlob(callback, options={}) {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, outWidth, outHeight);
 
-    const blankDataURL = ctx.canvas.toDataURL();
+    ctx.canvas.blank = ctx.canvas.toDataURL();
 
     const png = new Image();
 
@@ -882,7 +890,7 @@ function makePngBlob(callback, options={}) {
         ctx.drawImage(png, 0, 0, outWidth, outHeight);
 
         ctx.canvas.toBlob(blob => {
-            monitor && monitor(blob, ctx.canvas, blankDataURL);
+            monitor && monitor(blob, ctx);
 
             pngBlob = blob;
 
@@ -965,7 +973,7 @@ function makePng(cb) {
 
     const encoderBug = () => StyledConsole.error("A bug in the browser's encoder");
 
-    const blobIsNull = ({canvas}) => {
+    const blobIsNull = canvas => {
         const { width, height } = canvas;
 
         if (!width && !height)
@@ -982,7 +990,7 @@ function makePng(cb) {
         return maxArea.then(dispatch).catch(encoderBug);
     };
 
-    const isCanvasBlank = (canvas, blankDataURL) => canvas.toDataURL() === blankDataURL;
+    const isCanvasBlank = canvas => canvas.isEmpty();
 
     const canvasIsBlank = () => {
         const text = 'The PNG image has no content';
@@ -991,11 +999,11 @@ function makePng(cb) {
     };
 
     const monitor = (blob, ...args) => {
-        const [canvas, blank] = args;
+        const [ { canvas } ] = args;
 
         if (!blob) return blobIsNull(canvas);
 
-        if (isCanvasBlank(canvas, blank)) return canvasIsBlank();
+        if (isCanvasBlank(canvas)) return canvasIsBlank();
     };
 
     const options = {
