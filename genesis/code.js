@@ -515,10 +515,43 @@ const EXPORT_FORMATS = Object.freeze({
 
 const selectSvg = (id) => d3.select(`#${id}`);
 
+const asBase64 = (string, {unescape=true}={}) => {
+    let encoded = encodeURIComponent(string);
+
+    unescape && (encoded = window.unescape(encoded));
+
+    return btoa(encoded);
+};
+
+const fromBase64 = (base64, {escape=true}={}) => {
+    let string = atob(base64);
+
+    escape && (string = window.escape(string));
+
+    return decodeURIComponent(string);
+};
+
+async function blobAsBase64(blob, callback) {
+    const arrayBuffer = await blob.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
+
+    const base64 = btoa(String.fromCharCode(...uint8Array));
+    const base64DataUrl = `data:${blob.type};base64,${base64}`;
+
+    return callback ? callback(base64DataUrl) : base64DataUrl;
+}
+
+async function urlAsBase64(url, callback) {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    return await blobAsBase64(blob, callback);
+}
+
 function encodeSvg(svgXML, toHex) {
     const hexer = char => `%${char.charCodeAt(0).toString(16)}`;
 
-    !isStr(toHex) && (toHex = toHex.join(''));
+    Array.isArray(toHex) && (toHex = toHex.join(''));
 
     svgXML = svgXML.replaceAll(new RegExp(`[${toHex}]`, 'g'), hexer);
     svgXML = svgXML.replaceAll(/\s+/g, ' ');
@@ -539,7 +572,7 @@ function encodeSvg(svgXML, toHex) {
     return svgXML;
 }
 
-function serializeSvg(repr, toBase64=false) {
+function serializeSvg(repr, {toBase64=false}={}) {
     const XMLNS = 'http://www.w3.org/2000/xmlns/';
     const XLINKNS = 'http://www.w3.org/1999/xlink';
     const SVGNS = 'http://www.w3.org/2000/svg';
@@ -571,7 +604,7 @@ function serializeSvg(repr, toBase64=false) {
 
     const serialized = new XMLSerializer().serializeToString(node);
 
-    const TO_HEX = [/*'<', '>', '"', */ '%', '{', '}'];
+    const TO_HEX = [/* '<', '>', '"', */ '%', '{', '}'];
 
     const encoded = encodeSvg(serialized, toBase64 ? TO_HEX : [...TO_HEX, '#']);
 
@@ -579,26 +612,6 @@ function serializeSvg(repr, toBase64=false) {
 }
 
 const deserializeSvg = svgXML => new DOMParser().parseFromString(svgXML, 'image/svg+xml');
-
-const asBase64 = string => btoa(unescape(encodeURIComponent(string)));
-const fromBase64 = base64 => decodeURIComponent(escape(atob(base64)));
-
-async function blobAsBase64(blob, callback) {
-    const arrayBuffer = await blob.arrayBuffer();
-    const uint8Array = new Uint8Array(arrayBuffer);
-
-    const base64 = btoa(String.fromCharCode(...uint8Array));
-    const base64DataUrl = `data:${blob.type};base64,${base64}`;
-
-    return callback ? callback(base64DataUrl) : base64DataUrl;
-}
-
-async function urlAsBase64(url, callback) {
-    const response = await fetch(url);
-    const blob = await response.blob();
-
-    return await blobAsBase64(blob, callback);
-}
 
 SVGRect.prototype.toString = function() {
     return `${this.x} ${this.y} ${this.width} ${this.height}`;
@@ -608,12 +621,13 @@ function prepareSvg(id) {
     // hide context menu
     d3.select('body').node().click();
 
-    const full = d3.select('g').node().getBBox();
+    const full = svg.node().getBBox();
 
     const prepared = selectSvg(id).clone([true])
         .attr('id', EXPORT_ID).attr('display', 'none');
 
-    prepared.attr('viewBox', full.toString());
+    prepared.attr('viewBox', String(full));
+    prepared.select('g').attr('transform', '');
 
     // stackoverflow.com/a/28692538
     prepared.attr('width', full.width);
@@ -642,26 +656,19 @@ function prepareSvg(id) {
     return prepared;
 }
 
-// https://observablehq.com/@shan/save-high-resolution-png-with-imported-image
-const PNG_PRECISION = 5;
-
-const PNG_PRECISION_LIMITS = Object.freeze({
-    MIN: 2,
-    MAX: 8
-});
-
-console.assert(PNG_PRECISION_LIMITS.MIN <= PNG_PRECISION <= PNG_PRECISION_LIMITS.MAX);
-
-function context2d(w, h, dpi) {
-    !dpi && (dpi = devicePixelRatio);
+function context2d(w, h, options={}) {
+    const {
+        dpi = devicePixelRatio,
+        scale = true
+    } = options;
 
     const canvas = document.createElement('canvas');
     canvas.width = w * dpi;
     canvas.height = h * dpi;
-    canvas.style.width = `${w}px`;
+    canvas.style.width = `${canvas.width}px`;
 
     const context = canvas.getContext('2d');
-    context.scale(dpi, dpi);
+    scale && context.scale(dpi, dpi);
 
     return context;
 }
@@ -705,7 +712,7 @@ class StyledConsole {
 
     constructor(content, styles, styler) {
         this.#content = content;
-        this.#styles = styles;
+        this.#styles = isStr(styles) ? [styles] : styles;
         this.#styler = styler;
     }
 
@@ -714,7 +721,7 @@ class StyledConsole {
         styler: styler => !styler || isFunc(styler)
     });
 
-    static isStyledConsole = (object) => {
+    static isStyledConsole(object) {
         const schemaFields = Object.keys(StyledConsole.SCHEMA);
 
         return schemaFields.some(prop => prop in object);
@@ -741,14 +748,14 @@ class StyledConsole {
         return new Promise(dispatch);
     }
 
-    static withDirective = arg => arg.includes('%c') ? arg : `%c${arg}`;
+    static withDirective = arg => arg.startsWith('%c') ? arg : `%c${arg}`;
 
     styled() {
         let [first, ...rest] = this.#content;
 
         if (this.#styles) {
             first = StyledConsole.withDirective(first);
-            first = [first, this.#styles].flat();
+            first = [first, ...this.#styles];
         } else {
             first = styler(first);
         }
@@ -758,21 +765,55 @@ class StyledConsole {
 
     static #make = (...args) => new StyledConsole(...args);
 
-    static success = (...content) => StyledConsole.#make(content, ['color: green;']).styled();
-    static warning = (...content) => StyledConsole.#make(content, ['color: orange;']).styled();
-    static error = (...content) => StyledConsole.#make(content, ['color: red;']).styled();
+    static #withStyle(...content) {
+        const { styles, styler } = content.pop();
+
+        return StyledConsole.#make(content, styles, styler);
+    }
+
+    static SUCCESS_STYLE = 'color: green;';
+    static WARNING_STYLE = 'color: orange;';
+    static ERROR_STYLE = 'color: red;';
+
+    static success = (...content) => StyledConsole.#make(content, StyledConsole.SUCCESS_STYLE).styler();
+    static warning = (...content) => StyledConsole.#make(content, StyledConsole.WARNING_STYLE).styled();
+    static error = (...content) => StyledConsole.#make(content, StyledConsole.ERROR_STYLE).styled();
+
+    static successStyled(...content) {
+        const lastArg = content.pop();
+
+        lastArg.styles = [StyledConsole.SUCCESS_STYLE, ...lastArg.styles];
+
+        return StyledConsole.#withStyle(...content, lastArg).styled();
+    }
+
+    static warningStyled(...content) {
+        const lastArg = content.pop();
+
+        lastArg.styles = [StyledConsole.WARNING_STYLE, ...lastArg.styles];
+
+        return StyledConsole.#withStyle(...content, lastArg).styled();
+    }
+
+    static errorStyled(...content) {
+        const lastArg = content.pop();
+
+        lastArg.styles = [StyledConsole.ERROR_STYLE, ...lastArg.styles];
+
+        return StyledConsole.#withStyle(...content, lastArg).styled();
+    }
 };
 
-const svgValid = (isBase64=false) => {
+const svgValid = ({isBase64=false}={}) => {
     const msg = `The${isBase64 ? ' Base64 ' : ' '}SVG is valid`;
 
     return StyledConsole.success(msg);
 };
 
-const svgInvalid = (errors, isBase64=false) => {
-    StyledConsole.error(`The${isBase ? ' Base64 ' : ' '}SVG is invalid`);
+const svgInvalid = (errors, {isBase64=false}={}) => {
+    StyledConsole.error(`The${isBase64 ? ' Base64 ' : ' '}SVG is invalid`);
 
-    errors.forEach(StyledConsole.error);
+    errors.forEach(error => StyledConsole.error(error));
 };
 
 function onImageError() {
@@ -781,22 +822,19 @@ function onImageError() {
 
     selectSvg(EXPORT_ID).remove();
 
-    error('PNG problems');
+    error('Problems:');
 
     const source = this.src;
 
     if (!source) return error('Source is empty');
 
-    error('Width:', this.width);
-    error('Height:', this.height);
-
     if (validator.isURL(source))
-        return error('Check PNG source link');
+        return error('Check image source link');
 
     const isDataUrlValid = validator.isDataURI(source);
     const out = isDataUrlValid ? success : error;
 
-    out(`The PNG data URL is${isDataUrlValid ? ' ' : ' not '}valid`);
+    out(`The image data URL is${isDataUrlValid ? ' ' : ' not '}valid`);
 
     const isBase64DataUrl = !!source.match(BASE64_DATA_URL_PREFIX);
 
@@ -815,26 +853,37 @@ function onImageError() {
     return validateSVG(sourceSVG).then(callback).catch(errback);
 }
 
-function makePngBlob(callback, precision=1, saveAspectRatio=true) {
+function makePngBlob(callback, options={}) {
+    const {
+        saveAspectRatio = true,
+        toBase64,
+        monitor
+    } = options;
+
     let pngBlob = {};
 
-    const { width, height } = d3.select('g').node().getBBox();
+    const { width, height } = svg.node().getBBox();
 
-    const outWidth = width * precision;
-    const outHeight = precision > 1 && saveAspectRatio ? outWidth : height * precision;
+    const outWidth = width;
+    const outHeight = saveAspectRatio ? outWidth : height;
 
     const ctx = context2d(outWidth, outHeight);
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, outWidth, outHeight);
 
+    const blankDataURL = ctx.canvas.toDataURL();
+
     const png = new Image();
 
     png.onerror = onImageError;
+    png.onabort = () => StyledConsole.error('The PNG image abort');
 
     function maker() {
         ctx.drawImage(png, 0, 0, outWidth, outHeight);
 
         ctx.canvas.toBlob(blob => {
+            monitor && monitor(blob, ctx.canvas, blankDataURL);
+
             pngBlob = blob;
 
             return callback && callback(pngBlob);
@@ -842,9 +891,9 @@ function makePngBlob(callback, precision=1, saveAspectRatio=true) {
     }
 
     const prepared = prepareSvg('main');
-    const serialized = serializeSvg(prepared);
+    const serialized = serializeSvg(prepared, { toBase64: toBase64 });
 
-    png.src = `data:image/svg+xml,${serialized}`;
+    png.src = `data:image/svg+xml${toBase64 ? ';base64' : ''},${serialized}`;
 
     png.complete ? maker() : png.onload = maker;
 
@@ -881,8 +930,83 @@ function download(object, format, callback, suggestedName=suggestFilename) {
     return callback && callback(object);
 }
 
+function makePng(cb) {
+    /*
+     * https://stackoverflow.com/a/67714931
+     * There are only a few reasons why toBlob would produce null:
+     * * A bug in the browser's encoder (never seen it myself).
+     * * A canvas whose area is bigger than the maximum supported by the UA.
+     * * A canvas whose width or height is 0.
+     */
+
+    const checkCanvasLimits = (w, h, maxArea) => {
+        const maxWidth = maxArea.width;
+        const maxHeight = maxArea.height;
+
+        const maxWidthExceeded = w > maxWidth;
+        const maxHeightExceeded = h > maxHeight;
+
+        if (!maxWidthExceeded && !maxHeightExceeded)
+            return true;
+
+        StyledConsole.error('The maximum PNG image area limits exceeded:');
+
+        const highlightLimits = text => {
+            const style = 'color: white; background: red;';
+
+            return StyledConsole.errorStyled(text, { styles: [style] });
+        };
+
+        maxWidthExceeded && highlightLimits(`Width: ${w}, max: %c${maxWidth}`);
+        maxHeightExceeded && highlightLimits(`Height: ${h}, max: %c${maxHeight}`);
+
+        return false;
+    };
+
+    const encoderBug = () => StyledConsole.error("A bug in the browser's encoder");
+
+    const blobIsNull = ({canvas}) => {
+        const { width, height } = canvas;
+
+        if (!width && !height)
+            return StyledConsole.error('The PNG image not yet loaded');
+
+        const dispatch = maxArea => {
+            const isEncoderBug = checkCanvasLimits(width, height, maxArea);
+
+            return isEncoderBug ? Promise.reject() : Promise.resolve(); 
+        };
+
+        const maxArea = canvasSize.maxArea({ useWorker: true });
+
+        return maxArea.then(dispatch).catch(encoderBug);
+    };
+
+    const isCanvasBlank = (canvas, blankDataURL) => canvas.toDataURL() === blankDataURL;
+
+    const canvasIsBlank = () => {
+        const text = 'The PNG image has no content';
+
+        return StyledConsole.warning(text);
+    };
+
+    const monitor = (blob, ...args) => {
+        const [canvas, blank] = args;
+
+        if (!blob) return blobIsNull(canvas);
+
+        if (isCanvasBlank(canvas, blank)) return canvasIsBlank();
+    };
+
+    const options = {
+        monitor: monitor
+    };
+
+    return makePngBlob(cb, options);
+}
+
 const EXPORTS = {
-    [EXPORT_FORMATS.PNG]: makePngBlob,
+    [EXPORT_FORMATS.PNG]: makePng 
 };
 
 function makeBlob(format, callback) {
@@ -892,7 +1016,7 @@ function makeBlob(format, callback) {
     return EXPORTS[format](callback);
 }
 
-function message(text, id='', cssClass='', delay=2000, duration=5000) {
+function message(text, {id='', cssClass='', delay=2000, duration=5000}={}) {
     const msg = d3.select('body').append('div').attr('id', id)
         .attr('class', 'container-fluid d-flex justify-content-center')
         .style('position', 'absolute');
@@ -903,8 +1027,9 @@ function message(text, id='', cssClass='', delay=2000, duration=5000) {
         .remove();
 }
 
-const success = (text, id='export-success') => message(text, id, 'alert alert-success mt-5');
-const warning = (text, id='export-empty') => message(text, id, 'alert alert-warning mt-5');
+const success = (text, id='export-success') => message(text, {id: id, cssClass: 'alert alert-success mt-5'});
+const warning = (text, id='export-empty') => message(text, {id: id, cssClass: 'alert alert-warning mt-5'});
+const error = (text, id='export-invalid') => message(text, {id: id, cssClass: 'alert alert-danger mt-5'});
 
 function exporting(to) {
     const logger = (func) => (...args) => console.log(func(...args));
@@ -919,40 +1044,27 @@ function exporting(to) {
     downloading = logger(downloading);
     exportComplete = logger(exportComplete);
 
-    const isPngEmpty = blob => to === EXPORT_FORMATS.PNG && blob.size < 1e6;
+    const afterDownload = () => {
+        selectSvg(EXPORT_ID).remove();
+        exportComplete();
 
-    const dispatch = blob => (resolve, reject) => {
-        return isPngEmpty(blob) ? reject() : resolve();
-    };
-
-    function afterDownload(blob) {
-        const pngEmpty = () => warning('Изображение PNG пустое');
-
-        const resolved = () => success('Проверьте папку загрузок');
-        const rejected = () => pngEmpty();
-
-        const settled = () => {
-            selectSvg(EXPORT_ID).remove();
-            exportComplete();
-        };
-
-        return new Promise(dispatch(blob)).then(resolved).catch(rejected).finally(settled);
+        return success('Проверьте папку загрузок');
     }
 
     const callDownload = blob => {
-        const pngEmpty = () => {
-            const msg = `The ${formatUpperCase} image has no content`;
+        const resolved = blob => download(blob, to, afterDownload);
 
-            return StyledConsole.warning(msg);
+        const blobIsEmpty = () => {
+            StyledConsole.error('The Blob is empty');
+
+            error('Ошибка загрузки');
         };
 
-        const rejected = () => pngEmpty();
-
-        const settled = () => download(blob, to, afterDownload);
+        const dispatch = (resolve, reject) => blob ? resolve(blob) : reject();
 
         downloading();
 
-        return new Promise(dispatch(blob)).catch(rejected).finally(settled);
+        return new Promise(dispatch).then(resolved).catch(blobIsEmpty);
     };
 
     exportStarted();
