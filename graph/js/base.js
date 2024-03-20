@@ -98,6 +98,17 @@ $(document).ready (async function() {
                 $(items[i]).css('font-size', `${font_size}px`);
             }
         }
+        const items_wh= $('.menu__close');
+        for (let i = 0; i < items_wh.length; i++) {
+            let width = parseInt($(items_wh[i]).css('width'));
+            let height = parseInt($(items_wh[i]).css('height'));
+            if (width && height) {
+                height *= ratio;
+                width *= ratio;
+                $(items_wh[i]).css('width', `${width}px`);
+                $(items_wh[i]).css('height', `${height}px`);
+            }
+        }
     }
 
     const c_nfa = ' ';
