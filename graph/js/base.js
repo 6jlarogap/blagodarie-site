@@ -74,6 +74,32 @@
 
 $(document).ready (async function() {
 
+    // Оптимальная читабельность настроена на устройстве с dpi == dpiRef.
+    // Если dpi больше dpiRef, то увеличиваем 'font-size' css атрибут
+    // в соответствующее число раз
+    //
+    const dpiRef = 96;
+
+    const dpi = calcDpi();
+    if (dpi > dpiRef) {
+        const ratio = Math.round(dpi / dpiRef);
+        const items= $(
+            '.menu__btn,.menu__btn__trust,.menu__title,' +
+            '.caption_new_relative,.table_new_relative,' +
+            '.f-modal-button,.f-modal-content,' +
+            '.d-modal-button,.d-modal-content,' +
+            '.d-modal-close,.f-modal-close,' +
+            '.parent_name,.his-her-outer'
+        );
+        for (let i = 0; i < items.length; i++) {
+            let font_size = parseInt($(items[i]).css('font-size'));
+            if (font_size) {
+                font_size *= ratio;
+                $(items[i]).css('font-size', `${font_size}px`);
+            }
+        }
+    }
+
     const c_nfa = ' ';
     const c_collapsed = '+';
     const c_expanded = '-';

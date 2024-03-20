@@ -309,3 +309,16 @@ async function check_auth(mandatory=false) {
     }
     return result;
 }
+
+function calcDpi(minDpi=10) {
+    let result = minDpi;
+    if (window.matchMedia(`(min-resolution: ${minDpi}dpi)`).matches) {
+        for(let i = 650; i >= 0; i--) {
+            if (window.matchMedia("(min-resolution: " + i + "dpi)").matches) {
+                result = i;
+                break;
+            }
+        }
+    }
+    return result;
+}
