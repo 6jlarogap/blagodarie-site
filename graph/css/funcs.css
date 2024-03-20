@@ -25,12 +25,12 @@
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
-  font-size: 30px;
+  font-size: 24px;
 }
 
 .d-modal-button,
 .f-modal-button {
-  font-size: 30px;
+  font-size: 24px;
   cursor: pointer;
 }
 /* The Close Button */
@@ -38,7 +38,7 @@
 .f-modal-close {
   color: #aaa;
   float: right;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: bold;
 }
 
@@ -63,7 +63,7 @@
 .menu__btn {
   background: none;
   border: 2px solid #000;
-  font-size: 30px;
+  font-size: 24px;
   transition: .1s linear;
   padding: 20px 30px;
   cursor: pointer;
@@ -73,7 +73,7 @@
   color: black;
   background-color: #04AA6D;
   border: 2px solid #000;
-  font-size: 30px;
+  font-size: 24px;
   transition: .1s linear;
   padding: 20px 30px;
   cursor: pointer;
@@ -101,7 +101,6 @@
   width: 36px;
   height: 36px;
   position: relative;
-  font-size: 30px;
 }
 
 .menu__close::before,
@@ -139,7 +138,7 @@
 
 .menu__title {
   text-align: center;
-  font-size: 30px;
+  font-size: 24px;
 }
 
 .menu-wrapper--active {
