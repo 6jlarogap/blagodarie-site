@@ -82,7 +82,7 @@ $(document).ready (async function() {
 
     const dpi = calcDpi();
     if (dpi > dpiRef) {
-        const ratio = Math.round(dpi / dpiRef);
+        const ratio = dpi / dpiRef;
         const items= $(
             '.menu__btn,.menu__btn__trust,.menu__title,' +
             '.caption_new_relative,.table_new_relative,' +
@@ -94,7 +94,7 @@ $(document).ready (async function() {
         for (let i = 0; i < items.length; i++) {
             let font_size = parseInt($(items[i]).css('font-size'));
             if (font_size) {
-                font_size *= ratio;
+                font_size = Math.round(font_size * ratio);
                 $(items[i]).css('font-size', `${font_size}px`);
             }
         }
@@ -103,8 +103,8 @@ $(document).ready (async function() {
             let width = parseInt($(items_wh[i]).css('width'));
             let height = parseInt($(items_wh[i]).css('height'));
             if (width && height) {
-                height *= ratio;
-                width *= ratio;
+                height = Math.round(height * ratio);
+                width = Math.round(width * ratio);
                 $(items_wh[i]).css('width', `${width}px`);
                 $(items_wh[i]).css('height', `${height}px`);
             }
