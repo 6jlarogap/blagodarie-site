@@ -297,7 +297,7 @@ function cacheBase64Url(afunc) {
 const noPhotoBase64Url = cacheBase64Url(urlAsBase64);
 
 d3.json(apiUrl, d3_json_params)
-    .then(async (data) => {
+    .then(async data => {
 	//добавить пользователей в вершины
         const filterUser = ({uuid}) => !nodes.some(({id}) => id === uuid);
         const updateUrl = node => dataUrl => (node.base64Url = dataUrl);
@@ -388,30 +388,30 @@ d3.json(apiUrl, d3_json_params)
 			d.fy = height / 2 - 300;
 			break;
 		case INVITE_ID:
-				d.fx = width<900 ? width/2-20 : width / 2 - 200;
-				d.fy = height / 2 - 300;
-				break;
+                        d.fx = width<900 ? width/2-20 : width / 2 - 200;
+                        d.fy = height / 2 - 300;
+                        break;
 		case HOME_ID:
-
 			d.fx = width<900 ? width/2-81 :width / 2 - 300;
 			d.fy = height / 2 - 300;
-
 			break;
-		/*case GENESIS_ID:
-			if(!window.location.href.includes('gen')){
+		/*
+                case GENESIS_ID:
+			if (document.location.includes('gen')) return;
 			d.fx = width<900 ? 20 :width / 2+100;
 			d.fy = height / 2 - 250;
-			}
-			break;*/
-
+			break;
+                */
 		case MAPS_ID:
 			d.fx = width<900 ? width/2+30 : width / 2 - 50;
 			d.fy = height / 2 - 300;
 			break;
-		/*case PLUS_ID:
+		/*
+                case PLUS_ID:
 			d.fx = width<900 ? width/2+50 : width/2+80;
 			d.fy = height/2;
-			break;*/
+			break;
+                */
 		case TRUST_ID:
 			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
 			d.fy = width<900 ? height/2+65 : height / 2 + 120;
@@ -422,13 +422,13 @@ d3.json(apiUrl, d3_json_params)
 			break;
 		case PROFILE.id:
 			if (userIdFrom && userIdFrom != PROFILE.id) {
-				d.fx = width<900 ? width / 2 - 100 : width / 2 - 200;
-				d.fy = height / 2;
-			} else {
-				d.fx = width / 2;
-				d.fy = height / 2;
+                            d.fx = width < 900 ? width / 2 - 100 : width / 2 - 200;
+                            d.fy = height / 2;
 			}
-
+                        else {
+                            d.fx = width / 2;
+                            d.fy = height / 2;
+			}
 			break;
 		}
 	});
@@ -461,19 +461,38 @@ d3.json(apiUrl, d3_json_params)
 */
 
 	simulation = d3.forceSimulation(nodes);
-	simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.6));
-	simulation.force("charge", d3.forceManyBody().strength(-11450));
-	simulation.force("x", d3.forceX(width / 2).strength(0.02));
-	simulation.force("y", d3.forceY(height / 2).strength(0.05));
+	simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.6));
+	simulation.force('charge', d3.forceManyBody().strength(-11450));
+	simulation.force('x', d3.forceX(width / 2).strength(0.02));
+	simulation.force('y', d3.forceY(height / 2).strength(0.05));
 
 	initializeDisplay();
 	initializeSimulation();
 });
 
+var layoutWorker = new Worker('staticlayout.worker.js');
+layoutWorker.simulation = simulation;
+
+const ended = () => simulation.restart();
+
 function initializeSimulation() {
   simulation.nodes(nodes);
   simulation.alpha(1).restart();
-  simulation.on("tick", ticked);
+  simulation.on('tick', ticked);
+
+  layoutWorker.onmessage = ({ data }) => {
+      switch (data.type) {
+          case 'tick': return ticked(data);
+          case 'end': return ended(data);
+      }
+
+      throw Error('Unknown message type');
+  };
+
+  layoutWorker.postMessage({
+    nodes: nodes,
+    links: links
+  });
 }
 
 const ZOOM_MIN = 0.08;
