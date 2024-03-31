@@ -471,28 +471,81 @@ d3.json(apiUrl, d3_json_params)
 });
 
 var layoutWorker = new Worker('staticlayout.worker.js');
-layoutWorker.simulation = simulation;
 
-const ended = () => simulation.restart();
+const css = (el, styles) => Object.assign(el.style, styles);
+
+function wavy(text, {letterWrap, tag='h1', delay=500}={}) {
+    letterWrap ||= letter => `<span>${letter}</span>`;
+
+    const keyframes = {
+        top: [0, '-1.5em']
+    };
+
+    const animationOptions = {
+        duration: 600,
+        direction: 'alternate',
+        easing: 'ease-in-out',
+        iterations: Infinity
+    };
+
+    const animatedText = document.createElement(tag);
+
+    animatedText.innerHTML = text.split('').map(letterWrap).join('');
+
+    Array.from(animatedText.children).forEach((wavyLetter, i) => {
+        css(wavyLetter, { position: 'relative', left: 0 });
+
+        wavyLetter.animate(keyframes, { ...animationOptions, delay: i * 60 + delay });
+    });
+
+    return animatedText;
+}
+
+function* loadingScreen(caption) {
+    const wavyText = wavy(caption);
+
+    const screen = document.createElement('div');
+    screen.setAttribute('class', `container-fluid d-flex 
+        justify-content-center align-items-center h-100
+    `);
+    css(screen, { position: 'absolute', background: 'white' });
+    screen.append(wavyText);
+
+    yield document.body.append(screen);
+
+    return screen.remove();
+}
+
+const loading = loadingScreen('Загрузка');
+
+function simStarted() {
+    loading.next();
+
+    simulation.nodes(nodes);
+    simulation.alpha(1).restart();
+    simulation.on('tick', ticked);
+}
+
+const simEnded = ({ nTicks }) => setTimeout(() => loading.next(), nTicks * 10);
+
+const MESSAGE_HANDLES = Object.freeze({
+    'start': simStarted,
+    'end': simEnded
+});
+
+function simTickCount(simulation) {
+    const alphaMinLog = Math.log(simulation.alphaMin());
+    const alphaDecayLog = Math.log(1 - simulation.alphaDecay());
+
+    return Math.ceil(alphaMinLog / alphaDecayLog);
+};
 
 function initializeSimulation() {
-  simulation.nodes(nodes);
-  simulation.alpha(1).restart();
-  simulation.on('tick', ticked);
-
-  layoutWorker.onmessage = ({ data }) => {
-      switch (data.type) {
-          case 'tick': return ticked(data);
-          case 'end': return ended(data);
-      }
-
-      throw Error('Unknown message type');
-  };
-
   layoutWorker.postMessage({
-    nodes: nodes,
-    links: links
+    nTicks: simTickCount(simulation)
   });
+
+  layoutWorker.onmessage = ({ data }) => (MESSAGE_HANDLES[data.type] || (() => {}))(data);
 }
 
 const ZOOM_MIN = 0.08;
