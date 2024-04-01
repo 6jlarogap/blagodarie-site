@@ -115,9 +115,15 @@ $(document).ready (async function() {
     const c_collapsed = '+';
     const c_expanded = '-';
 
+    // Операции, которые возможны для запуска ссылкой
+    // для телеграма типа:
+    // https://t.me/<bot_username>?start=<start_prefix>-<uuid>
+    // Пока только t: trust and thank, которое устанавливает
+    // доверие от авторизованного юзера, если до этого не было
+    // установлено доверие, или делает благодарность,
+    // если уже установлено доверие
+    //
     const trust_operations = {
-        mistrust: { op: 2, start_prefix: 'n' },
-        nullify_trust:  { op: 4, start_prefix: 'f' },
         trust_and_thank: { op: 5, start_prefix: 't' }
     }
     const genesis_operations = {
