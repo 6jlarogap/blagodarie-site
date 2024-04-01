@@ -490,7 +490,7 @@ $(document).ready (async function() {
         return t - last_click_node_time < 500;
     }
 
-    function show_popup(node) {
+    async function show_popup(node) {
         const menu__btns = document.querySelector(".menu__btns");
         menu__btns.classList.remove('text-align--center');
         node_current = node;
@@ -553,7 +553,25 @@ $(document).ready (async function() {
                 menu__btns.classList.add('text-align--center');
                 const buttons = ['#id_btn_profile'];
                 const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
+                const btn_trust_caption = document.querySelector(".btn--trust--caption");
                 if (!auth_data || auth_data && auth_data.user_uuid != node.uuid) {
+                    btn_trust_caption.innerHTML = '&nbsp;Доверие&nbsp;';
+                    if (auth_data) {
+                        // Доверяю или уже благодарю
+                        const api_response = await api_request(
+                            api_url + '/api/user/relations/', {
+                                method: 'GET',
+                                auth_token: auth_data.auth_token,
+                                params: {
+                                    user_id_from: auth_data.user_uuid,
+                                    user_id_to: node.uuid,
+                                }
+                            }
+                        );
+                        if (api_response.ok && api_response.data.from_to.is_trust) {
+                            btn_trust_caption.innerHTML = 'Благодарю';
+                        }
+                    }
                     btn_trust_wrap.classList.remove("display--none");
                     buttons.push('#id_btn_trust');
                 } else {
@@ -561,6 +579,11 @@ $(document).ready (async function() {
                 }
                 document.querySelector(".btn--goto-trust--wrap").classList.remove("display--none");
                 buttons.push('#id_btn_trust_goto');
+                // Если это внизу делать, то будет красиво, все кнопки
+                // одной ширины. Но раз установив css('width'), как его
+                // сбросить, проблема, а после Доверие Благодарить не влезает.
+                // Посему &nbsp; в заголоке Доверие и слово Благодарю, а не Благодарить
+                //
                 let max_width = 0;
                 for (const id of buttons) {
                     let width = $(id).css('width');
@@ -604,17 +627,17 @@ $(document).ready (async function() {
             node_current = node;
             // if (parm_user_uuid_genesis_tree) {
             //     if (node.is_my) {
-            //         show_popup(node);
+            //         await show_popup(node);
             //     } else {
             //         await collapse_expand(node);
             //     }
             // } else {
-                show_popup(node);
+                    await show_popup(node);
             // }
         })
-        .onNodeRightClick(function(node) {
+        .onNodeRightClick(async function(node) {
             node_current = node;
-            show_popup(node);
+            await show_popup(node);
         })
         .linkDirectionalArrowLength(10)
         .linkDirectionalArrowRelPos(1)
@@ -1068,7 +1091,7 @@ $(document).ready (async function() {
                     3000  // ms transition duration
                 );
                 */
-                show_popup(node);
+                await show_popup(node);
             }
         }
     }
