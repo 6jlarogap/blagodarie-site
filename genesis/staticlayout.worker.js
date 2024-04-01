@@ -1,21 +1,11 @@
 const Message = (type, data) => ({ type: type, ...data });
 
-var simulation;
+onmessage = function({ data }) {
+    postMessage(Message('start'));
 
-function onmessage({ data }) {
-    const { nodes, links } = data;
-
-    simulation.stop();
-
-    const alphaMinLog = Math.log(simulation.alphaMin());
-    const alphaDecayLog = Math.log(1 - simulation.alphaDecay());
-
-    const nTicks = Math.ceil(alphaMinLog / alphaDecayLog);
-
-    for (let tick = 0; tick < nTicks; ++tick) {
+    for (let tick = 0; tick < data.nTicks; ++tick) {
         postMessage(Message('tick'));
-        simulation.tick();
     }
 
-    postMessage(Message('end', { nodes: nodes, links: links }));
-}
+    postMessage(Message('end', data));
+};
