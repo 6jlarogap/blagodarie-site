@@ -95,19 +95,13 @@ var url = new URL(window.location.href);
 
 var userIdFrom = url.searchParams.get("id");
 var chat_id = url.searchParams.get("chat_id") || '';
-var all = false;
-var withalone = false;
-if (!userIdFrom && !chat_id && url.searchParams.get("all")) {
-    all = true;
-    withalone = url.searchParams.get("withalone") || '';
-}
 
 var depth = url.searchParams.get("depth") || 10;
 var up = url.searchParams.get("up") || '';
 var down = url.searchParams.get("down") || '';
 var count_ = url.searchParams.get("q") || 50;
 
-if (userIdFrom || all) {
+if (userIdFrom) {
     document.querySelector('.pagination_block').style.display = 'none';
 }
 
@@ -182,8 +176,6 @@ var link = window.location.href;
                 apiUrl = `${settings.api}/api/profile_genesis/?chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
             } else if (userIdFrom) {
                 apiUrl = `${settings.api}/api/profile_genesis/?uuid=` + userIdFrom + '&depth=' + depth + '&up=' + up + '&down=' + down;
-            } else if (all) {
-                apiUrl = `${settings.api}/api/profile_genesis/all/?fmt=d3js&rod=on` + (withalone ? `&withalone=on` : '');
             }
 
 document.addEventListener("popstate",function(e){
@@ -243,7 +235,7 @@ if (auth_token_) {
 function nodeType({uuid, is_in_page}) {
     let nodeType = NODE_TYPES.USER;
 
-    if (all || chat_id && !is_in_page) {
+    if (chat_id && !is_in_page) {
         nodeType = NODE_TYPES.FILTERED;
     } else if (uuid !== userIdFrom) {
         nodeType = NODE_TYPES.FRIEND;
