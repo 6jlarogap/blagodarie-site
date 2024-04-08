@@ -31,7 +31,7 @@
 //      depth           глубина поиска по рекурсии родства от user с uuid1 до user c uuid2
 //
 //  user_uuid_trust_path=<uuid1>,<uuid2>
-//                      Путь доверия между user с uuid1 и user c uuid2
+//                      Путь доверий/знакомств между user с uuid1 и user c uuid2
 //                  При этом возможен параметр:
 //      depth           глубина поиска по рекурсии доверия от user с uuid1 до user c uuid2
 //
@@ -131,6 +131,12 @@ $(document).ready (async function() {
         set_mother: { op: 10}
     }
     const paginate_users_count = 25;
+
+    const attitudes = {
+        acq: 'a',       // знаком
+        trust: 't',     // доверяет
+        mistrust: 'mt'  // не доверяет
+    }
 
     function expand_collapse_sign (node) {
         let result;
@@ -249,13 +255,16 @@ $(document).ready (async function() {
             return color_relation;
         }
         const color_poll = color_relation;
+        const color_acq = format == 'rgba' ? 'rgba(214, 223, 31, 0.8)' : '#d6df1f';
         const color_trust = format == 'rgba' ? 'rgba(54, 107, 13, 0.8)' : '#366b0d';
         const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
         if (link.is_poll || link.is_offer || link.is_video_vote) {
             return color_poll;
         } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path)) {
             return color_relation;
-        } else if (link.is_trust) {
+        } else if (link.attitude == attitudes.acq) {
+            return color_acq;
+        } else if (link.attitude == attitudes.trust) {
             return color_trust;
         } else {
             return color_not_trust;
@@ -361,7 +370,7 @@ $(document).ready (async function() {
         parm_videoid = '';
         parm_rod = ''; parm_dover = '';
     } else if (parm_user_uuid_trust_path) {
-        document.title = 'Благо Рода: путь доверий';
+        document.title = 'Благо Рода: путь доверий/знакомств';
         api_get_parms =
             '/api/profile_trust?uuid=' + parm_user_uuid_trust_path + '&fmt=3d-force-graph&depth=' + parm_depth;
         parm_user_uuid_trusts = '';
@@ -555,7 +564,7 @@ $(document).ready (async function() {
                         btn_child.classList.remove("display--none");
                     }
                 }
-            } else if (parm_user_uuid_trusts || parm_dover || parm_tg_group_chat_id) {
+            } else if (parm_user_uuid_trusts || parm_dover || parm_tg_group_chat_id || parm_user_uuid_trust_path) {
                 menu__btns.classList.add('text-align--center');
                 const buttons = ['#id_btn_profile'];
                 const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
@@ -574,7 +583,7 @@ $(document).ready (async function() {
                                 }
                             }
                         );
-                        if (api_response.ok && api_response.data.from_to.is_trust) {
+                        if (api_response.ok && api_response.data.from_to.attitude == attitudes.trust) {
                             btn_trust_caption.innerHTML = 'Благодарю';
                         }
                     }
@@ -795,27 +804,29 @@ $(document).ready (async function() {
                     if (source_id != auth_data.user_id || target_id != node_current.id) continue;
                     if (operation == 'trust_and_thank') {
                         link.thanks_count = api_response.data.currentstate.thanks_count;
-                        link.is_trust = true;
+                        link.attitude = attitudes.trust;
                     } else if (operation == 'mistrust') {
-                        link.is_trust = false;
-                    } else if (operation == 'nullify_trust') {
-                        link.is_trust = null;
+                        link.attitude = attitudes.mistrust;
+                    } else if (operation == 'acq') {
+                        link.attitude = attitudes.acq;
+                    } else if (operation == 'nullify_attitude') {
+                        link.attitude = null;
                     }
                     i_found = i;
                     break;
                 }
-                if (i_found == -1 && operation != 'nullify_trust') {
+                if (i_found == -1 && operation != 'nullify_attitude') {
                     // не найден link
-                    // учет nullify_trust здесь: fool-proof
+                    // учет nullify_attitude здесь: fool-proof
                     data.links.push({
                         source: auth_data.user_id,
                         target: node_current.id,
-                        is_trust: !(operation == 'mistrust'),
+                        attitude: api_response.data.currentstate.attitude,
                     });
                 } else {
                     // найден link. Если забываем, но есть родственная связь,
                     // то не надо удалять связь.
-                    if (operation == 'nullify_trust' && !link.is_child) {
+                    if (operation == 'nullify_attitude' && !link.is_child) {
                         data.links.splice(i_found, 1);
                     }
                 }
