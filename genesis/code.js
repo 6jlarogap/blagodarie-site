@@ -540,7 +540,7 @@ function initializeSimulation() {
   layoutWorker.onmessage = ({ data }) => (MESSAGE_HANDLES[data.type] || (() => {}))(data);
 }
 
-const ZOOM_MIN = 0.08;
+const ZOOM_MIN = 0.05;
 const ZOOM_MAX = 2;
 
 var zoom = d3.zoom().scaleExtent([ZOOM_MIN, ZOOM_MAX]);
