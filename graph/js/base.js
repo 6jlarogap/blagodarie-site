@@ -255,9 +255,9 @@ $(document).ready (async function() {
             return color_relation;
         }
         const color_poll = color_relation;
-        const color_acq = format == 'rgba' ? 'rgba(214, 223, 31, 0.8)' : '#d6df1f';
-        const color_trust = format == 'rgba' ? 'rgba(54, 107, 13, 0.8)' : '#366b0d';
-        const color_not_trust = format == 'rgba' ? 'rgba(250, 7, 24, 0.8)' : '#fa0718';
+        const color_acq = format == 'rgba' ? 'rgba(154, 205, 50, 0.8)' : '#9acd32';         // yellowGreen
+        const color_trust = format == 'rgba' ? 'rgba(0, 100, 0, 0.8)' : '#006400';          // Green
+        const color_not_trust = format == 'rgba' ? 'rgba(255, 0, 0, 0.8)' : '#ff0000';      // red
         if (link.is_poll || link.is_offer || link.is_video_vote) {
             return color_poll;
         } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path)) {

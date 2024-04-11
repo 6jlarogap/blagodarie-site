@@ -172,22 +172,33 @@ $(document).ready (async function() {
             } else if (uuid_trustees) {
                 if (data.first_name) {
                     document.title = title_base + '. Доверия к: ' + data.first_name;
-                    let him_her = data.is_org ? '' : (
-                        data.gender == 'm' ? 'ему' : (data.gender == 'f' ? 'ей' : '')
-                    );
                     $('#id_subtitle_').html(
                             '<h3>' +
                                 '<big>' +
                                     '<a href="' + document.URL + '">' + data.first_name + '</a> '+
                                 '</big>' +
-                                ' (' +
-                                    '<i>' +
-                                        him_her +
-                                        (him_her ? ' ' : '') +
-                                        'доверяют: ' + data.num_trusts_true + ', ' +
-                                        'не доверяют: ' + data.num_trusts_false +
-                                    '</i>' +
-                                ')'+
+                                (
+                                    data.num_attitude_trust || data.num_attitude_mistrust || data.num_attitude_acq
+                                    ?
+                                        ' (' +
+                                            '<i>' +
+                                                (
+                                                    data.num_attitude_trust
+                                                        ?   'доверяют: ' + data.num_attitude_trust +
+                                                            (data.num_attitude_mistrust || data.num_attitude_acq ? ', ' : '')
+                                                        : ''
+                                                ) +
+                                                (
+                                                    data.num_attitude_mistrust
+                                                        ?   'не доверяют: ' + data.num_attitude_mistrust +
+                                                            (data.num_attitude_acq ? ', ' : '')
+                                                        : ''
+                                                ) +
+                                                (data.num_attitude_acq ? 'знакомы: ' + data.num_attitude_acq : '') +
+                                            '</i>' +
+                                        ')'
+                                    : ''
+                                ) +
                             '</h3>'
                     );
                     if (data.found_coordinates) {
