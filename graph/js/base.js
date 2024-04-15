@@ -778,7 +778,7 @@ $(document).ready (async function() {
         const d_op = trust_operations[operation];
         if (!auth_data && node_current.uuid && data.bot_username) {
             window.location.href =
-                `https://t.me/${data.bot_username}?start=${d_op.start_prefix}-${node_current.uuid}`;
+                `https://t.me/${data.bot_username}?start=${d_op.start_prefix}-${node_current.username}`;
             return;
         }
         if (auth_data && node_current.uuid && auth_data.user_uuid != node_current.uuid) {
