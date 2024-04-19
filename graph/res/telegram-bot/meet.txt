@@ -1,1 +1,1 @@
-Знакомьтесь: $DEEPLINK$
+Знакомьтесь: $DEEPLINK_MEET$
