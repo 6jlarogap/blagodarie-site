@@ -1068,7 +1068,7 @@ $(document).ready (async function() {
         } else if (parm_user_uuid_genesis_tree && data.root_node) {
             document.title = `${data.root_node.first_name}, родство, благо Рода`;
         } else if (parm_user_uuid_trusts && data.root_node) {
-            document.title = `${data.root_node.first_name}, доверия, благо Рода`;
+            document.title = `${data.root_node.first_name}, доверия и знакомства, благо Рода`;
         } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
             document.title = 'Опрос: ' + data.question + ', благо Рода';
         } else if (parm_videoid && data.title) {
