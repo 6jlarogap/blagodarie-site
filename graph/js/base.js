@@ -124,7 +124,7 @@ $(document).ready (async function() {
     // если уже установлено доверие
     //
     const trust_operations = {
-        trust_and_thank: { op: 5, start_prefix: 't' }
+        trust_or_thank: { op: 5, start_prefix: 't' }
     }
     const genesis_operations = {
         set_father: { op:  9},
@@ -802,7 +802,7 @@ $(document).ready (async function() {
                     const source_id = ((typeof link.source) === 'object') ? link.source.id : link.source;
                     const target_id = ((typeof link.target) === 'object') ? link.target.id : link.target;
                     if (source_id != auth_data.user_id || target_id != node_current.id) continue;
-                    if (operation == 'trust_and_thank') {
+                    if (operation == 'trust_or_thank') {
                         link.thanks_count = api_response.data.currentstate.thanks_count;
                         link.attitude = attitudes.trust;
                     } else if (operation == 'mistrust') {
@@ -851,7 +851,7 @@ $(document).ready (async function() {
     });
     document.querySelector(".btn--trust").addEventListener("click", async function() {
         if (is_double_clicked()) return;
-        await make_trust_operation('trust_and_thank');
+        await make_trust_operation('trust_or_thank');
     });
     document.querySelector(".btn--collapse").addEventListener("click", async function() {
         if (is_double_clicked()) return;
