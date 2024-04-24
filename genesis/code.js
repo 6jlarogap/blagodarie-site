@@ -361,191 +361,181 @@ d3.json(apiUrl, d3_json_params)
 
 	//зафиксировать вершины пользователя, желаний и ключей
 
-	nodes.forEach(function(d) {
-		switch(d.id){
-		case userIdFrom:
-			d.fx = width / 2;
-			d.fy = height / 2;
+	nodes.forEach(d => {
+                d.fx = width / 2;
+                d.fy = height / 2;
+
+		switch (d.id) {
+                    case userIdFrom: break;
+                    case WISHES_ROOT_ID: {
+		        d.fx += width < 900 ? 150 : 400;
+		        d.fy += width < 900 ? 50 : 200;
 			break;
-		case WISHES_ROOT_ID:
-			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
-			d.fy = width<900 ? height/2+50 : height / 2 + 200;
+                    }
+                    case ABILITIES_ROOT_ID: {
+			d.fx += width < 900 ? 150 : 400;
+			d.fy -= width < 900 ? 10 : 0;
 			break;
-		case ABILITIES_ROOT_ID:
-			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
-			d.fy = width<900 ? height/2-10 : height / 2;
+                    }
+                    case SHARE_ID: {
+			d.fx += width < 900 ? 80 : 300;
+			d.fy -= 300;
 			break;
-		case SHARE_ID:
-			d.fx = width<900 ? width/2+80 : width / 2 + 300;
-			d.fy = height / 2 - 300;
+                    }
+                    case FILTER_ID: {
+			d.fx += width < 900 ? 170 : 400;
+			d.fy -= 300;
 			break;
-		case FILTER_ID:
-			d.fx = width<900 ? width/2+170 : width / 2 + 400;
-			d.fy = height / 2 - 300;
+                    }
+                    case OPTIONS_ID: {
+			d.fx -= width < 900 ? d.fx + 10 : 400;
+			d.fy -= 300;
 			break;
-		case OPTIONS_ID:
-			d.fx = width<900 ? 10 : width / 2 - 400;
-			d.fy = height / 2 - 300;
-			break;
-		case INVITE_ID:w
-                        d.fx = width<900 ? width/2-20 : width / 2 - 200;
-                        d.fy = height / 2 - 300;
+                    }
+                    case INVITE_ID: {
+                        d.fx -= width < 900 ? 20 : 200;
+			d.fy -= 300;
                         break;
-		case HOME_ID:
-			d.fx = width<900 ? width/2-81 :width / 2 - 300;
-			d.fy = height / 2 - 300;
+                    }
+                    case HOME_ID: {
+			d.fx -= width < 900 ? 81 : 300;
+			d.fy -= 300;
 			break;
-		/*
-                case GENESIS_ID:
-			if (document.location.includes('gen')) return;
-			d.fx = width<900 ? 20 :width / 2+100;
-			d.fy = height / 2 - 250;
+                    }
+                    case MAPS_ID: {
+			d.fx += width < 900 ? 30 : -50;
+                        d.fy -= 300;
 			break;
-                */
-		case MAPS_ID:
-			d.fx = width<900 ? width/2+30 : width / 2 - 50;
-			d.fy = height / 2 - 300;
+                    }
+                    case TRUST_ID: {
+			d.fx += width < 900 ? 30 : 50;
+			d.fy += width < 900 ? 65 : 120;
 			break;
-		/*
-                case PLUS_ID:
-			d.fx = width<900 ? width/2+50 : width/2+80;
-			d.fy = height/2;
+                    }
+                    case MISTRUST_ID: {
+			d.fx -= width < 900 ? 30 : 50;
+			d.fy += width < 900 ? 65 : 120;
 			break;
-                */
-		case TRUST_ID:
-			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
-			d.fy = width<900 ? height/2+65 : height / 2 + 120;
+                    }
+                    case PROFILE.id: {
+                        d.fx -= width < 900 ? 100 : 200;
 			break;
-		case MISTRUST_ID:
-			d.fx = width<900 ? width / 2 - 30 :  width / 2 - 50;
-			d.fy = width<900 ? height/2+65 : height / 2 + 120;
-			break;
-		case PROFILE.id:
-			if (userIdFrom && userIdFrom != PROFILE.id) {
-                            d.fx = width < 900 ? width / 2 - 100 : width / 2 - 200;
-                            d.fy = height / 2;
-			}
-                        else {
-                            d.fx = width / 2;
-                            d.fy = height / 2;
-			}
-			break;
+                    }
 		}
 	});
-/*
-	if(width<900){
-		simulation = d3.forceSimulation(nodes);
-		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links)); //distance(150)
-		simulation.force("charge", d3.forceManyBody().strength(-400)); //0.5
-		//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-		simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
-		simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
-		simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))
-	}
-	else if(width < 3000) {
-		simulation = d3.forceSimulation(nodes);
-		simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.6));
-		simulation.force("charge", d3.forceManyBody().strength(-450));
-	//	simulation.force("collide", d3.forceCollide().strength(5).radius(20));//.iterations(1));//radius 80  strength(0.6)
-		simulation.force("x", d3.forceX(width / 2));
-		simulation.force("y", d3.forceY(height / 2));
-	}
-	else{
-		simulation = d3.forceSimulation(nodes);
-		simulation.force("x", d3.forceX(width / 2).strength(0.03))
-		simulation.force("y", d3.forceY(height / 2).strength(0.03))
-		simulation.force("link", d3.forceLink(links).id(d => d.id).iterations(100).distance(500).strength(0.1))
-		simulation.force("charge", d3.forceManyBody().strength(-800)) //.distanceMax(500))
-		simulation.force("collide", d3.forceCollide().strength(1).radius(300))//.iterations(1))
-	}
-*/
 
-	simulation = d3.forceSimulation(nodes);
-	simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.6));
-	simulation.force('charge', d3.forceManyBody().strength(-11450));
-	simulation.force('x', d3.forceX(width / 2).strength(0.02));
-	simulation.force('y', d3.forceY(height / 2).strength(0.05));
-
-	initializeDisplay();
 	initializeSimulation();
 });
 
-var layoutWorker = new Worker('staticlayout.worker.js');
-
 const css = (el, styles) => Object.assign(el.style, styles);
 
-function wavy(text, {letterWrap, tag='h1', delay=500}={}) {
-    letterWrap ||= letter => `<span>${letter}</span>`;
+function progress() {
+    function update(newValue) {
+        const outer = document.querySelector('.progress');
+        outer.setAttribute('aria-valuenow', newValue);
 
-    const keyframes = {
-        top: [0, '-1.5em']
-    };
+        const [inner] = outer.children;
+        css(inner, { width: `${newValue}%` });
+    }
 
-    const animationOptions = {
-        duration: 600,
-        direction: 'alternate',
-        easing: 'ease-in-out',
-        iterations: Infinity
-    };
+    const outerDiv = document.createElement('div');
+    outerDiv.setAttribute('class', 'progress container-fluid d-flex');
+    outerDiv.setAttribute('role', 'progressbar');
+    outerDiv.setAttribute('aria-label', 'Simulation tick progress');
+    outerDiv.setAttribute('aria-valuenow', 0);
+    outerDiv.setAttribute('aria-valuemin', 0);
+    outerDiv.setAttribute('aria-valuemax', 100);
+    css(outerDiv, { paddingLeft: 'unset', paddingRight: 'unset' });
 
-    const animatedText = document.createElement(tag);
+    const innerDiv = document.createElement('div');
+    innerDiv.setAttribute('class', 'progress-bar');
+    css(innerDiv, { width: '0%' });
 
-    animatedText.innerHTML = text.split('').map(letterWrap).join('');
+    outerDiv.append(innerDiv);
 
-    Array.from(animatedText.children).forEach((wavyLetter, i) => {
-        css(wavyLetter, { position: 'relative', left: 0 });
-
-        wavyLetter.animate(keyframes, { ...animationOptions, delay: i * 60 + delay });
-    });
-
-    return animatedText;
+    return [outerDiv, update];
 }
 
-function* loadingScreen(caption) {
-    const wavyText = wavy(caption);
-
+function* loadingScreen(content) {
     const screen = document.createElement('div');
     screen.setAttribute('class', `container-fluid d-flex 
         justify-content-center align-items-center h-100
     `);
     css(screen, { position: 'absolute', background: 'white' });
-    screen.append(wavyText);
+
+    screen.append(content);
 
     yield document.body.append(screen);
 
     return screen.remove();
 }
 
-const loading = loadingScreen('Загрузка');
+const [progressBar, updateProgress] = progress();
+const loading = loadingScreen(progressBar);
 
 function simStarted() {
     loading.next();
 
+    initializeDisplay();
+
     simulation.nodes(nodes);
-    simulation.alpha(1).restart();
     simulation.on('tick', ticked);
+
+    simulation.stop();
 }
 
-const simEnded = ({ nTicks }) => setTimeout(() => loading.next(), nTicks * 10);
+function simTicked({ progress }) {
+    simulation.tick();
 
-const MESSAGE_HANDLES = Object.freeze({
+    updateProgress(progress);
+}
+
+function simEnded({ nodes, links }) {
+    simulation = d3.forceSimulation(nodes);
+    simulation.force('link', d3.forceLink(links).id(({id}) => id));
+
+    simulation.alpha(1).restart();
+
+    loading.next();
+}
+
+const MESSAGE_HANDLERS = Object.freeze({
     'start': simStarted,
+    'tick': simTicked,
     'end': simEnded
 });
 
-function simTickCount(simulation) {
+const SIM_INIT = Object.freeze({
+    STRENGTH: {
+        LINK: 0.6,
+        CHARGE: -11450,
+        X: 0.02,
+        Y: 0.05
+    }
+});
+
+var layoutWorker = new Worker('staticlayout.worker.js');
+
+function initializeSimulation() {
+    simulation = d3.forceSimulation(nodes);
+    simulation.force('link', d3.forceLink(links).id(({id}) => id)
+        .strength(SIM_INIT.STRENGTH.LINK));
+    simulation.force('charge', d3.forceManyBody().strength(SIM_INIT.STRENGTH.CHARGE));
+    simulation.force('x', d3.forceX(width / 2).strength(SIM_INIT.STRENGTH.X));
+    simulation.force('y', d3.forceY(height / 2).strength(SIM_INIT.STRENGTH.Y));
+
     const alphaMinLog = Math.log(simulation.alphaMin());
     const alphaDecayLog = Math.log(1 - simulation.alphaDecay());
 
-    return Math.ceil(alphaMinLog / alphaDecayLog);
-};
+    const nTicks = Math.ceil(alphaMinLog / alphaDecayLog);
 
-function initializeSimulation() {
-  layoutWorker.postMessage({
-    nTicks: simTickCount(simulation)
-  });
+    layoutWorker.postMessage({
+        nodes: nodes,
+        links: links,
+        nTicks: nTicks
+    });
 
-  layoutWorker.onmessage = ({ data }) => (MESSAGE_HANDLES[data.type] || (() => {}))(data);
+    layoutWorker.onmessage = ({ data }) => (MESSAGE_HANDLERS[data.type] || (() => {}))(data);
 }
 
 const ZOOM_MIN = 0.08;
