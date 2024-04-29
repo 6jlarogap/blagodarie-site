@@ -124,7 +124,8 @@ $(document).ready (async function() {
     // если уже установлено доверие
     //
     const trust_operations = {
-        trust_or_thank: { op: 5, start_prefix: 't' }
+        trust: { op: 3, start_prefix: 't' },
+        thank: { op: 1, start_prefix: 'th' }
     }
     const genesis_operations = {
         set_father: { op:  9},
@@ -571,6 +572,7 @@ $(document).ready (async function() {
                 const btn_trust_caption = document.querySelector(".btn--trust--caption");
                 if (!auth_data || auth_data && auth_data.user_uuid != node.uuid) {
                     btn_trust_caption.innerHTML = '&nbsp;Доверие&nbsp;';
+                    $('input[name=trust-or-thank]').val('trust');
                     if (auth_data) {
                         // Доверяю или уже благодарю
                         const api_response = await api_request(
@@ -585,6 +587,7 @@ $(document).ready (async function() {
                         );
                         if (api_response.ok && api_response.data.from_to.attitude == attitudes.trust) {
                             btn_trust_caption.innerHTML = 'Благодарю';
+                            $('input[name=trust-or-thank]').val('thank');
                         }
                     }
                     btn_trust_wrap.classList.remove("display--none");
@@ -772,8 +775,9 @@ $(document).ready (async function() {
         }
     }
 
-    async function make_trust_operation(operation) {
+    async function make_trust_operation() {
         menu_wrapper.classList.remove("menu-wrapper--active");
+        const operation = $('input[name=trust-or-thank]').val();
         if (!(operation in trust_operations)) return;
         const d_op = trust_operations[operation];
         if (!auth_data && node_current.uuid && data.bot_username) {
@@ -794,7 +798,10 @@ $(document).ready (async function() {
                     }
                 }
             );
-            if (api_response.ok) {
+            if (
+                api_response.ok ||
+                api_response.status == 400 && api_response.data.code && api_response.data.code == 'already'
+            ) {
                 // Найти связи, идущие от авторизованного и выполнить необходимое
                 let i_found = -1;
                 for (let i = 0; i < data.links.length; i++) {
@@ -802,32 +809,26 @@ $(document).ready (async function() {
                     const source_id = ((typeof link.source) === 'object') ? link.source.id : link.source;
                     const target_id = ((typeof link.target) === 'object') ? link.target.id : link.target;
                     if (source_id != auth_data.user_id || target_id != node_current.id) continue;
-                    if (operation == 'trust_or_thank') {
-                        link.thanks_count = api_response.data.currentstate.thanks_count;
+                    if (operation == 'trust') {
                         link.attitude = attitudes.trust;
-                    } else if (operation == 'mistrust') {
-                        link.attitude = attitudes.mistrust;
-                    } else if (operation == 'acq') {
-                        link.attitude = attitudes.acq;
-                    } else if (operation == 'nullify_attitude') {
-                        link.attitude = null;
+                    } else if (operation == 'thank') {
+                        link.thanks_count = api_response.data.currentstate.thanks_count;
                     }
                     i_found = i;
                     break;
                 }
-                if (i_found == -1 && operation != 'nullify_attitude') {
+                if (i_found == -1) {
                     // не найден link
-                    // учет nullify_attitude здесь: fool-proof
                     data.links.push({
                         source: auth_data.user_id,
                         target: node_current.id,
-                        attitude: api_response.data.currentstate.attitude,
+                        // може получить !ok && status == 400 && already только по операции trust
+                        attitude: api_response.ok ? api_response.data.currentstate.attitude : attitudes.trust,
                     });
                 } else {
-                    // найден link. Если забываем, но есть родственная связь,
-                    // то не надо удалять связь.
-                    if (operation == 'nullify_attitude' && !link.is_child) {
-                        data.links.splice(i_found, 1);
+                    // найден link. Был знаком, стало доверие?
+                    if (operation == 'trust') {
+                        data.links[i_found].attitude = attitudes.trust;
                     }
                 }
                 Graph.graphData(data);
@@ -851,7 +852,7 @@ $(document).ready (async function() {
     });
     document.querySelector(".btn--trust").addEventListener("click", async function() {
         if (is_double_clicked()) return;
-        await make_trust_operation('trust_or_thank');
+        await make_trust_operation();
     });
     document.querySelector(".btn--collapse").addEventListener("click", async function() {
         if (is_double_clicked()) return;
