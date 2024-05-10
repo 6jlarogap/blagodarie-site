@@ -564,6 +564,7 @@ $(document).ready (async function() {
                     if (node.gender) {
                         btn_child.classList.remove("display--none");
                     }
+                    document.querySelector(".add--relatives-close").classList.remove("display--none");
                 }
             } else if (parm_user_uuid_trusts || parm_dover || parm_tg_group_chat_id || parm_user_uuid_trust_path) {
                 menu__btns.classList.add('text-align--center');
@@ -841,6 +842,9 @@ $(document).ready (async function() {
     }
 
     document.querySelector(".menu__close-wrap").addEventListener("click", function() {
+        menu_wrapper.classList.remove("menu-wrapper--active")
+    });
+    document.querySelector(".btn--add--relatives--close").addEventListener("click", function() {
         menu_wrapper.classList.remove("menu-wrapper--active")
     });
     document.querySelector(".btn--profile").addEventListener("click", function() {
