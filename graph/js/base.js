@@ -10,7 +10,7 @@
 //  tg_group_chat_id    ид группы/канала в телеграме, показ связей доверия участников группы.
 //  tgr
 //
-//  user_uuid_genesis_tree=<uuid>
+//  user_genesis_tree=<uuid или id>
 //                      Дерево родства
 //                  При этом возможны параметры:
 //      depth           начальная глубина глубина поиска по рекурсии родства от user с uuid,
@@ -25,17 +25,17 @@
 //                      брат при движении вверх /up/).
 //                      При любых up/down линия прямого родства выделяется другим цветом.
 //
-//  user_uuid_genesis_path=<uuid1>,<uuid2>
+//  user_genesis_path=<uuid1>,<uuid2> или <short_id1, short_id2>
 //                      Путь родства между user с <uuid1> и user c <uuid2>
 //                  При этом возможен параметр:
 //      depth           глубина поиска по рекурсии родства от user с uuid1 до user c uuid2
 //
-//  user_uuid_trust_path=<uuid1>,<uuid2>
+//  user_trust_path=<uuid1>,<uuid2> или <short_id1, short_id2>
 //                      Путь доверий/знакомств между user с uuid1 и user c uuid2
 //                  При этом возможен параметр:
 //      depth           глубина поиска по рекурсии доверия от user с uuid1 до user c uuid2
 //
-//  user_uuid_trusts=<uuid>
+//  user_trusts=<uuid> или <id>
 //                      Все связи доверия от пользователя с <uuid>,
 //                      а также связи доверия тех, кто ему (ей) доверял или не доверял
 //
@@ -220,7 +220,7 @@ $(document).ready (async function() {
     function node_text_color(node, format) {
         // dark red
         let color = format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000';
-        if (parm_user_uuid_genesis_tree) {
+        if (parm_user_genesis_tree) {
             // green or darkred or blue if up or down
             color = (node.up || node.down)
                 ?   (format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc')
@@ -236,7 +236,7 @@ $(document).ready (async function() {
     function link_color(link, format) {
         // blue, для прямого родства
         let color_relation = format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc';
-        if (parm_user_uuid_genesis_tree) {
+        if (parm_user_genesis_tree) {
             const source = ((typeof link.source) === 'object') ? link.source : nodes_by_id[link.source];
             const target = ((typeof link.target) === 'object') ? link.target : nodes_by_id[link.target];
             if (!(source.up && target.up || source.down && target.down)) {
@@ -261,7 +261,7 @@ $(document).ready (async function() {
         const color_not_trust = format == 'rgba' ? 'rgba(255, 0, 0, 0.8)' : '#ff0000';      // red
         if (link.is_poll || link.is_offer || link.is_video_vote) {
             return color_poll;
-        } else if (link.is_child && (parm_rod || parm_user_uuid_genesis_path)) {
+        } else if (link.is_child && (parm_rod || parm_user_genesis_path)) {
             return color_relation;
         } else if (link.attitude == attitudes.acq) {
             return color_acq;
@@ -287,12 +287,12 @@ $(document).ready (async function() {
     let parm_dover=get_parm('dover') || '';;
     let parm_withalone = get_parm('withalone') || '';
 
-    const parm_user_uuid_genesis_name = 'user_uuid_genesis_tree';
-    let parm_user_uuid_genesis_tree = get_parm(parm_user_uuid_genesis_name) || '';
-    let parm_user_uuid_genesis_path = get_parm('user_uuid_genesis_path') || '';
-    let parm_user_uuid_trust_path = get_parm('user_uuid_trust_path') || '';
-    const parm_user_uuid_trusts_name = 'user_uuid_trusts';
-    let parm_user_uuid_trusts = get_parm(parm_user_uuid_trusts_name) || '';
+    const parm_user_genesis_name = 'user_genesis_tree';
+    let parm_user_genesis_tree = get_parm(parm_user_genesis_name) || get_parm('user_uuid_genesis_tree') || '';
+    let parm_user_genesis_path = get_parm('user_genesis_path') || '';
+    let parm_user_trust_path = get_parm('user_trust_path') || '';
+    const parm_user_trusts_name = 'user_trusts';
+    let parm_user_trusts = get_parm(parm_user_trusts_name) || get_parm('user_uuid_trusts') || '';
 
     let parm_tg_poll_id = get_parm('tg_poll_id') || '';
     let parm_offer_uuid = get_parm('offer_uuid') || '';
@@ -301,32 +301,31 @@ $(document).ready (async function() {
     let parm_source = '';
     if (parm_videoid) parm_source = get_parm('source') || 'yt';
 
-    const r_uuid = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i;
-    const r_uuid1_uuid2 = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}\,[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i;
+    const r_id1_id2 = /\,/;
     let parm_depth = '';
     let parm_up = '';
     let parm_down = '';
-    if (parm_user_uuid_genesis_tree) {
-        if (r_uuid.test(parm_user_uuid_genesis_tree)) {
+    if (parm_user_genesis_tree) {
+        if (!r_id1_id2.test(parm_user_genesis_tree)) {
             parm_depth = get_parm('depth') || 2;
             parm_up = get_parm('up') || '';
             parm_down = get_parm('down') || '';
         } else {
-            parm_user_uuid_genesis_tree = '';
+            parm_user_genesis_tree = '';
         }
     }
-    if (parm_user_uuid_genesis_path) {
-        if (r_uuid1_uuid2.test(parm_user_uuid_genesis_path)) {
+    if (parm_user_genesis_path) {
+        if (r_id1_id2.test(parm_user_genesis_path)) {
             parm_depth = get_parm('depth') || '';
         } else {
-            parm_user_uuid_genesis_path = '';
+            parm_user_genesis_path = '';
         }
     }
-    if (parm_user_uuid_trust_path) {
-        if (r_uuid1_uuid2.test(parm_user_uuid_trust_path)) {
+    if (parm_user_trust_path) {
+        if (r_id1_id2.test(parm_user_trust_path)) {
             parm_depth = get_parm('depth') || '';
         } else {
-            parm_user_uuid_trust_path = '';
+            parm_user_trust_path = '';
         }
     }
 
@@ -337,51 +336,51 @@ $(document).ready (async function() {
             '/api/getstats/user_connections_graph?fmt=3d-force-graph' +
             '&number=0' +
             '&tg_group_chat_id=' + parm_tg_group_chat_id;
-        parm_user_uuid_genesis_tree = '';
-        parm_user_uuid_genesis_path = '';
-        parm_user_uuid_trust_path = '';
-        parm_user_uuid_trusts = '';
+        parm_user_genesis_tree = '';
+        parm_user_genesis_path = '';
+        parm_user_trust_path = '';
+        parm_user_trusts = '';
         parm_offer_uuid = '';
         parm_tg_poll_id = '';
         parm_videoid = '';
         parm_rod = ''; parm_dover = '';
-    } else if (parm_user_uuid_genesis_tree) {
+    } else if (parm_user_genesis_tree) {
         api_get_parms =
-            '/api/profile_genesis?uuid=' + parm_user_uuid_genesis_tree +
+            '/api/profile_genesis?id=' + parm_user_genesis_tree +
             '&fmt=3d-force-graph' +
             '&depth=' + parm_depth +
             '&up=' + parm_up +
             '&down=' + parm_down + '&new=on'
         ;
-        parm_user_uuid_genesis_path = '';
-        parm_user_uuid_trust_path = '';
-        parm_user_uuid_trusts = '';
+        parm_user_genesis_path = '';
+        parm_user_trust_path = '';
+        parm_user_trusts = '';
         parm_offer_uuid = '';
         parm_tg_poll_id = '';
         parm_videoid = '';
         parm_rod = ''; parm_dover = '';
-    } else if (parm_user_uuid_genesis_path) {
+    } else if (parm_user_genesis_path) {
         document.title = 'Благо Рода: путь родства';
         api_get_parms =
-            '/api/profile_genesis?uuid=' + parm_user_uuid_genesis_path + '&fmt=3d-force-graph&depth=' + parm_depth;
-        parm_user_uuid_trust_path = '';
-        parm_user_uuid_trusts = '';
+            '/api/profile_genesis?id=' + parm_user_genesis_path + '&fmt=3d-force-graph&depth=' + parm_depth;
+        parm_user_trust_path = '';
+        parm_user_trusts = '';
         parm_offer_uuid = '';
         parm_tg_poll_id = '';
         parm_videoid = '';
         parm_rod = ''; parm_dover = '';
-    } else if (parm_user_uuid_trust_path) {
+    } else if (parm_user_trust_path) {
         document.title = 'Благо Рода: путь доверий/знакомств';
         api_get_parms =
-            '/api/profile_trust?uuid=' + parm_user_uuid_trust_path + '&fmt=3d-force-graph&depth=' + parm_depth;
-        parm_user_uuid_trusts = '';
+            '/api/profile_trust?id=' + parm_user_trust_path + '&fmt=3d-force-graph&depth=' + parm_depth;
+        parm_user_trusts = '';
         parm_offer_uuid = '';
         parm_tg_poll_id = '';
         parm_videoid = '';
         parm_rod = ''; parm_dover = '';
-    } else if (parm_user_uuid_trusts) {
+    } else if (parm_user_trusts) {
         api_get_parms =
-            '/api/profile_graph?fmt=3d-force-graph&uuid=' + parm_user_uuid_trusts;
+            '/api/profile_graph?fmt=3d-force-graph&id=' + parm_user_trusts;
         parm_offer_uuid = '';
         parm_tg_poll_id = '';
         parm_videoid = '';
@@ -514,7 +513,7 @@ $(document).ready (async function() {
             menu__title_span.textContent =
                 ('first_name_orig' in node) ? node.first_name_orig : node.first_name;
             menu_wrapper.classList.add("menu-wrapper--active");
-            if (parm_user_uuid_genesis_tree) {
+            if (parm_user_genesis_tree) {
                 const btn_collapse = document.querySelector(".btn--collapse");
                 const btn_goto_gen = document.querySelector(".btn--goto-gen");
                 const what = expand_collapse_sign(node);
@@ -566,7 +565,7 @@ $(document).ready (async function() {
                     }
                     document.querySelector(".add--relatives-close").classList.remove("display--none");
                 }
-            } else if (parm_user_uuid_trusts || parm_dover || parm_tg_group_chat_id || parm_user_uuid_trust_path) {
+            } else if (parm_user_trusts || parm_dover || parm_tg_group_chat_id || parm_user_trust_path) {
                 menu__btns.classList.add('text-align--center');
                 const buttons = ['#id_btn_profile'];
                 const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
@@ -632,7 +631,7 @@ $(document).ready (async function() {
         .nodeLabel(node => `<span style="color: ${node_text_color(node, 'rgb')}">${node.first_name}</span>`)
         .onNodeHover(node => {
             let cursor = null;
-            if (parm_user_uuid_genesis_tree) {
+            if (parm_user_genesis_tree) {
                 if (node) {
                     const what = expand_collapse_sign(node);
                     if   (what == c_nfa)                cursor = null;
@@ -644,7 +643,7 @@ $(document).ready (async function() {
         .onNodeClick(async function(node) {
             last_click_node_time = new Date().getTime();
             node_current = node;
-            // if (parm_user_uuid_genesis_tree) {
+            // if (parm_user_genesis_tree) {
             //     if (node.is_my) {
             //         await show_popup(node);
             //     } else {
@@ -662,7 +661,7 @@ $(document).ready (async function() {
         .linkDirectionalArrowRelPos(1)
         .linkDirectionalArrowColor(link => link_color(link, 'rgba'))
     ;
-    if (!parm_user_uuid_genesis_tree) {
+    if (!parm_user_genesis_tree) {
         Graph.d3Force('link').distance(195);
     }
 
@@ -867,7 +866,7 @@ $(document).ready (async function() {
         if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
         if (node_current.uuid) {
-            window.location.href = `${url_path()}?${parm_user_uuid_trusts_name}=${node_current.uuid}`;
+            window.location.href = `${url_path()}?${parm_user_trusts_name}=${node_current.uuid}`;
         }
     });
     document.querySelector(".btn--goto-gen").addEventListener("click", function() {
@@ -875,7 +874,7 @@ $(document).ready (async function() {
         menu_wrapper.classList.remove("menu-wrapper--active");
         if (node_current.uuid) {
             window.location.href =
-                `${url_path()}?${parm_user_uuid_genesis_name}=${node_current.uuid}` +
+                `${url_path()}?${parm_user_genesis_name}=${node_current.uuid}` +
                 '&up=on&down=on&depth=2';
         }
     });
@@ -1047,7 +1046,7 @@ $(document).ready (async function() {
         // Идем на нового родственника. Если это брат, то надо не только прямое дерево
         const up_down = (what == 'brosis') ? '' : 'on'
         window.location.href =
-            `${url_path()}?${parm_user_uuid_genesis_name}=${new_relative_uuid}` +
+            `${url_path()}?${parm_user_genesis_name}=${new_relative_uuid}` +
             `&up=${up_down}&down=${up_down}&depth=2`;
     });
 
@@ -1061,7 +1060,7 @@ $(document).ready (async function() {
     );
     if (api_response.ok) {
         data = api_response.data;
-        if (parm_user_uuid_genesis_tree) {
+        if (parm_user_genesis_tree) {
             root_node = data.root_node;
             nodes_by_id = data.nodes_by_id;
         }
@@ -1070,16 +1069,16 @@ $(document).ready (async function() {
                 data.tg_group.title + 
                 ': доверия в ' + (data.tg_group == 'channel' ? 'канале' : 'группе') +
                 ', благо Рода';
-        } else if (parm_user_uuid_genesis_tree && data.root_node) {
+        } else if (parm_user_genesis_tree && data.root_node) {
             document.title = `${data.root_node.first_name}, родство, благо Рода`;
-        } else if (parm_user_uuid_trusts && data.root_node) {
+        } else if (parm_user_trusts && data.root_node) {
             document.title = `${data.root_node.first_name}, доверия и знакомства, благо Рода`;
         } else if ((parm_tg_poll_id || parm_offer_uuid) && data.question) {
             document.title = 'Опрос: ' + data.question + ', благо Рода';
         } else if (parm_videoid && data.title) {
             document.title = 'Голоса по видео: ' + data.title + ', благо Рода';
         }
-        if (parm_user_uuid_genesis_tree) {
+        if (parm_user_genesis_tree) {
             // if (!parm_up && !parm_down) {
                 // nodes_by_id[root_node.id].collapsed = true;
                 //  {
@@ -1093,7 +1092,7 @@ $(document).ready (async function() {
         } else {
             Graph(graph_container).graphData(data);
             if (
-                parm_user_uuid_trusts && data.root_node &&
+                parm_user_trusts && data.root_node &&
                 (auth_data && data.root_node.uuid != auth_data.user_uuid || !auth_data)
                ) {
                 const node = data.root_node

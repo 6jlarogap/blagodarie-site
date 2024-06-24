@@ -175,7 +175,7 @@ var link = window.location.href;
             if (chat_id) {
                 apiUrl = `${settings.api}/api/profile_genesis/?chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
             } else if (userIdFrom) {
-                apiUrl = `${settings.api}/api/profile_genesis/?uuid=` + userIdFrom + '&depth=' + depth + '&up=' + up + '&down=' + down;
+                apiUrl = `${settings.api}/api/profile_genesis/?id=` + userIdFrom + '&depth=' + depth + '&up=' + up + '&down=' + down;
             }
 
 document.addEventListener("popstate",function(e){
@@ -297,6 +297,7 @@ d3.json(apiUrl, d3_json_params)
 	data.users.filter(filterUser).forEach(d => {
             const node = {
                 id: d.uuid,
+                short_id: d.username,
                 nodeType: nodeType(d),
                 image: image(d),
                 base64Url: '',
@@ -1191,7 +1192,7 @@ function initializeDisplay() {
 		.selectAll('g')
 		.data(nodes)
 		.join('g')
-		.attr('onclick', d => `onNodeClick('${d.id}', '${d.nodeType}')`)
+		.attr('onclick', d => `onNodeClick('${d.short_id}', '${d.nodeType}')`)
 	        .attr('class', 'svg_elem')
 		.attr('style', 'cursor: pointer')
         	.call(drag(simulation));
@@ -1586,7 +1587,7 @@ function imageClass(nodeType) {
     return nodeClass;
 }
 
-function onNodeClick(uuid, nodeType) {
+function onNodeClick(short_id, nodeType) {
     const allowed = [NODE_TYPES.PROFILE, NODE_TYPES.FRIEND, NODE_TYPES.FILTERED];
     if (!allowed.includes(nodeType)) return;
 
@@ -1596,7 +1597,7 @@ function onNodeClick(uuid, nodeType) {
 
     const newUrl = new URL(`${protocol}//${host}${pathname}`);
 
-    newUrl.searchParams.append('id', uuid);
+    newUrl.searchParams.append('id', short_id);
     newUrl.searchParams.append('depth', chat_id ? 1 : 2);
     newUrl.searchParams.append('up', up);
     newUrl.searchParams.append('down', down);
