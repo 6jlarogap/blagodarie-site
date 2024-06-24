@@ -232,13 +232,17 @@ if (auth_token_) {
 //
 // --- let it authorize --
 
-function nodeType({uuid, is_in_page}) {
-    let nodeType = NODE_TYPES.USER;
+function nodeType({uuid, username, is_in_page}) {
+    let nodeType = NODE_TYPES.FRIEND;
 
     if (chat_id && !is_in_page) {
         nodeType = NODE_TYPES.FILTERED;
-    } else if (uuid !== userIdFrom) {
-        nodeType = NODE_TYPES.FRIEND;
+    } else if (chat_id && is_in_page) {
+        nodeType = NODE_TYPES.USER;
+    } else if (uuid == userIdFrom) {
+        nodeType = NODE_TYPES.USER;
+    } else if (username == userIdFrom) {
+        nodeType = NODE_TYPES.USER;
     }
 
     return nodeType;
@@ -293,11 +297,10 @@ d3.json(apiUrl, d3_json_params)
 	//добавить пользователей в вершины
         const filterUser = ({uuid}) => !nodes.some(({id}) => id === uuid);
         const updateUrl = node => dataUrl => (node.base64Url = dataUrl);
-
 	data.users.filter(filterUser).forEach(d => {
             const node = {
                 id: d.uuid,
-                short_id: d.username,
+                username: d.username,
                 nodeType: nodeType(d),
                 image: image(d),
                 base64Url: '',
@@ -355,75 +358,80 @@ d3.json(apiUrl, d3_json_params)
 	//зафиксировать вершины пользователя, желаний и ключей
 
 	nodes.forEach(function(d) {
-		switch(d.id){
-		case userIdFrom:
+        if (d.username == userIdFrom) {
 			d.fx = width / 2;
 			d.fy = height / 2;
-			break;
-		case WISHES_ROOT_ID:
-			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
-			d.fy = width<900 ? height/2+50 : height / 2 + 200;
-			break;
-		case ABILITIES_ROOT_ID:
-			d.fx = width<900 ? width / 2+150 : width / 2 + 400;
-			d.fy = width<900 ? height/2-10 : height / 2;
-			break;
-		case SHARE_ID:
-			d.fx = width<900 ? width/2+80 : width / 2 + 300;
-			d.fy = height / 2 - 300;
-			break;
-		case FILTER_ID:
-			d.fx = width<900 ? width/2+170 : width / 2 + 400;
-			d.fy = height / 2 - 300;
-			break;
-		case OPTIONS_ID:
-			d.fx = width<900 ? 10 : width / 2 - 400;
-			d.fy = height / 2 - 300;
-			break;
-		case INVITE_ID:w
-                        d.fx = width<900 ? width/2-20 : width / 2 - 200;
-                        d.fy = height / 2 - 300;
-                        break;
-		case HOME_ID:
-			d.fx = width<900 ? width/2-81 :width / 2 - 300;
-			d.fy = height / 2 - 300;
-			break;
-		/*
-                case GENESIS_ID:
-			if (document.location.includes('gen')) return;
-			d.fx = width<900 ? 20 :width / 2+100;
-			d.fy = height / 2 - 250;
-			break;
-                */
-		case MAPS_ID:
-			d.fx = width<900 ? width/2+30 : width / 2 - 50;
-			d.fy = height / 2 - 300;
-			break;
-		/*
-                case PLUS_ID:
-			d.fx = width<900 ? width/2+50 : width/2+80;
-			d.fy = height/2;
-			break;
-                */
-		case TRUST_ID:
-			d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
-			d.fy = width<900 ? height/2+65 : height / 2 + 120;
-			break;
-		case MISTRUST_ID:
-			d.fx = width<900 ? width / 2 - 30 :  width / 2 - 50;
-			d.fy = width<900 ? height/2+65 : height / 2 + 120;
-			break;
-		case PROFILE.id:
-			if (userIdFrom && userIdFrom != PROFILE.id) {
-                            d.fx = width < 900 ? width / 2 - 100 : width / 2 - 200;
-                            d.fy = height / 2;
-			}
-                        else {
-                            d.fx = width / 2;
-                            d.fy = height / 2;
-			}
-			break;
-		}
+        } else {
+            switch(d.id){
+            case userIdFrom:
+                d.fx = width / 2;
+                d.fy = height / 2;
+                break;
+            case WISHES_ROOT_ID:
+                d.fx = width<900 ? width / 2+150 : width / 2 + 400;
+                d.fy = width<900 ? height/2+50 : height / 2 + 200;
+                break;
+            case ABILITIES_ROOT_ID:
+                d.fx = width<900 ? width / 2+150 : width / 2 + 400;
+                d.fy = width<900 ? height/2-10 : height / 2;
+                break;
+            case SHARE_ID:
+                d.fx = width<900 ? width/2+80 : width / 2 + 300;
+                d.fy = height / 2 - 300;
+                break;
+            case FILTER_ID:
+                d.fx = width<900 ? width/2+170 : width / 2 + 400;
+                d.fy = height / 2 - 300;
+                break;
+            case OPTIONS_ID:
+                d.fx = width<900 ? 10 : width / 2 - 400;
+                d.fy = height / 2 - 300;
+                break;
+            case INVITE_ID:w
+                            d.fx = width<900 ? width/2-20 : width / 2 - 200;
+                            d.fy = height / 2 - 300;
+                            break;
+            case HOME_ID:
+                d.fx = width<900 ? width/2-81 :width / 2 - 300;
+                d.fy = height / 2 - 300;
+                break;
+            /*
+                    case GENESIS_ID:
+                if (document.location.includes('gen')) return;
+                d.fx = width<900 ? 20 :width / 2+100;
+                d.fy = height / 2 - 250;
+                break;
+                    */
+            case MAPS_ID:
+                d.fx = width<900 ? width/2+30 : width / 2 - 50;
+                d.fy = height / 2 - 300;
+                break;
+            /*
+                    case PLUS_ID:
+                d.fx = width<900 ? width/2+50 : width/2+80;
+                d.fy = height/2;
+                break;
+                    */
+            case TRUST_ID:
+                d.fx = width<900 ? width / 2 + 30 :  width / 2 + 50;
+                d.fy = width<900 ? height/2+65 : height / 2 + 120;
+                break;
+            case MISTRUST_ID:
+                d.fx = width<900 ? width / 2 - 30 :  width / 2 - 50;
+                d.fy = width<900 ? height/2+65 : height / 2 + 120;
+                break;
+            case PROFILE.id:
+                if (userIdFrom && userIdFrom != PROFILE.id) {
+                                d.fx = width < 900 ? width / 2 - 100 : width / 2 - 200;
+                                d.fy = height / 2;
+                }
+                            else {
+                                d.fx = width / 2;
+                                d.fy = height / 2;
+                }
+                break;
+            }
+        }
 	});
 /*
 	if(width<900){
@@ -1192,7 +1200,7 @@ function initializeDisplay() {
 		.selectAll('g')
 		.data(nodes)
 		.join('g')
-		.attr('onclick', d => `onNodeClick('${d.short_id}', '${d.nodeType}')`)
+		.attr('onclick', d => `onNodeClick('${d.username}', '${d.nodeType}')`)
 	        .attr('class', 'svg_elem')
 		.attr('style', 'cursor: pointer')
         	.call(drag(simulation));
@@ -1587,7 +1595,7 @@ function imageClass(nodeType) {
     return nodeClass;
 }
 
-function onNodeClick(short_id, nodeType) {
+function onNodeClick(username, nodeType) {
     const allowed = [NODE_TYPES.PROFILE, NODE_TYPES.FRIEND, NODE_TYPES.FILTERED];
     if (!allowed.includes(nodeType)) return;
 
@@ -1597,7 +1605,7 @@ function onNodeClick(short_id, nodeType) {
 
     const newUrl = new URL(`${protocol}//${host}${pathname}`);
 
-    newUrl.searchParams.append('id', short_id);
+    newUrl.searchParams.append('id', username);
     newUrl.searchParams.append('depth', chat_id ? 1 : 2);
     newUrl.searchParams.append('up', up);
     newUrl.searchParams.append('down', down);
