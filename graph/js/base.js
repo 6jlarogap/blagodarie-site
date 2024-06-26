@@ -223,11 +223,19 @@ $(document).ready (async function() {
         if (parm_user_genesis_tree) {
             // green or darkred or blue if up or down
             color = (node.up || node.down)
+                    // blue
                 ?   (format == 'rgba' ? 'rgba(0, 51, 204, 0.8)' : '#0033cc')
                 :   (
                         node.tree_links.length
-                            ? (format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600')
-                            : (format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000')
+                            ?
+                                // blue
+                                (format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600')
+                            :
+                                // dark red
+                                // (format == 'rgba' ? 'rgba(139, 0, 0, 0.8)' : '#8B0000')
+
+                                // blue
+                                (format == 'rgba' ? 'rgba(51, 102, 0, 0.8)' : '#336600')
                     );
         }
         return color;
