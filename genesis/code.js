@@ -252,6 +252,9 @@ function nodeType({uuid, username, is_in_page}) {
 }
 
 function nodeTextDecoration(uuid, username) {
+
+    // text-decoration для текста под узлом
+
     let result = 'none';
     let underline = 'underline';
 
