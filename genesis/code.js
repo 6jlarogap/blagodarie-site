@@ -239,10 +239,13 @@ function nodeType({uuid, username, is_in_page}) {
         nodeType = NODE_TYPES.FILTERED;
     } else if (chat_id && is_in_page) {
         nodeType = NODE_TYPES.USER;
+    // Здесь изменено USER -> FRIEND,
+    // т.к при увеличенной картинке "центрального" юзера
+    // стрелки перекрывались картинкой
     } else if (uuid == userIdFrom) {
-        nodeType = NODE_TYPES.USER;
+        nodeType = NODE_TYPES.FRIEND;
     } else if (username == userIdFrom) {
-        nodeType = NODE_TYPES.USER;
+        nodeType = NODE_TYPES.FRIEND;
     }
 
     return nodeType;
