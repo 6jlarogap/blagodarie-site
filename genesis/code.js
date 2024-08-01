@@ -251,6 +251,22 @@ function nodeType({uuid, username, is_in_page}) {
     return nodeType;
 }
 
+function nodeTextDecoration(uuid, username) {
+    let result = 'none';
+    let underline = 'underline';
+
+    if (!chat_id) {
+        if (uuid == userIdFrom) {
+            result = underline;
+        } else if (username == userIdFrom) {
+            result = underline;
+            console.log('HERE', username)
+        }
+    }
+    return result;
+}
+
+
 function no_photo({gender, is_dead}) {
     const leftPattern = 'no-photo-gender';
 
@@ -1239,7 +1255,9 @@ function initializeDisplay() {
 		.attr('y', ({nodeType}) => nodeType == NODE_TYPES.USER && width < 900 || nodeType == NODE_TYPES.PROFILE && width < 900 ? 30 : nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.PROFILE ? 64: nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47)
 		.attr('font-size', ({nodeType}) => (width < 900 || nodeType == NODE_TYPES.FILTERED) ? 12 : 20)
 		.attr('class', ({nodeType}) => [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(nodeType) ? 'userName' : 'friendName')
-		.text(({text}) => text);
+		.text(({text}) => text)
+        .style('text-decoration', ({uuid, username}) => nodeTextDecoration(uuid, username))
+        ;
 }
 
 const isUserOrProfile = (nodeType) => nodeType === NODE_TYPES.USER || nodeType === NODE_TYPES.PROFILE;
