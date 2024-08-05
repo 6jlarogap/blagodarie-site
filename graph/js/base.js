@@ -264,7 +264,7 @@ $(document).ready (async function() {
             return color_relation;
         }
         const color_poll = color_relation;
-        const color_acq = format == 'rgba' ? 'rgba(154, 205, 50, 0.8)' : '#9acd32';         // yellowGreen
+        const color_acq = format == 'rgba' ? 'rgba(204, 163, 0, 0.8)' : '#cca300';          // btw yellow & green
         const color_trust = format == 'rgba' ? 'rgba(0, 100, 0, 0.8)' : '#006400';          // Green
         const color_not_trust = format == 'rgba' ? 'rgba(255, 0, 0, 0.8)' : '#ff0000';      // red
         if (link.is_poll || link.is_offer || link.is_video_vote) {
