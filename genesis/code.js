@@ -239,13 +239,14 @@ function nodeType({uuid, username, is_in_page}) {
         nodeType = NODE_TYPES.FILTERED;
     } else if (chat_id && is_in_page) {
         nodeType = NODE_TYPES.USER;
-    // Здесь изменено USER -> FRIEND,
+    // Здесь надо бы изменить USER -> FRIEND,
     // т.к при увеличенной картинке "центрального" юзера
     // стрелки перекрывались картинкой
+    // но из-за этого не идет экспорт в svg!
     } else if (uuid == userIdFrom) {
-        nodeType = NODE_TYPES.FRIEND;
+        nodeType = NODE_TYPES.USER;
     } else if (username == userIdFrom) {
-        nodeType = NODE_TYPES.FRIEND;
+        nodeType = NODE_TYPES.USER;
     }
 
     return nodeType;
@@ -1257,7 +1258,8 @@ function initializeDisplay() {
 		.attr('font-size', ({nodeType}) => (width < 900 || nodeType == NODE_TYPES.FILTERED) ? 12 : 20)
 		.attr('class', ({nodeType}) => [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(nodeType) ? 'userName' : 'friendName')
 		.text(({text}) => text)
-        .style('text-decoration', ({uuid, username}) => nodeTextDecoration(uuid, username))
+        // Убираю после отката к большой картинке исходного узла
+        // .style('text-decoration', ({uuid, username}) => nodeTextDecoration(uuid, username))
         ;
 }
 
