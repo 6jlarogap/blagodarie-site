@@ -669,9 +669,7 @@ $(document).ready (async function() {
         .linkDirectionalArrowRelPos(1)
         .linkDirectionalArrowColor(link => link_color(link, 'rgba'))
     ;
-    if (!parm_user_genesis_tree) {
-        Graph.d3Force('link').distance(195);
-    }
+    if (!parm_user_genesis_tree) Graph.d3Force('link').distance(195);
 
     async function collapse_expand(node) {
         if (!node) return;
@@ -975,7 +973,7 @@ $(document).ready (async function() {
         const gender =  $('input[name=parent_gender]:checked').val();
 
         let link_id = node.id;
-        let link_relation;
+        let link_relation = '';
         if  (what == 'parent' && gender == 'm') {
             link_relation = 'new_is_father';
         } else if (what == 'parent' && gender == 'f') {
@@ -1028,34 +1026,81 @@ $(document).ready (async function() {
                 link_relation: link_relation,
                 link_id: link_id,
                 gender: gender,
+                fmt: '3d-force-graph',
         }});
         if (api_alert(api_response)) {
             graph_container.style.cursor = null;
             return;
         }
-        const new_relative_uuid = api_response.data.uuid;
-        if (what == 'brosis' && node.parents.father && node.parents.mother) {
-            api_response = await api_request(api_url + '/api/addoperation/', {
-                method: 'POST',
-                auth_token: auth_data.auth_token,
-                json: {
-                    operation_type_id: genesis_operations.set_mother.op,
-                    user_id_from: new_relative_uuid,
-                    user_id_to: node.parents.mother,
-            }});
+
+        // нового родственника получили. Сформируем узел
+        let node_new = { ...api_response.data };
+        node_new.tree_links = [];
+        node_new.parents = {};
+        if (what == 'parent' && gender == 'f') {
+            node.parents.mother = node_new.id;
+        } else if (what == 'parent' && gender == 'm') {
+            node.parents.father = node_new.id;
+        } else if (what == 'child' || what == 'brosis') {
+            if (link_relation == 'link_is_mother') {
+                node_new.parents.mother = link_id;
+            } else if (link_relation == 'link_is_father') {
+                node_new.parents.father = link_id;
+            }
         }
-        if (api_alert(api_response, 'Ошибка. Профиль создан, задан его папа, а с мамой возникла проблема')) {
-            graph_container.style.cursor = null;
-            return;
+        node_new.complete = true;
+        node_new.is_my = true;
+        node_new.collapsed = true;
+        node_new.first_name_orig = node_new.first_name;
+        if (what == 'parent' || what == 'child') {
+            node_new.up = node.up && what == 'parent';
+            node_new.down = node.down && what == 'child';
+            link_new = {
+                t_source: node.id,
+                t_target: node_new.id,
+                source: (what == 'parent' ? node_new.id : node.id),
+                target: (what == 'parent' ? node.id : node_new.id),
+                is_child : true,
+            }
+            if (root_node.id != node.id && 'lateral_links' in node) {
+                node.lateral_links.push(link_new);
+                if (!node.collapsed) {
+                    node.tree_links = node.lateral_links.concat(node.tree_links);
+                }
+            } else {
+                node.tree_links.push(link_new);
+            }
+            nodes_by_id[node_new.id] = node_new;
+            if (node.collapsed) {
+                await collapse_expand(node);
+            } else {
+                Graph.nodeThreeObject(node => node_draw(node));
+                Graph.graphData(get_pruned_tree());
+            }
+        } else if (what == 'brosis') {
+            // Пока просто обновление страницы вокруг брата/сестры
+            const new_relative_uuid = api_response.data.uuid;
+            if (node.parents.father && node.parents.mother) {
+                api_response = await api_request(api_url + '/api/addoperation/', {
+                    method: 'POST',
+                    auth_token: auth_data.auth_token,
+                    json: {
+                        operation_type_id: genesis_operations.set_mother.op,
+                        user_id_from: new_relative_uuid,
+                        user_id_to: node.parents.mother,
+                        fmt: '3d-force-graph',
+                }});
+            }
+            if (api_alert(api_response, 'Ошибка. Профиль создан, задан его папа, а с мамой возникла проблема')) {
+                graph_container.style.cursor = null;
+                return;
+            }
+            window.location.href =
+                `${url_path()}?${parm_user_genesis_name}=${new_relative_uuid}` +
+                `&up=&down=&depth=2`;
         }
         graph_container.style.cursor = null;
         $('#id_form_parent_wrap').css("display", "none");
-
-        // Идем на нового родственника. Если это брат, то надо не только прямое дерево
-        const up_down = (what == 'brosis') ? '' : 'on'
-        window.location.href =
-            `${url_path()}?${parm_user_genesis_name}=${new_relative_uuid}` +
-            `&up=${up_down}&down=${up_down}&depth=2`;
     });
 
     $('#id_parent_name').on('input', function() {
