@@ -671,7 +671,7 @@ $(document).ready (async function() {
     ;
     if (!parm_user_genesis_tree) Graph.d3Force('link').distance(195);
 
-    async function collapse_expand(node) {
+    async function collapse_expand(node, refresh=true) {
         if (!node) return;
         if ('lateral_links' in node) {
             if(node.lateral_links.length > 0) {
@@ -771,13 +771,15 @@ $(document).ready (async function() {
                 }
             }
 
-            //  node_draw(node):
-            //      иначе не перерисовывается фио со значком +/-, точнее значок
-            //      особенно при сворачивании узла!
-            //  https://github.com/vasturiano/3d-force-graph/issues/61#issuecomment-901611382
-            //
-            Graph.nodeThreeObject(node => node_draw(node));
-            Graph.graphData(get_pruned_tree());
+            if (refresh) {
+                //  node_draw(node):
+                //      иначе не перерисовывается фио со значком +/-, точнее значок
+                //      особенно при сворачивании узла!
+                //  https://github.com/vasturiano/3d-force-graph/issues/61#issuecomment-901611382
+                //
+                Graph.nodeThreeObject(node => node_draw(node));
+                Graph.graphData(get_pruned_tree());
+            }
         }
     }
 
@@ -1034,6 +1036,7 @@ $(document).ready (async function() {
         }
 
         // нового родственника получили. Сформируем узел
+        //
         let node_new = { ...api_response.data };
         node_new.tree_links = [];
         node_new.parents = {};
@@ -1041,12 +1044,14 @@ $(document).ready (async function() {
             node.parents.mother = node_new.id;
         } else if (what == 'parent' && gender == 'm') {
             node.parents.father = node_new.id;
-        } else if (what == 'child' || what == 'brosis') {
+        } else if (what == 'child') {
             if (link_relation == 'link_is_mother') {
                 node_new.parents.mother = link_id;
             } else if (link_relation == 'link_is_father') {
                 node_new.parents.father = link_id;
             }
+        } else if (what == 'brosis') {
+            node_new.parents = { ...node.parents };
         }
         node_new.complete = true;
         node_new.is_my = true;
@@ -1055,13 +1060,13 @@ $(document).ready (async function() {
         if (what == 'parent' || what == 'child') {
             node_new.up = node.up && what == 'parent';
             node_new.down = node.down && what == 'child';
-            link_new = {
+            let link_new = {
                 t_source: node.id,
                 t_target: node_new.id,
                 source: (what == 'parent' ? node_new.id : node.id),
                 target: (what == 'parent' ? node.id : node_new.id),
                 is_child : true,
-            }
+            };
             if (root_node.id != node.id && 'lateral_links' in node) {
                 node.lateral_links.push(link_new);
                 if (!node.collapsed) {
@@ -1077,27 +1082,78 @@ $(document).ready (async function() {
                 Graph.nodeThreeObject(node => node_draw(node));
                 Graph.graphData(get_pruned_tree());
             }
-        } else if (what == 'brosis') {
-            // Пока просто обновление страницы вокруг брата/сестры
-            const new_relative_uuid = api_response.data.uuid;
+        }
+
+        else if (what == 'brosis') {
+            if (d_visible_nodes[link_id]) {
+                let node_link = nodes_by_id[link_id]
+                node_new.down = node_link.down;
+                let link_new = {
+                    t_source: link_id,
+                    t_target: node_new.id,
+                    source: link_id,
+                    target: node_new.id,
+                    is_child : true,
+                };
+                if (root_node.id != link_id && 'lateral_links' in node_link) {
+                    node_link.lateral_links.push(link_new);
+                    if (!node_link.collapsed) {
+                        node_link.tree_links = node_link.lateral_links.concat(node_link.tree_links);
+                    }
+                } else {
+                    node_link.tree_links.push(link_new);
+                }
+                nodes_by_id[node_new.id] = node_new;
+                if (node_link.collapsed) {
+                    await collapse_expand(node_link, false);
+                } else {
+                    Graph.nodeThreeObject(node_link => node_draw(node_link));
+                }
+            }
+
             if (node.parents.father && node.parents.mother) {
+                // Если заданы и папа, и мама, то первым уже разобрались с папой.
+                // Так что сейчас связываем маму
                 api_response = await api_request(api_url + '/api/addoperation/', {
                     method: 'POST',
                     auth_token: auth_data.auth_token,
                     json: {
                         operation_type_id: genesis_operations.set_mother.op,
-                        user_id_from: new_relative_uuid,
+                        user_id_from: node_new.uuid,
                         user_id_to: node.parents.mother,
                         fmt: '3d-force-graph',
                 }});
+                if (api_alert(api_response, 'Ошибка. Профиль создан, задан его папа, а с мамой возникла проблема')) {
+                    graph_container.style.cursor = null;
+                    return;
+                }
+                if (d_visible_nodes[node.parents.mother]) {
+                    let node_link = nodes_by_id[node.parents.mother];
+                    if (!node_new.down) node_new.down = node_link.down;
+                    let link_new = {
+                        t_source: node.parents.mother,
+                        t_target: node_new.id,
+                        source: node.parents.mother,
+                        target: node_new.id,
+                        is_child : true,
+                    };
+                    if (root_node.id != node.parents.mother && 'lateral_links' in node_link) {
+                        node_link.lateral_links.push(link_new);
+                        if (!node_link.collapsed) {
+                            node_link.tree_links = node_link.lateral_links.concat(node_link.tree_links);
+                        }
+                    } else {
+                        node_link.tree_links.push(link_new);
+                    }
+                    if (!nodes_by_id[node_new.id]) nodes_by_id[node_new.id] = node_new;
+                    if (node_link.collapsed) {
+                        await collapse_expand(node_link, false);
+                    } else {
+                        Graph.nodeThreeObject(node_link => node_draw(node_link));
+                    }
+                }
             }
-            if (api_alert(api_response, 'Ошибка. Профиль создан, задан его папа, а с мамой возникла проблема')) {
-                graph_container.style.cursor = null;
-                return;
-            }
-            window.location.href =
-                `${url_path()}?${parm_user_genesis_name}=${new_relative_uuid}` +
-                `&up=&down=&depth=2`;
+            Graph.graphData(get_pruned_tree());    
         }
         graph_container.style.cursor = null;
         $('#id_form_parent_wrap').css("display", "none");
