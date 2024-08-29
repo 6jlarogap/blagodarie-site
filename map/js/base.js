@@ -41,6 +41,7 @@ let uuid_trustees = '';
 let participants = '';
 let owned = '';
 let videoid = '';
+let meet = '';
 
 $(document).ready (async function() {
 
@@ -52,6 +53,9 @@ $(document).ready (async function() {
     if (chat_id = get_parm('chat_id')) {
         $('#id_block_form').hide();
         api_get_parms.push('chat_id=' + chat_id);
+    } else if (meet = get_parm('meet')) {
+        $('#id_block_form').hide();
+        api_get_parms.push('meet=' + meet);
     } else if (offer_id = get_parm('offer_id')) {
         $('#id_block_form').hide();
         api_get_parms.push('offer_id=' + offer_id);
@@ -80,7 +84,7 @@ $(document).ready (async function() {
             $('input[name=uuid]').remove();
         }
     }
-    if (!chat_id && !offer_id & !videoid & !uuid_trustees) {
+    if (!chat_id && !offer_id & !videoid & !uuid_trustees & !meet) {
         // uuid или без uuid
         if (participants = get_parm('participants')) {
             $('#id_participants').attr('checked', 'checked');
@@ -214,6 +218,9 @@ $(document).ready (async function() {
                     $('#id_subtitle_').html('<h2>Пользователь не найден</h2>');
                 }
 
+            } else if (meet) {
+                num_men = '(' + data.points.length +  ')';
+                $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Участники игры знакомств</big></a>' + ' ' + num_men + '</h3>');
             } else {
                 num_men = '(указавших место среди выбранных: ' + data.points.length +  ')';
                 $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Наши участники</big></a>' + ' ' + num_men + '</h3>');
