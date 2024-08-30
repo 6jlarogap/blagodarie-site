@@ -219,7 +219,12 @@ $(document).ready (async function() {
                 }
 
             } else if (meet) {
-                num_men = '(' + data.points.length +  ')';
+                document.title = title_base + '. Игра знакомств';
+                num_men = '(' + data.num_all;
+                if (data.num_all != data.points.length) {
+                    num_men += `, указавших место: ${data.points.length}`
+                }
+                num_men += ')';
                 $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Участники игры знакомств</big></a>' + ' ' + num_men + '</h3>');
             } else {
                 num_men = '(указавших место среди выбранных: ' + data.points.length +  ')';
