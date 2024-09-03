@@ -44,17 +44,15 @@
     <div id="id_form_parent_wrap" class="f-modal">
         <div class="f-modal-content">
             <span class="f-modal-close">&times;</span>
-            <h3><span id="id_form_parent_caption" class="caption_new_relative" style="font-size:20px;" ></span></h3>
-            <table width="100%" cellspacing="2" cellpadding="5" class="table_new_relative" style="font-size:20px;">
-                <col width="70%" />
-                <col width="5%" />
-                <col />
+            <h3><span id="id_form_parent_caption" class="caption_new_relative" style="font-size:16px;" ></span></h3>
+            <table width="100%" cellspacing="10" cellpadding="5" class="table_new_relative" style="font-size:16px;">
+                <col width="40%" />
+                <col width="40%" />
+                <col width="20%" />
                 <tr>
-                    <td>
+                    <td colspan="2">
                         <p>ФИО:<p/>
-                        <p><input type="text" id="id_parent_name" name="parent_name" class= 'parent_name' style="width:100%;font-size:20px;"><p/>
-                    </td>
-                    <td>
+                        <p><input type="text" id="id_parent_name" name="parent_name" class= 'parent_name' style="width:100%;font-size:16px;"><p/>
                     </td>
                     <td>
                         <p id="id_p_relative_m"><input name="parent_gender" type="radio" value="m" id="id_relative_m" /> <span id="id_caption_relative_m">Father</span></p>
@@ -63,11 +61,31 @@
                 </tr>
                 <tr>
                     <td>
+                        <p>Дата рождения:<p/>
+                        <p><input type="text" id="id_parent_dob" name="parent_dob" class= 'parent_dob' style="width:100%;font-size:16px;"><p/>
+                    </td>
+                    <td>
+                        <p>Дата смерти:<p/>
+                        <p><input type="text" id="id_parent_dod" name="parent_dod" class= 'parent_dod' style="width:100%;font-size:16px;"><p/>
+                    </td>
+                    <td>
+                    <p>
+                        в формате:<br />
+                        <i>ДД.ММ.ГГГГ</i> или <i>ММ.ГГГГ</i> или <i>ГГГГ</i>
+                    <p/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <p>Комментарий:<p/>
+                        <p><textarea id="id_parent_comment" name="parent_comment" class= 'parent_comment' rows="2" style="width:100%;font-size:16px;"></textarea><p/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
                         <p><input type="button" class="f-modal-button" id="id_form_parent_btn_ok" value="OK" /><p/>
                     </td>
-                    <td>
-                    </td>
-                    <td>
+                    <td align="right">
                         <p><input type="button" class="f-modal-button" id="id_form_parent_btn_cancel" value="Отмена" /><p/>
                     </td>
                 </tr>

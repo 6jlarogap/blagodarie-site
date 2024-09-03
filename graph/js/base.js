@@ -89,7 +89,8 @@ $(document).ready (async function() {
             '.f-modal-button,.f-modal-content,' +
             '.d-modal-button,.d-modal-content,' +
             '.d-modal-close,.f-modal-close,' +
-            '.parent_name,.his-her-outer'
+            '.parent_name,.parent_dob,.parent_dod,.parent_comment,'
+            + '.his-her-outer'
         );
         for (let i = 0; i < items.length; i++) {
             let font_size = parseInt($(items[i]).css('font-size'));
@@ -914,6 +915,9 @@ $(document).ready (async function() {
             `Создать <big style="color:red;">новый</big> профиль: ${whom} для <span style="color:blue;">${node.first_name_orig}<span/>`
         );
         $('input[name=parent_name]').val('');
+        $('input[name=parent_dob]').val('');
+        $('input[name=parent_dod]').val('');
+        $('textarea[name=parent_comment]').val('');
         $('input[name=parent_what]').val('parent');
         $("#id_form_parent_btn_ok").attr('disabled', true);
         $('#id_form_parent_wrap').css("display", "block");
@@ -932,6 +936,9 @@ $(document).ready (async function() {
             `Создать <big style="color:red;">новый</big> профиль: сын или дочь для <span style="color:blue;">${node.first_name_orig}<span/>`
         );
         $('input[name=parent_name]').val('');
+        $('input[name=parent_dob]').val('');
+        $('input[name=parent_dod]').val('');
+        $('textarea[name=parent_comment]').val('');
         $('input[name=parent_what]').val('child');
         $("#id_form_parent_btn_ok").attr('disabled', true);
         $('#id_form_parent_wrap').css("display", "block");
@@ -952,6 +959,9 @@ $(document).ready (async function() {
             `Создать <big style="color:red;">новый</big> профиль: Брат или сестра для <span style="color:blue;">${node.first_name_orig}<span/>`
         );
         $('input[name=parent_name]').val('');
+        $('input[name=parent_dob]').val('');
+        $('input[name=parent_dod]').val('');
+        $('textarea[name=parent_comment]').val('');
         $('input[name=parent_what]').val('brosis');
         $("#id_form_parent_btn_ok").attr('disabled', true);
         $('#id_form_parent_wrap').css("display", "block");
@@ -971,8 +981,11 @@ $(document).ready (async function() {
         const node = node_current;
         const first_name = $('input[name=parent_name]').val().trim();
         if (first_name.length < 5) return;
-        const what =  $('input[name=parent_what]').val();
-        const gender =  $('input[name=parent_gender]:checked').val();
+        const what = $('input[name=parent_what]').val();
+        const gender = $('input[name=parent_gender]:checked').val();
+        const dob = $('input[name=parent_dob]').val();
+        const dod = $('input[name=parent_dod]').val();
+        const comment = $('textarea[name=parent_comment]').val();
 
         let link_id = node.id;
         let link_relation = '';
@@ -1028,6 +1041,9 @@ $(document).ready (async function() {
                 link_relation: link_relation,
                 link_id: link_id,
                 gender: gender,
+                dob: dob,
+                dod: dod,
+                comment: comment,
                 fmt: '3d-force-graph',
         }});
         if (api_alert(api_response)) {
