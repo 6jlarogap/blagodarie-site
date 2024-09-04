@@ -293,6 +293,53 @@ function show_map(data) {
         // Показываем всех
         map.fitBounds(markers.getBounds());
     }
+
+    if (meet) {
+        /*
+        map.on('zoomend', function() {
+            console.log('getbounds', map.getBounds());
+            $('#map')[0].style.cursor = 'wait';
+            document.body.style.cursor = 'wait';
+            console.log('ZOOMmed');
+            map.touchZoom.disable()
+            map.doubleClickZoom.disable()
+            map.scrollWheelZoom.disable()
+            map.keyboard.disable()
+            map.zoomControl.disable()
+            map.dragging.disable()
+            console.log(
+                document.body.style.cursor,
+                $('#map')[0].style.cursor,
+                map.touchZoom.enabled(),
+                map.doubleClickZoom.enabled(),
+                map.scrollWheelZoom.enabled(),
+                map.keyboard.enabled(),
+                // map.zoomControl.enabled(),
+                map.dragging.enabled(),
+            );
+        });
+        map.on('dragend', function() {
+            $('#map')[0].style.cursor = null;
+            document.body.style.cursor = null;
+            console.log(
+                document.body.style.cursor,
+                $('#map')[0].style.cursor,
+                map.touchZoom.enabled(),
+                map.doubleClickZoom.enabled(),
+                map.scrollWheelZoom.enabled(),
+                map.keyboard.enabled(),
+                // map.zoomControl.enabled(),
+                map.dragging.enabled(),
+            );
+            map.touchZoom.enable()
+            map.doubleClickZoom.enable()
+            map.scrollWheelZoom.enable()
+            map.keyboard.enable()
+            map.zoomControl.enable()
+            map.dragging.enable()
+        });
+        */
+    }
 }
 
 function updateProgressBar(processed, total, elapsed, layersArray) {
