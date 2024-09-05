@@ -235,10 +235,8 @@ $(document).ready (async function() {
         if (data.legend) {
             $('#id_legend').html(data.legend);
         }
-        show_map(data);
-    }
 
-    function show_map(data) {
+        // start show_map ----------
 
         // https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png
         //      только по английски
@@ -295,43 +293,16 @@ $(document).ready (async function() {
         }
 
         if (meet) {
-            map.on('zoomend', function() {
-                on_zoom_or_drag();
+            map.on('zoomend', async function(event_) {
+                await on_zoom_or_drag(event_);
             });
-            map.on('dragend', function() {
-                on_zoom_or_drag()
+            map.on('dragend', async function(event_) {
+                await on_zoom_or_drag(event_);
             });
-
-            function on_zoom_or_drag() {
-                map_disable();
-                console.log('HERE');
-                map_enable();
-            }
         }
-    } // -- show_map()
+        // end  show_map ----------
+    }   // if api_response.ok
 
-
-    function map_enable() {
-        $('#map')[0].style.cursor = null;
-        document.body.style.cursor = null;
-        map.touchZoom.enable()
-        map.doubleClickZoom.enable()
-        map.scrollWheelZoom.enable()
-        map.keyboard.enable()
-        map.zoomControl.enable()
-        map.dragging.enable()
-    }
-
-    function map_disable() {
-        $('#map')[0].style.cursor = 'wait';
-        document.body.style.cursor = 'wait';
-        map.touchZoom.disable()
-        map.doubleClickZoom.disable()
-        map.scrollWheelZoom.disable()
-        map.keyboard.disable()
-        map.zoomControl.disable()
-        map.dragging.disable()
-    }
 
     function updateProgressBar(processed, total, elapsed, layersArray) {
         const progress = document.getElementById('progress');
@@ -346,6 +317,55 @@ $(document).ready (async function() {
             // all markers processed - hide the progress bar:
             progress.style.display = 'none';
         }
+    }
+
+
+    async function on_zoom_or_drag(event_) {
+        map_disable();
+        const bounds = map.getBounds();
+        const parms = {
+            lat_south: bounds._southWest.lat,
+            lat_north: bounds._northEast.lat,
+            lng_west: bounds._southWest.lng,
+            lng_east: bounds._northEast.lng,
+            meet: 'on',
+        }
+        const api_response = await api_request(
+            api_url + '/api/user/points/', {
+                method: 'GET',
+                auth_token: auth_data ? auth_data.auth_token : null,
+                params: parms,
+            }
+        );
+        if (api_response.ok) {
+            $('#id_legend').html(api_response.data.legend);
+        }
+        map_enable();
+    }
+
+
+    function map_enable() {
+        $('#map')[0].style.cursor = null;
+        document.body.style.cursor = null;
+        map.touchZoom.enable()
+        map.doubleClickZoom.enable()
+        map.scrollWheelZoom.enable()
+        map.keyboard.enable()
+        map.zoomControl.enable()
+        // TODO Разобраться:
+        // Выскакивает uncaught error, когда какой-то маркер вне карты,
+        // map.dragging.enable()
+    }
+
+    function map_disable() {
+        $('#map')[0].style.cursor = 'wait';
+        document.body.style.cursor = 'wait';
+        map.touchZoom.disable()
+        map.doubleClickZoom.disable()
+        map.scrollWheelZoom.disable()
+        map.keyboard.disable()
+        map.zoomControl.disable()
+        // map.dragging.disable()
     }
 
 });
