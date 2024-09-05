@@ -45,6 +45,7 @@ $(document).ready (async function() {
     let videoid = '';
     let meet = '';
     let map = null;
+    const meet_subtitle = `<a href="${document.URL}"><big>Участники игры знакомств</big></a>`
 
     let auth_data = await check_auth();
 
@@ -227,7 +228,7 @@ $(document).ready (async function() {
                 num_men += `, указавших место: ${data.points.length}`
             }
             num_men += ')';
-            $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Участники игры знакомств</big></a>' + ' ' + num_men + '</h3>');
+            $('#id_subtitle_').html(`<h3>${meet_subtitle} ${num_men}</h3>`);
         } else {
             num_men = '(указавших место среди выбранных: ' + data.points.length +  ')';
             $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Наши участники</big></a>' + ' ' + num_men + '</h3>');
@@ -339,6 +340,9 @@ $(document).ready (async function() {
         );
         if (api_response.ok) {
             $('#id_legend').html(api_response.data.legend);
+            $('#id_subtitle_').html(
+                `<h3>${meet_subtitle} (${api_response.data.num_all})</h3>`
+            );
         }
         map_enable();
     }
