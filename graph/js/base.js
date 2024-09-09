@@ -118,11 +118,9 @@ $(document).ready (async function() {
 
     // Операции, которые возможны для запуска ссылкой
     // для телеграма типа:
-    // https://t.me/<bot_username>?start=<start_prefix>-<uuid>
-    // Пока только t: trust and thank, которое устанавливает
-    // доверие от авторизованного юзера, если до этого не было
-    // установлено доверие, или делает благодарность,
-    // если уже установлено доверие
+    // https://t.me/<bot_username>?start=<start_prefix>-<username>
+    // Пока только t: trust, которое устанавливает
+    // доверие от авторизованного юзера
     //
     const trust_operations = {
         trust: { op: 3, start_prefix: 't' },
@@ -297,11 +295,11 @@ $(document).ready (async function() {
     let parm_withalone = get_parm('withalone') || '';
 
     const parm_user_genesis_name = 'user_genesis_tree';
-    let parm_user_genesis_tree = get_parm(parm_user_genesis_name) || get_parm('user_uuid_genesis_tree') || '';
+    let parm_user_genesis_tree = get_parm(parm_user_genesis_name);
     let parm_user_genesis_path = get_parm('user_genesis_path') || '';
     let parm_user_trust_path = get_parm('user_trust_path') || '';
     const parm_user_trusts_name = 'user_trusts';
-    let parm_user_trusts = get_parm(parm_user_trusts_name) || get_parm('user_uuid_trusts') || '';
+    let parm_user_trusts = get_parm(parm_user_trusts_name);
 
     let parm_tg_poll_id = get_parm('tg_poll_id') || '';
     let parm_offer_uuid = get_parm('offer_uuid') || '';
@@ -626,7 +624,7 @@ $(document).ready (async function() {
     }
 
     const graph_container = $('#3d-graph')[0];
-    const Graph = ForceGraph3D()
+    let Graph = ForceGraph3D()
         .nodeThreeObject(node => node_draw(node))
 
         // Если не дерево родства: если есть и родственная связь, и доверие, и если задано
@@ -859,7 +857,7 @@ $(document).ready (async function() {
         if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
         if (node_current.uuid && data.bot_username) {
-            window.location.href = "https://t.me/" + data.bot_username + '?start=' + node_current.uuid;
+            window.location.href = "https://t.me/" + data.bot_username + '?start=' + node_current.username;
         }
     });
     document.querySelector(".btn--trust").addEventListener("click", async function() {
@@ -875,7 +873,7 @@ $(document).ready (async function() {
         if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
         if (node_current.uuid) {
-            window.location.href = `${url_path()}?${parm_user_trusts_name}=${node_current.uuid}`;
+            window.location.href = `${url_path()}?${parm_user_trusts_name}=${node_current.username}`;
         }
     });
     document.querySelector(".btn--goto-gen").addEventListener("click", function() {
@@ -883,7 +881,7 @@ $(document).ready (async function() {
         menu_wrapper.classList.remove("menu-wrapper--active");
         if (node_current.uuid) {
             window.location.href =
-                `${url_path()}?${parm_user_genesis_name}=${node_current.uuid}` +
+                `${url_path()}?${parm_user_genesis_name}=${node_current.username}` +
                 '&up=on&down=on&depth=2';
         }
     });
@@ -1203,6 +1201,7 @@ $(document).ready (async function() {
         } else if (parm_videoid && data.title) {
             document.title = 'Голоса по видео: ' + data.title + ', благо Рода';
         }
+        Graph = Graph(graph_container);
         if (parm_user_genesis_tree) {
             // if (!parm_up && !parm_down) {
                 // nodes_by_id[root_node.id].collapsed = true;
@@ -1213,9 +1212,9 @@ $(document).ready (async function() {
             for (const [id, node] of Object.entries(nodes_by_id)) {
                 node.first_name_orig = node.first_name;
             }
-            Graph(graph_container).graphData(get_pruned_tree());
+            Graph.graphData(get_pruned_tree());
         } else {
-            Graph(graph_container).graphData(data);
+            Graph.graphData(data);
             if (
                 parm_user_trusts && data.root_node &&
                 (auth_data && data.root_node.uuid != auth_data.user_uuid || !auth_data)

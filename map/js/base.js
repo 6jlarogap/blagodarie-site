@@ -34,7 +34,7 @@
 //
 //  без параметров          переход к странице с параметром ?participants=on
 
-$(document).ready (async function() {
+$(document).ready (async () => {
 
     let chat_id = '';
     let offer_id = '';
@@ -46,6 +46,8 @@ $(document).ready (async function() {
     let meet = '';
     let map = null;
     const meet_subtitle = `<a href="${document.URL}"><big>Участники игры знакомств</big></a>`
+    let Graph = null;
+    const graph_container = $('#3d-graph')[0];
 
     let auth_data = await check_auth();
 
@@ -294,14 +296,100 @@ $(document).ready (async function() {
         }
 
         if (meet) {
-            map.on('zoomend', async function(event_) {
+            map.on('zoomend', async (event_) => {
                 await on_zoom_or_drag(event_);
             });
-            map.on('dragend', async function(event_) {
+            map.on('dragend', async (event_) => {
                 await on_zoom_or_drag(event_);
             });
         }
         // end  show_map ----------
+
+        if (data.graph) {
+            Graph = ForceGraph3D()
+                .nodeThreeObject(node => node_draw(node))
+                .linkColor(link => link_color(link))
+                .linkOpacity(0.8)
+                .linkCurvature(0.25)
+                .backgroundColor("#FFFFFF")
+                .nodeLabel(node => `<span style="color: ${node_text_color(node)}">${node.first_name}</span>`)
+                .linkDirectionalArrowLength(10)
+                .linkDirectionalArrowRelPos(1)
+                .linkDirectionalArrowColor('#000000')
+            ;
+            Graph.d3Force('link').distance(195);
+            Graph = Graph(graph_container);
+            Graph.graphData(data.graph);
+
+            const api_images = `${api_url}/media/images`;
+            const photoTextureMale = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-male.jpg`);
+            const photoTextureFemale = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-female.jpg`);
+            const photoTextureNone = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-none.jpg`);
+            const photoTextureMaleDead = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-male-dead.jpg`);
+            const photoTextureFemaleDead = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-female-dead.jpg`);
+            const photoTextureNoneDead = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-none-dead.jpg`);
+
+            const node_draw = (node) => {
+                let photoTexture;
+                if (node.photo) {
+                    photoTexture = new THREE.TextureLoader().load(node.photo);
+                } else if (node.gender == 'm' && !node.is_dead) {
+                    photoTexture = photoTextureMale;
+                } else if (node.gender == 'm' && node.is_dead) {
+                    photoTexture = photoTextureMaleDead;
+                } else if (node.gender == 'f' && !node.is_dead) {
+                    photoTexture = photoTextureFemale;
+                } else if (node.gender == 'f' && node.is_dead) {
+                    photoTexture = photoTextureFemaleDead;
+                } else if (node.is_dead) {
+                    photoTexture = photoTextureNoneDead;
+                } else {
+                    photoTexture = photoTextureNone;
+                }
+                const material = new THREE.SpriteMaterial({ map: photoTexture });
+                const sprite = new THREE.Sprite(material);
+                sprite.scale.set(25, 25);
+
+                const label = new SpriteText();
+                label.text = node.first_name;
+                label.textHeight = 0.2;
+                label.color = 'rgba(139, 0, 0, 0.8)'
+                sprite.add(label)
+                sprite.center.set(0.5, -0.1);
+                return sprite;
+            }
+
+            const node_text_color = (node) => {
+                return '#8B0000';
+            }
+
+            const attitudes = {
+                acq: 'a',       // знаком
+                trust: 't',     // доверяет
+                mistrust: 'mt'  // не доверяет
+            }
+
+            const link_color = (link) => {
+                // Этого не может быть (attutude is null):
+                //
+                const color_attitude_null = '#0033cc';  // blue
+
+                const color_acq = '#cca300';            // btw yellow & green
+                const color_trust = '#006400';          // Green
+                const color_not_trust = '#ff0000';      // red
+                if (link.attitude == attitudes.acq) {
+                    return color_acq;
+                } else if (link.attitude == attitudes.trust) {
+                    return color_trust;
+                } else if (link.attitude == attitudes.mistrust) {
+                    return color_not_trust;
+                } else {
+                    return color_attitude_null;
+                }
+            }
+
+        } // if (data.graph)
+
     }   // if api_response.ok
 
 
@@ -321,7 +409,7 @@ $(document).ready (async function() {
     }
 
 
-    async function on_zoom_or_drag(event_) {
+    const on_zoom_or_drag = async (event_) => {
         map_disable();
         const bounds = map.getBounds();
         const parms = {
@@ -343,12 +431,14 @@ $(document).ready (async function() {
             $('#id_subtitle_').html(
                 `<h3>${meet_subtitle} (${api_response.data.num_all})</h3>`
             );
+            if (Graph && api_response.data.graph) {
+                Graph.graphData(api_response.data.graph);
+            }
         }
         map_enable();
     }
 
-
-    function map_enable() {
+    const map_enable = () => {
         $('#map')[0].style.cursor = null;
         document.body.style.cursor = null;
         map.touchZoom.enable()
@@ -361,7 +451,7 @@ $(document).ready (async function() {
         // map.dragging.enable()
     }
 
-    function map_disable() {
+    const map_disable = () => {
         $('#map')[0].style.cursor = 'wait';
         document.body.style.cursor = 'wait';
         map.touchZoom.disable()
