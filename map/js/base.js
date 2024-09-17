@@ -103,7 +103,7 @@ $(document).ready (async () => {
     }
 
     const markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
-    function fill_markerList(points) {
+    const fill_markerList = (points) => {
         const markerList = [];
         for (let i = 0; i < points.length; i++) {
             let point = points[i];
