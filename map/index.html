@@ -54,7 +54,50 @@
         </form>
         <hr />
     </div>
+
+    <div id="id_meet_filters" style="margin:auto; width:90%;text-align:center; display: none">
+        <table style="margin:auto; width:95%;">
+            <col width="30%" />
+            <col width="35%" />
+            <col />
+            <tr>
+                <td align="center">
+                    <label for="id_gender">Пол:</label>
+                    <select name="gender" id="id_gender">
+                        <option value="" selected>---------</option>
+                        <option value="m">Муж.</option>
+                        <option value="f">Жен.</option>
+                    </select>
+                </td>
+                <td align="center">
+                    <label for="id_older">Возраст, <b>от</b>:</label>
+                    <select name="older" id="id_older">
+                        <option value="" selected>---------</option>
+                        <option value="20">20 лет</option>
+                        <option value="30">30 лет</option>
+                        <option value="40">40 лет</option>
+                        <option value="50">50 лет</option>
+                        <option value="60">60 лет</option>
+                    </select>
+                </td>
+                <td align="center">
+                    <label for="id_younger">Возраст, <b>до</b>:</label>
+                    <select name="younger" id="id_younger">
+                        <option value="" selected>---------</option>
+                        <option value="20">20 лет</option>
+                        <option value="30">30 лет</option>
+                        <option value="40">40 лет</option>
+                        <option value="50">50 лет</option>
+                        <option value="60">60 лет</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <br />
+    </div>
+
     <br />
+
     <div style="margin:auto;width: 100%" id="progress"><div id="progress-bar"></div></div>
     <div style="margin:auto;width: 100%" id="map"></div>
     <br />

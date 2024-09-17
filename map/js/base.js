@@ -44,6 +44,7 @@ $(document).ready (async () => {
     let owned = '';
     let videoid = '';
     let meet = '';
+    let sel_older_prev, sel_younger_prev;
     let map = null;
     const meet_subtitle = `<a href="${document.URL}"><big>Участники игры знакомств</big></a>`
     let Graph = null;
@@ -58,6 +59,12 @@ $(document).ready (async () => {
         api_get_parms.chat_id = chat_id;
     } else if (meet = get_parm('meet')) {
         $('#id_block_form').hide();
+        $('#id_gender,#id_older,#id_younger').each(function() {
+            $(this).val('');
+        });
+        sel_older_prev = '';
+        sel_younger_prev = '';
+        $('#id_meet_filters').show();
         api_get_parms.meet = 'on';
     } else if (offer_id = get_parm('offer_id')) {
         $('#id_block_form').hide();
@@ -297,16 +304,37 @@ $(document).ready (async () => {
             // Показываем всех
             map.fitBounds(markers.getBounds());
         }
+        // end  show_map ----------
 
         if (meet) {
             map.on('zoomend', async (event_) => {
-                await on_zoom_or_drag(event_);
+                await on_change_bounds_n_filters(event_);
             });
             map.on('dragend', async (event_) => {
-                await on_zoom_or_drag(event_);
+                await on_change_bounds_n_filters(event_);
             });
-        }
-        // end  show_map ----------
+
+            $('#id_gender,#id_older,#id_younger').change(async (event_) => {
+                let older = $('#id_older').val();
+                let younger = $('#id_younger').val();
+                if (!older) older = "0";
+                if (!younger) younger = "1000";
+                older = parseInt(older);
+                younger = parseInt(younger);
+                if (older > younger) {
+                    alert(`Возраст от (${older} лет) больше возраста до (${younger} лет)`)
+                    if (event_.target.id == 'id_older') {
+                        $('#id_older').val(sel_older_prev);
+                    } else if (event_.target.id == 'id_younger') {
+                        $('#id_younger').val(sel_younger_prev);
+                    }
+                    return;
+                }
+                sel_older_prev = $('#id_older').val();
+                sel_younger_prev = $('#id_younger').val();
+                await on_change_bounds_n_filters(event_);
+            });
+        }   // if (meet)
 
         if (data.graph) {
             Graph = ForceGraph3D()
@@ -412,23 +440,23 @@ $(document).ready (async () => {
     }
 
 
-    const on_zoom_or_drag = async (event_) => {
+    const on_change_bounds_n_filters = async (event_) => {
         map_disable();
         const bounds = map.getBounds();
-        const parms = {
-            lat_south: bounds._southWest.lat,
-            lat_north: bounds._northEast.lat,
-            lng_west: bounds._southWest.lng,
-            lng_east: bounds._northEast.lng,
-            meet: 'on',
-        }
         const api_response = await api_request(
             api_url + '/api/user/points/', {
                 method: 'GET',
                 auth_token: auth_data ? auth_data.auth_token : null,
-                params: parms,
-            }
-        );
+                params: {
+                    meet: 'on',
+                    lat_south: bounds._southWest.lat,
+                    lat_north: bounds._northEast.lat,
+                    lng_west: bounds._southWest.lng,
+                    lng_east: bounds._northEast.lng,
+                    gender: $('#id_gender').val(),
+                    older: $('#id_older').val(),
+                    younger: $('#id_younger').val(),
+        }});
         if (api_response.ok) {
             markers.clearLayers();
             markers.addLayers(fill_markerList(api_response.data.points));
