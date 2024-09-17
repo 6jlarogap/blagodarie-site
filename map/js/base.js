@@ -102,6 +102,27 @@ $(document).ready (async () => {
         }
     }
 
+    const markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
+    const fill_markerList = (points) => {
+        const markerList = [];
+        for (let i = 0; i < points.length; i++) {
+            let point = points[i];
+            let marker = L.marker(L.latLng(point.latitude, point.longitude), { title: point.title });
+            marker.setIcon(L.icon({
+                iconUrl: point.icon,
+                iconSize: [point.size_icon, point.size_icon],
+                iconAnchor: [point.size_icon/2, point.size_icon/2],
+                // is_of_found_user: это
+                //  или пользователь, которого искали
+                //  или владелец опроса
+                className: point.is_of_found_user ? '' : 'photo-in-circle'
+            }));
+            marker.bindPopup(point.popup, {maxHeight: 300});
+            markerList.push(marker);
+        }
+        return markerList;
+    }
+
     const api_response = await api_request(
         api_url + '/api/user/points/', {
             method: 'GET',
@@ -109,6 +130,7 @@ $(document).ready (async () => {
             params: api_get_parms,
         }
     );
+
     if (api_response.ok) {
         const data = api_response.data;
         let num_men = '';
@@ -254,40 +276,21 @@ $(document).ready (async () => {
                 // Это обязательно!
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             });
-        const latlng = L.latLng(data.lat_avg, data.lng_avg);
-
-        let markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
-        let markerList = [];
-
-        for (let i = 0; i < data.points.length; i++) {
-            let point = data.points[i];
-            let marker = L.marker(L.latLng(point.latitude, point.longitude), { title: point.title });
-            marker.setIcon(L.icon({
-                iconUrl: point.icon,
-                iconSize: [point.size_icon, point.size_icon],
-                iconAnchor: [point.size_icon/2, point.size_icon/2],
-                // is_of_found_user: это
-                //  или пользователь, которого искали
-                //  или владелец опроса
-                className: point.is_of_found_user ? '' : 'photo-in-circle'
-            }));
-            marker.bindPopup(point.popup);
-            markerList.push(marker);
-        }
         let zoom = 5;
         if (data.found_coordinates) {
             zoom = 12;
         } else if (data.points.length == 0) {
             zoom = 2;
         }
-        map = L.map('map', { center: latlng, zoom: zoom, layers: [tiles] });
+        map = L.map('map', { center: L.latLng(data.lat_avg, data.lng_avg), zoom: zoom, layers: [tiles] });
         map.addControl(new L.Control.Fullscreen({
             title: {
                 'false': 'Полный экран',
                 'true': 'Выйти из полного экрана'
             }
         }));
-        markers.addLayers(markerList);
+
+        markers.addLayers(fill_markerList(data.points));
         map.addLayer(markers);
         if (!(data.found_coordinates || data.points.length <= 1)) {
             // Параметры center, zoom в L.map тогда не учитывается
@@ -427,6 +430,9 @@ $(document).ready (async () => {
             }
         );
         if (api_response.ok) {
+            markers.clearLayers();
+            markers.addLayers(fill_markerList(api_response.data.points));
+            map.addLayer(markers);
             $('#id_legend').html(api_response.data.legend);
             $('#id_subtitle_').html(
                 `<h3>${meet_subtitle} (${api_response.data.num_all})</h3>`
