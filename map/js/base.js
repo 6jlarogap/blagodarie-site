@@ -38,6 +38,7 @@ $(document).ready (async () => {
 
     let chat_id = '';
     let offer_id = '';
+    let offer_on = '';
     let uuid = '';
     let uuid_trustees = '';
     let participants = '';
@@ -70,6 +71,9 @@ $(document).ready (async () => {
     } else if (offer_id = get_parm('offer_id')) {
         $('#id_block_form').hide();
         api_get_parms.offer_id = offer_id;
+    } else if (offer_on = get_parm('offer')) {
+        $('#id_block_form').hide();
+        api_get_parms.offer = 'on';
     } else if (uuid_trustees = get_parm('uuid_trustees')) {
         $('#id_block_form').hide();
         api_get_parms.uuid_trustees = uuid_trustees;
@@ -95,7 +99,7 @@ $(document).ready (async () => {
             $('input[name=uuid]').remove();
         }
     }
-    if (!chat_id && !offer_id & !videoid & !uuid_trustees & !meet) {
+    if (!chat_id && !offer_id & !videoid & !uuid_trustees & !meet & !offer_on) {
         // uuid или без uuid
         if (participants = get_parm('participants')) {
             $('#id_participants').attr('checked', 'checked');
@@ -261,6 +265,13 @@ $(document).ready (async () => {
             }
             num_men += ')';
             $('#id_subtitle_').html(`<h3>${meet_subtitle} ${num_men}</h3>`);
+        } else if (offer_on) {
+            document.title = title_base + '. Опросы, предложения';
+            $('#id_subtitle_').html(
+                `<h3><a href="${document.URL}"><big>Опросы, предложения</big></a> ` +
+                `(авторов указавших место: ${data.points.length})` +
+                `</h3>`
+            );
         } else {
             num_men = '(указавших место среди выбранных: ' + data.points.length +  ')';
             $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Наши участники</big></a>' + ' ' + num_men + '</h3>');
