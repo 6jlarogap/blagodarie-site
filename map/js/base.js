@@ -65,6 +65,7 @@ $(document).ready (async () => {
         sel_older_prev = '';
         sel_younger_prev = '';
         $('#id_meet_filters').show();
+        $('.horz_bar').show();
         api_get_parms.meet = 'on';
     } else if (offer_id = get_parm('offer_id')) {
         $('#id_block_form').hide();
@@ -347,6 +348,7 @@ $(document).ready (async () => {
                 .linkDirectionalArrowLength(10)
                 .linkDirectionalArrowRelPos(1)
                 .linkDirectionalArrowColor('#000000')
+                .height(graph_container.offsetWidth / 2)
             ;
             Graph.d3Force('link').distance(195);
             Graph = Graph(graph_container);
