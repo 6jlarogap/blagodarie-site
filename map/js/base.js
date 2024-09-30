@@ -269,7 +269,7 @@ $(document).ready (async () => {
             document.title = title_base + '. Опросы, предложения';
             $('#id_subtitle_').html(
                 `<h3><a href="${document.URL}"><big>Опросы, предложения</big></a> ` +
-                `(авторов указавших место: ${data.points.length})` +
+                `(с указанным местом: ${data.points.length})` +
                 `</h3>`
             );
         } else {
@@ -311,7 +311,7 @@ $(document).ready (async () => {
 
         markers.addLayers(fill_markerList(data.points));
         map.addLayer(markers);
-        if (!(data.found_coordinates || data.points.length <= 1)) {
+        if (!(data.found_coordinates || (offer_on && data.num_all <= 1) || data.points.length <= 1)) {
             // Параметры center, zoom в L.map тогда не учитывается
             // Показываем всех
             map.fitBounds(markers.getBounds());
