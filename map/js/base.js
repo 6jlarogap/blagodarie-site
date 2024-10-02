@@ -258,7 +258,7 @@ $(document).ready (async () => {
             }
 
         } else if (meet) {
-            document.title = title_base + '. Игра знакомств';
+            document.title = 'Участники игры знакомств';
             num_men = '(' + data.num_all;
             if (data.num_all != data.points.length) {
                 num_men += `, указавших место: ${data.points.length}`
@@ -266,7 +266,7 @@ $(document).ready (async () => {
             num_men += ')';
             $('#id_subtitle_').html(`<h3>${meet_subtitle} ${num_men}</h3>`);
         } else if (offer_on) {
-            document.title = title_base + '. Опросы, предложения';
+            document.title = 'Карта предложений';
             $('#id_subtitle_').html(
                 `<h3><a href="${document.URL}"><big>Опросы, предложения</big></a> ` +
                 `(с указанным местом: ${data.points.length})` +
