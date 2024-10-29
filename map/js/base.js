@@ -353,7 +353,7 @@ $(document).ready (async () => {
                 .nodeThreeObject(node => node_draw(node))
                 .linkColor(link => link_color(link))
                 .linkOpacity(0.8)
-                .linkCurvature(0.25)
+                .linkCurvature(link => link_curvature(link))
                 .backgroundColor("#FFFFFF")
                 .nodeLabel(node => `<span style="color: ${node_text_color(node)}">${node.first_name}</span>`)
                 .linkDirectionalArrowLength(10)
@@ -414,22 +414,39 @@ $(document).ready (async () => {
             }
 
             const link_color = (link) => {
-                // Этого не может быть (attutude is null):
+                // Какой-то результат по умолчанию:
                 //
-                const color_attitude_null = '#0033cc';  // blue
+                let result = '#0033cc';  // blue
 
                 const color_acq = '#cca300';            // btw yellow & green
                 const color_trust = '#006400';          // Green
                 const color_not_trust = '#ff0000';      // red
-                if (link.attitude == attitudes.acq) {
-                    return color_acq;
-                } else if (link.attitude == attitudes.trust) {
-                    return color_trust;
-                } else if (link.attitude == attitudes.mistrust) {
-                    return color_not_trust;
-                } else {
-                    return color_attitude_null;
+                const color_invite_meet = '#000099';    // dark violet
+                if (link.attitude) {
+                    if (link.attitude == attitudes.acq) {
+                        result = color_acq;
+                    } else if (link.attitude == attitudes.trust) {
+                        result = color_trust;
+                    } else if (link.attitude == attitudes.mistrust) {
+                        result = color_not_trust;
+                    }
+                } else if (link.is_invite_meet) {
+                    result = color_invite_meet;
                 }
+                return result;
+            }
+
+            const link_curvature = (link) => {
+                // Какой-то результат по умолчанию:
+                //
+                let result = 0.9;
+
+                if (link.attitude) {
+                    result = 0.3;
+                } else if (link.is_invite_meet) {
+                    result = 0.5;
+                }
+                return result;
             }
 
         } // if (data.graph)
