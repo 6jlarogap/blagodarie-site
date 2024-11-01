@@ -544,9 +544,11 @@ $(document).ready (async () => {
         // TODO Разобраться:
         // Выскакивает uncaught error, когда какой-то маркер вне карты,
         // map.dragging.enable()
+        $(".sympa").prop("disabled", false);
     };
 
     const map_disable = () => {
+        $(".sympa").prop("disabled", true);
         $('#map')[0].style.cursor = 'wait';
         document.body.style.cursor = 'wait';
         map.touchZoom.disable()
