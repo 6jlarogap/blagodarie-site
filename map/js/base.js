@@ -66,6 +66,7 @@ $(document).ready (async () => {
         sel_older_prev = '';
         sel_younger_prev = '';
         $('#id_meet_filters').show();
+        $('.graph_legend').show();
         $('.horz_bar').show();
         api_get_parms.meet = 'on';
     } else if (offer_id = get_parm('offer_id')) {
@@ -320,10 +321,14 @@ $(document).ready (async () => {
 
         if (meet) {
             map.on('zoomend', async (event_) => {
-                await on_change_bounds_n_filters(event_);
+                map_disable();
+                await on_change_bounds_filters_sympa(event_);
+                map_enable();
             });
             map.on('dragend', async (event_) => {
-                await on_change_bounds_n_filters(event_);
+                map_disable();
+                await on_change_bounds_filters_sympa(event_);
+                map_enable();
             });
 
             $('#id_gender,#id_older,#id_younger').change(async (event_) => {
@@ -344,8 +349,16 @@ $(document).ready (async () => {
                 }
                 sel_older_prev = $('#id_older').val();
                 sel_younger_prev = $('#id_younger').val();
-                await on_change_bounds_n_filters(event_);
+                map_disable();
+                await on_change_bounds_filters_sympa(event_);
+                map_enable();
             });
+
+
+            $('.sympa').change(async (event_) => {
+            await sympa_change(event_);
+            });
+
         }   // if (meet)
 
         if (data.graph) {
@@ -369,24 +382,16 @@ $(document).ready (async () => {
             const photoTextureMale = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-male.jpg`);
             const photoTextureFemale = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-female.jpg`);
             const photoTextureNone = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-none.jpg`);
-            const photoTextureMaleDead = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-male-dead.jpg`);
-            const photoTextureFemaleDead = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-female-dead.jpg`);
-            const photoTextureNoneDead = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-none-dead.jpg`);
 
             const node_draw = (node) => {
                 let photoTexture;
                 if (node.photo) {
                     photoTexture = new THREE.TextureLoader().load(node.photo);
-                } else if (node.gender == 'm' && !node.is_dead) {
+                // фото должно быть здесь всегда. Но fool-proof:
+                } else if (node.gender == 'm') {
                     photoTexture = photoTextureMale;
-                } else if (node.gender == 'm' && node.is_dead) {
-                    photoTexture = photoTextureMaleDead;
-                } else if (node.gender == 'f' && !node.is_dead) {
+                } else if (node.gender == 'f') {
                     photoTexture = photoTextureFemale;
-                } else if (node.gender == 'f' && node.is_dead) {
-                    photoTexture = photoTextureFemaleDead;
-                } else if (node.is_dead) {
-                    photoTexture = photoTextureNoneDead;
                 } else {
                     photoTexture = photoTextureNone;
                 }
@@ -401,27 +406,28 @@ $(document).ready (async () => {
                 sprite.add(label)
                 sprite.center.set(0.5, -0.1);
                 return sprite;
-            }
+            };
 
             const node_text_color = (node) => {
                 return '#8B0000';
-            }
+            };
 
             const attitudes = {
                 acq: 'a',       // знаком
                 trust: 't',     // доверяет
                 mistrust: 'mt'  // не доверяет
-            }
+            };
 
             const link_color = (link) => {
                 // Какой-то результат по умолчанию:
                 //
-                let result = '#0033cc';  // blue
+                let result = 'blue';
 
-                const color_acq = '#cca300';            // btw yellow & green
-                const color_trust = '#006400';          // Green
-                const color_not_trust = '#ff0000';      // red
-                const color_invite_meet = '#000099';    // dark violet
+                const color_acq = '#cca300';
+                const color_trust = 'green';
+                const color_not_trust = 'red';
+                const color_invite_meet = 'blueviolet';
+                const color_sympa = 'darkorange';
                 if (link.attitude) {
                     if (link.attitude == attitudes.acq) {
                         result = color_acq;
@@ -432,6 +438,8 @@ $(document).ready (async () => {
                     }
                 } else if (link.is_invite_meet) {
                     result = color_invite_meet;
+                } else if (link.is_sympa) {
+                    result = color_sympa;
                 }
                 return result;
             }
@@ -447,12 +455,34 @@ $(document).ready (async () => {
                     result = 0.5;
                 }
                 return result;
-            }
+            };
 
         } // if (data.graph)
 
     }   // if api_response.ok
 
+
+    const sympa_change = async (event_) => {
+        const operationtype_id = event_.target.checked ? 14 : 15;
+        if (!auth_data) return;
+        const tag = event_.target.id.match(/sympa\-(\d+)$/);
+        if (!tag || tag[1] == auth_data.user_id) return;
+        map_disable();
+        const api_response = await api_request(
+            api_url + '/api/addoperation', {
+                method: 'POST',
+                auth_token: auth_data.auth_token,
+                json: {
+                    operation_type_id: operationtype_id,
+                    user_id_to: tag[1],
+                }
+            }
+        );
+        if (api_response.ok) {
+            await on_change_bounds_filters_sympa(event_);
+        }
+        map_enable();
+    };
 
     function updateProgressBar(processed, total, elapsed, layersArray) {
         const progress = document.getElementById('progress');
@@ -470,8 +500,7 @@ $(document).ready (async () => {
     }
 
 
-    const on_change_bounds_n_filters = async (event_) => {
-        map_disable();
+    const on_change_bounds_filters_sympa = async (event_) => {
         const bounds = map.getBounds();
         const api_response = await api_request(
             api_url + '/api/user/points/', {
@@ -498,9 +527,11 @@ $(document).ready (async () => {
             if (Graph && api_response.data.graph) {
                 Graph.graphData(api_response.data.graph);
             }
+            $('.sympa').change(async (event_) => {
+                await sympa_change(event_);
+            });
         }
-        map_enable();
-    }
+    };
 
     const map_enable = () => {
         $('#map')[0].style.cursor = null;
@@ -513,7 +544,7 @@ $(document).ready (async () => {
         // TODO Разобраться:
         // Выскакивает uncaught error, когда какой-то маркер вне карты,
         // map.dragging.enable()
-    }
+    };
 
     const map_disable = () => {
         $('#map')[0].style.cursor = 'wait';
@@ -524,6 +555,6 @@ $(document).ready (async () => {
         map.keyboard.disable()
         map.zoomControl.disable()
         // map.dragging.disable()
-    }
+    };
 
 });
