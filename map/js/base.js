@@ -66,7 +66,7 @@ $(document).ready (async () => {
         sel_older_prev = '';
         sel_younger_prev = '';
         $('#id_meet_filters').show();
-        $('.graph_legend').show();
+        $('#graph_legend').show();
         $('.horz_bar').show();
         api_get_parms.meet = 'on';
     } else if (offer_id = get_parm('offer_id')) {
