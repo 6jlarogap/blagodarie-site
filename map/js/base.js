@@ -266,11 +266,7 @@ $(document).ready (async () => {
 
         } else if (meet) {
             document.title = 'Участники игры знакомств';
-            num_men = '(' + data.num_all;
-            if (data.num_all != data.points.length) {
-                num_men += `, указавших место: ${data.points.length}`
-            }
-            num_men += ')';
+            num_men = `(${data.num_all})`;
             $('#id_subtitle_').html(`<h3>${meet_subtitle} ${num_men}</h3>`);
         } else if (offer_on) {
             document.title = 'Карта предложений';
