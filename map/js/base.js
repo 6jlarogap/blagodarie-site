@@ -45,6 +45,7 @@ $(document).ready (async () => {
     let owned = '';
     let videoid = '';
     let meet = '';
+    let with_offers = '';
     let sel_older_prev, sel_younger_prev;
     let map = null;
     const meet_subtitle = `<a href="${document.URL}"><big>Участники игры знакомств</big></a>`
@@ -63,12 +64,17 @@ $(document).ready (async () => {
         $('#id_gender,#id_older,#id_younger').each(function() {
             $(this).val('');
         });
+        $('#id_with_offers').prop('checked', true);
         sel_older_prev = '';
         sel_younger_prev = '';
         $('#id_meet_filters').show();
         $('#graph_legend').show();
         $('.horz_bar').show();
         api_get_parms.meet = 'on';
+        api_get_parms.with_offers = get_parm('with_offers') ? 'on' : ''; 
+        if (!api_get_parms.with_offers) {
+            api_get_parms.with_offers = $('#id_with_offers').prop('checked') ? 'on' : ''
+        }
     } else if (offer_id = get_parm('offer_id')) {
         $('#id_block_form').hide();
         api_get_parms.offer_id = offer_id;
@@ -331,7 +337,7 @@ $(document).ready (async () => {
                 map_enable();
             });
 
-            $('#id_gender,#id_older,#id_younger').change(async (event_) => {
+            $('#id_gender,#id_older,#id_younger,#id_with_offers').change(async (event_) => {
                 let older = $('#id_older').val();
                 let younger = $('#id_younger').val();
                 if (!older) older = "0";
@@ -515,6 +521,8 @@ $(document).ready (async () => {
                     gender: $('#id_gender').val(),
                     older: $('#id_older').val(),
                     younger: $('#id_younger').val(),
+                    with_offers: $('#id_with_offers').prop('checked') ? 'on' : '',
+
         }});
         if (api_response.ok) {
             markers.clearLayers();
