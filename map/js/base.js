@@ -134,7 +134,7 @@ $(document).ready (async () => {
                 // is_of_found_user: это
                 //  или пользователь, которого искали
                 //  или владелец опроса
-                className: point.is_of_found_user ? '' : 'photo-in-circle'
+                className: (point.is_of_found_user || meet && point.is_offer) ? '' : 'photo-in-circle'
             }));
             marker.bindPopup(point.popup, {maxHeight: 300});
             markerList.push(marker);
