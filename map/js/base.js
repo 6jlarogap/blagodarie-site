@@ -36,6 +36,10 @@
 
 $(document).ready (async () => {
 
+    const meet = get_parm('meet') || '';
+    const auth_data = await check_auth(Boolean(meet));
+    if (meet && !auth_data) return;
+
     let chat_id = '';
     let offer_id = '';
     let offer_on = '';
@@ -44,7 +48,6 @@ $(document).ready (async () => {
     let participants = '';
     let owned = '';
     let videoid = '';
-    let meet = '';
     let with_offers = '';
     let sel_older_prev, sel_younger_prev;
     let map = null;
@@ -52,14 +55,13 @@ $(document).ready (async () => {
     let Graph = null;
     const graph_container = $('#3d-graph')[0];
 
-    let auth_data = await check_auth();
 
     const api_url = get_api_url();
     const api_get_parms = {};
     if (chat_id = get_parm('chat_id')) {
         $('#id_block_form').hide();
         api_get_parms.chat_id = chat_id;
-    } else if (meet = get_parm('meet')) {
+    } else if (meet) {
         $('#id_block_form').hide();
         $('#id_gender,#id_older,#id_younger').each(function() {
             $(this).val('');
@@ -109,11 +111,11 @@ $(document).ready (async () => {
     if (!chat_id && !offer_id & !videoid & !uuid_trustees & !meet & !offer_on) {
         // uuid или без uuid
         if (participants = get_parm('participants')) {
-            $('#id_participants').attr('checked', 'checked');
+            $('#id_participants').prop('checked', 'checked');
             api_get_parms.participants = 'on';
         }
         if (owned = get_parm('owned')) {
-            $('#id_owned').attr('checked', 'checked');
+            $('#id_owned').prop('checked', 'checked');
             api_get_parms.owned = 'on';
         }
         if (!document.URL.match(/\?/)) {
