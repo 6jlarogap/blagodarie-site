@@ -583,7 +583,12 @@ function drag(simulation) {
 	const dragged = ({x, y}, d) => { d.fx = x; d.fy = y; };
 	
 	var bstop = false
-	const dragended = (d) => { 
+	const dragended = (e, d) => { 
+		if (!e.active) simulation.stop();
+		d.fx = null;
+		d.fy = null;		
+	
+/*	const dragended = (e, d) => { 
 		if (bstop) { 
 			d.fx = null;
 			d.fy = null;		
@@ -593,7 +598,7 @@ function drag(simulation) {
 				simulation.stop();
 				bstop = true;} 
 	};
-
+*/
 	let behavior = d3.drag();
 	behavior.on('start', dragstarted);
 	behavior.on('drag', dragged);
@@ -1179,6 +1184,7 @@ function initializeDisplay() {
 		.append("linearGradient")
 		.attr('id', d => `grad_from_${d.source.id}_to_${d.target.id}`)
 		.attr("gradientUnits", "userSpaceOnUse")
+		.attr("stroke-width", "3px")
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
@@ -1289,7 +1295,7 @@ const isUserOrProfile = (nodeType) => nodeType === NODE_TYPES.USER || nodeType =
 
 // расстояние от линии до узла:
 // const degree = (nodeType) => width < 900 && isUserOrProfile(nodeType) ? 30 : isUserOrProfile(nodeType) ? 64 : nodeType === NODE_TYPES.FILTERED && width < 900 ? 16 : 32;
-const degree = 50;
+const degree = (nodeType) => 50;
 const length = (lWidth, lHeight) => Math.sqrt(lWidth * lWidth + lHeight * lHeight);
 
 function relativeX({source: {nodeType}, source, target}) {
