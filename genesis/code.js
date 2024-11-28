@@ -483,10 +483,10 @@ d3.json(apiUrl, d3_json_params)
 */
 
 	simulation = d3.forceSimulation(nodes);
-	simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.6));
-	simulation.force('charge', d3.forceManyBody().strength(-11450));
-	simulation.force('x', d3.forceX(width / 2).strength(0.02));
-	simulation.force('y', d3.forceY(height / 2).strength(0.05));
+	simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.2));
+	simulation.force('charge', d3.forceManyBody().strength(-3450));
+	simulation.force('x', d3.forceX(width / 2).strength(0.012));
+	simulation.force('y', d3.forceY(height / 2).strength(0.025));
 
 	initializeDisplay();
 	initializeSimulation();
@@ -542,10 +542,9 @@ const loading = loadingScreen('Загрузка');
 
 function simStarted() {
     loading.next();
-
     simulation.nodes(nodes);
-    simulation.alpha(1).restart();
     simulation.on('tick', ticked);
+    simulation.alpha(1).velocityDecay(0.01).restart();
 }
 
 const simEnded = ({ nTicks }) => setTimeout(() => loading.next(), nTicks * 10);
@@ -570,7 +569,7 @@ function initializeSimulation() {
   layoutWorker.onmessage = ({ data }) => (MESSAGE_HANDLES[data.type] || (() => {}))(data);
 }
 
-const ZOOM_MIN = 0.03;
+const ZOOM_MIN = 0.02;
 const ZOOM_MAX = 2;
 
 var zoom = d3.zoom().scaleExtent([ZOOM_MIN, ZOOM_MAX]);
@@ -578,19 +577,21 @@ zoom.on('zoom', ({transform: {x, y, k}}) => svg.attr('transform', `translate(${x
 
 function drag(simulation) {
 	function dragstarted(e, d) {
-		!e.active && simulation.alphaTarget(0.3).restart();
+		!e.active && simulation.alphaTarget(0.01).velocityDecay(0.01).restart();
 	}
 	
 	const dragged = ({x, y}, d) => { d.fx = x; d.fy = y; };
 	
 	var bstop = false
-	const dragended = ({}) => { 
+	const dragended = (d) => { 
 		if (bstop) { 
-			simulation.alphaTarget(1).restart()
-			bstop = false } 
+			d.fx = null;
+			d.fy = null;		
+			simulation.alphaTarget(1).velocityDecay(0.01).restart();
+			bstop = false; } 
 			else { 
-				simulation.stop() 
-				bstop = true } 
+				simulation.stop();
+				bstop = true;} 
 	};
 
 	let behavior = d3.drag();
@@ -739,13 +740,17 @@ function prepareSvg(id) {
 
     svg_elem.select('image').attr('href', ({base64Url}) => base64Url);
 
-    const userXY = width < 900 ? '-32px' : '-64px';
+/*    const userXY = width < 900 ? '-32px' : '-64px';
     const userWH = width < 900 ? '64px' : '128px';
-
     const friendXY = width < 900 ? '-18px' : '-32px';
     const friendWH = width < 900 ? '35px' : '64px';
-
-    svg_elem.select('.userPortrait')
+*/
+    const userXY = '-32px';
+    const userWH = '64px';
+    const friendXY = '-32px';
+    const friendWH = '64px';
+	
+	svg_elem.select('.userPortrait')
         .attr('x', userXY).attr('y', userXY)
         .attr('width', userWH).attr('height', userWH);
 
@@ -1060,12 +1065,24 @@ function exporting(to) {
 }
 
 const export2svg = () => exporting(EXPORT_FORMATS.SVG);
+const startsim = () => {simulation.alpha(1).velocityDecay(0.02).restart()};
+const stopsim = () => {simulation.stop()};
 
 const menuItems = [
     {
         id: 'svg-export',
         title: 'Экспорт в SVG',
         action: export2svg
+    },
+    {
+        id: 'startSim',
+        title: 'Старт симуляции',
+        action: startsim
+    },
+    {
+        id: 'stopSim',
+        title: 'Стоп симуляции',
+        action: stopsim
     }
 ];
 
@@ -1245,7 +1262,8 @@ function initializeDisplay() {
                         }
                         case NODE_TYPES.USER:
                         case NODE_TYPES.PROFILE: {
-                            size = width < 900 ? 'medium': 'large';
+//                            size = width < 900 ? 'medium': 'large';
+                            size = 'medium';
                             break;
                         }
                     }
@@ -1254,8 +1272,12 @@ function initializeDisplay() {
         	});
 
 	node.append('text')
-		.attr('y', ({nodeType}) => nodeType == NODE_TYPES.USER && width < 900 || nodeType == NODE_TYPES.PROFILE && width < 900 ? 30 : nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.PROFILE ? 64: nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47)
-		.attr('font-size', ({nodeType}) => (width < 900 || nodeType == NODE_TYPES.FILTERED) ? 12 : 20)
+// смещение текста с фио вниз под фото
+//		.attr('y', ({nodeType}) => nodeType == NODE_TYPES.USER && width < 900 || nodeType == NODE_TYPES.PROFILE && width < 900 ? 30 : nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.PROFILE ? 64: nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47)
+		.attr('y', (50))
+// размер шрифта текста фио
+//		.attr('font-size', ({nodeType}) => (width < 900 || nodeType == NODE_TYPES.FILTERED) ? 12 : 20)
+		.attr('font-size', (30))
 		.attr('class', ({nodeType}) => [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(nodeType) ? 'userName' : 'friendName')
 		.text(({text}) => text)
         // Убираю после отката к большой картинке исходного узла
@@ -1265,8 +1287,9 @@ function initializeDisplay() {
 
 const isUserOrProfile = (nodeType) => nodeType === NODE_TYPES.USER || nodeType === NODE_TYPES.PROFILE;
 
-const degree = (nodeType) => width < 900 && isUserOrProfile(nodeType) ? 30 : isUserOrProfile(nodeType) ? 64 : nodeType === NODE_TYPES.FILTERED && width < 900 ? 16 : 32;
-
+// расстояние от линии до узла:
+// const degree = (nodeType) => width < 900 && isUserOrProfile(nodeType) ? 30 : isUserOrProfile(nodeType) ? 64 : nodeType === NODE_TYPES.FILTERED && width < 900 ? 16 : 32;
+const degree = 50;
 const length = (lWidth, lHeight) => Math.sqrt(lWidth * lWidth + lHeight * lHeight);
 
 function relativeX({source: {nodeType}, source, target}) {
@@ -1370,13 +1393,13 @@ function fullTransform() {
 function boundedNodeTransform({nodeType, x, y}) {
   const newX = Math.min(Math.max(30, x), width - 30);
   const newY = y < 15 && width < 900 ? 15 : y < 0 ? 0 : (y > height - 20 && width < 900 ? height - 20 : y > height - 70 && width > 900 ? height - 70 : y);
+  return `translate(${newX}, ${newY})`;
 
-  if (isUserOrProfile(nodeType)) {
+/*  if (isUserOrProfile(nodeType)) {
     simulation.force('x').x(newX);
     simulation.force('y').y(newY);
   }
-
-  return `translate(${newX}, ${newY})`;
+*/ // no need to change forces
 }
 
 function boundedTransform() {
@@ -1478,7 +1501,7 @@ function calcY2(d) {
 d3.select(window).on('resize', () => {
   width = +svg.node().getBoundingClientRect().width;
   height = +svg.node().getBoundingClientRect().height;
-  simulation.alpha(1).restart();
+  simulation.alpha(1).velocityDecay(0.01).restart(); // added velocityDelay(0.01)
 });
 
 function initDefs() {
