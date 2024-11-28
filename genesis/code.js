@@ -597,8 +597,8 @@ function drag(simulation) {
 			else { 
 				simulation.stop();
 				bstop = true;} 
-	};
 */
+	};
 	let behavior = d3.drag();
 	behavior.on('start', dragstarted);
 	behavior.on('drag', dragged);
