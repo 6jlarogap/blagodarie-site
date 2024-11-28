@@ -544,7 +544,7 @@ function simStarted() {
     loading.next();
     simulation.nodes(nodes);
     simulation.on('tick', ticked);
-    simulation.alpha(1).velocityDecay(0.01).restart();
+    simulation.alpha(1).velocityDecay(0.07).restart();
 }
 
 const simEnded = ({ nTicks }) => setTimeout(() => loading.next(), nTicks * 10);
@@ -570,14 +570,14 @@ function initializeSimulation() {
 }
 
 const ZOOM_MIN = 0.02;
-const ZOOM_MAX = 2;
+const ZOOM_MAX = 1;
 
 var zoom = d3.zoom().scaleExtent([ZOOM_MIN, ZOOM_MAX]);
 zoom.on('zoom', ({transform: {x, y, k}}) => svg.attr('transform', `translate(${x}, ${y}) scale(${k})`));
 
 function drag(simulation) {
 	function dragstarted(e, d) {
-		!e.active && simulation.alphaTarget(0.01).velocityDecay(0.01).restart();
+		!e.active && simulation.alphaTarget(0.01).velocityDecay(0.07).restart();
 	}
 	
 	const dragged = ({x, y}, d) => { d.fx = x; d.fy = y; };
@@ -592,7 +592,7 @@ function drag(simulation) {
 		if (bstop) { 
 			d.fx = null;
 			d.fy = null;		
-			simulation.alphaTarget(1).velocityDecay(0.01).restart();
+			simulation.alphaTarget(1).velocityDecay(0.07).restart();
 			bstop = false; } 
 			else { 
 				simulation.stop();
@@ -1070,7 +1070,7 @@ function exporting(to) {
 }
 
 const export2svg = () => exporting(EXPORT_FORMATS.SVG);
-const startsim = () => {simulation.alpha(1).velocityDecay(0.02).restart()};
+const startsim = () => {simulation.alpha(1).velocityDecay(0.07).restart()};
 const stopsim = () => {simulation.stop()};
 
 const menuItems = [
@@ -1507,7 +1507,7 @@ function calcY2(d) {
 d3.select(window).on('resize', () => {
   width = +svg.node().getBoundingClientRect().width;
   height = +svg.node().getBoundingClientRect().height;
-  simulation.alpha(1).velocityDecay(0.01).restart(); // added velocityDelay(0.01)
+  simulation.alpha(1).velocityDecay(0.07).restart(); // added velocityDelay(0.01)
 });
 
 function initDefs() {
