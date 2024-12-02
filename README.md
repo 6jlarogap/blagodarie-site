@@ -1,8 +1,8 @@
 # blagodarie-site
 contrib/                    сервисные процедуры, инструкции
-blagodarie/:                blagoroda.org
-genesis/:                   genesis.blagoroda.org
-map/:                       map.blagoroda.org
-graph/:                     graph.blagoroda.org
+blagodarie/:                old.meetgame.us.to
+genesis/:                   genesis.meetgame.us.to
+map/:                       map.meetgame.us.to
+graph/:                     graph.meetgame.us.to
 
-health/:                    health.blagoroda.org
+health/:                    health.meetgame.us.to

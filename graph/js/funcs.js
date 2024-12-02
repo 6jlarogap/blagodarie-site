@@ -11,9 +11,9 @@ var API_URL, ROOT_DOMAIN, GRAPH_URL, MAP_URL;
 
 // Могут быть переопределены в local_settings.js или где-то еще
 //
-const get_api_url = () => API_URL || 'https://api.blagoroda.org';
-const get_graph_url = () => GRAPH_URL || 'https://blagoroda.org';
-const get_map_url = () => MAP_URL || 'https://map.blagoroda.org';
+const get_api_url = () => API_URL || 'https://api.meetgame.us.to';
+const get_graph_url = () => GRAPH_URL || 'https://meetgame.us.to';
+const get_map_url = () => MAP_URL || 'https://map.meetgame.us.to';
 
 function get_root_domain() {
 
@@ -31,7 +31,7 @@ function get_root_domain() {
     //
     //  Если ROOT_DOMAIN не указан (в local_settings.js или где-то еще):
     //      -   если сайт на github.io, то домен для куки: window.location.host
-    //      -   иначе домен для куки: 'blagoroda.org'
+    //      -   иначе домен для куки: 'meetgame.us.to'
 
     if (ROOT_DOMAIN) return ROOT_DOMAIN;
     const developer_domain_regexps = [
@@ -41,7 +41,7 @@ function get_root_domain() {
     for (const regex of developer_domain_regexps)
         if (location_host.match(regex))
             return location_host;
-    return 'blagoroda.org';
+    return 'meetgame.us.to';
 }
 
 const DOCUMENT_URL = new URL(window.location.href);

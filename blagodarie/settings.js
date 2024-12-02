@@ -1,7 +1,7 @@
 const settingSets = [
     {
-        url: 'https://old.blagoroda.org/',
-        api: 'https://api.blagoroda.org/',
+        url: 'https://old.meetgame.us.to/',
+        api: 'https://api.meetgame.us.to/',
         bot: 'doverabot',
         yandex: {
             client_id: '1656d92ee4f8436a8e1de4f5938b0786'
@@ -17,7 +17,7 @@ const settingSets = [
     },
 	{
         url: 'https://www.xn--80aabjfzq0au.xn--p1ai/',
-        api: 'https://api.blagoroda.org/',
+        api: 'https://api.meetgame.us.to/',
         bot: 'doverabot',
         yandex: {
             client_id: '1656d92ee4f8436a8e1de4f5938b0786'
@@ -32,19 +32,19 @@ const settingSets = [
         }
     },
     {
-        url: 'https://dev.blagoroda.org/',
-        api: 'https://api.dev.blagoroda.org/',
+        url: 'https://dev.meetgame.us.to/',
+        api: 'https://api.dev.meetgame.us.to/',
         bot: 'BlagodarieAuthBot',
         yandex: {
             client_id: 'cf3f096c100041eaa2d2642bc94a9f5b'
         },
         vk: {
             client_id: '7811224',
-            redirect_uri: 'https://api.dev.blagoroda.org/api/oauth/callback/vk/'
+            redirect_uri: 'https://api.dev.meetgame.us.to/api/oauth/callback/vk/'
         },
         ok: {
             client_id: '512000750172',
-            redirect_uri: 'https://api.dev.blagoroda.org/api/oauth/callback/odnoklassniki'
+            redirect_uri: 'https://api.dev.meetgame.us.to/api/oauth/callback/odnoklassniki'
         }
     },
     {

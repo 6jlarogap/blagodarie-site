@@ -1,5 +1,5 @@
 
-BACKEND_URL = 'https://api.blagoroda.org'
+BACKEND_URL = 'https://api.meetgame.us.to'
 BACKEND_TIMEOUT = 300
 
 try:
