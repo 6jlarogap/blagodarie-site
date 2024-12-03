@@ -36,7 +36,7 @@
 
 $(document).ready (async () => {
 
-    const meet = get_parm('meet') || '';
+    const meet = (get_root_domain() == DOCUMENT_URL.host) ? 'on' : (get_parm('meet') || '');
     const auth_data = await check_auth(Boolean(meet));
     if (meet && !auth_data) return;
 
@@ -58,10 +58,7 @@ $(document).ready (async () => {
 
     const api_url = get_api_url();
     const api_get_parms = {};
-    if (chat_id = get_parm('chat_id')) {
-        $('#id_block_form').hide();
-        api_get_parms.chat_id = chat_id;
-    } else if (meet) {
+    if (meet) {
         $('#id_block_form').hide();
         $('#id_gender,#id_older,#id_younger').each(function() {
             $(this).val('');
@@ -77,6 +74,9 @@ $(document).ready (async () => {
         if (!api_get_parms.with_offers) {
             api_get_parms.with_offers = $('#id_with_offers').prop('checked') ? 'on' : ''
         }
+    } else if (chat_id = get_parm('chat_id')) {
+        $('#id_block_form').hide();
+        api_get_parms.chat_id = chat_id;
     } else if (offer_id = get_parm('offer_id')) {
         $('#id_block_form').hide();
         api_get_parms.offer_id = offer_id;
