@@ -295,18 +295,29 @@ $(document).ready (async () => {
         //      стандарт, бесплатно, но китайские города в китайских иероглифах
         // По-русски бесплатных не нашел
 
-        const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 20,
-                // Это обязательно!
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            });
         let zoom = 5;
         if (data.found_coordinates) {
             zoom = 12;
         } else if (data.points.length == 0) {
             zoom = 2;
         }
-        map = L.map('map', { center: L.latLng(data.lat_avg, data.lng_avg), zoom: zoom, layers: [tiles] });
+        map = L.map('map',
+            {
+                center: L.latLng(data.lat_avg, data.lng_avg),
+                zoom: zoom,
+                attributionControl: false,
+            }
+        );
+        L.control.attribution().setPrefix('<a href="https://leafletjs.com/">Leaflet</a>').addTo(map);
+        const tiles = L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                maxZoom: 20,
+                // Это обязательно, если пользуешься leafletjs
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }
+        ).addTo(map);
+
         map.addControl(new L.Control.Fullscreen({
             title: {
                 'false': 'Полный экран',
