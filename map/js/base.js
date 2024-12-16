@@ -69,6 +69,7 @@ $(document).ready (async () => {
         $('#id_meet_filters').show();
         $('#graph_legend').show();
         $('.horz_bar').show();
+        document.title = 'Игра знакомств | Доверие';
         api_get_parms.meet = 'on';
         api_get_parms.with_offers = get_parm('with_offers') ? 'on' : ''; 
         if (!api_get_parms.with_offers) {
@@ -83,11 +84,13 @@ $(document).ready (async () => {
     } else if (offer_on = get_parm('offer')) {
         $('#id_block_form').hide();
         api_get_parms.offer = 'on';
+        document.title = 'Карта предложений';
     } else if (uuid_trustees = get_parm('uuid_trustees')) {
         $('#id_block_form').hide();
         api_get_parms.uuid_trustees = uuid_trustees;
     } else if (videoid = get_parm('videoid')) {
         $('#id_block_form').hide();
+        document.title = 'Карта. Голосование по видео';
         let source = get_parm('source') || 'yt';
         api_get_parms.videoid = videoid;
         api_get_parms.source =source;
@@ -155,10 +158,9 @@ $(document).ready (async () => {
     if (api_response.ok) {
         const data = api_response.data;
         let num_men = '';
-        let title_base = 'Благорода. Карта';
         if (uuid) {
             if (data.first_name) {
-                document.title = title_base + ': ' + data.first_name;
+                document.title = 'Карта: ' + data.first_name;
                 $('#id_subtitle_').html('<h2><a href="' + document.URL + '">' + data.first_name + '</a></h2>');
                 if (data.found_coordinates) {
                     if (data.address) {
@@ -199,7 +201,7 @@ $(document).ready (async () => {
             }
             $('#id_subtitle_').html(subtitle);
         } else if (offer_id) {
-            document.title = title_base + '. Опрос' + (data.offer_question ? ': ' + data.offer_question : '');
+            document.title = 'Карта. Опрос' + (data.offer_question ? ': ' + data.offer_question : '');
             let subtitle = '';
             num_men = '(указавших место: ' + data.points.length +  ')';
             if (data.offer_question) {
@@ -217,13 +219,12 @@ $(document).ready (async () => {
             $('#id_subtitle_').html(subtitle);
 
         } else if (videoid) {
-            document.title = title_base + '. Голосование по видео';
             let subtitle = data.video_title ? data.video_title : 'Голосовашие по видео';
             $('#id_subtitle_').html('<h2>' + subtitle + '</h2>')
 
         } else if (uuid_trustees) {
             if (data.first_name) {
-                document.title = title_base + '. Доверия к: ' + data.first_name;
+                document.title = 'Карта . Доверия к: ' + data.first_name;
                 $('#id_subtitle_').html(
                         '<h3>' +
                             '<big>' +
@@ -267,11 +268,9 @@ $(document).ready (async () => {
             }
 
         } else if (meet) {
-            document.title = 'Участники игры знакомств';
             num_men = `(${data.num_all})`;
             $('#id_subtitle_').html(`<h3>${meet_subtitle} ${num_men}</h3>`);
         } else if (offer_on) {
-            document.title = 'Карта предложений';
             $('#id_subtitle_').html(
                 `<h3><a href="${document.URL}"><big>Опросы, предложения</big></a> ` +
                 `(с указанным местом: ${data.points.length})` +
