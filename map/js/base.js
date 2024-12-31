@@ -63,7 +63,7 @@ $(document).ready (async () => {
         $('#id_gender,#id_older,#id_younger').each(function() {
             $(this).val('');
         });
-        $('#id_with_offers').prop('checked', true);
+        // $('#id_with_offers').prop('checked', true);
         sel_older_prev = '';
         sel_younger_prev = '';
         $('#id_meet_filters').show();
@@ -72,9 +72,9 @@ $(document).ready (async () => {
         document.title = 'Игра знакомств | Доверие';
         api_get_parms.meet = 'on';
         api_get_parms.with_offers = get_parm('with_offers') ? 'on' : ''; 
-        if (!api_get_parms.with_offers) {
-            api_get_parms.with_offers = $('#id_with_offers').prop('checked') ? 'on' : ''
-        }
+        // if (!api_get_parms.with_offers) {
+        //     api_get_parms.with_offers = $('#id_with_offers').prop('checked') ? 'on' : ''
+        // }
     } else if (chat_id = get_parm('chat_id')) {
         $('#id_block_form').hide();
         api_get_parms.chat_id = chat_id;
@@ -375,7 +375,7 @@ $(document).ready (async () => {
 
         }   // if (meet)
 
-        if (data.graph) {
+        if (false && data.graph) {
             Graph = ForceGraph3D()
                 .nodeThreeObject(node => node_draw(node))
                 .linkColor(link => link_color(link))
@@ -529,7 +529,7 @@ $(document).ready (async () => {
                     gender: $('#id_gender').val(),
                     older: $('#id_older').val(),
                     younger: $('#id_younger').val(),
-                    with_offers: $('#id_with_offers').prop('checked') ? 'on' : '',
+                    with_offers: '', // $('#id_with_offers').prop('checked') ? 'on' : '',
 
         }});
         if (api_response.ok) {
