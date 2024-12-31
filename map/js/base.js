@@ -526,7 +526,7 @@ $(document).ready (async () => {
                     lat_north: bounds._northEast.lat,
                     lng_west: bounds._southWest.lng,
                     lng_east: bounds._northEast.lng,
-                    gender: $('#id_gender').val(),
+                    gender: '', // $('#id_gender').val(),
                     older: $('#id_older').val(),
                     younger: $('#id_younger').val(),
                     with_offers: '', // $('#id_with_offers').prop('checked') ? 'on' : '',
