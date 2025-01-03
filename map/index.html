@@ -58,14 +58,14 @@
     <div id="id_meet_filters" style="margin:auto; width:90%;text-align:center; display: none">
         <table style="margin:auto; width:100%;">
             <tr>
-<!--                <td align="center">
+                <td id="id_meet_filters_gender" align="center" style="display: none">
                     <label for="id_gender">Пол:</label>
                     <select name="gender" id="id_gender">
                         <option value="" selected>любой</option>
                         <option value="m">Муж.</option>
                         <option value="f">Жен.</option>
                     </select>
-                </td>-->
+                </td>
                 <td align="center">
                     <label for="id_older">Возраст, <b>от</b>:</label>
                     <select name="older" id="id_older">
@@ -88,12 +88,10 @@
                         <option value="60">60 лет</option>
                     </select>
                 </td>
-<!-- Временный коммент чтобы не дёргать Женю на НГ 
-                <td align="center">
+                <td id="id_meet_filters_with_offer" align="center" style="display: none">
                     <label for="id_with_offers">Показать<br />предложения:<span><br />
                     <input type="checkbox" name="with_offers" id="id_with_offers" checked>
                 </td>
--->
             </tr>
         </table>
         <br />
@@ -104,10 +102,7 @@
     <div style="margin:auto;width: 100%" id="progress"><div id="progress-bar"></div></div>
     <div style="margin:auto;width: 100%" id="map"></div>
     <br />
-
-<!-- Временный коммент чтобы не дёргать Женю на НГ 
-    
-    <div class="horz_bar" style= "background-color: #EBEBEB; width: 100%;text-align:center; display: none">
+    <div id="id_horz_bar_1" style= "background-color: #EBEBEB; width: 100%;text-align:center; display: none">
     <br /><br /><br /><br /><br />
     </div>
     <div id="3d-graph" style="margin: auto;width:100%;"></div>
@@ -157,10 +152,9 @@
         </table>
         <br />
     </div>
-    <div class="horz_bar" style= "background-color: #EBEBEB; width: 100%;text-align:center; display: none">
+    <div id="id_horz_bar_2" style= "background-color: #EBEBEB; width: 100%;text-align:center; display: none">
     <br /><br /><br /><br /><br />
     </div>
--->
     <div id="id_legend" style="margin: auto; width: 90%;"></div>
 
     <!-- Диалоговое окно авторизации.

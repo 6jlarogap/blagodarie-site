@@ -40,6 +40,10 @@ $(document).ready (async () => {
     const auth_data = await check_auth(Boolean(meet));
     if (meet && !auth_data) return;
 
+    const maxZoom = 19;
+    let meet_admin = false;
+    let meet_common = '';
+    let user_data = {};
     let chat_id = '';
     let offer_id = '';
     let offer_on = '';
@@ -59,22 +63,47 @@ $(document).ready (async () => {
     const api_url = get_api_url();
     const api_get_parms = {};
     if (meet) {
+        // чтоб администратор мог посмотреть на себя как на обычного юзера
+        if (get_parm('common')) {
+            meet_common = '1';
+            api_get_parms.common = meet_common;
+        } else {
+            const api_response = await api_request(
+                api_url + '/api/profile/', {
+                    method: 'GET',
+                    auth_token: auth_data ? auth_data.auth_token : null,
+                    params: {uuid: auth_data.user_uuid},
+                }
+            );
+            if (!api_response.ok) return;
+                meet_admin = api_response.data.editable;
+        }
         $('#id_block_form').hide();
-        $('#id_gender,#id_older,#id_younger').each(function() {
+        $('#id_older,#id_younger').each(function() {
             $(this).val('');
         });
-        // $('#id_with_offers').prop('checked', true);
+        $('#id_with_offers').prop('checked', meet_admin);
         sel_older_prev = '';
         sel_younger_prev = '';
         $('#id_meet_filters').show();
-        $('#graph_legend').show();
-        $('.horz_bar').show();
+        $('#id_horz_bar_1').show();
+        if (meet_admin) {
+            $('#id_horz_bar_2').show();
+            $('#id_gender').val('');
+            $('#graph_legend').show();
+            $('#id_meet_filters_gender').show();
+            $('#id_meet_filters_with_offer').show();
+            api_get_parms.with_offers = get_parm('with_offers') ? 'on' : ''; 
+            if (!api_get_parms.with_offers) {
+                api_get_parms.with_offers = $('#id_with_offers').prop('checked') ? 'on' : ''
+            }
+        } else {
+            $('#id_gender').val(user_data.gender == 'f' ? 'm' : 'f');
+            api_get_parms.gender = $('#id_gender').val();
+            api_get_parms.with_offers = ''; 
+        }
         document.title = 'Игра знакомств | Доверие';
         api_get_parms.meet = 'on';
-        api_get_parms.with_offers = get_parm('with_offers') ? 'on' : ''; 
-        // if (!api_get_parms.with_offers) {
-        //     api_get_parms.with_offers = $('#id_with_offers').prop('checked') ? 'on' : ''
-        // }
     } else if (chat_id = get_parm('chat_id')) {
         $('#id_block_form').hide();
         api_get_parms.chat_id = chat_id;
@@ -311,7 +340,7 @@ $(document).ready (async () => {
         const tiles = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             {
-                maxZoom: 20,
+                maxZoom: maxZoom,
                 // Это обязательно, если пользуешься leafletjs
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }
@@ -330,7 +359,9 @@ $(document).ready (async () => {
             // Параметры center, zoom в L.map тогда не учитывается
             // Показываем всех
             map.fitBounds(markers.getBounds());
+            if (map.zoom = maxZoom) map.zoom = maxZoom;
         }
+
         // end  show_map ----------
 
         if (meet) {
@@ -375,7 +406,7 @@ $(document).ready (async () => {
 
         }   // if (meet)
 
-        if (false && data.graph) {
+        if (data.graph) {
             Graph = ForceGraph3D()
                 .nodeThreeObject(node => node_draw(node))
                 .linkColor(link => link_color(link))
@@ -526,10 +557,11 @@ $(document).ready (async () => {
                     lat_north: bounds._northEast.lat,
                     lng_west: bounds._southWest.lng,
                     lng_east: bounds._northEast.lng,
-                    gender: '', // $('#id_gender').val(),
+                    gender: $('#id_gender').val(),
                     older: $('#id_older').val(),
                     younger: $('#id_younger').val(),
-                    with_offers: '', // $('#id_with_offers').prop('checked') ? 'on' : '',
+                    with_offers: $('#id_with_offers').prop('checked') ? 'on' : '',
+                    common: meet_common,
 
         }});
         if (api_response.ok) {
