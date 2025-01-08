@@ -41,8 +41,7 @@ $(document).ready (async () => {
     if (meet && !auth_data) return;
 
     const maxZoom = 19;
-    let meet_admin = false;
-    let meet_common = '';
+    let meet_admin = '';
     let user_data = {};
     let chat_id = '';
     let offer_id = '';
@@ -63,11 +62,9 @@ $(document).ready (async () => {
     const api_url = get_api_url();
     const api_get_parms = {};
     if (meet) {
-        // чтоб администратор мог посмотреть на себя как на обычного юзера
-        if (get_parm('common')) {
-            meet_common = '1';
-            api_get_parms.common = meet_common;
-        } else {
+        // Спец. параметр для администратора. Но администратором может быть только
+        // прописанный в апи.
+        if (get_parm('admin')) {
             const api_response = await api_request(
                 api_url + '/api/profile/', {
                     method: 'GET',
@@ -76,7 +73,8 @@ $(document).ready (async () => {
                 }
             );
             if (!api_response.ok) return;
-                meet_admin = api_response.data.editable;
+                meet_admin = api_response.data.is_meetgame_admin ? '1' : '';
+                api_get_parms.admin = meet_admin;
         }
         $('#id_block_form').hide();
         $('#id_older,#id_younger').each(function() {
@@ -561,7 +559,7 @@ $(document).ready (async () => {
                     older: $('#id_older').val(),
                     younger: $('#id_younger').val(),
                     with_offers: $('#id_with_offers').prop('checked') ? 'on' : '',
-                    common: meet_common,
+                    admin: meet_admin,
 
         }});
         if (api_response.ok) {
