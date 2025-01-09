@@ -64,16 +64,17 @@ $(document).ready (async () => {
     if (meet) {
         // Спец. параметр для администратора. Но администратором может быть только
         // прописанный в апи.
+        const api_profile_response = await api_request(
+            api_url + '/api/profile/', {
+                method: 'GET',
+                auth_token: auth_data ? auth_data.auth_token : null,
+                params: {uuid: auth_data.user_uuid},
+            }
+        );
+        if (!api_profile_response.ok) return;
+        user_data = api_profile_response.data
         if (get_parm('admin')) {
-            const api_response = await api_request(
-                api_url + '/api/profile/', {
-                    method: 'GET',
-                    auth_token: auth_data ? auth_data.auth_token : null,
-                    params: {uuid: auth_data.user_uuid},
-                }
-            );
-            if (!api_response.ok) return;
-                meet_admin = api_response.data.is_meetgame_admin ? '1' : '';
+                meet_admin = user_data.is_meetgame_admin ? '1' : '';
                 api_get_parms.admin = meet_admin;
         }
         $('#id_block_form').hide();
