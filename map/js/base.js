@@ -524,6 +524,9 @@ $(document).ready (async () => {
         );
         if (api_response.ok) {
             await on_change_bounds_filters_sympa(event_);
+            if (event_.target.checked && api_response.data.desc_sent) { 
+                alert('Информация отправлена. Проверьте сообщения в телеграме');
+            }
         }
         map_enable();
     };
