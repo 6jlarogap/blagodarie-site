@@ -137,6 +137,7 @@ $(document).ready (async () => {
             $('input[name=uuid]').val(uuid);
         } else {
             $('input[name=uuid]').remove();
+            document.title = 'Карта участников | Доверие';
         }
     }
     if (!chat_id && !offer_id & !videoid & !uuid_trustees & !meet & !offer_on) {
