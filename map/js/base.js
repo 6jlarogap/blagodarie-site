@@ -401,7 +401,7 @@ $(document).ready (async () => {
 
 
             $('.sympa').change(async (event_) => {
-            await sympa_change(event_);
+                await sympa_change(event_);
             });
 
         }   // if (meet)
@@ -525,8 +525,13 @@ $(document).ready (async () => {
         );
         if (api_response.ok) {
             await on_change_bounds_filters_sympa(event_);
-            if (event_.target.checked && api_response.data.desc_sent) { 
-                alert('Информация отправлена. Проверьте сообщения в телеграме');
+            if (event_.target.checked) {
+                const profile_to = api_response.data.profile_to;
+                const message = api_response.data.desc_sent
+                    ?   'Информация отправлена. Проверьте сообщения в телеграме'
+                    :   `Вы поставили интерес ${profile_to.first_name} с незаполненным описанием`
+                ;
+                alert(message);
             }
         }
         map_enable();
@@ -583,6 +588,10 @@ $(document).ready (async () => {
             });
         }
     };
+
+    $('.sympa').change(async (event_) => {
+        await sympa_change(event_);
+    });
 
     const map_enable = () => {
         $('#map')[0].style.cursor = null;
