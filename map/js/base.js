@@ -67,7 +67,7 @@ $(document).ready (async () => {
         const api_profile_response = await api_request(
             api_url + '/api/profile/', {
                 method: 'GET',
-                auth_token: auth_data ? auth_data.auth_token : null,
+                auth_token: auth_data.auth_token,
                 params: {uuid: auth_data.user_uuid},
             }
         );
@@ -76,6 +76,27 @@ $(document).ready (async () => {
         if (get_parm('admin')) {
                 meet_admin = user_data.is_meetgame_admin ? '1' : '';
                 api_get_parms.admin = meet_admin;
+        } else if (!user_data.did_meet ){
+            $('#map').hide();
+            $('#progress-bar').hide();
+            const response = await api_request(
+                // TODO
+                // Составить в апи специально метод,
+                // получающий данные бота, и применить его здесь.
+                //
+                api_url + '/api/token/url/', {
+                method: 'POST',
+                json: { url: window.location.href }
+            });
+            if (response.ok && response.data.bot_username)
+            $('#id_subtitle_').html(
+                `<br />` +
+                `Для участвия в игре знакомств - перейдите пожалуйста по ` +
+                `<a href="https://t.me/${response.data.bot_username}?start=meet">ссылке</a> - ` +
+                `и там визард заставит заполнить профиль!` +
+                `<br />`
+            );
+            return;
         }
         $('#id_block_form').hide();
         $('#id_older,#id_younger').each(function() {
