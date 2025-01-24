@@ -91,7 +91,7 @@ $(document).ready (async () => {
             if (response.ok && response.data.bot_username)
             $('#id_subtitle_').html(
                 `<br />` +
-                `Для участвия в игре знакомств - перейдите пожалуйста по ` +
+                `Для участия в игре знакомств - перейдите пожалуйста по ` +
                 `<a href="https://t.me/${response.data.bot_username}?start=meet">ссылке</a> - ` +
                 `и там визард заставит заполнить профиль!` +
                 `<br />`
