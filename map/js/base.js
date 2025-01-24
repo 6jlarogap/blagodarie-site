@@ -88,14 +88,15 @@ $(document).ready (async () => {
                 method: 'POST',
                 json: { url: window.location.href }
             });
-            if (response.ok && response.data.bot_username)
-            $('#id_subtitle_').html(
-                `<br />` +
-                `Для участия в игре знакомств - перейдите пожалуйста по ` +
-                `<a href="https://t.me/${response.data.bot_username}?start=meet">ссылке</a> - ` +
-                `и там визард заставит заполнить профиль!` +
-                `<br />`
-            );
+            if (response.ok && response.data.bot_username) {
+                $('#id_subtitle_').html(
+                    `<br />` +
+                    `Для участия в игре знакомств - перейдите пожалуйста по ` +
+                    `<a href="https://t.me/${response.data.bot_username}?start=meet">ссылке</a> - ` +
+                    `и там визард заставит заполнить профиль!` +
+                    `<br />`
+                );
+            }
             return;
         }
         $('#id_block_form').hide();
