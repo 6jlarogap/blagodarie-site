@@ -58,7 +58,6 @@ $(document).ready (async () => {
     let Graph = null;
     const graph_container = $('#3d-graph')[0];
 
-
     const api_url = get_api_url();
     const api_get_parms = {};
     if (meet) {
@@ -421,11 +420,6 @@ $(document).ready (async () => {
                 map_enable();
             });
 
-
-            $('.sympa').change(async (event_) => {
-                await sympa_change(event_);
-            });
-
         }   // if (meet)
 
         if (data.graph) {
@@ -530,7 +524,16 @@ $(document).ready (async () => {
 
 
     const sympa_change = async (event_) => {
-        const operationtype_id = event_.target.checked ? 14 : 15;
+
+        // При любом положении checkbox'а отправляется запрос в апи зафиксировать интерес.
+        // Т.е. снятие интереса здесь не предусмотрено.
+        // Апи, увидев смену (!) состояния интереса, пошлет получателю интереса сообщение.
+        // В дальнейшем смены состояния интереса не будет и 
+        // получатель интереса не будет иметь в личке с ботом такие сообщения
+        // В любом случае перерисовывается легенда -- и checkbox, даже если его сняли,
+        // будет поднят.
+
+        const operationtype_id = 14;
         if (!auth_data) return;
         const tag = event_.target.id.match(/sympa\-(\d+)$/);
         if (!tag || tag[1] == auth_data.user_id) return;
@@ -547,14 +550,19 @@ $(document).ready (async () => {
         );
         if (api_response.ok) {
             await on_change_bounds_filters_sympa(event_);
-            if (event_.target.checked) {
-                const profile_to = api_response.data.profile_to;
-                const message = api_response.data.desc_sent
-                    ?   'Информация отправлена. Проверьте сообщения в телеграме'
-                    :   `Вы поставили интерес ${profile_to.first_name} с незаполненным описанием`
-                ;
-                alert(message);
-            }
+            const profile_to = api_response.data.profile_to;
+            const message = api_response.data.desc_sent
+                ?   'Информация отправлена. Проверьте сообщения в телеграме'
+                :   (
+                        api_response.data.desc_sent_error
+                        ? (
+                            `Ошибка отправки к вам описания ${profile_to.first_name}. ` +
+                            'Возможно, человек, которым Вы интересуетесь, заблокировал такую отправку'
+                            )
+                        : `Вы поставили интерес ${profile_to.first_name} с незаполненным описанием`
+                    )
+            ;
+            alert(message);
         }
         map_enable();
     };
