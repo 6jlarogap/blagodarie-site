@@ -557,7 +557,7 @@ $(document).ready (async () => {
                         api_response.data.desc_sent_error
                         ? (
                             `Ошибка отправки к вам описания ${profile_to.first_name}. ` +
-                            'Возможно, человек, которым Вы интересуетесь, заблокировал такую отправку'
+                            'Возможно, человек, которым Вы интересуетесь, не имеет описания или заблокировал такую отправку'
                             )
                         : `Вы поставили интерес ${profile_to.first_name} с незаполненным описанием`
                     )
@@ -565,6 +565,7 @@ $(document).ready (async () => {
             alert(message);
         }
         map_enable();
+        $('#' + event_.target.id).prop("disabled", true);
     };
 
     function updateProgressBar(processed, total, elapsed, layersArray) {
