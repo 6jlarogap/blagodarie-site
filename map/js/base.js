@@ -64,18 +64,12 @@ $(document).ready (async () => {
     if (meet) {
 
         const response_bot = await api_request(
-            // TODO
-            // Составить в апи специально метод,
-            // получающий данные бота, и применить его здесь.
-            //
-            api_url + '/api/token/url/', {
-            method: 'POST',
-            json: { url: window.location.href }
+            api_url + '/api/get_bot_data/', {
+            method: 'GET',
         });
-        if (response_bot.ok && response_bot.data.bot_username) {
-            bot_username = response_bot.data.bot_username;
+        if (response_bot.ok && response_bot.data.username) {
+            bot_username = response_bot.data.username;
         }
-
         const api_profile_response = await api_request(
             api_url + '/api/profile/', {
                 method: 'GET',
