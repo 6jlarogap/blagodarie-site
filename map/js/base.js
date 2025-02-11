@@ -57,41 +57,61 @@ $(document).ready (async () => {
     const meet_subtitle = `<a href="${document.URL}"><big>Участники игры знакомств</big></a>`
     let Graph = null;
     const graph_container = $('#3d-graph')[0];
+    let bot_username = '';
 
     const api_url = get_api_url();
     const api_get_parms = {};
     if (meet) {
-        // Спец. параметр для администратора. Но администратором может быть только
-        // прописанный в апи.
+
+        const response_bot = await api_request(
+            // TODO
+            // Составить в апи специально метод,
+            // получающий данные бота, и применить его здесь.
+            //
+            api_url + '/api/token/url/', {
+            method: 'POST',
+            json: { url: window.location.href }
+        });
+        if (response_bot.ok && response_bot.data.bot_username) {
+            bot_username = response_bot.data.bot_username;
+        }
+
         const api_profile_response = await api_request(
             api_url + '/api/profile/', {
                 method: 'GET',
-                auth_token: auth_data.auth_token,
+                // (не авторизованно!) auth_token: auth_data.auth_token,
                 params: {uuid: auth_data.user_uuid},
             }
         );
+
         if (!api_profile_response.ok) return;
-        user_data = api_profile_response.data
+        user_data = api_profile_response.data;
+        if (!user_data.is_active) {
+            $('#map').hide();
+            $('#progress-bar').hide();
+            if (bot_username) {
+                $('#id_subtitle_').html(
+                    `<br />` +
+                    `Вы удалены из системы (сами себя обезличили ?). ` +
+                    `Для участия в игре знакомств - надо сначала ` +
+                    `<a href="https://t.me/${bot_username}?start=${api_profile_response.data.username}">восстановить себя</a> ` +
+                    `в системе, а потом там же задать команду /meet` +
+                    `<br />`
+                );
+            }
+            return;
+        }
         if (get_parm('admin')) {
-                meet_admin = user_data.is_meetgame_admin ? '1' : '';
-                api_get_parms.admin = meet_admin;
+            meet_admin = user_data.is_meetgame_admin ? '1' : '';
+            api_get_parms.admin = meet_admin;
         } else if (!user_data.did_meet ){
             $('#map').hide();
             $('#progress-bar').hide();
-            const response = await api_request(
-                // TODO
-                // Составить в апи специально метод,
-                // получающий данные бота, и применить его здесь.
-                //
-                api_url + '/api/token/url/', {
-                method: 'POST',
-                json: { url: window.location.href }
-            });
-            if (response.ok && response.data.bot_username) {
+            if (bot_username) {
                 $('#id_subtitle_').html(
                     `<br />` +
                     `Для участия в игре знакомств - перейдите пожалуйста по ` +
-                    `<a href="https://t.me/${response.data.bot_username}?start=meet">ссылке</a> - ` +
+                    `<a href="https://t.me/${bot_username}?start=meet">ссылке</a> - ` +
                     `и там визард заставит заполнить профиль!` +
                     `<br />`
                 );
