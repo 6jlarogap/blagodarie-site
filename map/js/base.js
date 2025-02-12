@@ -577,9 +577,14 @@ $(document).ready (async () => {
                     )
             ;
             alert(message);
+        } else if (api_response.status == 400 && api_response.data.message) {
+            await on_change_bounds_filters_sympa(event_);
+            alert("Интерес не установлен:\n" + api_response.data.message);
         }
         map_enable();
-        $('#' + event_.target.id).prop("disabled", true);
+        if (api_response.ok) {
+            $('#' + event_.target.id).prop("disabled", true);
+        }
     };
 
     function updateProgressBar(processed, total, elapsed, layersArray) {
