@@ -117,6 +117,7 @@ $(document).ready (async () => {
             $(this).val('');
         });
         $('#id_with_offers').prop('checked', meet_admin);
+        $('#id_show_hidden').prop('checked', false);
         sel_older_prev = '';
         sel_younger_prev = '';
         $('#id_meet_filters').show();
@@ -134,7 +135,8 @@ $(document).ready (async () => {
         } else {
             $('#id_gender').val(user_data.gender == 'f' ? 'm' : 'f');
             api_get_parms.gender = $('#id_gender').val();
-            api_get_parms.with_offers = ''; 
+            $('#id_meet_filters_show_hidden').show();
+            api_get_parms.show_hidden = $('#id_show_hidden').prop('checked') ? 'on' :'';
         }
         document.title = 'Игра знакомств | Доверие';
         api_get_parms.meet = 'on';
@@ -394,7 +396,6 @@ $(document).ready (async () => {
             // Параметры center, zoom в L.map тогда не учитывается
             // Показываем всех
             map.fitBounds(markers.getBounds());
-            if (map.zoom = maxZoom) map.zoom = maxZoom;
         }
 
         // end  show_map ----------
@@ -411,7 +412,7 @@ $(document).ready (async () => {
                 map_enable();
             });
 
-            $('#id_gender,#id_older,#id_younger,#id_with_offers').change(async (event_) => {
+            $('#id_gender,#id_older,#id_younger,#id_with_offers,#id_show_hidden').change(async (event_) => {
                 let older = $('#id_older').val();
                 let younger = $('#id_younger').val();
                 if (!older) older = "0";
@@ -503,6 +504,7 @@ $(document).ready (async () => {
                 const color_not_trust = 'red';
                 const color_invite_meet = 'blueviolet';
                 const color_sympa = 'darkorange';
+                const color_hide_meet = 'black';
                 if (link.attitude) {
                     if (link.attitude == attitudes.acq) {
                         result = color_acq;
@@ -515,19 +517,26 @@ $(document).ready (async () => {
                     result = color_invite_meet;
                 } else if (link.is_sympa) {
                     result = color_sympa;
+                } else if (link.is_hide_meet) {
+                    result = color_hide_meet;
                 }
+                console.log(link.source, link.target, result)
                 return result;
             }
 
             const link_curvature = (link) => {
                 // Какой-то результат по умолчанию:
                 //
-                let result = 0.9;
+                let result = 0.1;
 
                 if (link.attitude) {
                     result = 0.3;
                 } else if (link.is_invite_meet) {
                     result = 0.5;
+                } else if (link.is_sympa) {
+                    result = 0.7;
+                } else if (link.is_hide_meet) {
+                    result = 0.9;
                 }
                 return result;
             };
@@ -584,6 +593,28 @@ $(document).ready (async () => {
         map_enable();
     };
 
+    const hide_change = async (event_) => {
+        // Скрыть, снять скрытие.
+        const operationtype_id = event_.target.checked ? 17 : 18;
+        const tag = event_.target.id.match(/hide\-(\d+)$/);
+        if (!tag || tag[1] == auth_data.user_id) return;
+        map_disable();
+        const api_response = await api_request(
+            api_url + '/api/addoperation', {
+                method: 'POST',
+                auth_token: auth_data.auth_token,
+                json: {
+                    operation_type_id: operationtype_id,
+                    user_id_to: tag[1],
+                }
+            }
+        );
+        if (api_response.ok ) {
+            await on_change_bounds_filters_sympa(event_);
+        }
+        map_enable();
+    }
+
     function updateProgressBar(processed, total, elapsed, layersArray) {
         const progress = document.getElementById('progress');
         const progressBar = document.getElementById('progress-bar');
@@ -616,6 +647,7 @@ $(document).ready (async () => {
                     older: $('#id_older').val(),
                     younger: $('#id_younger').val(),
                     with_offers: $('#id_with_offers').prop('checked') ? 'on' : '',
+                    show_hidden: $('#id_show_hidden').prop('checked') ? 'on' : '',
                     admin: meet_admin,
 
         }});
@@ -633,11 +665,18 @@ $(document).ready (async () => {
             $('.sympa').change(async (event_) => {
                 await sympa_change(event_);
             });
+            $('.hide_him_her').change(async (event_) => {
+                await hide_change(event_);
+            });
         }
     };
 
     $('.sympa').change(async (event_) => {
         await sympa_change(event_);
+    });
+
+    $('.hide_him_her').change(async (event_) => {
+        await hide_change(event_);
     });
 
     const map_enable = () => {
