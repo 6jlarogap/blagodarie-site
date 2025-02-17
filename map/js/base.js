@@ -547,8 +547,8 @@ $(document).ready (async () => {
         // В любом случае перерисовывается легенда -- и checkbox, даже если его сняли,
         // будет поднят.
 
-        const operationtype_id = 14;
         if (!auth_data) return;
+        const operationtype_id = 14;
         const tag = event_.target.id.match(/sympa\-(\d+)$/);
         if (!tag || tag[1] == auth_data.user_id) return;
         map_disable();
@@ -582,9 +582,6 @@ $(document).ready (async () => {
             alert("Интерес не установлен:\n" + api_response.data.message);
         }
         map_enable();
-        if (api_response.ok) {
-            $('#' + event_.target.id).prop("disabled", true);
-        }
     };
 
     function updateProgressBar(processed, total, elapsed, layersArray) {
@@ -655,6 +652,11 @@ $(document).ready (async () => {
         // Выскакивает uncaught error, когда какой-то маркер вне карты,
         // map.dragging.enable()
         $("input[type=checkbox]").prop("disabled", false);
+        $('.sympa').each(function() {
+            if ($(this).prop('checked')) {
+                $(this).prop('disabled', true);
+            }
+        });
         $("select").prop("disabled", false);
     };
 
