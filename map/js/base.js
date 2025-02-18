@@ -61,6 +61,7 @@ $(document).ready (async () => {
 
     const api_url = get_api_url();
     const api_get_parms = {};
+
     if (meet) {
 
         const response_bot = await api_request(
@@ -92,6 +93,40 @@ $(document).ready (async () => {
                     `в системе, а потом там же задать команду /meet` +
                     `<br />`
                 );
+            }
+            return;
+        }
+        if (user_data.r_sympa_username) {
+            $('#map').hide();
+            $('#progress-bar').hide();
+            if (bot_username) {
+                const api_profile_sympa = await api_request(
+                    api_url + '/api/profile/', {
+                        method: 'GET',
+                        auth_token: auth_data.auth_token,
+                        params: {username: user_data.r_sympa_username},
+                    }
+                );
+                if (api_profile_sympa.ok) {
+                    const r_sympa_data = api_profile_sympa.data;
+                    $('#id_subtitle_').html(
+                        `<br />` +
+                        `У Вас установлена взаимная симпатия с ` +
+                        `<a href="https://t.me/${bot_username}?start=${r_sympa_data.username}">` +
+                        `${r_sympa_data.first_name}</a>  - ` +
+                        `чтобы вернуться к игре её нужно отменить. ` +
+                        `<br /><br />` +
+                        `<button ` +
+                        `onClick="onRevokeSympa(` +
+                            `'${api_url}', ` +
+                            `'${auth_data.auth_token}', ` +
+                            `'${r_sympa_data.user_id}', ` +
+                            `'${r_sympa_data.first_name}'` + 
+                        `)"` +
+                        `><big>Отменить симпатию</big></button>` +
+                        `<br />`
+                    );
+                }
             }
             return;
         }
@@ -520,7 +555,6 @@ $(document).ready (async () => {
                 } else if (link.is_hide_meet) {
                     result = color_hide_meet;
                 }
-                console.log(link.source, link.target, result)
                 return result;
             }
 
@@ -713,3 +747,26 @@ $(document).ready (async () => {
     };
 
 });
+
+async function onRevokeSympa(api_url, auth_token, id_to, first_name_to) {
+    if (confirm(`Отменить симпатию к ${first_name_to} ?`)) {
+        const api_response = await api_request(
+            api_url + '/api/addoperation', {
+                method: 'POST',
+                auth_token: auth_token,
+                json: {
+                    operation_type_id: 16,
+                    user_id_to: id_to,
+                }
+            }
+        );
+        if (api_response.ok) {
+            const message = api_response.data.previousstate.is_sympa_confirmed
+                ? `Симпатия к ${first_name_to} отменена`
+                : 'Симпатия уже была отменена'
+            ;
+            alert(message);
+            window.location.assign(document.URL);
+        }
+    }
+}
