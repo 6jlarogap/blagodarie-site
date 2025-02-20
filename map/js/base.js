@@ -58,6 +58,7 @@ $(document).ready (async () => {
     let Graph = null;
     const graph_container = $('#3d-graph')[0];
     let bot_username = '';
+    let set_place_initial = false;
 
     const api_url = get_api_url();
     const api_get_parms = {};
@@ -96,7 +97,26 @@ $(document).ready (async () => {
             }
             return;
         }
-        if (user_data.r_sympa_username) {
+        if (get_parm('admin')) {
+            meet_admin = user_data.is_meetgame_admin ? '1' : '';
+        }
+
+        if (meet_admin) {
+            api_get_parms.admin = meet_admin;
+        } else if (!user_data.did_meet ){
+            $('#map').hide();
+            $('#progress-bar').hide();
+            if (bot_username) {
+                $('#id_subtitle_').html(
+                    `<br />` +
+                    `Для участия в игре знакомств - перейдите пожалуйста по ` +
+                    `<a href="https://t.me/${bot_username}?start=meet">ссылке</a> - ` +
+                    `и там визард заставит заполнить профиль!` +
+                    `<br />`
+                );
+            }
+            return;
+        } else if (user_data.r_sympa_username) {
             $('#map').hide();
             $('#progress-bar').hide();
             if (bot_username) {
@@ -130,23 +150,6 @@ $(document).ready (async () => {
             }
             return;
         }
-        if (get_parm('admin')) {
-            meet_admin = user_data.is_meetgame_admin ? '1' : '';
-            api_get_parms.admin = meet_admin;
-        } else if (!user_data.did_meet ){
-            $('#map').hide();
-            $('#progress-bar').hide();
-            if (bot_username) {
-                $('#id_subtitle_').html(
-                    `<br />` +
-                    `Для участия в игре знакомств - перейдите пожалуйста по ` +
-                    `<a href="https://t.me/${bot_username}?start=meet">ссылке</a> - ` +
-                    `и там визард заставит заполнить профиль!` +
-                    `<br />`
-                );
-            }
-            return;
-        }
         $('#id_block_form').hide();
         $('#id_older,#id_younger').each(function() {
             $(this).val('');
@@ -157,6 +160,7 @@ $(document).ready (async () => {
         sel_younger_prev = '';
         $('#id_meet_filters').show();
         $('#id_horz_bar_1').show();
+
         if (meet_admin) {
             $('#id_horz_bar_2').show();
             $('#id_gender').val('');
@@ -175,6 +179,10 @@ $(document).ready (async () => {
         }
         document.title = 'Игра знакомств | Доверие';
         api_get_parms.meet = 'on';
+
+    // end of if meet
+
+
     } else if (chat_id = get_parm('chat_id')) {
         $('#id_block_form').hide();
         api_get_parms.chat_id = chat_id;
