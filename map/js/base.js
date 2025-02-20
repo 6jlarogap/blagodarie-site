@@ -149,39 +149,49 @@ $(document).ready (async () => {
                 }
             }
             return;
+        } else if (!user_data.latitude || !user_data.longitude) {
+            set_place_initial = true;
+            $('#id_subtitle_').html(
+                `<br />` +
+                `У Вас не задано местоположение. Найдите на карте место, где Вы находитесь, — и ` +
+                `по тому месту <b><i>двойной</i> клик</b> (<b><i>двойной</i> тап</b> на мобильном устройстве). ` +
+                `Вам будет предложено сохранить Ваши координаты` +
+                `<br />`
+            );
         }
-        $('#id_block_form').hide();
-        $('#id_older,#id_younger').each(function() {
-            $(this).val('');
-        });
-        $('#id_with_offers').prop('checked', meet_admin);
-        $('#id_show_hidden').prop('checked', false);
-        sel_older_prev = '';
-        sel_younger_prev = '';
-        $('#id_meet_filters').show();
-        $('#id_horz_bar_1').show();
+        if (!set_place_initial) {
+            $('#id_block_form').hide();
+            $('#id_older,#id_younger').each(function() {
+                $(this).val('');
+            });
+            $('#id_with_offers').prop('checked', meet_admin);
+            $('#id_show_hidden').prop('checked', false);
+            sel_older_prev = '';
+            sel_younger_prev = '';
+            $('#id_meet_filters').show();
+            $('#id_horz_bar_1').show();
 
-        if (meet_admin) {
-            $('#id_horz_bar_2').show();
-            $('#id_gender').val('');
-            $('#graph_legend').show();
-            $('#id_meet_filters_gender').show();
-            $('#id_meet_filters_with_offer').show();
-            api_get_parms.with_offers = get_parm('with_offers') ? 'on' : ''; 
-            if (!api_get_parms.with_offers) {
-                api_get_parms.with_offers = $('#id_with_offers').prop('checked') ? 'on' : ''
+            if (meet_admin) {
+                $('#id_horz_bar_2').show();
+                $('#id_gender').val('');
+                $('#graph_legend').show();
+                $('#id_meet_filters_gender').show();
+                $('#id_meet_filters_with_offer').show();
+                api_get_parms.with_offers = get_parm('with_offers') ? 'on' : ''; 
+                if (!api_get_parms.with_offers) {
+                    api_get_parms.with_offers = $('#id_with_offers').prop('checked') ? 'on' : ''
+                }
+            } else {
+                $('#id_gender').val(user_data.gender == 'f' ? 'm' : 'f');
+                api_get_parms.gender = $('#id_gender').val();
+                $('#id_meet_filters_show_hidden').show();
+                api_get_parms.show_hidden = $('#id_show_hidden').prop('checked') ? 'on' :'';
             }
-        } else {
-            $('#id_gender').val(user_data.gender == 'f' ? 'm' : 'f');
-            api_get_parms.gender = $('#id_gender').val();
-            $('#id_meet_filters_show_hidden').show();
-            api_get_parms.show_hidden = $('#id_show_hidden').prop('checked') ? 'on' :'';
+            api_get_parms.meet = 'on';
         }
         document.title = 'Игра знакомств | Доверие';
-        api_get_parms.meet = 'on';
 
-    // end of if meet
-
+    // end of id meet
 
     } else if (chat_id = get_parm('chat_id')) {
         $('#id_block_form').hide();
@@ -235,7 +245,6 @@ $(document).ready (async () => {
         }
     }
 
-    const markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
     const fill_markerList = (points) => {
         const markerList = [];
         for (let i = 0; i < points.length; i++) {
@@ -256,337 +265,390 @@ $(document).ready (async () => {
         return markerList;
     }
 
-    const api_response = await api_request(
-        api_url + '/api/user/points/', {
-            method: 'GET',
-            auth_token: auth_data ? auth_data.auth_token : null,
-            params: api_get_parms,
+    function updateProgressBar(processed, total, elapsed, layersArray) {
+        const progress = document.getElementById('progress');
+        const progressBar = document.getElementById('progress-bar');
+        if (elapsed > 1000) {
+            // if it takes more than a second to load, display the progress bar:
+            progress.style.display = 'block';
+            progressBar.style.width = Math.round(processed/total*100) + '%';
+        }
+
+        if (processed === total) {
+            // all markers processed - hide the progress bar:
+            progress.style.display = 'none';
+        }
+    }
+
+    const markers = L.markerClusterGroup({ chunkedLoading: true, chunkProgress: updateProgressBar });
+    const leaflet_attribution = L.control.attribution().setPrefix('<a href="https://leafletjs.com/">Leaflet</a>');
+    const control_fullscreen = new L.Control.Fullscreen({
+        title: {
+            'false': 'Полный экран',
+            'true': 'Выйти из полного экрана'
+        }
+    });
+
+    // https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png
+    //      только по английски
+    // https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png
+    //      по-немецки, там где не латинское, включая русские города. Вроде бесплатно
+    // https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+    //      стандарт, бесплатно, но китайские города в китайских иероглифах
+    // По-русски бесплатных не нашел
+
+    const tile_layer = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            maxZoom: maxZoom,
+            // Это обязательно, если пользуешься leafletjs
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }
     );
+    // Координаты Москвы
+    const lat_avg_default = 55.7522200;
+    const lng_avg_default = 37.6155600;
+    const map_options = {
+        attributionControl: false,
+        center: L.latLng(lat_avg_default, lng_avg_default),
+        zoom: 5,
+    };
 
-    if (api_response.ok) {
-        const data = api_response.data;
-        let num_men = '';
-        if (uuid) {
-            if (data.first_name) {
-                document.title = 'Карта: ' + data.first_name;
-                $('#id_subtitle_').html('<h2><a href="' + document.URL + '">' + data.first_name + '</a></h2>');
-                if (data.found_coordinates) {
-                    if (data.address) {
-                        $('#id_address_').html('<big>' + data.address + '</big><br />');
-                    } else {
-                        $('#id_address_').html('<h3>на карте</h3>');
-                    }
-                } else {
-                    $('#id_address_').html('<h3>(Не задал(а) местоположение. Показаны другие, если выбраны)</h3>');
-                }
-            } else {
-                $('#id_subtitle_').html('<h2>Пользователь не найден</h2>');
-                $('#id_address_').html('<h3>(Показаны другие, если выбраны)</h3>');
-            }
-            $('#id_showed_also').html(
-                '<b>Также другие, их ' +
-                (data.points.length - (data.found_coordinates ? 1 : 0)) +
-                ':</b>&nbsp;'
-            )
-        } else if (chat_id) {
-            let subtitle = '';
-            num_men = '(указавших место: ' + data.points.length +  ')';
-            if (data.chat_title) {
-                document.title =
-                    data.chat_title + ': карта участников ' +
-                    (data.chat_type == 'channel' ? 'канала' : 'группы') +
-                    ', благо Рода'
-                ;
-                subtitle =
-                    '<h2>Участники телеграм ' +
-                    (data.chat_type == 'channel' ? 'канала' : 'группы') +
-                        ' ' + num_men +
-                    '</h2>' +
-                    '<h2><a href="' + document.URL + '">' + data.chat_title + '</a></h2>'
-                ;
-            } else {
-                subtitle = '<h2><big>Телеграм канал или группа не найден(а)</big></h2>';
-            }
-            $('#id_subtitle_').html(subtitle);
-        } else if (offer_id) {
-            document.title = 'Карта. Опрос' + (data.offer_question ? ': ' + data.offer_question : '');
-            let subtitle = '';
-            num_men = '(указавших место: ' + data.points.length +  ')';
-            if (data.offer_question) {
-                subtitle =
-                    '<h2>Участники опроса' +
-                        ' ' + num_men +
-                    '</h2>' +
-                    '<h2>' +
-                    '<a href="' + (data.offer_deeplink ? data.offer_deeplink : document.URL) + '">'
-                    + data.offer_question + '</a>' +
-                    '</h2>';
-            } else {
-                subtitle = '<h2><big>Опрос не найден</big></h2>';
-            }
-            $('#id_subtitle_').html(subtitle);
+    let api_response = null;
+    let data = null;
 
-        } else if (videoid) {
-            let subtitle = data.video_title ? data.video_title : 'Голосовашие по видео';
-            $('#id_subtitle_').html('<h2>' + subtitle + '</h2>')
+    $('#map')[0].style.cursor = 'auto';
+    if (set_place_initial) {
+        map = L.map('map', map_options);
+        leaflet_attribution.addTo(map);
+        tile_layer.addTo(map);
+        map.addControl(control_fullscreen);
+        // markers.addLayers(fill_markerList([]));
+        // map.addLayer(markers);
+        map.on('dblclick', async (event_) => {
+            map_disable();
+            await handle_set_place(event_, true);
+            map_enable();
+        });
 
-        } else if (uuid_trustees) {
-            if (data.first_name) {
-                document.title = 'Карта . Доверия к: ' + data.first_name;
-                $('#id_subtitle_').html(
-                        '<h3>' +
-                            '<big>' +
-                                '<a href="' + document.URL + '">' + data.first_name + '</a> '+
-                            '</big>' +
-                            (
-                                data.num_attitude_trust || data.num_attitude_mistrust || data.num_attitude_acq
-                                ?
-                                    ' (' +
-                                        '<i>' +
-                                            (
-                                                data.num_attitude_trust
-                                                    ?   'доверяют: ' + data.num_attitude_trust +
-                                                        (data.num_attitude_mistrust || data.num_attitude_acq ? ', ' : '')
-                                                    : ''
-                                            ) +
-                                            (
-                                                data.num_attitude_mistrust
-                                                    ?   'не доверяют: ' + data.num_attitude_mistrust +
-                                                        (data.num_attitude_acq ? ', ' : '')
-                                                    : ''
-                                            ) +
-                                            (data.num_attitude_acq ? 'знакомы: ' + data.num_attitude_acq : '') +
-                                        '</i>' +
-                                    ')'
-                                : ''
-                            ) +
-                        '</h3>'
-                );
-                if (data.found_coordinates) {
-                    if (data.address) {
-                        $('#id_address_').html('<big>' + data.address + '</big><br />');
-                    } else {
-                        $('#id_address_').html('<h3>на карте</h3>');
-                    }
-                } else {
-                    $('#id_address_').html('<h3>(Не задал(а) местоположение)</h3>');
-                }
-            } else {
-                $('#id_subtitle_').html('<h2>Пользователь не найден</h2>');
-            }
-
-        } else if (meet) {
-            num_men = `(${data.num_all})`;
-            $('#id_subtitle_').html(`<h3>${meet_subtitle} ${num_men}</h3>`);
-        } else if (offer_on) {
-            $('#id_subtitle_').html(
-                `<h3><a href="${document.URL}"><big>Опросы, предложения</big></a> ` +
-                `(с указанным местом: ${data.points.length})` +
-                `</h3>`
-            );
-        } else {
-            num_men = '(указавших место среди выбранных: ' + data.points.length +  ')';
-            $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Наши участники</big></a>' + ' ' + num_men + '</h3>');
-        }
-        if (data.legend) {
-            $('#id_legend').html(data.legend);
-        }
-
-        // start show_map ----------
-
-        // https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png
-        //      только по английски
-        // https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png
-        //      по-немецки, там где не латинское, включая русские города. Вроде бесплатно
-        // https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
-        //      стандарт, бесплатно, но китайские города в китайских иероглифах
-        // По-русски бесплатных не нашел
-
-        let zoom = 5;
-        if (data.found_coordinates) {
-            zoom = 12;
-        } else if (data.points.length == 0) {
-            zoom = 2;
-        }
-        map = L.map('map',
-            {
-                center: L.latLng(data.lat_avg, data.lng_avg),
-                zoom: zoom,
-                attributionControl: false,
+    } else {
+        api_response = await api_request(
+            api_url + '/api/user/points/', {
+                method: 'GET',
+                auth_token: auth_data ? auth_data.auth_token : null,
+                params: api_get_parms,
             }
         );
-        L.control.attribution().setPrefix('<a href="https://leafletjs.com/">Leaflet</a>').addTo(map);
-        const tiles = L.tileLayer(
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            {
-                maxZoom: maxZoom,
-                // Это обязательно, если пользуешься leafletjs
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }
-        ).addTo(map);
 
-        map.addControl(new L.Control.Fullscreen({
-            title: {
-                'false': 'Полный экран',
-                'true': 'Выйти из полного экрана'
-            }
-        }));
+        if (api_response.ok) {
+            data = api_response.data;
+            let num_men = '';
+            if (uuid) {
+                if (data.first_name) {
+                    document.title = 'Карта: ' + data.first_name;
+                    $('#id_subtitle_').html('<h2><a href="' + document.URL + '">' + data.first_name + '</a></h2>');
+                    if (data.found_coordinates) {
+                        if (data.address) {
+                            $('#id_address_').html('<big>' + data.address + '</big><br />');
+                        } else {
+                            $('#id_address_').html('<h3>на карте</h3>');
+                        }
+                    } else {
+                        $('#id_address_').html('<h3>(Не задал(а) местоположение. Показаны другие, если выбраны)</h3>');
+                    }
+                } else {
+                    $('#id_subtitle_').html('<h2>Пользователь не найден</h2>');
+                    $('#id_address_').html('<h3>(Показаны другие, если выбраны)</h3>');
+                }
+                $('#id_showed_also').html(
+                    '<b>Также другие, их ' +
+                    (data.points.length - (data.found_coordinates ? 1 : 0)) +
+                    ':</b>&nbsp;'
+                )
+            } else if (chat_id) {
+                let subtitle = '';
+                num_men = '(указавших место: ' + data.points.length +  ')';
+                if (data.chat_title) {
+                    document.title =
+                        data.chat_title + ': карта участников ' +
+                        (data.chat_type == 'channel' ? 'канала' : 'группы') +
+                        ', благо Рода'
+                    ;
+                    subtitle =
+                        '<h2>Участники телеграм ' +
+                        (data.chat_type == 'channel' ? 'канала' : 'группы') +
+                            ' ' + num_men +
+                        '</h2>' +
+                        '<h2><a href="' + document.URL + '">' + data.chat_title + '</a></h2>'
+                    ;
+                } else {
+                    subtitle = '<h2><big>Телеграм канал или группа не найден(а)</big></h2>';
+                }
+                $('#id_subtitle_').html(subtitle);
+            } else if (offer_id) {
+                document.title = 'Карта. Опрос' + (data.offer_question ? ': ' + data.offer_question : '');
+                let subtitle = '';
+                num_men = '(указавших место: ' + data.points.length +  ')';
+                if (data.offer_question) {
+                    subtitle =
+                        '<h2>Участники опроса' +
+                            ' ' + num_men +
+                        '</h2>' +
+                        '<h2>' +
+                        '<a href="' + (data.offer_deeplink ? data.offer_deeplink : document.URL) + '">'
+                        + data.offer_question + '</a>' +
+                        '</h2>';
+                } else {
+                    subtitle = '<h2><big>Опрос не найден</big></h2>';
+                }
+                $('#id_subtitle_').html(subtitle);
 
-        markers.addLayers(fill_markerList(data.points));
-        map.addLayer(markers);
-        if (!(data.found_coordinates || (offer_on && data.num_all <= 1) || data.points.length <= 1)) {
-            // Параметры center, zoom в L.map тогда не учитывается
-            // Показываем всех
-            map.fitBounds(markers.getBounds());
-        }
+            } else if (videoid) {
+                let subtitle = data.video_title ? data.video_title : 'Голосовашие по видео';
+                $('#id_subtitle_').html('<h2>' + subtitle + '</h2>')
+
+            } else if (uuid_trustees) {
+                if (data.first_name) {
+                    document.title = 'Карта . Доверия к: ' + data.first_name;
+                    $('#id_subtitle_').html(
+                            '<h3>' +
+                                '<big>' +
+                                    '<a href="' + document.URL + '">' + data.first_name + '</a> '+
+                                '</big>' +
+                                (
+                                    data.num_attitude_trust || data.num_attitude_mistrust || data.num_attitude_acq
+                                    ?
+                                        ' (' +
+                                            '<i>' +
+                                                (
+                                                    data.num_attitude_trust
+                                                        ?   'доверяют: ' + data.num_attitude_trust +
+                                                            (data.num_attitude_mistrust || data.num_attitude_acq ? ', ' : '')
+                                                        : ''
+                                                ) +
+                                                (
+                                                    data.num_attitude_mistrust
+                                                        ?   'не доверяют: ' + data.num_attitude_mistrust +
+                                                            (data.num_attitude_acq ? ', ' : '')
+                                                        : ''
+                                                ) +
+                                                (data.num_attitude_acq ? 'знакомы: ' + data.num_attitude_acq : '') +
+                                            '</i>' +
+                                        ')'
+                                    : ''
+                                ) +
+                            '</h3>'
+                    );
+                    if (data.found_coordinates) {
+                        if (data.address) {
+                            $('#id_address_').html('<big>' + data.address + '</big><br />');
+                        } else {
+                            $('#id_address_').html('<h3>на карте</h3>');
+                        }
+                    } else {
+                        $('#id_address_').html('<h3>(Не задал(а) местоположение)</h3>');
+                    }
+                } else {
+                    $('#id_subtitle_').html('<h2>Пользователь не найден</h2>');
+                }
+
+            } else if (meet) {
+                num_men = `(${data.num_all})`;
+                $('#id_subtitle_').html(`<h3>${meet_subtitle} ${num_men}</h3>`);
+            } else if (offer_on) {
+                $('#id_subtitle_').html(
+                    `<h3><a href="${document.URL}"><big>Опросы, предложения</big></a> ` +
+                    `(с указанным местом: ${data.points.length})` +
+                    `</h3>`
+                );
+            } else {
+                num_men = '(указавших место среди выбранных: ' + data.points.length +  ')';
+                $('#id_subtitle_').html('<h3><a href="' + document.URL + '"><big>Наши участники</big></a>' + ' ' + num_men + '</h3>');
+            }
+            if (data.legend) {
+                $('#id_legend').html(data.legend);
+            }
+
+            let zoom = 5;
+            if (data.found_coordinates) {
+                zoom = 12;
+            } else if (data.points.length == 0) {
+                zoom = 2;
+            }
+            map_options.center = L.latLng(data.lat_avg || lat_avg_default, data.lng_avg || lng_avg_default);
+            map_options.zoom = zoom;
+            map = L.map('map', map_options);
+            leaflet_attribution.addTo(map);
+            tile_layer.addTo(map);
+            map.addControl(control_fullscreen);
+
+            markers.addLayers(fill_markerList(data.points));
+            map.addLayer(markers);
+            if (!(data.found_coordinates || (offer_on && data.num_all <= 1) || data.points.length <= 1)) {
+                // Параметры center, zoom в L.map тогда не учитывается
+                // Показываем всех
+                map.fitBounds(markers.getBounds());
+            }
 
         // end  show_map ----------
 
-        if (meet) {
-            map.on('zoomend', async (event_) => {
-                map_disable();
-                await on_change_bounds_filters_sympa(event_);
-                map_enable();
-            });
-            map.on('dragend', async (event_) => {
-                map_disable();
-                await on_change_bounds_filters_sympa(event_);
-                map_enable();
-            });
+            if (data.graph) {
+                Graph = ForceGraph3D()
+                    .nodeThreeObject(node => node_draw(node))
+                    .linkColor(link => link_color(link))
+                    .linkOpacity(0.8)
+                    .linkCurvature(link => link_curvature(link))
+                    .backgroundColor("#FFFFFF")
+                    .nodeLabel(node => `<span style="color: ${node_text_color(node)}">${node.first_name}</span>`)
+                    .linkDirectionalArrowLength(10)
+                    .linkDirectionalArrowRelPos(1)
+                    .linkDirectionalArrowColor('#000000')
+                    .height(graph_container.offsetWidth / 2)
+                ;
+                Graph.d3Force('link').distance(195);
+                Graph = Graph(graph_container);
+                Graph.graphData(data.graph);
 
-            $('#id_gender,#id_older,#id_younger,#id_with_offers,#id_show_hidden').change(async (event_) => {
-                let older = $('#id_older').val();
-                let younger = $('#id_younger').val();
-                if (!older) older = "0";
-                if (!younger) younger = "1000";
-                older = parseInt(older);
-                younger = parseInt(younger);
-                if (older > younger) {
-                    alert(`Возраст от (${older} лет) больше возраста до (${younger} лет)`)
-                    if (event_.target.id == 'id_older') {
-                        $('#id_older').val(sel_older_prev);
-                    } else if (event_.target.id == 'id_younger') {
-                        $('#id_younger').val(sel_younger_prev);
+                const api_images = `${api_url}/media/images`;
+                const photoTextureMale = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-male.jpg`);
+                const photoTextureFemale = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-female.jpg`);
+                const photoTextureNone = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-none.jpg`);
+
+                const node_draw = (node) => {
+                    let photoTexture;
+                    if (node.photo) {
+                        photoTexture = new THREE.TextureLoader().load(node.photo);
+                    // фото должно быть здесь всегда. Но fool-proof:
+                    } else if (node.gender == 'm') {
+                        photoTexture = photoTextureMale;
+                    } else if (node.gender == 'f') {
+                        photoTexture = photoTextureFemale;
+                    } else {
+                        photoTexture = photoTextureNone;
                     }
-                    return;
-                }
-                sel_older_prev = $('#id_older').val();
-                sel_younger_prev = $('#id_younger').val();
-                map_disable();
-                await on_change_bounds_filters_sympa(event_);
-                map_enable();
-            });
+                    const material = new THREE.SpriteMaterial({ map: photoTexture });
+                    const sprite = new THREE.Sprite(material);
+                    sprite.scale.set(25, 25);
 
-        }   // if (meet)
+                    const label = new SpriteText();
+                    label.text = node.first_name;
+                    label.textHeight = 0.2;
+                    label.color = 'rgba(139, 0, 0, 0.8)'
+                    sprite.add(label)
+                    sprite.center.set(0.5, -0.1);
+                    return sprite;
+                };
 
-        if (data.graph) {
-            Graph = ForceGraph3D()
-                .nodeThreeObject(node => node_draw(node))
-                .linkColor(link => link_color(link))
-                .linkOpacity(0.8)
-                .linkCurvature(link => link_curvature(link))
-                .backgroundColor("#FFFFFF")
-                .nodeLabel(node => `<span style="color: ${node_text_color(node)}">${node.first_name}</span>`)
-                .linkDirectionalArrowLength(10)
-                .linkDirectionalArrowRelPos(1)
-                .linkDirectionalArrowColor('#000000')
-                .height(graph_container.offsetWidth / 2)
-            ;
-            Graph.d3Force('link').distance(195);
-            Graph = Graph(graph_container);
-            Graph.graphData(data.graph);
+                const node_text_color = (node) => {
+                    return '#8B0000';
+                };
 
-            const api_images = `${api_url}/media/images`;
-            const photoTextureMale = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-male.jpg`);
-            const photoTextureFemale = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-female.jpg`);
-            const photoTextureNone = new THREE.TextureLoader().load(`${api_images}/no-photo-gender-none.jpg`);
+                const attitudes = {
+                    acq: 'a',       // знаком
+                    trust: 't',     // доверяет
+                    mistrust: 'mt'  // не доверяет
+                };
 
-            const node_draw = (node) => {
-                let photoTexture;
-                if (node.photo) {
-                    photoTexture = new THREE.TextureLoader().load(node.photo);
-                // фото должно быть здесь всегда. Но fool-proof:
-                } else if (node.gender == 'm') {
-                    photoTexture = photoTextureMale;
-                } else if (node.gender == 'f') {
-                    photoTexture = photoTextureFemale;
-                } else {
-                    photoTexture = photoTextureNone;
-                }
-                const material = new THREE.SpriteMaterial({ map: photoTexture });
-                const sprite = new THREE.Sprite(material);
-                sprite.scale.set(25, 25);
+                const link_color = (link) => {
+                    // Какой-то результат по умолчанию:
+                    //
+                    let result = 'blue';
 
-                const label = new SpriteText();
-                label.text = node.first_name;
-                label.textHeight = 0.2;
-                label.color = 'rgba(139, 0, 0, 0.8)'
-                sprite.add(label)
-                sprite.center.set(0.5, -0.1);
-                return sprite;
-            };
-
-            const node_text_color = (node) => {
-                return '#8B0000';
-            };
-
-            const attitudes = {
-                acq: 'a',       // знаком
-                trust: 't',     // доверяет
-                mistrust: 'mt'  // не доверяет
-            };
-
-            const link_color = (link) => {
-                // Какой-то результат по умолчанию:
-                //
-                let result = 'blue';
-
-                const color_acq = '#cca300';
-                const color_trust = 'green';
-                const color_not_trust = 'red';
-                const color_invite_meet = 'blueviolet';
-                const color_sympa = 'darkorange';
-                const color_hide_meet = 'black';
-                if (link.attitude) {
-                    if (link.attitude == attitudes.acq) {
-                        result = color_acq;
-                    } else if (link.attitude == attitudes.trust) {
-                        result = color_trust;
-                    } else if (link.attitude == attitudes.mistrust) {
-                        result = color_not_trust;
+                    const color_acq = '#cca300';
+                    const color_trust = 'green';
+                    const color_not_trust = 'red';
+                    const color_invite_meet = 'blueviolet';
+                    const color_sympa = 'darkorange';
+                    const color_hide_meet = 'black';
+                    if (link.attitude) {
+                        if (link.attitude == attitudes.acq) {
+                            result = color_acq;
+                        } else if (link.attitude == attitudes.trust) {
+                            result = color_trust;
+                        } else if (link.attitude == attitudes.mistrust) {
+                            result = color_not_trust;
+                        }
+                    } else if (link.is_invite_meet) {
+                        result = color_invite_meet;
+                    } else if (link.is_sympa) {
+                        result = color_sympa;
+                    } else if (link.is_hide_meet) {
+                        result = color_hide_meet;
                     }
-                } else if (link.is_invite_meet) {
-                    result = color_invite_meet;
-                } else if (link.is_sympa) {
-                    result = color_sympa;
-                } else if (link.is_hide_meet) {
-                    result = color_hide_meet;
+                    return result;
                 }
-                return result;
-            }
 
-            const link_curvature = (link) => {
-                // Какой-то результат по умолчанию:
-                //
-                let result = 0.1;
+                const link_curvature = (link) => {
+                    // Какой-то результат по умолчанию:
+                    //
+                    let result = 0.1;
 
-                if (link.attitude) {
-                    result = 0.3;
-                } else if (link.is_invite_meet) {
-                    result = 0.5;
-                } else if (link.is_sympa) {
-                    result = 0.7;
-                } else if (link.is_hide_meet) {
-                    result = 0.9;
-                }
-                return result;
-            };
+                    if (link.attitude) {
+                        result = 0.3;
+                    } else if (link.is_invite_meet) {
+                        result = 0.5;
+                    } else if (link.is_sympa) {
+                        result = 0.7;
+                    } else if (link.is_hide_meet) {
+                        result = 0.9;
+                    }
+                    return result;
+                };
+            }   // if (data.graph)
 
-        } // if (data.graph)
+            if (meet) {
+                map.on('zoomend', async (event_) => {
+                    map_disable();
+                    await on_change_bounds_filters_sympa(event_);
+                    map_enable();
+                });
+                map.on('dragend', async (event_) => {
+                    map_disable();
+                    await on_change_bounds_filters_sympa(event_);
+                    map_enable();
+                });
 
-    }   // if api_response.ok
+                map.on('dblclick', async (event_) => {
+                    map_disable();
+                    await handle_set_place(event_, false);
+                    map_enable();
+                });
 
+                $('#id_gender,#id_older,#id_younger,#id_with_offers,#id_show_hidden').change(async (event_) => {
+                    let older = $('#id_older').val();
+                    let younger = $('#id_younger').val();
+                    if (!older) older = "0";
+                    if (!younger) younger = "1000";
+                    older = parseInt(older);
+                    younger = parseInt(younger);
+                    if (older > younger) {
+                        alert(`Возраст от (${older} лет) больше возраста до (${younger} лет)`)
+                        if (event_.target.id == 'id_older') {
+                            $('#id_older').val(sel_older_prev);
+                        } else if (event_.target.id == 'id_younger') {
+                            $('#id_younger').val(sel_younger_prev);
+                        }
+                        return;
+                    }
+                    sel_older_prev = $('#id_older').val();
+                    sel_younger_prev = $('#id_younger').val();
+                    map_disable();
+                    await on_change_bounds_filters_sympa(event_);
+                    map_enable();
+                });
+
+                $('.sympa').change(async (event_) => {
+                    await sympa_change(event_);
+                });
+
+                $('.hide_him_her').change(async (event_) => {
+                    await hide_change(event_);
+                });
+            }   // if (meet)
+
+
+        }       // initial api_response.ok
+    }           // not set_place_initial
 
     const sympa_change = async (event_) => {
 
@@ -635,6 +697,7 @@ $(document).ready (async () => {
         map_enable();
     };
 
+
     const hide_change = async (event_) => {
         // Скрыть, снять скрытие.
         const operationtype_id = event_.target.checked ? 17 : 18;
@@ -655,21 +718,6 @@ $(document).ready (async () => {
             await on_change_bounds_filters_sympa(event_);
         }
         map_enable();
-    }
-
-    function updateProgressBar(processed, total, elapsed, layersArray) {
-        const progress = document.getElementById('progress');
-        const progressBar = document.getElementById('progress-bar');
-        if (elapsed > 1000) {
-            // if it takes more than a second to load, display the progress bar:
-            progress.style.display = 'block';
-            progressBar.style.width = Math.round(processed/total*100) + '%';
-        }
-
-        if (processed === total) {
-            // all markers processed - hide the progress bar:
-            progress.style.display = 'none';
-        }
     }
 
 
@@ -713,17 +761,9 @@ $(document).ready (async () => {
         }
     };
 
-    $('.sympa').change(async (event_) => {
-        await sympa_change(event_);
-    });
-
-    $('.hide_him_her').change(async (event_) => {
-        await hide_change(event_);
-    });
-
     const map_enable = () => {
-        $('#map')[0].style.cursor = null;
-        document.body.style.cursor = null;
+        $('#map')[0].style.cursor = 'auto';
+        document.body.style.cursor = 'auto';
         map.touchZoom.enable()
         map.doubleClickZoom.enable()
         map.scrollWheelZoom.enable()
@@ -752,6 +792,39 @@ $(document).ready (async () => {
         map.keyboard.disable()
         map.zoomControl.disable()
         // map.dragging.disable()
+    };
+
+    const handle_set_place = async (event_, refresh=false) => {
+        if (
+                auth_data &&
+                user_data &&
+                event_.latlng &&
+                confirm(`Сохранить место как Ваши координаты ?`)
+           ) {
+            const api_response = await api_request(
+                api_url + '/api/profile', {
+                    method: 'PUT',
+                    auth_token: auth_data.auth_token,
+                    form_data: {
+                        uuid: user_data.uuid,
+                        latitude: event_.latlng.lat,
+                        longitude: event_.latlng.lng,
+                    }
+                }
+            );
+            const message = api_response.ok
+                ? `Координаты сохранены.`
+                : `Извините, произошла ошибка.`
+            ;
+            alert(message)
+            if (api_response.ok) {
+                if (refresh) {
+                    window.location.assign(document.URL);
+                } else {
+                    await on_change_bounds_filters_sympa(event_);
+                }
+            }
+        };
     };
 
 });
