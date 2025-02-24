@@ -700,7 +700,9 @@ $(document).ready (async () => {
 
     const hide_change = async (event_) => {
         // Скрыть, снять скрытие.
-        const operationtype_id = event_.target.checked ? 17 : 18;
+
+        const HIDE = 17, SHOW = 18;
+        const operationtype_id = event_.target.checked ? HIDE : SHOW;
         const tag = event_.target.id.match(/hide\-(\d+)$/);
         if (!tag || tag[1] == auth_data.user_id) return;
         map_disable();
@@ -714,10 +716,78 @@ $(document).ready (async () => {
                 }
             }
         );
-        if (api_response.ok ) {
+        map_enable();
+        if (api_response.ok) {
+            if (operationtype_id == HIDE) {
+                const profile_to = api_response.data.profile_to;
+                const first_name = new Option(profile_to.first_name).innerHTML;
+                $('#map').hide();
+                $('#id_horz_bar_1').hide();
+                $('input[name=hide_user_id]').val(`${profile_to.user_id}`);
+                $('#id_dialog_hide_question').html(
+                    `Профиль <b>${first_name}</b> скрыт - вы не увидите друг друга в игре знакомств. ` +
+                    `Вы можете отменить скрытие или установить недоверие - ` +
+                    `чтобы предупредить участников сообщества от общения с <b>${first_name}</b>:`
+                );
+
+                $('.f-modal-close,#id_hide_user_ok').click(function() {
+                    $('#id_dialog_hide_user').css("display", "none");
+                    $('#map').show();
+                    $('#id_horz_bar_1').show();
+                });
+
+                $('#id_hide_user_cancel').click(async function() {
+                    const api_response = await api_request(
+                        api_url + '/api/addoperation', {
+                            method: 'POST',
+                            auth_token: auth_data.auth_token,
+                            json: {
+                                operation_type_id: SHOW,
+                                user_id_to: $('input[name=hide_user_id]').val(),
+                            }
+                        }
+                    );
+                    if (api_response.ok) {
+                        alert('Скрытие отменено');
+                        await on_change_bounds_filters_sympa(event_);
+                    }
+                    $('#id_dialog_hide_user').css("display", "none");
+                    $('#map').show();
+                    $('#id_horz_bar_1').show();
+                });
+
+                $('#id_hide_user_mistrust').click(async function() {
+                    const MISTRUST = 2;
+                    const api_response = await api_request(
+                        api_url + '/api/addoperation', {
+                            method: 'POST',
+                            auth_token: auth_data.auth_token,
+                            json: {
+                                operation_type_id: MISTRUST,
+                                user_id_to: $('input[name=hide_user_id]').val(),
+                                hide_deeplink: true,
+                            }
+                        }
+                    );
+                    let msg = '';
+                    if (api_response.ok) {
+                        msg = 'Недоверие установлено';
+                    } else if (api_response.status == 400 && api_response.data.code == 'already') {
+                        msg ='Недоверие уже было установлено';
+                    }
+                    if (msg) {
+                        alert(msg);
+                        await on_change_bounds_filters_sympa(event_);
+                    }
+                    $('#id_dialog_hide_user').css("display", "none");
+                    $('#map').show();
+                    $('#id_horz_bar_1').show();
+                });
+
+                $('#id_dialog_hide_user').css("display", "block");
+            }
             await on_change_bounds_filters_sympa(event_);
         }
-        map_enable();
     }
 
 

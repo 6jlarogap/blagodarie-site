@@ -172,6 +172,28 @@
     </div>
     <div id="id_legend" style="margin: auto; width: 95%;"></div>
 
+    <!-- Диалоговое окно после скрытия пользователя.
+    -->
+    <div id="id_dialog_hide_user" class="f-modal">
+        <div class="m-modal-content">
+            <span class="f-modal-close" style="font-size:40px;">&times;</span>
+            <div id="id_dialog_hide_question" class="dialog_hide_question" style="text-align:center;" >ЭТО ВОПРОС</div>
+            <table width="100%" cellspacing="10" cellpadding="5" class="table_dialog_hide">
+                <col width="34%" />
+                <col width="33%" />
+                <col width="33%" />
+                <tr>
+                    <td style="display: none">
+                        <input type="hidden" name="hide_user_id" value="" />
+                    </td>
+                    <td align="center"><button class="m-modal-button" id="id_hide_user_ok"><big>OK</big></button></td>
+                    <td align="center"><button class="m-modal-button" id="id_hide_user_cancel"><big>Oтмена</big></button></td>
+                    <td align="center"><button class="m-modal-button" id="id_hide_user_mistrust"><big>Недоверие</big></button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
     <!-- Диалоговое окно авторизации.
         Применяется совместно с funcs.{js, css}
     -->
