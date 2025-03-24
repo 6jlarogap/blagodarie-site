@@ -282,7 +282,6 @@ async function check_auth(mandatory=false) {
                 '?start=auth_redirect-' + data.token
             ;
             const bot_url = 'https://t.me/' + data.bot_username;
-            console.log('HERE');
             modal_dialog_show(
                 '<p>' +
                     'Для продолжения - нажмите ' +
