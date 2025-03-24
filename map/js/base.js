@@ -135,16 +135,13 @@ $(document).ready (async () => {
                         `${r_sympa_data.first_name}</a>  - ` +
                         `чтобы вернуться к игре её нужно отменить. ` +
                         `<br /><br />` +
-                        `<button ` +
-                        `onClick="onRevokeSympa(` +
-                            `'${api_url}', ` +
-                            `'${auth_data.auth_token}', ` +
-                            `'${r_sympa_data.user_id}', ` +
-                            `'${r_sympa_data.first_name}'` + 
-                        `)"` +
+                        `<button class="revoke_sympa"` +
                         `><big>Отменить симпатию</big></button>` +
                         `<br />`
                     );
+                    $('.revoke_sympa').click(async function() {
+                        await onRevokeSympa(r_sympa_data);
+                    });
                 }
             }
             return;
@@ -896,27 +893,30 @@ $(document).ready (async () => {
         };
     };
 
+    async function onRevokeSympa(r_sympa_data) {
+        if (confirm(`Отменить симпатию к ${r_sympa_data.first_name} ?`)) {
+            const api_response = await api_request(
+                api_url + '/api/addoperation', {
+                    method: 'POST',
+                    auth_token: auth_data.auth_token,
+                    json: {
+                        operation_type_id: 16,
+                        user_id_to: r_sympa_data.user_id,
+                    }
+                }
+            );
+            if (api_response.ok) {
+                const message = api_response.data.previousstate.is_sympa_confirmed
+                    ? `Симпатия к ${r_sympa_data.first_name} отменена`
+                    : 'Симпатия уже была отменена'
+                ;
+                alert(message);
+                // document.URL здесь показывает типа https://meeetgame.us.to/# ???
+                // DOCUMENT_URL - это из funcs.js
+                window.location.assign(DOCUMENT_URL.href);
+            }
+        }
+    };
+
 });
 
-async function onRevokeSympa(api_url, auth_token, id_to, first_name_to) {
-    if (confirm(`Отменить симпатию к ${first_name_to} ?`)) {
-        const api_response = await api_request(
-            api_url + '/api/addoperation', {
-                method: 'POST',
-                auth_token: auth_token,
-                json: {
-                    operation_type_id: 16,
-                    user_id_to: id_to,
-                }
-            }
-        );
-        if (api_response.ok) {
-            const message = api_response.data.previousstate.is_sympa_confirmed
-                ? `Симпатия к ${first_name_to} отменена`
-                : 'Симпатия уже была отменена'
-            ;
-            alert(message);
-            window.location.assign(document.URL);
-        }
-    }
-}
