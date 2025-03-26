@@ -59,6 +59,7 @@ $(document).ready (async () => {
     const graph_container = $('#3d-graph')[0];
     let bot_username = '';
     let set_place_initial = false;
+    const color_sympa = 'darkorange';
 
     const api_url = get_api_url();
     const api_get_parms = {};
@@ -554,7 +555,6 @@ $(document).ready (async () => {
                     const color_trust = 'green';
                     const color_not_trust = 'red';
                     const color_invite_meet = 'blueviolet';
-                    const color_sympa = 'darkorange';
                     const color_hide_meet = 'black';
                     if (link.attitude) {
                         if (link.attitude == attitudes.acq) {
@@ -633,33 +633,79 @@ $(document).ready (async () => {
                     map_enable();
                 });
 
-                $('.sympa').change(async (event_) => {
-                    await sympa_change(event_);
-                });
-
-                $('.hide_him_her').change(async (event_) => {
-                    await hide_change(event_);
-                });
+                if (!meet_admin) {
+                    map.on('popupopen', async (event_) => {
+                        $('.meet_click_img, .meet_click_a').click(async function() {
+                            await meet_click($(this));
+                        });
+                    });
+                }
             }   // if (meet)
 
 
         }       // initial api_response.ok
     }           // not set_place_initial
 
+    const meet_click = async (obj) => {
+        let id_ = obj[0].id;
+        if (id_) {
+            const match = id_.match(/\d+$/);
+            if (match) {
+                const user_id = match[0];
+                const user = data.user_by_id[user_id]
+                if (user) {
+                    $('#map').hide();
+                    $('#id_horz_bar_1').hide();
+                    $('input[name=handle_user_id]').val(`${user_id}`);
+                    $('#id_dialog_handle_user').css("display", "block");
+                    if (user.photo) {
+                        $('#tr_meet_user_photo').show();
+                        $('#td_meet_user_photo').prop("src", user.photo);
+                        if (user.sympa) {
+                            $('#td_meet_user_photo').css('border', `solid 10px ${color_sympa}`);
+                        } else {
+                            $('#td_meet_user_photo').css('border', "");
+                        }
+                    } else {
+                        $('#tr_meet_user_photo').hide();
+                    }
+                    $('#id_handle_user_name').html(`<b>${user.first_name}</b> (${user.dob})`);
+                    $('#id_handle_user_hide').prop('checked', user.hidden);
+                    $('#id_handle_user_sympa').prop('checked', user.sympa);
+                    $('#id_handle_user_sympa').prop('disabled', user.sympa);
+                    $('#id_label_user_sympa').css('color', user.sympa ? color_sympa : '');
+
+                } // user found
+            }
+        }
+    };
+
+    $('.f2-modal-close').click(function() {
+        $('#id_dialog_handle_user').css("display", "none");
+        $('#map').show();
+        $('#id_horz_bar_1').show();
+    });
+
+    $('.sympa').change(async (event_) => {
+        await sympa_change(event_);
+    });
+
+    $('.hide_him_her').change(async (event_) => {
+        await hide_change(event_);
+    });
+
+    const SYMPA_HIDE = 17, SYMPA_SHOW = 18;
+    const MISTRUST = 2;
+
     const sympa_change = async (event_) => {
-
-        // При любом положении checkbox'а отправляется запрос в апи зафиксировать интерес.
-        // Т.е. снятие интереса здесь не предусмотрено.
-        // Апи, увидев смену (!) состояния интереса, пошлет получателю интереса сообщение.
-        // В дальнейшем смены состояния интереса не будет и 
-        // получатель интереса не будет иметь в личке с ботом такие сообщения
-        // В любом случае перерисовывается легенда -- и checkbox, даже если его сняли,
-        // будет поднят.
-
         if (!auth_data) return;
         const operationtype_id = 14;
-        const tag = event_.target.id.match(/sympa\-(\d+)$/);
-        if (!tag || tag[1] == auth_data.user_id) return;
+        const user_id_to = $('input[name=handle_user_id]').val();
+        if (!user_id_to || user_id_to == auth_data.user_id) {
+            $('#map').show();
+            $('#id_horz_bar_1').show();
+            return;
+        }
         map_disable();
         const api_response = await api_request(
             api_url + '/api/addoperation', {
@@ -667,7 +713,7 @@ $(document).ready (async () => {
                 auth_token: auth_data.auth_token,
                 json: {
                     operation_type_id: operationtype_id,
-                    user_id_to: tag[1],
+                    user_id_to: user_id_to,
                 }
             }
         );
@@ -682,7 +728,11 @@ $(document).ready (async () => {
                             `Ошибка отправки к вам описания ${profile_to.first_name}. ` +
                             'Возможно, человек, которым Вы интересуетесь, не имеет описания или заблокировал такую отправку'
                             )
-                        : `Вы поставили интерес ${profile_to.first_name} с незаполненным описанием`
+                        :   (
+                                api_response.data.previousstate.is_sympa
+                                ? `У Вас уже был интерес к ${profile_to.first_name}`
+                                : `Вы поставили интерес ${profile_to.first_name} с незаполненным описанием`
+                            )
                     )
             ;
             alert(message);
@@ -691,98 +741,114 @@ $(document).ready (async () => {
             alert("Интерес не установлен:\n" + api_response.data.message);
         }
         map_enable();
+        $('#id_dialog_handle_user').css("display", "none");
+        $('#map').show();
+        $('#id_horz_bar_1').show();
     };
 
+    $('.f-modal-close,#id_hide_user_ok').click(async function() {
+        $('#id_dialog_hide_user').css("display", "none");
+        $('#map').show();
+        $('#id_horz_bar_1').show();
+        map_disable();
+        await on_change_bounds_filters_sympa(null);
+        map_enable();
+    });
 
-    const hide_change = async (event_) => {
-        // Скрыть, снять скрытие.
-
-        const HIDE = 17, SHOW = 18;
-        const operationtype_id = event_.target.checked ? HIDE : SHOW;
-        const tag = event_.target.id.match(/hide\-(\d+)$/);
-        if (!tag || tag[1] == auth_data.user_id) return;
+    $('#id_hide_user_cancel').click(async function() {
         map_disable();
         const api_response = await api_request(
             api_url + '/api/addoperation', {
                 method: 'POST',
                 auth_token: auth_data.auth_token,
                 json: {
-                    operation_type_id: operationtype_id,
-                    user_id_to: tag[1],
+                    operation_type_id: SYMPA_SHOW,
+                    user_id_to: $('input[name=hide_user_id]').val(),
                 }
             }
         );
-        map_enable();
         if (api_response.ok) {
-            if (operationtype_id == HIDE) {
+            alert('Скрытие отменено');
+        }
+        $('#id_dialog_hide_user').css("display", "none");
+        $('#map').show();
+        $('#id_horz_bar_1').show();
+        await on_change_bounds_filters_sympa(null);
+        map_enable();
+    });
+
+    $('#id_hide_user_mistrust').click(async function() {
+        document.body.style.cursor = 'wait';
+        const api_response = await api_request(
+            api_url + '/api/addoperation', {
+                method: 'POST',
+                auth_token: auth_data.auth_token,
+                json: {
+                    operation_type_id: MISTRUST,
+                    user_id_to: $('input[name=hide_user_id]').val(),
+                    hide_deeplink: true,
+                }
+            }
+        );
+        document.body.style.cursor = 'auto';
+        let msg = '';
+        if (api_response.ok) {
+            msg = 'Недоверие установлено';
+        } else if (api_response.status == 400 && api_response.data.code == 'already') {
+            msg ='Недоверие уже было установлено';
+        }
+        if (msg) {
+            alert(msg);
+            await on_change_bounds_filters_sympa(null);
+        }
+        $('#id_dialog_hide_user').css("display", "none");
+        $('#map').show();
+        $('#id_horz_bar_1').show();
+    });
+
+    const hide_change = async (event_) => {
+        // Скрыть, снять скрытие.
+
+        if (!auth_data) return;
+        $('#id_dialog_handle_user').css("display", "none");
+        const operationtype_id = event_.target.checked ? SYMPA_HIDE : SYMPA_SHOW;
+        const user_id_to = $('input[name=handle_user_id]').val();
+        if (!user_id_to || user_id_to == auth_data.user_id) {
+            $('#map').show();
+            $('#id_horz_bar_1').show();
+            return;
+        }
+        document.body.style.cursor = 'wait';
+        const api_response = await api_request(
+            api_url + '/api/addoperation', {
+                method: 'POST',
+                auth_token: auth_data.auth_token,
+                json: {
+                    operation_type_id: operationtype_id,
+                    user_id_to: user_id_to,
+                }
+            }
+        );
+        document.body.style.cursor = 'auto';
+        if (api_response.ok) {
+            if (operationtype_id == SYMPA_HIDE) {
                 const profile_to = api_response.data.profile_to;
                 const first_name = new Option(profile_to.first_name).innerHTML;
-                $('#map').hide();
-                $('#id_horz_bar_1').hide();
                 $('input[name=hide_user_id]').val(`${profile_to.user_id}`);
                 $('#id_dialog_hide_question').html(
                     `Профиль <b>${first_name}</b> скрыт - вы не увидите друг друга в игре знакомств. ` +
                     `Вы можете отменить скрытие или установить недоверие - ` +
-                    `чтобы предупредить участников сообщества от общения с <b>${first_name}</b>:`
+                    `чтобы предупредить участников сообщества от общения c <b>${first_name}</b>:`
                 );
 
-                $('.f-modal-close,#id_hide_user_ok').click(function() {
-                    $('#id_dialog_hide_user').css("display", "none");
-                    $('#map').show();
-                    $('#id_horz_bar_1').show();
-                });
-
-                $('#id_hide_user_cancel').click(async function() {
-                    const api_response = await api_request(
-                        api_url + '/api/addoperation', {
-                            method: 'POST',
-                            auth_token: auth_data.auth_token,
-                            json: {
-                                operation_type_id: SHOW,
-                                user_id_to: $('input[name=hide_user_id]').val(),
-                            }
-                        }
-                    );
-                    if (api_response.ok) {
-                        alert('Скрытие отменено');
-                        await on_change_bounds_filters_sympa(event_);
-                    }
-                    $('#id_dialog_hide_user').css("display", "none");
-                    $('#map').show();
-                    $('#id_horz_bar_1').show();
-                });
-
-                $('#id_hide_user_mistrust').click(async function() {
-                    const MISTRUST = 2;
-                    const api_response = await api_request(
-                        api_url + '/api/addoperation', {
-                            method: 'POST',
-                            auth_token: auth_data.auth_token,
-                            json: {
-                                operation_type_id: MISTRUST,
-                                user_id_to: $('input[name=hide_user_id]').val(),
-                                hide_deeplink: true,
-                            }
-                        }
-                    );
-                    let msg = '';
-                    if (api_response.ok) {
-                        msg = 'Недоверие установлено';
-                    } else if (api_response.status == 400 && api_response.data.code == 'already') {
-                        msg ='Недоверие уже было установлено';
-                    }
-                    if (msg) {
-                        alert(msg);
-                        await on_change_bounds_filters_sympa(event_);
-                    }
-                    $('#id_dialog_hide_user').css("display", "none");
-                    $('#map').show();
-                    $('#id_horz_bar_1').show();
-                });
-
                 $('#id_dialog_hide_user').css("display", "block");
+            } else {
+                $('#map').show();
+                $('#id_horz_bar_1').show();
+                map_disable();
+                await on_change_bounds_filters_sympa(event_);
+                map_enable();
             }
-            await on_change_bounds_filters_sympa(event_);
         }
     }
 
@@ -808,22 +874,17 @@ $(document).ready (async () => {
 
         }});
         if (api_response.ok) {
+            data = api_response.data;
             markers.clearLayers();
-            markers.addLayers(fill_markerList(api_response.data.points));
+            markers.addLayers(fill_markerList(data.points));
             map.addLayer(markers);
-            $('#id_legend').html(api_response.data.legend);
+            $('#id_legend').html(data.legend);
             $('#id_subtitle_').html(
                 `<h3>${meet_subtitle} (${api_response.data.num_all})</h3>`
             );
-            if (Graph && api_response.data.graph) {
-                Graph.graphData(api_response.data.graph);
+            if (Graph && data.graph) {
+                Graph.graphData(data.graph);
             }
-            $('.sympa').change(async (event_) => {
-                await sympa_change(event_);
-            });
-            $('.hide_him_her').change(async (event_) => {
-                await hide_change(event_);
-            });
         }
     };
 
@@ -838,18 +899,11 @@ $(document).ready (async () => {
         // TODO Разобраться:
         // Выскакивает uncaught error, когда какой-то маркер вне карты,
         // map.dragging.enable()
-        $("input[type=checkbox]").prop("disabled", false);
-        $('.sympa').each(function() {
-            if ($(this).prop('checked')) {
-                $(this).prop('disabled', true);
-            }
-        });
-        $("select").prop("disabled", false);
+        $('#id_gender, #id_older, #id_younger, #id_show_hidden, #id_with_offers').prop('disabled', false);
     };
 
     const map_disable = () => {
-        $("input[type=checkbox]").prop("disabled", true);
-        $("select").prop("disabled", true);
+        $('#id_gender, #id_older, #id_younger, #id_show_hidden, #id_with_offers').prop('disabled', true);
         $('#map')[0].style.cursor = 'wait';
         document.body.style.cursor = 'wait';
         map.touchZoom.disable()

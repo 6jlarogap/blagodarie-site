@@ -94,7 +94,7 @@
                     </select>
                 </td>
                 <td id="id_meet_filters_with_offer" align="center" style="display: none">
-                    <label for="id_with_offers">Показать<br />предложения:<span><br />
+                    <label for="id_with_offers">Показать<br />предложения:<br />
                     <input type="checkbox" name="with_offers" id="id_with_offers" checked>
                 </td>
             </tr>
@@ -189,6 +189,40 @@
                     <td align="center"><button class="m-modal-button" id="id_hide_user_ok"><big>OK</big></button></td>
                     <td align="center"><button class="m-modal-button" id="id_hide_user_cancel"><big>Oтмена</big></button></td>
                     <td align="center"><button class="m-modal-button" id="id_hide_user_mistrust"><big>Недоверие</big></button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Диалоговое при щелчке на иконку юзера на карте.
+    -->
+    <div id="id_dialog_handle_user" class="f-modal">
+        <div class="m-modal-content">
+            <span class="f2-modal-close" style="font-size:40px;">&times;</span>
+            <table width="100%" cellspacing="10" cellpadding="5">
+                <col width="34%" />
+                <col width="33%" />
+                <col width="33%" />
+                <tr>
+                    <td style="display: none">
+                        <input type="hidden" name="handle_user_id" value="" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" id="tr_meet_user_photo" colspan=3>
+                        <img id="td_meet_user_photo" src="">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center"><span id="id_handle_user_name"></span></td>
+                    <td align="center">
+                        <label for="id_handle_user_hide">Скрыть: </lable>
+                        <input type="checkbox" class="hide_him_her" name="handle_user_hide" id="id_handle_user_hide">
+                    </td>
+                    <td align="center">
+                        <label for="id_handle_user_sympa"><span id="id_label_user_sympa">Интерес: </span></lable>
+                        <input type="checkbox" class="sympa" name="handle_user_sympa" id="id_handle_user_sympa">
+                    </td>
                 </tr>
             </table>
         </div>

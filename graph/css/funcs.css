@@ -35,7 +35,8 @@
 }
 /* The Close Button */
 .d-modal-close,
-.f-modal-close {
+.f-modal-close,
+.f2-modal-close {
   color: #aaa;
   float: right;
   font-size: 28px;
@@ -45,7 +46,9 @@
 .d-modal-close:hover,
 .d-modal-close:focus,
 .f-modal-close:hover,
-.f-modal-close:focus {
+.f-modal-close:focus,
+.f2-modal-close:hover,
+.f2-modal-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
