@@ -477,7 +477,9 @@ $(document).ready (async () => {
             map = L.map('map', map_options);
             leaflet_attribution.addTo(map);
             tile_layer.addTo(map);
-            map.addControl(control_fullscreen);
+            if (!meet) {
+                map.addControl(control_fullscreen);
+            }
 
             markers.addLayers(fill_markerList(data.points));
             map.addLayer(markers);
