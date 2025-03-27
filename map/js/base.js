@@ -36,6 +36,27 @@
 
 $(document).ready (async () => {
 
+    // Оптимальная читабельность настроена на устройстве с dpi == dpiRef.
+    // Если dpi больше dpiRef, то увеличиваем 'font-size' css атрибут
+    // в соответствующее число раз
+    //
+    const dpiRef = 96;
+
+    const dpi = calcDpi();
+    if (dpi > dpiRef) {
+        const ratio = dpi / dpiRef;
+        const items= $(
+            '#id_dialog_hide_user,#id_dialog_handle_user,#id_meet_filters'
+        );
+        for (let i = 0; i < items.length; i++) {
+            let font_size = parseInt($(items[i]).css('font-size'));
+            if (font_size) {
+                font_size = Math.round(font_size * ratio);
+                $(items[i]).css('font-size', `${font_size}px`);
+            }
+        }
+    }
+
     const meet = (get_root_domain() == DOCUMENT_URL.host) ? 'on' : (get_parm('meet') || '');
     const auth_data = await check_auth(Boolean(meet));
     if (meet && !auth_data) return;
