@@ -663,6 +663,11 @@ $(document).ready (async () => {
                     if (user.photo) {
                         $('#tr_meet_user_photo').show();
                         $('#td_meet_user_photo').prop("src", user.photo);
+                        if (user.sympa) {
+                            $('#td_meet_user_photo').css('border', `solid 10px ${color_sympa}`);
+                        } else {
+                            $('#td_meet_user_photo').css('border', "");
+                        }
                     } else {
                         $('#tr_meet_user_photo').hide();
                     }
