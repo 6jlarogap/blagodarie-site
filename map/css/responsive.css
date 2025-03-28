@@ -1,0 +1,84 @@
+/* Base mobile styles */
+#map {
+    height: 60vh;
+    width: 100%;
+}
+
+#id_block_form,
+#id_meet_filters {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+.m-modal-content,
+.d-modal-content,
+.f-modal-content {
+    width: 95%;
+    margin: 10% auto;
+    padding: 10px;
+}
+
+.menu__btn,
+.menu__btn__trust {
+    padding: 15px 20px;
+    font-size: 16px;
+}
+
+/* Tablet styles (768px and up) */
+@media (min-width: 768px) {
+    #map {
+        height: 70vh;
+    }
+
+    #id_block_form {
+        width: 80%;
+    }
+
+    #id_meet_filters {
+        width: 90%;
+    }
+
+    .m-modal-content,
+    .d-modal-content,
+    .f-modal-content {
+        width: 80%;
+        margin: 15% auto;
+        padding: 20px;
+    }
+}
+
+/* Desktop styles (1024px and up) */
+@media (min-width: 1024px) {
+    #map {
+        height: 80vh;
+    }
+
+    .menu__btn,
+    .menu__btn__trust {
+        padding: 20px 30px;
+        font-size: 20px;
+    }
+}
+
+/* Form and table responsive adjustments */
+@media (max-width: 767px) {
+    #id_meet_filters table {
+        display: block;
+    }
+
+    #id_meet_filters tr {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    #id_meet_filters td {
+        display: block;
+        text-align: left !important;
+        width: 100% !important;
+    }
+
+    #id_meet_filters select {
+        width: 100%;
+    }
+}
