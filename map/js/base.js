@@ -155,11 +155,10 @@ $(document).ready (async () => {
         }
         if (!set_place_initial) {
             $('#id_block_form').hide();
-            $('#id_older,#id_younger').each(function() {
+            $('#id_older,#id_younger,#id_status').each(function() {
                 $(this).val('');
             });
             $('#id_with_offers').prop('checked', meet_admin);
-            $('#id_show_hidden').prop('checked', false);
             sel_older_prev = '';
             sel_younger_prev = '';
             $('#id_meet_filters').show();
@@ -177,9 +176,8 @@ $(document).ready (async () => {
             } else {
                 $('#id_gender').val(user_data.gender == 'f' ? 'm' : 'f');
                 api_get_parms.gender = $('#id_gender').val();
-                $('#id_meet_filters_show_hidden').show();
+                $('#id_meet_filters_status').show();
                 $('#id_meet_filters_coords').show();
-                api_get_parms.show_hidden = $('#id_show_hidden').prop('checked') ? 'on' :'';
             }
             api_get_parms.meet = 'on';
         }
@@ -608,7 +606,7 @@ $(document).ready (async () => {
                     map_enable();
                 });
 
-                $('#id_gender,#id_older,#id_younger,#id_with_offers,#id_show_hidden').change(async (event_) => {
+                $('#id_gender,#id_older,#id_younger,#id_with_offers,#id_status').change(async (event_) => {
                     let older = $('#id_older').val();
                     let younger = $('#id_younger').val();
                     if (!older) older = "0";
@@ -816,7 +814,7 @@ $(document).ready (async () => {
                     older: $('#id_older').val(),
                     younger: $('#id_younger').val(),
                     with_offers: $('#id_with_offers').prop('checked') ? 'on' : '',
-                    show_hidden: $('#id_show_hidden').prop('checked') ? 'on' : '',
+                    status: $('#id_status').val(),
                     admin: meet_admin,
 
         }});
@@ -843,11 +841,11 @@ $(document).ready (async () => {
         // TODO Разобраться:
         // Выскакивает uncaught error, когда какой-то маркер вне карты,
         // map.dragging.enable()
-        $('#id_gender, #id_older, #id_younger, #id_show_hidden, #id_with_offers').prop('disabled', false);
+        $('#id_gender, #id_older, #id_younger, #id_status, #id_with_offers').prop('disabled', false);
     };
 
     const map_disable = () => {
-        $('#id_gender, #id_older, #id_younger, #id_show_hidden, #id_with_offers').prop('disabled', true);
+        $('#id_gender, #id_older, #id_younger, #id_status, #id_with_offers').prop('disabled', true);
         $('#map')[0].style.cursor = 'wait';
         document.body.style.cursor = 'wait';
         map.touchZoom.disable()

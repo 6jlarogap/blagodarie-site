@@ -91,10 +91,15 @@
                         <option value="60">60 лет</option>
                     </select>
                 </td>
-                <td id="id_meet_filters_show_hidden" align="center" style="display: none">
-                    <label for="id_show_hidden">Скрытые:</label>
+                <td id="id_meet_filters_status" align="center" style="display: none">
+                    <label for="id_status">Статус:</label>
                     <br />
-                    <input type="checkbox" name="show_hidden" id="id_show_hidden">
+                    <select name="status" id="id_status">
+                        <option value="" selected>все</option>
+                        <option value="interests">Интересы</option>
+                        <option value="sympas">Симпатии</option>
+                        <option value="hidden">Скрытые</option>
+                    </select>
                 </td>
                 <td id="id_meet_filters_coords" valign="center" align="center" style="display: none">
                     <img src="images/geo-alt.svg"
