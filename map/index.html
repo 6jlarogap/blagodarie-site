@@ -56,7 +56,7 @@
         <hr />
     </div>
 
-    <div id="id_meet_filters" style="margin:auto; width:90%;text-align:center; display: none">
+    <div id="id_meet_filters" style="margin:auto; width:90%;text-align:center; display: none; font-size:16px">
         <table style="margin:auto; width:100%;">
             <tr>
                 <td id="id_meet_filters_gender" align="center" style="display: none">
@@ -100,13 +100,12 @@
                 </td>
             </tr>
         </table>
-        <br />
     </div>
 
     <br />
 
     <div style="margin:auto;width: 100%" id="progress"><div id="progress-bar"></div></div>
-    <div style="margin:auto;width: 100%; height:80vh" id="map"></div>
+    <div style="margin:auto;width: 100%; height:90vh" id="map"></div>
     <br />
     <div id="id_horz_bar_1" style= "background-color: #EBEBEB; width: 100%;text-align:center; display: none">
     <br />
@@ -175,7 +174,7 @@
 
     <!-- Диалоговое окно после скрытия пользователя.
     -->
-    <div id="id_dialog_hide_user" class="f-modal">
+    <div id="id_dialog_hide_user" class="f-modal" style="font-size:16px">
         <div class="m-modal-content">
             <span class="f-modal-close" style="font-size:40px;">&times;</span>
             <div id="id_dialog_hide_question" class="dialog_hide_question" style="text-align:center;" >ЭТО ВОПРОС</div>
@@ -195,44 +194,10 @@
         </div>
     </div>
 
-    <!-- Диалоговое при щелчке на иконку юзера на карте.
-    -->
-    <div id="id_dialog_handle_user" class="f-modal">
-        <div class="m-modal-content">
-            <span class="f2-modal-close" style="font-size:40px;">&times;</span>
-            <table width="100%" cellspacing="10" cellpadding="5">
-                <col width="34%" />
-                <col width="33%" />
-                <col width="33%" />
-                <tr>
-                    <td style="display: none">
-                        <input type="hidden" name="handle_user_id" value="" />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="center" id="tr_meet_user_photo" colspan=3>
-                        <img id="td_meet_user_photo" src="">
-                    </td>
-                </tr>
-                <tr>
-                    <td align="center"><span id="id_handle_user_name"></span></td>
-                    <td align="center">
-                        <label for="id_handle_user_hide">Скрыть: </lable>
-                        <input type="checkbox" class="hide_him_her" name="handle_user_hide" id="id_handle_user_hide">
-                    </td>
-                    <td align="center">
-                        <label for="id_handle_user_sympa"><span id="id_label_user_sympa">Интерес: </span></lable>
-                        <input type="checkbox" class="sympa" name="handle_user_sympa" id="id_handle_user_sympa">
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
     <!-- Диалоговое окно авторизации.
         Применяется совместно с funcs.{js, css}
     -->
-    <div id="dialogModal" class="d-modal">
+    <div id="dialogModal" class="d-modal" style="font-size:16px">
         <div class="d-modal-content">
             <span class="d-modal-close">&times;</span>
             <span id="dialogText"><span>

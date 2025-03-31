@@ -54,7 +54,6 @@ $(document).ready (async () => {
     let with_offers = '';
     let sel_older_prev, sel_younger_prev;
     let map = null;
-    const meet_subtitle = `<a href="${document.URL}"><big>Участники игры знакомств</big></a>`
     let Graph = null;
     const graph_container = $('#3d-graph')[0];
     let bot_username = '';
@@ -166,7 +165,6 @@ $(document).ready (async () => {
             sel_older_prev = '';
             sel_younger_prev = '';
             $('#id_meet_filters').show();
-            $('#id_horz_bar_1').show();
 
             if (meet_admin) {
                 $('#id_horz_bar_2').show();
@@ -256,7 +254,7 @@ $(document).ready (async () => {
                 //  или владелец опроса
                 className: (point.is_of_found_user || meet && point.is_offer) ? '' : 'photo-in-circle'
             }));
-            marker.bindPopup(point.popup, {maxHeight: 300});
+            marker.bindPopup(point.popup, {maxHeight: 600, maxWidth: 500});
             markerList.push(marker);
         }
         return markerList;
@@ -450,8 +448,7 @@ $(document).ready (async () => {
                 }
 
             } else if (meet) {
-                num_men = `(${data.num_all})`;
-                $('#id_subtitle_').html(`<h3>${meet_subtitle} ${num_men}</h3>`);
+                // Ничего
             } else if (offer_on) {
                 $('#id_subtitle_').html(
                     `<h3><a href="${document.URL}"><big>Опросы, предложения</big></a> ` +
@@ -637,64 +634,20 @@ $(document).ready (async () => {
 
                 if (!meet_admin) {
                     map.on('popupopen', async (event_) => {
-                        $('.meet_click_img, .meet_click_a').click(async function() {
-                            await meet_click($(this));
+                        $('.sympa').change(async (event_) => {
+                            await sympa_change(event_);
+                        });
+
+                        $('.hide_him_her').change(async (event_) => {
+                            await hide_change(event_);
                         });
                     });
                 }
+
+
             }   // if (meet)
-
-
         }       // initial api_response.ok
     }           // not set_place_initial
-
-    const meet_click = async (obj) => {
-        let id_ = obj[0].id;
-        if (id_) {
-            const match = id_.match(/\d+$/);
-            if (match) {
-                const user_id = match[0];
-                const user = data.user_by_id[user_id]
-                if (user) {
-                    $('#map').hide();
-                    $('#id_horz_bar_1').hide();
-                    $('input[name=handle_user_id]').val(`${user_id}`);
-                    $('#id_dialog_handle_user').css("display", "block");
-                    if (user.photo) {
-                        $('#tr_meet_user_photo').show();
-                        $('#td_meet_user_photo').prop("src", user.photo);
-                        if (user.sympa) {
-                            $('#td_meet_user_photo').css('border', `solid 10px ${color_sympa}`);
-                        } else {
-                            $('#td_meet_user_photo').css('border', "");
-                        }
-                    } else {
-                        $('#tr_meet_user_photo').hide();
-                    }
-                    $('#id_handle_user_name').html(`<b>${user.first_name}</b> (${user.dob})`);
-                    $('#id_handle_user_hide').prop('checked', user.hidden);
-                    $('#id_handle_user_sympa').prop('checked', user.sympa);
-                    $('#id_handle_user_sympa').prop('disabled', user.sympa);
-                    $('#id_label_user_sympa').css('color', user.sympa ? color_sympa : '');
-
-                } // user found
-            }
-        }
-    };
-
-    $('.f2-modal-close').click(function() {
-        $('#id_dialog_handle_user').css("display", "none");
-        $('#map').show();
-        $('#id_horz_bar_1').show();
-    });
-
-    $('.sympa').change(async (event_) => {
-        await sympa_change(event_);
-    });
-
-    $('.hide_him_her').change(async (event_) => {
-        await hide_change(event_);
-    });
 
     const SYMPA_HIDE = 17, SYMPA_SHOW = 18;
     const MISTRUST = 2;
@@ -702,10 +655,10 @@ $(document).ready (async () => {
     const sympa_change = async (event_) => {
         if (!auth_data) return;
         const operationtype_id = 14;
-        const user_id_to = $('input[name=handle_user_id]').val();
+        const tag = event_.target.id.match(/sympa\-(\d+)$/);
+        if (!tag || tag[1] == auth_data.user_id) return;
+        const user_id_to = tag[1];
         if (!user_id_to || user_id_to == auth_data.user_id) {
-            $('#map').show();
-            $('#id_horz_bar_1').show();
             return;
         }
         map_disable();
@@ -743,15 +696,57 @@ $(document).ready (async () => {
             alert("Интерес не установлен:\n" + api_response.data.message);
         }
         map_enable();
-        $('#id_dialog_handle_user').css("display", "none");
-        $('#map').show();
-        $('#id_horz_bar_1').show();
     };
+
+
+    const hide_change = async (event_) => {
+        if (!auth_data) return;
+        const operationtype_id = event_.target.checked ? SYMPA_HIDE : SYMPA_SHOW;
+        const tag = event_.target.id.match(/hide\-(\d+)$/);
+        if (!tag || tag[1] == auth_data.user_id) return;
+        const user_id_to = tag[1];
+        if (!user_id_to || user_id_to == auth_data.user_id) {
+            $('#map').show();
+            return;
+        }
+        document.body.style.cursor = 'wait';
+        const api_response = await api_request(
+            api_url + '/api/addoperation', {
+                method: 'POST',
+                auth_token: auth_data.auth_token,
+                json: {
+                    operation_type_id: operationtype_id,
+                    user_id_to: user_id_to,
+                }
+            }
+        );
+        document.body.style.cursor = 'auto';
+        if (api_response.ok) {
+            if (operationtype_id == SYMPA_HIDE) {
+                const profile_to = api_response.data.profile_to;
+                const first_name = new Option(profile_to.first_name).innerHTML;
+                $('#map').hide();
+                $('input[name=hide_user_id]').val(`${profile_to.user_id}`);
+                $('#id_dialog_hide_question').html(
+                    `Профиль <b>${first_name}</b> скрыт - вы не увидите друг друга в игре знакомств. ` +
+                    `Вы можете отменить скрытие или установить недоверие - ` +
+                    `чтобы предупредить участников сообщества от общения c <b>${first_name}</b>:`
+                );
+
+                $('#id_dialog_hide_user').css("display", "block");
+            } else {
+                $('#map').show();
+                map_disable();
+                await on_change_bounds_filters_sympa(event_);
+                map_enable();
+            }
+        }
+    }
+
 
     $('.f-modal-close,#id_hide_user_ok').click(async function() {
         $('#id_dialog_hide_user').css("display", "none");
         $('#map').show();
-        $('#id_horz_bar_1').show();
         map_disable();
         await on_change_bounds_filters_sympa(null);
         map_enable();
@@ -774,7 +769,6 @@ $(document).ready (async () => {
         }
         $('#id_dialog_hide_user').css("display", "none");
         $('#map').show();
-        $('#id_horz_bar_1').show();
         await on_change_bounds_filters_sympa(null);
         map_enable();
     });
@@ -805,55 +799,7 @@ $(document).ready (async () => {
         }
         $('#id_dialog_hide_user').css("display", "none");
         $('#map').show();
-        $('#id_horz_bar_1').show();
     });
-
-    const hide_change = async (event_) => {
-        // Скрыть, снять скрытие.
-
-        if (!auth_data) return;
-        $('#id_dialog_handle_user').css("display", "none");
-        const operationtype_id = event_.target.checked ? SYMPA_HIDE : SYMPA_SHOW;
-        const user_id_to = $('input[name=handle_user_id]').val();
-        if (!user_id_to || user_id_to == auth_data.user_id) {
-            $('#map').show();
-            $('#id_horz_bar_1').show();
-            return;
-        }
-        document.body.style.cursor = 'wait';
-        const api_response = await api_request(
-            api_url + '/api/addoperation', {
-                method: 'POST',
-                auth_token: auth_data.auth_token,
-                json: {
-                    operation_type_id: operationtype_id,
-                    user_id_to: user_id_to,
-                }
-            }
-        );
-        document.body.style.cursor = 'auto';
-        if (api_response.ok) {
-            if (operationtype_id == SYMPA_HIDE) {
-                const profile_to = api_response.data.profile_to;
-                const first_name = new Option(profile_to.first_name).innerHTML;
-                $('input[name=hide_user_id]').val(`${profile_to.user_id}`);
-                $('#id_dialog_hide_question').html(
-                    `Профиль <b>${first_name}</b> скрыт - вы не увидите друг друга в игре знакомств. ` +
-                    `Вы можете отменить скрытие или установить недоверие - ` +
-                    `чтобы предупредить участников сообщества от общения c <b>${first_name}</b>:`
-                );
-
-                $('#id_dialog_hide_user').css("display", "block");
-            } else {
-                $('#map').show();
-                $('#id_horz_bar_1').show();
-                map_disable();
-                await on_change_bounds_filters_sympa(event_);
-                map_enable();
-            }
-        }
-    }
-
 
     const on_change_bounds_filters_sympa = async (event_) => {
         const bounds = map.getBounds();
@@ -881,9 +827,6 @@ $(document).ready (async () => {
             markers.addLayers(fill_markerList(data.points));
             map.addLayer(markers);
             $('#id_legend').html(data.legend);
-            $('#id_subtitle_').html(
-                `<h3>${meet_subtitle} (${api_response.data.num_all})</h3>`
-            );
             if (Graph && data.graph) {
                 Graph.graphData(data.graph);
             }
