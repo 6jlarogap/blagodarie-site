@@ -253,7 +253,7 @@ $(document).ready (async () => {
                 //  или владелец опроса
                 className: (point.is_of_found_user || meet && point.is_offer) ? '' : 'photo-in-circle'
             }));
-            marker.bindPopup(point.popup, {maxHeight: 600, maxWidth: 500});
+            marker.bindPopup(point.popup, {maxHeight: 600, maxWidth: 300});
             markerList.push(marker);
         }
         return markerList;
