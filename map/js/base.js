@@ -149,9 +149,7 @@ $(document).ready (async () => {
             set_place_initial = true;
             $('#id_subtitle_').html(
                 `<br />` +
-                `У Вас не задано местоположение. Найдите на карте место, где Вы находитесь, — и ` +
-                `по тому месту <b><i>двойной</i> клик</b> (<b><i>двойной</i> тап</b> на мобильном устройстве). ` +
-                `Вам будет предложено сохранить Ваши координаты` +
+                `Чтобы увидеть местоположение других участников - укажите Ваше - дважды нажав на нужное место на карте.` +
                 `<br />`
             );
         }
@@ -180,6 +178,7 @@ $(document).ready (async () => {
                 $('#id_gender').val(user_data.gender == 'f' ? 'm' : 'f');
                 api_get_parms.gender = $('#id_gender').val();
                 $('#id_meet_filters_show_hidden').show();
+                $('#id_meet_filters_coords').show();
                 api_get_parms.show_hidden = $('#id_show_hidden').prop('checked') ? 'on' :'';
             }
             api_get_parms.meet = 'on';
@@ -877,17 +876,14 @@ $(document).ready (async () => {
                     }
                 }
             );
-            const message = api_response.ok
-                ? `Координаты сохранены.`
-                : `Извините, произошла ошибка.`
-            ;
-            alert(message)
             if (api_response.ok) {
                 if (refresh) {
                     window.location.assign(document.URL);
                 } else {
                     await on_change_bounds_filters_sympa(event_);
                 }
+            } else {
+                alert(`Извините, произошла ошибка.`);
             }
         };
     };
