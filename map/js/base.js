@@ -631,8 +631,8 @@ $(document).ready (async () => {
 
                 if (!meet_admin) {
                     map.on('popupopen', async (event_) => {
-                        $('.sympa').change(async (event_) => {
-                            await sympa_change(event_);
+                        $('.sympa').click(async function() {
+                            await sympa_button_click($(this));
                         });
 
                         $('.hide_him_her').change(async (event_) => {
@@ -649,10 +649,10 @@ $(document).ready (async () => {
     const SYMPA_HIDE = 17, SYMPA_SHOW = 18;
     const MISTRUST = 2;
 
-    const sympa_change = async (event_) => {
+    async function sympa_button_click(button) {
         if (!auth_data) return;
         const operationtype_id = 14;
-        const tag = event_.target.id.match(/sympa\-(\d+)$/);
+        const tag = button[0].id.match(/sympa\-(\d+)$/);
         if (!tag || tag[1] == auth_data.user_id) return;
         const user_id_to = tag[1];
         if (!user_id_to || user_id_to == auth_data.user_id) {
@@ -670,26 +670,18 @@ $(document).ready (async () => {
             }
         );
         if (api_response.ok) {
-            await on_change_bounds_filters_sympa(event_);
+            await on_change_bounds_filters_sympa(null);
             const profile_to = api_response.data.profile_to;
             const message = api_response.data.desc_sent
                 ?   'Информация отправлена. Проверьте сообщения в телеграме'
                 :   (
-                        api_response.data.desc_sent_error
-                        ? (
-                            `Ошибка отправки к вам описания ${profile_to.first_name}. ` +
-                            'Возможно, человек, которым Вы интересуетесь, не имеет описания или заблокировал такую отправку'
-                            )
-                        :   (
-                                api_response.data.previousstate.is_sympa
-                                ? `У Вас уже был интерес к ${profile_to.first_name}`
-                                : `Вы поставили интерес ${profile_to.first_name} с незаполненным описанием`
-                            )
+                        `Ошибка отправки к вам описания ${profile_to.first_name}. ` +
+                        'Возможно, человек, которым Вы интересуетесь, не имеет описания или заблокировал такую отправку'
                     )
             ;
             alert(message);
         } else if (api_response.status == 400 && api_response.data.message) {
-            await on_change_bounds_filters_sympa(event_);
+            await on_change_bounds_filters_sympa(null);
             alert("Интерес не установлен:\n" + api_response.data.message);
         }
         map_enable();
