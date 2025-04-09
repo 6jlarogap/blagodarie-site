@@ -95,8 +95,7 @@
                     <label for="id_status">Статус:</label>
                     <br />
                     <select name="status" id="id_status">
-                        <option value="" selected>все</option>
-                        <option value="new">Новые</option>
+                        <option value="new" selected>Новые</option>
                         <option value="interests">Интересы</option>
                         <option value="sympas">Симпатии</option>
                         <option value="hidden">Скрытые</option>
@@ -117,14 +116,13 @@
 
     <div style="margin:auto;width: 100%" id="progress"><div id="progress-bar"></div></div>
     <div style="margin:auto;width: 100%; height:85vh" id="map"></div>
-    <br />
-    <div id="id_horz_bar_1" style= "background-color: #EBEBEB; width: 100%;text-align:center; display: none">
-    <br />
-        Найдите на карте место, где Вы находитесь, — и по тому месту <b><i>двойной</i> клик</b> 
-        (<b><i>двойной</i> тап</b> на мобильном устройстве). Вам будет предложено сохранить Ваши координаты.
-    <br /><br />
+    <div id="id_horz_bar_1" style= "background-color: #EBEBEB; width: 100%;text-align:center; display: none;">
+        <br /><br />
+            Найдите на карте место, где Вы находитесь, — и по тому месту <b><i>двойной</i> клик</b>
+            (<b><i>двойной</i> тап</b> на мобильном устройстве). Вам будет предложено сохранить Ваши координаты.
+        <br /><br />
     </div>
-    <div id="3d-graph" style="margin: auto;width:100%;"></div>
+    <div id="3d-graph" style="margin: auto;width:100%;display: none;"></div>
     <div id="graph_legend" style="margin: auto; width: 95%;display: none;">
         <br />
         <table style= "width: 100%;">
@@ -178,10 +176,10 @@
         </table>
         <br />
     </div>
-    <div id="id_horz_bar_2" style= "background-color: #EBEBEB; width: 100%;text-align:center; display: none">
+    <div id="id_horz_bar_2" style= "background-color: #EBEBEB; width: 100%;text-align:center; display: none;">
     <br /><br /><br /><br /><br />
     </div>
-    <div id="id_legend" style="margin: auto; width: 95%;"></div>
+    <div id="id_legend" style="margin: auto; width: 95%; display: none;"></div>
 
     <!-- Диалоговое окно после скрытия пользователя.
     -->

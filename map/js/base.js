@@ -58,6 +58,7 @@ $(document).ready (async () => {
     const graph_container = $('#3d-graph')[0];
     let bot_username = '';
     let set_place_initial = false;
+    let starting = true;
     const color_sympa = 'darkorange';
 
     const api_url = get_api_url();
@@ -148,27 +149,29 @@ $(document).ready (async () => {
         } else if (!user_data.latitude || !user_data.longitude) {
             set_place_initial = true;
             $('#id_subtitle_').html(
-                `<br />` +
                 `Чтобы увидеть местоположение других участников - укажите Ваше - дважды нажав на нужное место на карте.` +
                 `<br />`
             );
         }
         if (!set_place_initial) {
             $('#id_block_form').hide();
-            $('#id_older,#id_younger,#id_status').each(function() {
+            $('#id_older,#id_younger').each(function() {
                 $(this).val('');
             });
+            $('#id_status').val('new');
             $('#id_with_offers').prop('checked', meet_admin);
             sel_older_prev = '';
             sel_younger_prev = '';
             $('#id_meet_filters').show();
 
             if (meet_admin) {
+                $('#id_horz_bar_1').show();
                 $('#id_horz_bar_2').show();
                 $('#id_gender').val('');
                 $('#graph_legend').show();
                 $('#id_meet_filters_gender').show();
                 $('#id_meet_filters_with_offer').show();
+                $('#3d-graph').show();
                 api_get_parms.with_offers = get_parm('with_offers') ? 'on' : ''; 
                 if (!api_get_parms.with_offers) {
                     api_get_parms.with_offers = $('#id_with_offers').prop('checked') ? 'on' : ''
@@ -176,6 +179,7 @@ $(document).ready (async () => {
             } else {
                 $('#id_gender').val(user_data.gender == 'f' ? 'm' : 'f');
                 api_get_parms.gender = $('#id_gender').val();
+                api_get_parms.status = $('#id_status').val();
                 $('#id_meet_filters_status').show();
                 $('#id_meet_filters_coords').show();
             }
@@ -235,6 +239,9 @@ $(document).ready (async () => {
         if (!document.URL.match(/\?/)) {
             window.location.assign(document.URL + '?participants=on');
         }
+    }
+    if (!(meet && !meet_admin)) {
+        $('#id_legend').show();
     }
 
     const fill_markerList = (points) => {
@@ -590,9 +597,14 @@ $(document).ready (async () => {
 
             if (meet) {
                 map.on('zoomend', async (event_) => {
-                    map_disable();
-                    await on_change_bounds_filters_sympa(event_);
-                    map_enable();
+                    if (starting) {
+                        starting = false;
+                        return;
+                    } else {
+                        map_disable();
+                        await on_change_bounds_filters_sympa(event_);
+                        map_enable();
+                    }
                 });
                 map.on('dragend', async (event_) => {
                     map_disable();
