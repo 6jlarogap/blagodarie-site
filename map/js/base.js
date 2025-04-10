@@ -155,10 +155,9 @@ $(document).ready (async () => {
         }
         if (!set_place_initial) {
             $('#id_block_form').hide();
-            $('#id_older,#id_younger').each(function() {
+            $('#id_older,#id_younger,#id_status').each(function() {
                 $(this).val('');
             });
-            $('#id_status').val('new');
             $('#id_with_offers').prop('checked', meet_admin);
             sel_older_prev = '';
             sel_younger_prev = '';
