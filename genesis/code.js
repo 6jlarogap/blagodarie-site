@@ -544,7 +544,7 @@ function simStarted() {
     loading.next();
     simulation.nodes(nodes);
     simulation.on('tick', ticked);
-    simulation.alpha(1).velocityDecay(0.07).restart();
+    simulation.alpha(1).velocityDecay(0.01).restart();
 }
 
 const simEnded = ({ nTicks }) => setTimeout(() => loading.next(), nTicks * 10);
@@ -577,7 +577,7 @@ zoom.on('zoom', ({transform: {x, y, k}}) => svg.attr('transform', `translate(${x
 
 function drag(simulation) {
 	function dragstarted(e, d) {
-		!e.active && simulation.alphaTarget(0.01).velocityDecay(0.07).restart();
+		!e.active && simulation.alphaTarget(0.01).velocityDecay(0.01).restart();
 	}
 	
 	const dragged = ({x, y}, d) => { d.fx = x; d.fy = y; };
