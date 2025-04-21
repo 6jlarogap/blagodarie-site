@@ -1070,7 +1070,7 @@ function exporting(to) {
 }
 
 const export2svg = () => exporting(EXPORT_FORMATS.SVG);
-const startsim = () => {simulation.alpha(1).alphaTarget(1).alphaDecay(5)};
+const startsim = () => {simulation.alpha(1).alphaTarget(1).alphaDecay(0.01).velocityDecay(0.07).restart()};
 const stopsim = () => {simulation.stop()};
 
 const menuItems = [
