@@ -91,18 +91,29 @@ initDefs();
 
 var url = new URL(window.location.href);
 
-// var url = new URL('https://dev.blagodarie.org/?id=c03ce3fd-6fda-4112-b1c5-bd9847afee2e');
+var rod = url.searchParams.get("rod") || '';
+var dover = url.searchParams.get("dover") || '';
+var withalone = url.searchParams.get("withalone") || '';
 
-var userIdFrom = url.searchParams.get("id");
+var userIdFrom = url.searchParams.get("id") || url.searchParams.get("user_genesis_tree");
 var chat_id = url.searchParams.get("chat_id") || '';
 
 var depth = url.searchParams.get("depth") || 10;
 var up = url.searchParams.get("up") || '';
 var down = url.searchParams.get("down") || '';
-var count_ = url.searchParams.get("q") || 50;
 
-if (userIdFrom) {
-    document.querySelector('.pagination_block').style.display = 'none';
+var count_ = url.searchParams.get("q") || '';
+if (chat_id && !count_) count_ = 50;
+if (!chat_id && !userIdFrom) {
+    if (!rod && !dover) {
+        rod = 'on'; dover = 'on';
+        withalone = url.searchParams.get("withalone") || 'on';
+    }
+}
+var from_ = url.searchParams.get("f") || 0;
+
+if (chat_id) {
+    document.querySelector('.pagination_block').style.display = 'block';
 }
 
 if (userIdFrom) {
@@ -176,6 +187,10 @@ var link = window.location.href;
                 apiUrl = `${settings.api}/api/profile_genesis/?chat_id=` + chat_id + '&depth=' + depth + '&from=' + url.searchParams.get('f') + '&count=' + count_;
             } else if (userIdFrom) {
                 apiUrl = `${settings.api}/api/profile_genesis/?id=` + userIdFrom + '&depth=' + depth + '&up=' + up + '&down=' + down;
+            } else {
+                apiUrl = `${settings.api}/api/profile_genesis/all/?rod=` + 
+                    rod + '&dover=' + dover + '&withalone=' + withalone + 
+                    (count_ ? '&from=' + from_ + '&number=' + count_ : '') ;
             }
 
 document.addEventListener("popstate",function(e){
@@ -262,7 +277,6 @@ function nodeTextDecoration(uuid, username) {
             result = underline;
         } else if (username == userIdFrom) {
             result = underline;
-            console.log('HERE', username)
         }
     }
     return result;
