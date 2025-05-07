@@ -1,1 +1,1 @@
-../../graph/js/3d-force-graph.js
+../../common/js/3d-force-graph.js

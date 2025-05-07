@@ -1,1 +1,1 @@
-../../graph/js/three-spritetext.js
+../../common/js/three-spritetext.js

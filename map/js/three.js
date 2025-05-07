@@ -1,1 +1,1 @@
-../../graph/js/three.js
+../../common/js/three.js
