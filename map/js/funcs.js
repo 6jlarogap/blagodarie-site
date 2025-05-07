@@ -1,1 +1,1 @@
-../../graph/js/funcs.js
+../../common/js/funcs.js
