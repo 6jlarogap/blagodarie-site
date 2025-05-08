@@ -79,44 +79,6 @@ import ForceGraph3D from '3d-force-graph';
 (async function() {
 // ----------    
 
-    // Оптимальная читабельность настроена на устройстве с dpi == dpiRef.
-    // Если dpi больше dpiRef, то увеличиваем 'font-size' css атрибут
-    // в соответствующее число раз
-    //
-    const dpiRef = 96;
-
-    const dpi = calcDpi();
-    if (dpi > dpiRef) {
-        const ratio = dpi / dpiRef;
-        const items= $(
-            '.menu__btn,.menu__btn__trust,.menu__title,' +
-            '.caption_new_relative,.table_new_relative,' +
-            '.f-modal-button,.f-modal-content,' +
-            '.d-modal-button,.d-modal-content,' +
-            '.d-modal-close,.f-modal-close,' +
-            '.parent_name,.parent_dob,.parent_dod,.parent_comment,'
-            + '.his-her-outer'
-        );
-        for (let i = 0; i < items.length; i++) {
-            let font_size = parseInt($(items[i]).css('font-size'));
-            if (font_size) {
-                font_size = Math.round(font_size * ratio);
-                $(items[i]).css('font-size', `${font_size}px`);
-            }
-        }
-        const items_wh= $('.menu__close');
-        for (let i = 0; i < items_wh.length; i++) {
-            let width = parseInt($(items_wh[i]).css('width'));
-            let height = parseInt($(items_wh[i]).css('height'));
-            if (width && height) {
-                height = Math.round(height * ratio);
-                width = Math.round(width * ratio);
-                $(items_wh[i]).css('width', `${width}px`);
-                $(items_wh[i]).css('height', `${height}px`);
-            }
-        }
-    }
-
     const c_nfa = ' ';
     const c_collapsed = '+';
     const c_expanded = '-';
@@ -583,7 +545,7 @@ import ForceGraph3D from '3d-force-graph';
                 const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
                 const btn_trust_caption = document.querySelector(".btn--trust--caption");
                 if (!auth_data || auth_data && auth_data.user_uuid != node.uuid) {
-                    btn_trust_caption.innerHTML = '&nbsp;Доверие&nbsp;';
+                    btn_trust_caption.innerHTML = '&nbsp;&nbsp;Доверие&nbsp;&nbsp;';
                     $('input[name=trust-or-thank]').val('trust');
                     if (auth_data) {
                         // Доверяю или уже благодарю
@@ -915,7 +877,7 @@ import ForceGraph3D from '3d-force-graph';
             $("input:radio[name=parent_gender][value='m']").prop('checked',true);
         }
         $('#id_form_parent_caption').html(
-            `Создать <big style="color:red;">новый</big> профиль: ${whom} для <span style="color:blue;">${node.first_name_orig}<span/>`
+            `Создать <span style="color:red;">новый</big> профиль: ${whom} для <span style="color:blue;">${node.first_name_orig}<span/>`
         );
         $('input[name=parent_name]').val('');
         $('input[name=parent_dob]').val('');
