@@ -856,7 +856,7 @@ $(document).ready (async function() {
     document.querySelector(".btn--profile").addEventListener("click", function() {
         if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
-        if (node_current.uuid && data.bot_username) {
+        if (node_current.username && data.bot_username) {
             window.location.href = "https://t.me/" + data.bot_username + '?start=' + node_current.username;
         }
     });
@@ -872,14 +872,14 @@ $(document).ready (async function() {
     document.querySelector(".btn--goto-trust").addEventListener("click", function() {
         if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
-        if (node_current.uuid) {
+        if (node_current.username) {
             window.location.href = `${url_path()}?${parm_user_trusts_name}=${node_current.username}`;
         }
     });
     document.querySelector(".btn--goto-gen").addEventListener("click", function() {
         if (is_double_clicked()) return;
         menu_wrapper.classList.remove("menu-wrapper--active");
-        if (node_current.uuid) {
+        if (node_current.username) {
             window.location.href =
                 `${url_path()}?${parm_user_genesis_name}=${node_current.username}` +
                 '&up=on&down=on&depth=2';
