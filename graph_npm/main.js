@@ -640,7 +640,7 @@ import ForceGraph3D from '3d-force-graph';
         .linkOpacity(0.8)
         .linkCurvature(0.25)
         .backgroundColor("#FFFFFF")
-        .nodeLabel(node => `<span style="color: ${node_text_color(node, 'rgb')}">${node.first_name}</span>`)
+        .nodeLabel('first_name')
         .onNodeHover(node => {
             let cursor = null;
             if (parm_user_genesis_tree) {

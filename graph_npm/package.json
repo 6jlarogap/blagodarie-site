@@ -1,5 +1,5 @@
 {
-  "name": "graph",
+  "name": "my-vue-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,8 +13,8 @@
     "vite-plugin-full-reload": "^1.2.0"
   },
   "dependencies": {
-    "3d-force-graph": "^1.73.0",
-    "three": "^0.161.0",
-    "three-spritetext": "^1.8.1"
+    "3d-force-graph": "^1.77.0",
+    "three": "^0.176.0",
+    "three-spritetext": "^1.9.6"
   }
 }
