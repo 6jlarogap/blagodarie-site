@@ -1291,18 +1291,37 @@ function initializeDisplay() {
                     return is_dead ? '' : `url(#clip-circle-${size})`;
         	});
 
-	node.append('text')
-// смещение текста с фио вниз под фото
-//		.attr('y', ({nodeType}) => nodeType == NODE_TYPES.USER && width < 900 || nodeType == NODE_TYPES.PROFILE && width < 900 ? 30 : nodeType == NODE_TYPES.USER || nodeType == NODE_TYPES.PROFILE ? 64: nodeType == NODE_TYPES.FILTERED ? 32 : width < 900 ? 20 : 47)
-		.attr('y', (50))
-// размер шрифта текста фио
-//		.attr('font-size', ({nodeType}) => (width < 900 || nodeType == NODE_TYPES.FILTERED) ? 12 : 20)
-		.attr('font-size', (30))
-		.attr('class', ({nodeType}) => [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(nodeType) ? 'userName' : 'friendName')
-		.text(({text}) => text)
-        // Убираю после отката к большой картинке исходного узла
-        // .style('text-decoration', ({uuid, username}) => nodeTextDecoration(uuid, username))
-        ;
+    node.each(function(d) {
+        // 1. Сплитим на «всё кроме последнего слова» и «последнее слово»
+        const parts = d.text.trim().split(/\s+/);
+        const last = parts.length > 1 ? parts.pop() : "";
+        const first = parts.join(" ") || last;
+
+        // 2. Добавляем <text> один раз
+        const textEl = d3.select(this)
+            .append("text")
+            .attr("y", 50)
+            .attr("font-size", 30)
+            .attr("class", [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(d.nodeType)
+                ? "userName"
+                : "friendName"
+            )
+            .attr("text-anchor", "middle");
+
+        // 3. Первая строка
+        textEl.append("tspan")
+            .attr("x", 0)
+            .attr("dy", "0em")
+            .text(first);
+
+        // 4. Вторая строка (если есть)
+        if (last) {
+            textEl.append("tspan")
+            .attr("x", 0)
+            .attr("dy", "1em")
+            .text(last);
+        }
+    });
 }
 
 const isUserOrProfile = (nodeType) => nodeType === NODE_TYPES.USER || nodeType === NODE_TYPES.PROFILE;
