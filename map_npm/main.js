@@ -1,10 +1,10 @@
 //
-//  map/js/base.js
+//  map/main.js
 //
 
 // Карта участников
 
-// Доступ к странице может быть авторизован, см. funcs.js:check_auth()
+// Доступ к странице может быть авторизован, см. public/js/funcs.js:check_auth()
 //
 // Возможные параметры в порядке их рассмотрения:
 //
@@ -488,14 +488,11 @@ import ForceGraph3D from '3d-force-graph';
             tile_layer.addTo(map);
 
             if (!meet) {
-                L.control
-                    .fullscreen({
-                        position: 'topleft', // change the position of the button can be topleft, topright, bottomright or bottomleft, default topleft
-                        title: 'Полный экран', // change the title of the button, default Full Screen
-                        titleCancel: 'Выйти из полного экрана', // change the title of the button when fullscreen is on, default Exit Full Screen
-                        // content: null, // change the content of the button, can be HTML, default null
-                    })
-                .addTo(map);
+                L.control.fullscreen({
+                    position: 'topleft',
+                    title: 'Полный экран',
+                    titleCancel: 'Выйти из полного экрана',
+                }).addTo(map);
             }
 
             markers.addLayers(fill_markerList(data.points));
