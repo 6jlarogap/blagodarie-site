@@ -12,7 +12,7 @@ var API_URL, ROOT_DOMAIN, GRAPH_URL, MAP_URL;
 // Могут быть переопределены в local_settings.js или где-то еще
 //
 const get_api_url = () => API_URL || 'https://api.meetgame.us.to';
-const get_graph_url = () => GRAPH_URL || 'https://meetgame.us.to';
+const get_graph_url = () => GRAPH_URL || 'https://d3.meetgame.us.to';
 const get_map_url = () => MAP_URL || 'https://map.meetgame.us.to';
 
 function get_root_domain() {
