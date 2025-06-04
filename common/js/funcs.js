@@ -238,6 +238,9 @@ async function check_auth(mandatory=false) {
             window.location.assign(url.href);
         }
         return result;
+    } else if (typeof AUTH_DATA !== 'undefined') {
+        // for debug
+        return AUTH_DATA;;
     }
 
 

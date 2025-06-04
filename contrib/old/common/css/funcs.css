@@ -22,13 +22,15 @@
 .f-modal-content {
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
-  padding: 2px;
+  padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
+  font-size: 20px;
 }
 
 .d-modal-button,
 .f-modal-button {
+  font-size: 20px;
   cursor: pointer;
 }
 /* The Close Button */
@@ -37,8 +39,8 @@
 .f2-modal-close {
   color: #aaa;
   float: right;
+  font-size: 28px;
   font-weight: bold;
-  font-size: 36px;
 }
 
 .d-modal-close:hover,
@@ -57,7 +59,7 @@
 .m-modal-content {
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
-  padding: 2px;
+  padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
 }
@@ -68,18 +70,19 @@
 
 
 .menu {
-  padding: 10px 15px;
+  padding: 40px 60px;
   background-color: #fff;
-  gap: 1px;
-  border-radius: 2px;
+  gap: 10px;
+  border-radius: 5px;
   position: relative;
 }
 
 .menu__btn {
   background: none;
   border: 2px solid #000;
+  font-size: 20px;
   transition: .1s linear;
-  padding: 2px 3px;
+  padding: 20px 30px;
   cursor: pointer;
 }
 
@@ -87,8 +90,9 @@
   color: black;
   background-color: #04AA6D;
   border: 2px solid #000;
+  font-size: 20px;
   transition: .1s linear;
-  padding: 2px 3px;
+  padding: 20px 30px;
   cursor: pointer;
 }
 
@@ -105,14 +109,14 @@
 
 .menu__close-wrap {
   position: absolute;
-  top: 2px;
-  right: 2px;
+  top: 5px;
+  right: 5px;
   cursor: pointer;
 }
 
 .menu__close {
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   position: relative;
 }
 
@@ -151,6 +155,7 @@
 
 .menu__title {
   text-align: center;
+  font-size: 20px;
 }
 
 .menu-wrapper--active {
