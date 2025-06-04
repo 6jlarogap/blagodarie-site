@@ -1,21 +1,22 @@
 # blagodarie-site
-contrib/:
+
+contrib/:<br/>
 сервисные процедуры, инструкции, устаревший код
 
-common/:
+common/:<br/>
 общие для разных проектов сценарии, стили
 
-blagodarie/:
+blagodarie/:<br/>
 old.meetgame.us.to
 
-genesis/:
+genesis/:<br/>
 d2.meetgame.us.to
 
-graph_npm/:
+graph_npm/:<br/>
 d3.meetgame.us.to
 
-health/:
+health/:<br/>
 health.meetgame.us.to
 
-map_npm/:
+map_npm/:<br/>
 meetgame.us.to, map.meetgame.us.to
