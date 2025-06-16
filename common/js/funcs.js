@@ -240,7 +240,7 @@ async function check_auth(mandatory=false) {
         return result;
     } else if (typeof AUTH_DATA !== 'undefined') {
         // for debug
-        return AUTH_DATA;;
+        return AUTH_DATA;
     }
 
 
