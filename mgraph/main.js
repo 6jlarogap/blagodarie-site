@@ -194,7 +194,7 @@ import ForceGraph3D from '3d-force-graph';
     if (api_response.ok) {
         data = api_response.data;
         if (parm_user_trusts && data.root_node) {
-            document.title = `${data.root_node.first_name}, доверия и знакомства, благо Рода`;
+            document.title = `${data.root_node.first_name}, доверия и знакомства`;
         }
         Graph = Graph(graph_container);
         Graph.graphData(data);
@@ -228,7 +228,7 @@ import ForceGraph3D from '3d-force-graph';
                 ('first_name_orig' in node) ? node.first_name_orig : node.first_name;
             document.querySelector(".menu-wrapper").classList.add("menu-wrapper--active");
             menu__btns.classList.add('text-align--center');
-            const buttons = ['#id_btn_profile'];
+            const buttons = [];
             const btn_trust_wrap = document.querySelector(".btn--trust--wrap");
             const btn_trust_caption = document.querySelector(".btn--trust--caption");
             if (!auth_data || auth_data && auth_data.user_uuid != node.uuid) {
