@@ -8,9 +8,11 @@
 // Возможные параметры (?параметр1=...&параметр2= ...), в порядке их рассмотрения
 // (если задан параметр выше, то идущие ниже вслед за ним игнорируются):
 //
-//  user_trusts=<short_id>
-//                      Все связи доверия от пользователя с <short_id>,
-//                      а также связи доверия тех, кто ему (ей) доверял или не доверял
+//  id=<short_id>
+//                      Все связи доверия от пользователя с <short_id> (username)
+//                      а также связи доверия тех, кто ему (ей) доверял или не доверял,
+//                      включая необязательно участников игры: это отдает соответствующий
+//                      вызов api
 //
 //  без параметров
 //                      показ всех связей доверия и т.п. между участниками игры
@@ -39,12 +41,12 @@ import ForceGraph3D from '3d-force-graph';
         trust: { op: 3, start_prefix: 't' },
         thank: { op: 1, start_prefix: 'th' }
     }
-    const paginate_users_count = 100;
+    const paginate_users_count = 10000;
 
     let parm_f = parseInt(get_parm('f'));
     let parm_q = parseInt(get_parm('q'));
 
-    const parm_user_trusts_name = 'user_trusts';
+    const parm_user_trusts_name = 'id';
     let parm_user_trusts = get_parm(parm_user_trusts_name);
 
     const api_url = get_api_url();
