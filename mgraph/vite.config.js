@@ -3,11 +3,11 @@ import FullReload from 'vite-plugin-full-reload'
 
 export default defineConfig(({ command }) => ({
     plugins: [
-        FullReload(['public/js/*', 'public/css/*', 'public/images/*' ])
+        FullReload(['public/js/*', 'public/css/*'])
     ],
     build: {
         chunkSizeWarningLimit: 1600,
     },
     publicDir: command === "serve" ? "public" : false,
-    server: { port:5002 },
+    server: { port: 5001 },
 }));
