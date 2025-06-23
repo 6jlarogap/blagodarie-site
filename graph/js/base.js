@@ -1,3 +1,5 @@
+import { forceManyBody, forceCollide, forceLink, forceCenter } from 'https://esm.sh/d3-force-3d';
+
 //
 //  graph/js/base.js
 //
@@ -71,6 +73,7 @@
 //  в том числе если в url нет параметров, то это соответствует вызову с
 //      ?rod=on&dover=on&withalone=on&f=0&q=25
 //
+
 
 $(document).ready (async function() {
 
@@ -626,6 +629,11 @@ $(document).ready (async function() {
     const graph_container = $('#3d-graph')[0];
     let Graph = ForceGraph3D()
         .nodeThreeObject(node => node_draw(node))
+        .d3Force('charge', d3.forceManyBody().strength(-500).distanceMin(800))
+//        .d3Force('collide', forceCollide().strength(5))
+//        .d3Force('center', forceCenter())
+        .d3Force('link', d3.forceLink().id(d => d.id).distance(50).strength(1))
+//        .cooldownTime(10000)
 
         // Если не дерево родства: если есть и родственная связь, и доверие, и если задано
         // искать родственные связи, то показываем стрелку цвета родственной связи.

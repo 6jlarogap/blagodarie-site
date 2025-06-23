@@ -394,13 +394,13 @@ d3.json(apiUrl, d3_json_params)
 
 	nodes.forEach(function(d) {
         if (d.username == userIdFrom) {
-			d.fx = width / 2;
-			d.fy = height / 2;
+//			d.fx = width / 2;
+//			d.fy = height / 2;
         } else {
             switch(d.id){
             case userIdFrom:
-                d.fx = width / 2;
-                d.fy = height / 2;
+//                d.fx = width / 2;
+//                d.fy = height / 2;
                 break;
             case WISHES_ROOT_ID:
                 d.fx = width<900 ? width / 2+150 : width / 2 + 400;
@@ -468,39 +468,15 @@ d3.json(apiUrl, d3_json_params)
             }
         }
 	});
-/*
-	if(width<900){
-		simulation = d3.forceSimulation(nodes);
-		simulation.force("link", d3.forceLink(links).id(d => d.id).distance(30).links(links)); //distance(150)
-		simulation.force("charge", d3.forceManyBody().strength(-400)); //0.5
-		//simulation.force("center", d3.forceCenter(width / 2, height / 2))
-		simulation.force("collide", d3.forceCollide().strength(0.4).radius(45).iterations(1));//radius 55  strength(0.6)
-		simulation.force("x", d3.forceX(width / 2).strength(0.5)); //strength(0.2))
-		simulation.force("y", d3.forceY(height / 2).strength(0.5)); // strength(0.2))
-	}
-	else if(width < 3000) {
-		simulation = d3.forceSimulation(nodes);
-		simulation.force("link", d3.forceLink(links).id(d => d.id).strength(0.6));
-		simulation.force("charge", d3.forceManyBody().strength(-450));
-	//	simulation.force("collide", d3.forceCollide().strength(5).radius(20));//.iterations(1));//radius 80  strength(0.6)
-		simulation.force("x", d3.forceX(width / 2));
-		simulation.force("y", d3.forceY(height / 2));
-	}
-	else{
-		simulation = d3.forceSimulation(nodes);
-		simulation.force("x", d3.forceX(width / 2).strength(0.03))
-		simulation.force("y", d3.forceY(height / 2).strength(0.03))
-		simulation.force("link", d3.forceLink(links).id(d => d.id).iterations(100).distance(500).strength(0.1))
-		simulation.force("charge", d3.forceManyBody().strength(-800)) //.distanceMax(500))
-		simulation.force("collide", d3.forceCollide().strength(1).radius(300))//.iterations(1))
-	}
-*/
 
-	simulation = d3.forceSimulation(nodes);
-	simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.2));
-	simulation.force('charge', d3.forceManyBody().strength(-3450));
-	simulation.force('x', d3.forceX(width / 2).strength(0.012));
-	simulation.force('y', d3.forceY(height / 2).strength(0.025));
+    simulation = d3.forceSimulation(nodes);
+    simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.1)); // .distance()
+    simulation.force('charge', d3.forceManyBody().strength(-7000));
+    simulation.force("collide", d3.forceCollide().radius(200));//.strength(1).radius(300))//.iterations(1))
+    simulation.force('x', d3.forceX(width / 2).strength(0.006));
+    simulation.force('y', d3.forceY(height / 2).strength(0.012));
+//    simulation.alpha(1).alphaTarget(1).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.01).restart();
+    simulation.alpha(1).alphaTarget(1).alphaMin(0.001).alphaDecay(0.01).velocityDecay(0.01).restart();
 
 	initializeDisplay();
 	initializeSimulation();
@@ -558,7 +534,7 @@ function simStarted() {
     loading.next();
     simulation.nodes(nodes);
     simulation.on('tick', ticked);
-    simulation.alpha(1).velocityDecay(0.01).restart();
+    simulation.alpha(1).velocityDecay(0.05).restart();
 }
 
 const simEnded = ({ nTicks }) => setTimeout(() => loading.next(), nTicks * 10);
@@ -583,36 +559,27 @@ function initializeSimulation() {
   layoutWorker.onmessage = ({ data }) => (MESSAGE_HANDLES[data.type] || (() => {}))(data);
 }
 
-const ZOOM_MIN = 0.02;
-const ZOOM_MAX = 1;
+const ZOOM_MIN = 0.01;
+const ZOOM_MAX = 1.5;
 
 var zoom = d3.zoom().scaleExtent([ZOOM_MIN, ZOOM_MAX]);
 zoom.on('zoom', ({transform: {x, y, k}}) => svg.attr('transform', `translate(${x}, ${y}) scale(${k})`));
 
 function drag(simulation) {
 	function dragstarted(e, d) {
-		!e.active && simulation.alphaTarget(0.01).velocityDecay(0.01).restart();
+//		!e.active && simulation.alphaTarget(0.01).velocityDecay(0.01).restart();
 	}
 	
 	const dragged = ({x, y}, d) => { d.fx = x; d.fy = y; };
 	
-	var bstop = false
 	const dragended = (e, d) => { 
-		if (!e.active) simulation.stop();
+//		if (!e.active) simulation.stop();
+//		d.fx = e.x;
+//		d.fy = e.y;		
 		d.fx = null;
 		d.fy = null;		
-	
-/*	const dragended = (e, d) => { 
-		if (bstop) { 
-			d.fx = null;
-			d.fy = null;		
-			simulation.alphaTarget(1).velocityDecay(0.07).restart();
-			bstop = false; } 
-			else { 
-				simulation.stop();
-				bstop = true;} 
-*/
 	};
+
 	let behavior = d3.drag();
 	behavior.on('start', dragstarted);
 	behavior.on('drag', dragged);
@@ -987,7 +954,7 @@ function makeSvgBlob(callback, options={}) {
 }
 
 function suggestFilename(extension) {
-    const project = 'blagodarie';
+    const project = 'blagoroda';
 
     let userName = d3.select('.userName').text();
     userName = userName.trimRight().replaceAll(' ', '_');
@@ -1084,8 +1051,31 @@ function exporting(to) {
 }
 
 const export2svg = () => exporting(EXPORT_FORMATS.SVG);
-const startsim = () => {simulation.alpha(1).alphaTarget(1).alphaDecay(0.01).velocityDecay(0.07).restart()};
 const stopsim = () => {simulation.stop()};
+// unlim const startsim1 = () => {simulation.alpha(1).alphaTarget(1).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.01).restart()};
+// slow decay const startsim1 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.01).restart()};
+// fast decay const startsim5 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.061).velocityDecay(0.01).restart()};
+const startsim = () => {simulation.alpha(1).alphaTarget(1).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.01).restart()};
+const slowsim = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.31).restart()};
+const alf1 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.21).restart()};
+const alf2 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.41).restart()};
+const alf3 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.61).restart()};
+const fMb1 = () => {simulation.force('charge', d3.forceManyBody().strength(-4000))};
+const fMb2 = () => {simulation.force('charge', d3.forceManyBody().strength(-5000))};
+const fMb3 = () => {simulation.force('charge', d3.forceManyBody().strength(-6000))};
+const fclde1 = () => {simulation.force("collide", d3.forceCollide().radius(100))};
+const fclde2 = () => {simulation.force("collide", d3.forceCollide().radius(130))};
+const fclde3 = () => {simulation.force("collide", d3.forceCollide().radius(180))};
+const flink1 = () => {simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.33))};
+const flink2 = () => {simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.23))};
+const flink3 = () => {simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.13))};
+const fx1 = () => {simulation.force('x', d3.forceX(width / 2).strength(0.025))};
+const fx2 = () => {simulation.force('x', d3.forceX(width / 2).strength(0.015))};
+const fx3 = () => {simulation.force('x', d3.forceX(width / 2).strength(0.008))};
+const fy1 = () => {simulation.force('y', d3.forceY(height / 2).strength(0.090))};
+const fy2 = () => {simulation.force('y', d3.forceY(height / 2).strength(0.070))};
+const fy3 = () => {simulation.force('y', d3.forceY(height / 2).strength(0.040))};
+
 
 const menuItems = [
     {
@@ -1102,6 +1092,101 @@ const menuItems = [
         id: 'stopSim',
         title: 'Стоп симуляции',
         action: stopsim
+    },
+    {
+        id: 'slowsim',
+        title: 'slow симуляции',
+        action: slowsim
+    },
+    {
+        id: 'alf1',
+        title: 'alf1',
+        action: alf1
+    },
+    {
+        id: 'alf2',
+        title: 'alf2',
+        action: alf2
+    },
+    {
+        id: 'alf3',
+        title: 'alf3',
+        action: alf3
+    },
+    {
+        id: 'fMb1',
+        title: 'fMb1',
+        action: fMb1
+    },
+    {
+        id: 'fMb2',
+        title: 'fMb2',
+        action: fMb2
+    },
+    {
+        id: 'fMb3',
+        title: 'fMb3',
+        action: fMb3
+    },
+    {
+        id: 'fclde1',
+        title: 'fclde1',
+        action: fclde1
+    },
+    {
+        id: 'fclde2',
+        title: 'fclde2',
+        action: fclde2
+    },
+    {
+        id: 'fclde3',
+        title: 'fclde3',
+        action: fclde3
+    },
+    {
+        id: 'flink1',
+        title: 'flink1',
+        action: flink1
+    },
+    {
+        id: 'flink2',
+        title: 'flink2',
+        action: flink2
+    },
+    {
+        id: 'flink3',
+        title: 'flink3',
+        action: flink3
+    },
+    {
+        id: 'fx1',
+        title: 'fx1',
+        action: fx1
+    },
+    {
+        id: 'fx2',
+        title: 'fx2',
+        action: fx2
+    },
+    {
+        id: 'fx3',
+        title: 'fx3',
+        action: fx3
+    },
+    {
+        id: 'fy1',
+        title: 'fy1',
+        action: fy1
+    },
+    {
+        id: 'fy2',
+        title: 'fy2',
+        action: fy2
+    },
+    {
+        id: 'fy3',
+        title: 'fy3',
+        action: fy3
     }
 ];
 
@@ -1198,7 +1283,7 @@ function initializeDisplay() {
 		.append("linearGradient")
 		.attr('id', d => `grad_from_${d.source.id}_to_${d.target.id}`)
 		.attr("gradientUnits", "userSpaceOnUse")
-		.attr("stroke-width", "3px")
+		.attr("stroke-width", "5px")
 		.attr("x1", calcX1)
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
@@ -1219,6 +1304,7 @@ function initializeDisplay() {
 		.attr("y1", calcY1)
 		.attr("x2", calcX2)
 		.attr("y2", calcY2)
+		.attr("stroke-width", "1.5px")
 		.attr("stroke", d => {
 			if (d.target.nodeType == NODE_TYPES.USER || d.target.nodeType == NODE_TYPES.FRIEND || d.target.nodeType == NODE_TYPES.PROFILE || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST || d.target.nodeType == NODE_TYPES.FILTERED){
 				if (d.is_trust == d.reverse_is_trust || d.source.nodeType == NODE_TYPES.TRUST || d.source.nodeType == NODE_TYPES.MISTRUST){
@@ -1302,6 +1388,7 @@ function initializeDisplay() {
             .append("text")
             .attr("y", 50)
             .attr("font-size", 30)
+            .attr("font-weight", 600)
             .attr("class", [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(d.nodeType)
                 ? "userName"
                 : "friendName"
@@ -1538,9 +1625,10 @@ function calcY2(d) {
 } 
 
 d3.select(window).on('resize', () => {
-  width = +svg.node().getBoundingClientRect().width;
-  height = +svg.node().getBoundingClientRect().height;
-  simulation.alpha(1).velocityDecay(0.07).restart(); // added velocityDelay(0.01)
+    width = +svg.node().getBoundingClientRect().width;
+    height = +svg.node().getBoundingClientRect().height;
+    simulation.restart();
+//  simulation.alpha(1).velocityDecay(0.07).restart(); // added velocityDelay(0.01)
 });
 
 function initDefs() {
