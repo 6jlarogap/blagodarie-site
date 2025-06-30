@@ -205,7 +205,7 @@ import ForceGraph3D from '3d-force-graph';
             (auth_data && data.root_node.uuid != auth_data.user_uuid || !auth_data)
             ) {
             const node = data.root_node
-            await show_popup(node);
+            // *** await show_popup(node);
         }
     }
     $('#graph_legend').show();
@@ -222,8 +222,10 @@ import ForceGraph3D from '3d-force-graph';
     }
 
     async function show_popup(node) {
+        // ***
+        if (auth_data && auth_data.user_uuid != node.uuid) return;
         const menu__btns = document.querySelector(".menu__btns");
-        // menu__btns.classList.remove('text-align--center');
+        // *** menu__btns.classList.remove('text-align--center');
         node_current = node;
         if (node.uuid) {
             document.querySelector(".menu__title-span").textContent =
@@ -253,7 +255,7 @@ import ForceGraph3D from '3d-force-graph';
                         $('input[name=trust-or-thank]').val('thank');
                     }
                 }
-                // btn_trust_wrap.classList.remove("display--none");
+                // *** btn_trust_wrap.classList.remove("display--none");
                 buttons.push('#id_btn_trust');
             } else {
                 btn_trust_wrap.classList.add("display--none");
