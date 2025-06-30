@@ -222,8 +222,6 @@ import ForceGraph3D from '3d-force-graph';
     }
 
     async function show_popup(node) {
-        // ***
-        if (auth_data && auth_data.user_uuid == node.uuid) return;
         const menu__btns = document.querySelector(".menu__btns");
         // *** menu__btns.classList.remove('text-align--center');
         node_current = node;
