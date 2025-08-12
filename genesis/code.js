@@ -1056,25 +1056,25 @@ const stopsim = () => {simulation.stop()};
 // slow decay const startsim1 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.01).restart()};
 // fast decay const startsim5 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.061).velocityDecay(0.01).restart()};
 const startsim = () => {simulation.alpha(1).alphaTarget(1).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.01).restart()};
-const slowsim = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.31).restart()};
-const alf1 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.21).restart()};
-const alf2 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.41).restart()};
-const alf3 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.61).restart()};
+const slowsim = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.05).restart()};
+const alf1 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.5).restart()};
+const alf2 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(0.7).restart()};
+const alf3 = () => {simulation.alpha(1).alphaTarget(0).alphaMin(0.001).alphaDecay(.001).velocityDecay(1).restart()};
 const fMb1 = () => {simulation.force('charge', d3.forceManyBody().strength(-4000))};
-const fMb2 = () => {simulation.force('charge', d3.forceManyBody().strength(-5000))};
-const fMb3 = () => {simulation.force('charge', d3.forceManyBody().strength(-6000))};
-const fclde1 = () => {simulation.force("collide", d3.forceCollide().radius(100))};
-const fclde2 = () => {simulation.force("collide", d3.forceCollide().radius(130))};
-const fclde3 = () => {simulation.force("collide", d3.forceCollide().radius(180))};
-const flink1 = () => {simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.33))};
-const flink2 = () => {simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.23))};
-const flink3 = () => {simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.13))};
-const fx1 = () => {simulation.force('x', d3.forceX(width / 2).strength(0.025))};
+const fMb2 = () => {simulation.force('charge', d3.forceManyBody().strength(-3000))};
+const fMb3 = () => {simulation.force('charge', d3.forceManyBody().strength(-2500))};
+const fclde1 = () => {simulation.force("collide", d3.forceCollide().radius(160))};
+const fclde2 = () => {simulation.force("collide", d3.forceCollide().radius(140))};
+const fclde3 = () => {simulation.force("collide", d3.forceCollide().radius(130))};
+const flink1 = () => {simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.13))};
+const flink2 = () => {simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.20))};
+const flink3 = () => {simulation.force('link', d3.forceLink(links).id(({id}) => id).strength(0.25))};
+const fx1 = () => {simulation.force('x', d3.forceX(width / 2).strength(0.008))};
 const fx2 = () => {simulation.force('x', d3.forceX(width / 2).strength(0.015))};
-const fx3 = () => {simulation.force('x', d3.forceX(width / 2).strength(0.008))};
-const fy1 = () => {simulation.force('y', d3.forceY(height / 2).strength(0.090))};
+const fx3 = () => {simulation.force('x', d3.forceX(width / 2).strength(0.025))};
+const fy1 = () => {simulation.force('y', d3.forceY(height / 2).strength(0.020))};
 const fy2 = () => {simulation.force('y', d3.forceY(height / 2).strength(0.070))};
-const fy3 = () => {simulation.force('y', d3.forceY(height / 2).strength(0.040))};
+const fy3 = () => {simulation.force('y', d3.forceY(height / 2).strength(0.090))};
 
 
 const menuItems = [
@@ -1084,14 +1084,14 @@ const menuItems = [
         action: export2svg
     },
     {
-        id: 'startSim',
-        title: 'Старт симуляции',
-        action: startsim
-    },
-    {
         id: 'stopSim',
         title: 'Стоп симуляции',
         action: stopsim
+    },
+    {
+        id: 'startSim',
+        title: 'Старт симуляции',
+        action: startsim
     },
     {
         id: 'slowsim',
@@ -1387,8 +1387,8 @@ function initializeDisplay() {
         const textEl = d3.select(this)
             .append("text")
             .attr("y", 50)
-            .attr("font-size", 30)
-            .attr("font-weight", 600)
+            .attr("font-size", 35)
+            .attr("font-weight", 400) // bold
             .attr("class", [NODE_TYPES.USER, NODE_TYPES.PROFILE].includes(d.nodeType)
                 ? "userName"
                 : "friendName"
