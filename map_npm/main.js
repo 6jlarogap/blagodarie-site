@@ -571,7 +571,7 @@ import ForceGraph3D from '3d-force-graph';
                     const color_trust = 'green';
                     const color_not_trust = 'red';
                     const color_invite_meet = 'blueviolet';
-                    const color_hide_meet = 'black';
+                    const color_hide_meet = 'lightgray';
                     if (link.attitude) {
                         if (link.attitude == attitudes.acq) {
                             result = color_acq;
