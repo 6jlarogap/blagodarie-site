@@ -96,107 +96,6 @@ window.onerror = (msg, file, line, col, error) => {
     console.error('Error:', msg, 'at', file + ':' + line + ':' + col, error);
 };
 
-function updateDisplayValues() {
-    document.getElementById('charge-strength-value').textContent = currentParams.chargeStrength;
-    document.getElementById('collide-radius-value').textContent = currentParams.collideRadius;
-    document.getElementById('link-strength-value').textContent = currentParams.linkStrength.toFixed(3);
-    document.getElementById('x-strength-value').textContent = currentParams.xStrength.toFixed(3);
-    document.getElementById('y-strength-value').textContent = currentParams.yStrength.toFixed(3);
-    document.getElementById('velocity-decay-value').textContent = currentParams.velocityDecay.toFixed(3);
-    document.getElementById('alpha-decay-value').textContent = currentParams.alphaDecay.toFixed(3);
-}
-
-function changeChargeStrength(delta) {
-    const newValue = currentParams.chargeStrength + delta;
-    if (newValue >= SIMULATION_CONFIG.LIMITS.CHARGE_STRENGTH.MIN && 
-        newValue <= SIMULATION_CONFIG.LIMITS.CHARGE_STRENGTH.MAX) {
-        currentParams.chargeStrength = newValue;
-        if (simulation) {
-            simulation.force('charge', d3.forceManyBody().strength(newValue));
-            updateDisplayValues();
-            simulation.alpha(1).restart();
-        }
-    }
-}
-
-function changeCollideRadius(delta) {
-    const newValue = currentParams.collideRadius + delta;
-    if (newValue >= SIMULATION_CONFIG.LIMITS.COLLIDE_RADIUS.MIN && 
-        newValue <= SIMULATION_CONFIG.LIMITS.COLLIDE_RADIUS.MAX) {
-        currentParams.collideRadius = newValue;
-        if (simulation) {
-            simulation.force("collide", d3.forceCollide().radius(newValue));
-            updateDisplayValues();
-            simulation.alpha(1).restart();
-        }
-    }
-}
-
-function changeLinkStrength(delta) {
-    const newValue = currentParams.linkStrength + delta;
-    if (newValue >= SIMULATION_CONFIG.LIMITS.LINK_STRENGTH.MIN && 
-        newValue <= SIMULATION_CONFIG.LIMITS.LINK_STRENGTH.MAX) {
-        currentParams.linkStrength = newValue;
-        if (simulation) {
-            simulation.force('link', d3.forceLink(links).id(({ id }) => id).strength(newValue));
-            updateDisplayValues();
-            simulation.alpha(1).restart();
-        }
-    }
-}
-
-function changeXStrength(delta) {
-    const newValue = currentParams.xStrength + delta;
-    if (newValue >= SIMULATION_CONFIG.LIMITS.X_STRENGTH.MIN && 
-        newValue <= SIMULATION_CONFIG.LIMITS.X_STRENGTH.MAX) {
-        currentParams.xStrength = newValue;
-        if (simulation) {
-            simulation.force('x', d3.forceX(width / 2).strength(newValue));
-            updateDisplayValues();
-            simulation.alpha(1).restart();
-        }
-    }
-}
-
-function changeYStrength(delta) {
-    const newValue = currentParams.yStrength + delta;
-    if (newValue >= SIMULATION_CONFIG.LIMITS.Y_STRENGTH.MIN && 
-        newValue <= SIMULATION_CONFIG.LIMITS.Y_STRENGTH.MAX) {
-        currentParams.yStrength = newValue;
-        if (simulation) {
-            simulation.force('y', d3.forceY(height / 2).strength(newValue));
-            updateDisplayValues();
-            simulation.alpha(1).restart();
-        }
-    }
-}
-
-function changeVelocityDecay(delta) {
-    const newValue = currentParams.velocityDecay + delta;
-    if (newValue >= SIMULATION_CONFIG.LIMITS.VELOCITY_DECAY.MIN && 
-        newValue <= SIMULATION_CONFIG.LIMITS.VELOCITY_DECAY.MAX) {
-        currentParams.velocityDecay = newValue;
-        if (simulation) {
-            simulation.velocityDecay(newValue);
-            updateDisplayValues();
-            simulation.alpha(1).restart();
-        }
-    }
-}
-
-function changeAlphaDecay(delta) {
-    const newValue = currentParams.alphaDecay + delta;
-    if (newValue >= SIMULATION_CONFIG.LIMITS.ALPHA_DECAY.MIN && 
-        newValue <= SIMULATION_CONFIG.LIMITS.ALPHA_DECAY.MAX) {
-        currentParams.alphaDecay = newValue;
-        if (simulation) {
-            simulation.alphaDecay(newValue);
-            updateDisplayValues();
-            simulation.alpha(1).restart();
-        }
-    }
-}
-
 var url = new URL(window.location.href);
 
 var userIdFrom = url.searchParams.get("id");
@@ -295,14 +194,14 @@ d3.json(apiUrl, d3_json_params)
         simulation.force("collide", d3.forceCollide().radius(currentParams.collideRadius));
         simulation.force('x', d3.forceX(width / 2).strength(currentParams.xStrength));
         simulation.force('y', d3.forceY(height / 2).strength(currentParams.yStrength));
-        simulation.alpha(1).alphaTarget(1).alphaMin(0.001).alphaDecay(currentParams.alphaDecay).velocityDecay(currentParams.velocityDecay).restart();
+        simulation.alpha(1).alphaTarget(1).alphaMin(0.001).alphaDecay(currentParams.alphaDecay).velocityDecay(currentParams.velocityDecay);
 
         simulation.on('end', updateGraphInfo);
         simulation.on('tick', ticked);
 
         initializeDisplay();
         updateGraphInfo();
-        updateDisplayValues();
+        updateDisplayValues(); // Оставляем только этот вызов при инициализации
     });
 
 var zoom = d3.zoom().scaleExtent([ZOOM_MIN, ZOOM_MAX]);
@@ -423,75 +322,13 @@ function prepareSvg(id) {
     const svgCopy = originalSvg.cloneNode(true);
     
     const full = svg.node().getBBox();
-    
-    // Устанавливаем viewBox с небольшим отступом для лучшего отображения
-    const padding = 50;
-    const viewBoxX = full.x - padding;
-    const viewBoxY = full.y - padding;
-    const viewBoxWidth = full.width + padding * 2;
-    const viewBoxHeight = full.height + padding * 2;
-    
-    svgCopy.setAttribute('viewBox', `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
-    svgCopy.setAttribute('width', viewBoxWidth);
-    svgCopy.setAttribute('height', viewBoxHeight);
+    svgCopy.setAttribute('viewBox', `${full.x} ${full.y} ${full.width} ${full.height}`);
+    svgCopy.setAttribute('width', full.width);
+    svgCopy.setAttribute('height', full.height);
     
     const mainGroup = svgCopy.querySelector('g');
     if (mainGroup) {
         mainGroup.removeAttribute('transform');
-    }
-    
-    // ОБНОВЛЕНО: Универсальная обработка фона для любой темы
-    const themeBackground = svgCopy.querySelector('.theme-background');
-    if (themeBackground) {
-        // Полностью удаляем старый фон
-        themeBackground.remove();
-        
-        // Создаем новый фон, который точно соответствует viewBox
-        const newBackground = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        newBackground.setAttribute('class', 'theme-background');
-        newBackground.setAttribute('x', viewBoxX);
-        newBackground.setAttribute('y', viewBoxY);
-        newBackground.setAttribute('width', viewBoxWidth);
-        newBackground.setAttribute('height', viewBoxHeight);
-        
-        // Определяем цвет фона в зависимости от темы
-        const isStarTheme = originalSvg.querySelector('#star-pattern') !== null;
-        if (isStarTheme) {
-            newBackground.setAttribute('fill', '#0a0a2a');
-            
-            // Копируем звездный паттерн если он есть
-            const originalPattern = originalSvg.querySelector('#star-pattern');
-            if (originalPattern) {
-                const patternCopy = originalPattern.cloneNode(true);
-                const defs = svgCopy.querySelector('defs') || svgCopy.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'defs'));
-                
-                // Удаляем старый паттерн если есть
-                const oldPattern = svgCopy.querySelector('#star-pattern');
-                if (oldPattern) {
-                    oldPattern.remove();
-                }
-                
-                defs.appendChild(patternCopy);
-                
-                // Создаем прямоугольник со звездным паттерном
-                const patternRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-                patternRect.setAttribute('x', viewBoxX);
-                patternRect.setAttribute('y', viewBoxY);
-                patternRect.setAttribute('width', viewBoxWidth);
-                patternRect.setAttribute('height', viewBoxHeight);
-                patternRect.setAttribute('fill', 'url(#star-pattern)');
-                patternRect.setAttribute('opacity', '0.3');
-                
-                // Вставляем оба элемента в начало SVG
-                svgCopy.insertBefore(patternRect, svgCopy.firstChild);
-            }
-        } else {
-            // Для других тем используем белый фон
-            newBackground.setAttribute('fill', '#ffffff');
-        }
-        
-        // Вставляем основной фон в самое начало
-        svgCopy.insertBefore(newBackground, svgCopy.firstChild);
     }
     
     // Обновляем изображения без дублирования атрибутов
@@ -630,19 +467,6 @@ function exporting(to) {
 }
 
 const export2svg = () => exporting(EXPORT_FORMATS.SVG);
-
-const stopsim = () => {
-    if (simulation) {
-        simulation.stop();
-        updateGraphInfo();
-    }
-}
-
-const startsim = () => { 
-    if (simulation) {
-        simulation.alpha(1).alphaTarget(1).alphaMin(0.001).restart();
-    }
-}
 
 function initializeDisplay() {
     svg = svg.call(zoom)

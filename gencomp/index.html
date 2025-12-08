@@ -7,14 +7,19 @@
   <body>
     <svg xmlns="http://www.w3.org/2000/svg" id="main"></svg>
     
-  <!-- div для метаданных графа -->
+    <!-- div для метаданных графа -->
     <div id="graph-info" class="graph-info">
       <div>Узлов: <span id="node-count">0</span></div>
       <div>Размер: <span id="graph-size-px">0 x 0 px</span></div>
       <div>При 96 dpi: <span id="graph-size-mm-96">0 x 0 mm</span></div>
       <div>При 300 dpi: <span id="graph-size-mm-300">0 x 0 mm</span></div>
+      <!-- Управление экспортом -->
+      <div id="export-controls">
+          <button onclick="export2svg()" style="width: 100%;">Экспорт SVG</button>
+      </div>
     </div>
 
+    <!-- Управление симуляцией -->
     <div id="simulation-controls" style="position: fixed; top: 10px; left: 10px; background: white; padding: 10px; border: 1px solid #ccc; z-index: 1000; font-family: Arial, sans-serif;">
         <h3 style="margin: 0 0 10px 0;">Управление симуляцией</h3>
         
@@ -70,15 +75,18 @@
         <div style="margin-top: 10px;">
             <button onclick="stopsim()" style="margin-right: 5px;">Стоп</button>
             <button onclick="startsim()" style="margin-right: 5px;">Старт</button>
-            <button onclick="export2svg()">Экспорт SVG</button>
         </div>
     </div>
 
-  <script src="d3js/d3.v7.min.js"></script>
-  <!--    local_settings.js может и не быть (ничего страшного)-->
-  <script defer src="local_settings.js"></script>
-  <script defer src="funcs.js" charset="utf-8"></script>
-  <script defer src="code.js" charset="utf-8"></script>
-  <script defer src="themes.js" charset="utf-8"></script>
+    <!-- Управление темами -->
+    <div id="theme-controls" style="position: fixed; bottom: 10px; left: 10px; background: white; padding: 10px; border: 1px solid #ccc; z-index: 1000; font-family: Arial, sans-serif;">  </div>
+
+    <script src="d3js/d3.v7.min.js"></script>
+    <!-- local_settings.js может и не быть (ничего страшного)-->
+    <script defer src="local_settings.js"></script>
+    <script defer src="funcs.js" charset="utf-8"></script>
+    <script defer src="code.js" charset="utf-8"></script>
+    <script defer src="simulation-controls.js" charset="utf-8"></script>
+    <script defer src="themes.js" charset="utf-8"></script>
   </body>
 </html>

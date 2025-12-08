@@ -1,5 +1,5 @@
 
-BACKEND_URL = 'https://api.meetgame.us.to'
+BACKEND_URL = 'https://api.doverabot.ru'
 BACKEND_TIMEOUT = 300
 
 try:

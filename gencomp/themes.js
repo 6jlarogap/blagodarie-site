@@ -32,6 +32,9 @@ const STAR_CONFIG = {
 // Текущая тема
 let currentTheme = THEMES.DEFAULT;
 
+// Ссылка на группу фона
+let backgroundGroup;
+
 // Функция для создания точек звезды
 function createStarPoints(points, innerRadius, outerRadius) {
     const coordinates = [];
@@ -56,16 +59,30 @@ function getStarConfig(gender) {
     }
 }
 
+// Функция инициализации группы фона
+function initializeBackgroundGroup() {
+    const svgElement = d3.select('svg#main');
+    
+    // Создаем отдельную группу для фона ВНЕ основной группы с графом
+    // Вставляем ее перед основной группой
+    backgroundGroup = svgElement.insert('g', ':first-child')
+        .attr('class', 'theme-background')
+        .attr('id', 'background-group');
+    
+    // Изначально применяем тему по умолчанию
+    applyDefaultThemeToBackground();
+}
+
 // Функция применения темы
 function applyTheme(theme) {
     currentTheme = theme;
     
     const svgElement = d3.select('svg#main');
     
-    // Удаляем предыдущие стили темы
-    svgElement.selectAll('.theme-background').remove();
-    svgElement.selectAll('.star-overlay').remove();
-    svgElement.selectAll('.star-placeholder').remove();
+    // Убеждаемся, что группа фона существует
+    if (!backgroundGroup) {
+        initializeBackgroundGroup();
+    }
     
     if (theme === THEMES.STAR) {
         applyStarTheme(svgElement);
@@ -79,14 +96,8 @@ function applyTheme(theme) {
 
 // Функция применения звездной темы
 function applyStarTheme(svgElement) {
-    // Удаляем предыдущие стили темы
-    svgElement.selectAll('.theme-background').remove();
-    svgElement.selectAll('.star-overlay').remove();
-    svgElement.selectAll('.star-placeholder').remove();
-    
-    // Добавляем звездный фон В САМОЕ НАЧАЛО SVG (нижний слой)
-    const backgroundGroup = svgElement.insert('g', ':first-child')
-        .attr('class', 'theme-background');
+    // Очищаем группу фона
+    backgroundGroup.selectAll('*').remove();
     
     // Сплошной темный фон
     backgroundGroup.append('rect')
@@ -117,6 +128,10 @@ function applyStarTheme(svgElement) {
         .attr('fill', 'url(#star-pattern)')
         .attr('opacity', 0.3);
     
+    // Удаляем звездные overlay и placeholder'ы из предыдущей темы
+    svgElement.selectAll('.star-overlay').remove();
+    svgElement.selectAll('.star-placeholder').remove();
+    
     // Обновляем стили линий для лучшей видимости
     svgElement.selectAll('.link')
         .attr('stroke', '#ffffff')
@@ -133,8 +148,19 @@ function applyStarTheme(svgElement) {
 
 // Функция применения темы по умолчанию
 function applyDefaultTheme(svgElement) {
-    // Удаляем группу фона
-    svgElement.selectAll('.theme-background').remove();
+    // Очищаем группу фона
+    backgroundGroup.selectAll('*').remove();
+    
+    // Добавляем прозрачный фон для темы по умолчанию
+    backgroundGroup.append('rect')
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('fill', '#ffffff')
+        .attr('opacity', 0);
+    
+    // Удаляем звездные элементы
+    svgElement.selectAll('.star-overlay').remove();
+    svgElement.selectAll('.star-placeholder').remove();
     
     // Восстанавливаем стандартные стили
     svgElement.selectAll('.link')
@@ -146,6 +172,19 @@ function applyDefaultTheme(svgElement) {
         .attr('fill', '#000000')
         .attr('stroke', 'none')
         .attr('stroke-width', '0px');
+}
+
+// Функция применения темы по умолчанию к фону (вспомогательная)
+function applyDefaultThemeToBackground() {
+    // Очищаем группу фона
+    backgroundGroup.selectAll('*').remove();
+    
+    // Добавляем прозрачный фон для темы по умолчанию
+    backgroundGroup.append('rect')
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('fill', '#ffffff')
+        .attr('opacity', 0);
 }
 
 // Функция обновления узлов для текущей темы
@@ -207,9 +246,9 @@ function updateNodesForTheme() {
     }
 }
 
-// Функция создания селектора тем
+// Функция создания селектора тем (перемещена в группу тем)
 function createThemeSelector() {
-    const controls = document.getElementById('simulation-controls');
+    const themeControls = document.getElementById('theme-controls');
     
     const themeControl = document.createElement('div');
     themeControl.className = 'control-group';
@@ -221,7 +260,7 @@ function createThemeSelector() {
         </select>
     `;
     
-    controls.appendChild(themeControl);
+    themeControls.appendChild(themeControl);
     
     // Обработчик изменения темы
     document.getElementById('theme-select').addEventListener('change', function(e) {
@@ -232,6 +271,7 @@ function createThemeSelector() {
 // Инициализация темы при загрузке
 document.addEventListener('DOMContentLoaded', function() {
     createThemeSelector();
+    initializeBackgroundGroup(); // Инициализируем группу фона
     applyTheme(THEMES.DEFAULT);
 });
 
