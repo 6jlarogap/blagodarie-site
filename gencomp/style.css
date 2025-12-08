@@ -1,0 +1,76 @@
+/* HTML styles */
+body {
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+/* Объединяем одинаковые правила */
+body, text, .svg_elem {
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* SVG styles */
+svg {
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+}
+
+.userName, .profileName {
+    text-anchor: middle;
+}
+
+.graph-info {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    z-index: 1000;
+}
+
+.graph-info div {
+    margin: 2px 0;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+.control-group {
+    margin-bottom: 8px;
+}
+
+.control-group label {
+    display: inline-block;
+    width: 150px;
+    font-size: 12px;
+}
+
+.control-group button {
+    margin: 0 2px;
+    padding: 2px 6px;
+    font-size: 12px;
+}
+
+.control-group span {
+    display: inline-block;
+    width: 60px;
+    text-align: center;
+    font-size: 12px;
+}
